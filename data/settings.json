@@ -1,0 +1,6 @@
+{
+  "ssh_host": "10.0.18.1",
+  "ssh_port": 22,
+  "ssh_username": "root",
+  "ssh_password": "firefly"
+}
