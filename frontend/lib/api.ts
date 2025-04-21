@@ -1,24 +1,41 @@
 import { API_ROUTES, SSHSettings, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
 
 // API请求基础配置
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://172.16.10.83:5000/'
 
 // 通用请求处理函数
 export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  })
+  console.log(`[API] Requesting: ${BASE_URL}${endpoint}`)
+  
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    })
 
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.statusText}`)
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`[API] Error response:`, {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      })
+      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${errorText}`)
+    }
+
+    const data = await response.json()
+    console.log(`[API] Response:`, data)
+    return data
+  } catch (error) {
+    console.error(`[API] Request failed:`, error)
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      throw new Error(`无法连接到服务器 (${BASE_URL})。请确保服务器正在运行且可访问。`)
+    }
+    throw error
   }
-
-  const data = await response.json()
-  return data
 }
 
 // SSH设置相关API

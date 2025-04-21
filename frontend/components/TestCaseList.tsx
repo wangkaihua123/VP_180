@@ -1,159 +1,268 @@
 "use client"
 
-import { useState } from "react"
+import { TestCase } from "@/app/api/routes"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { testCaseAPI, BASE_URL } from "@/lib/api"
 import { useToast } from "@/components/ui/use-toast"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Play, Edit, Trash2, FileText } from "lucide-react"
-import { testCaseAPI } from "@/lib/api"
-import { formatDateTime } from "@/lib/utils"
-import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Checkbox } from "@/components/ui/checkbox"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-
-interface TestCaseLog {
-  id: string;
-  content: string;
-  images: string[];
-  screenshots: string[];
-  createTime: string;
-  status: string;
-}
-
-interface TestCase {
-  id: string;
-  title: string;
-  type: string;
-  status: string;
-  createTime: string;
-  repeatCount: number;
-}
+import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface TestCaseListProps {
-  testCases?: TestCase[];
-  loading?: boolean;
-  onRefresh: () => void;
+  testCases: TestCase[]
+  loading: boolean
+  selectedIds?: number[]
+  onSelectionChange: (ids: number[]) => void
+  onRefresh: () => void
+  enableSelection?: boolean
 }
 
-export function TestCaseList({ testCases = [], loading = false, onRefresh }: TestCaseListProps) {
+interface TestCaseLog {
+  log_content: string;
+  images: string[];
+  screenshots: string[];
+  timestamp: string;
+}
+
+export function TestCaseList({ 
+  testCases, 
+  loading, 
+  selectedIds = [], 
+  onSelectionChange = () => {}, 
+  onRefresh,
+  enableSelection = true
+}: TestCaseListProps) {
+  const router = useRouter()
   const { toast } = useToast()
+  const [deletingId, setDeletingId] = useState<number | null>(null)
   const [selectedLog, setSelectedLog] = useState<TestCaseLog | null>(null)
-  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [isLogDialogOpen, setIsLogDialogOpen] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null)
 
-  const handleRun = async (id: string) => {
+  const handleDelete = async (id: number) => {
     try {
-      await testCaseAPI.run(parseInt(id))
-      toast({
-        title: "执行成功",
-        description: "测试用例已开始执行"
-      })
-      onRefresh()
-    } catch (error) {
-      toast({
-        title: "执行失败",
-        description: error instanceof Error ? error.message : "执行测试用例失败",
-        variant: "destructive"
-      })
-    }
-  }
-
-  const handleDelete = async (id: string) => {
-    try {
-      await testCaseAPI.delete(parseInt(id))
+      setDeletingId(id)
+      await testCaseAPI.delete(id)
       toast({
         title: "删除成功",
-        description: "测试用例已删除"
+        description: "测试用例已删除",
       })
       onRefresh()
     } catch (error) {
       toast({
         title: "删除失败",
         description: error instanceof Error ? error.message : "删除测试用例失败",
-        variant: "destructive"
+        variant: "destructive",
+      })
+    } finally {
+      setDeletingId(null)
+      setShowDeleteDialog(false)
+      setDeleteTargetId(null)
+    }
+  }
+
+  const handleDeleteClick = (id: number) => {
+    setDeleteTargetId(id)
+    setShowDeleteDialog(true)
+  }
+
+  const handleRun = async (id: number) => {
+    try {
+      await testCaseAPI.run(id)
+      toast({
+        title: "执行成功",
+        description: "测试用例已开始执行",
+      })
+      onRefresh()
+    } catch (error) {
+      toast({
+        title: "执行失败",
+        description: error instanceof Error ? error.message : "执行测试用例失败",
+        variant: "destructive",
       })
     }
   }
 
-  const handleViewLog = async (id: string) => {
+  const handleViewLog = async (id: number) => {
     try {
-      const log = await testCaseAPI.getLatestLog(parseInt(id))
+      const log = await testCaseAPI.getLatestLog(parseInt(id.toString()))
       setSelectedLog(log)
+      setIsLogDialogOpen(true)
     } catch (error) {
       toast({
         title: "获取日志失败",
         description: error instanceof Error ? error.message : "获取测试用例日志失败",
-        variant: "destructive"
+        variant: "destructive",
       })
     }
   }
 
-  const handleDeleteClick = (id: string) => {
-    setDeleteId(id)
+  const handleSelectAll = (checked: boolean) => {
+    onSelectionChange(checked ? testCases.map(tc => tc.id) : [])
   }
 
-  const handleDeleteConfirm = async () => {
-    if (deleteId) {
-      await handleDelete(deleteId)
-      setDeleteId(null)
+  const handleSelectOne = (id: number, checked: boolean) => {
+    onSelectionChange(
+      checked
+        ? [...selectedIds, id]
+        : selectedIds.filter(selectedId => selectedId !== id)
+    )
+  }
+
+  const handleExecuteSelected = () => {
+    if (selectedIds.length > 0) {
+      router.push(`/execute-all?ids=${selectedIds.join(',')}`)
     }
   }
 
   if (loading) {
-    return <div className="text-center py-8">加载中...</div>
+    return <div className="text-center py-4">加载中...</div>
   }
 
-  if (!Array.isArray(testCases) || testCases.length === 0) {
-    return <div className="text-center py-8">暂无测试用例</div>
+  if (testCases.length === 0) {
+    return <div className="text-center py-4">暂无测试用例</div>
   }
 
   return (
     <>
-      <div className="space-y-4">
-        {testCases.map((testCase) => (
-          <Card key={testCase.id} className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div>
-                  <h3 className="font-medium">{testCase.title}</h3>
-                  <div className="flex items-center space-x-2 text-sm text-gray-500">
-                    <Badge variant="outline">{testCase.type}</Badge>
-                    <span>·</span>
-                    <Badge variant={testCase.status === "通过" ? "success" : testCase.status === "未运行" ? "secondary" : "destructive"}>
-                      {testCase.status}
-                    </Badge>
-                    <span>·</span>
-                    <span>重复次数: {testCase.repeatCount || 1}</span>
-                    <span>·</span>
-                    <span>{formatDateTime(testCase.createTime)}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="icon" onClick={() => handleRun(testCase.id)}>
-                  <Play className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon" asChild>
-                  <Link href={`/test-cases/${testCase.id}/edit`}>
-                    <Edit className="h-4 w-4" />
+      {enableSelection && (
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2">
+            <Checkbox 
+              checked={selectedIds.length > 0 && selectedIds.length === testCases.length}
+              onCheckedChange={handleSelectAll}
+              aria-label="全选"
+            />
+            <span className="text-sm text-gray-500">
+              已选择 {selectedIds.length} 个测试用例
+            </span>
+          </div>
+          <Button 
+            onClick={handleExecuteSelected}
+            disabled={selectedIds.length === 0}
+            className="bg-black text-white hover:bg-gray-800"
+          >
+            <Play className="mr-2 h-4 w-4" />
+            执行选中
+          </Button>
+        </div>
+      )}
+
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {enableSelection && (
+                <TableHead className="w-12">
+                  <Checkbox
+                    checked={selectedIds.length > 0 && selectedIds.length === testCases.length}
+                    onCheckedChange={handleSelectAll}
+                    aria-label="全选"
+                  />
+                </TableHead>
+              )}
+              <TableHead>名称</TableHead>
+              <TableHead>类型</TableHead>
+              <TableHead>状态</TableHead>
+              <TableHead>重复次数</TableHead>
+              <TableHead>创建时间</TableHead>
+              <TableHead className="text-right">操作</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {testCases.map((testCase) => (
+              <TableRow key={testCase.id} className={selectedIds.includes(testCase.id) ? "bg-gray-50" : ""}>
+                {enableSelection && (
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedIds.includes(testCase.id)}
+                      onCheckedChange={(checked) => handleSelectOne(testCase.id, checked as boolean)}
+                      aria-label={`选择测试用例 ${testCase.title}`}
+                    />
+                  </TableCell>
+                )}
+                <TableCell className="font-medium">
+                  <Link href={`/test-cases/${testCase.id}`} className="hover:underline">
+                    {testCase.title}
                   </Link>
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => handleViewLog(testCase.id)}>
-                  <FileText className="h-4 w-4 text-blue-500" />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => handleDeleteClick(testCase.id)}>
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ))}
+                </TableCell>
+                <TableCell>{testCase.type}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      testCase.status === "通过"
+                        ? "success"
+                        : testCase.status === "失败"
+                          ? "destructive"
+                          : testCase.status === "警告"
+                            ? "warning"
+                            : "outline"
+                    }
+                  >
+                    {testCase.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>{JSON.parse(testCase.script_content).repeatCount || 1}</TableCell>
+                <TableCell>{testCase.create_time}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleRun(testCase.id)}
+                    >
+                      <Play className="h-4 w-4 [&:hover]:text-inherit" />
+                      <span className="sr-only">运行</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-blue-500"
+                      onClick={() => handleViewLog(testCase.id)}
+                    >
+                      <FileText className="h-4 w-4 [&:hover]:text-inherit" />
+                      <span className="sr-only">查看日志</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      asChild
+                    >
+                      <Link href={`/test-cases/${testCase.id}/edit`}>
+                        <Edit className="h-4 w-4 [&:hover]:text-inherit" />
+                        <span className="sr-only">编辑</span>
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive"
+                      onClick={() => handleDeleteClick(testCase.id)}
+                      disabled={deletingId === testCase.id}
+                    >
+                      <Trash2 className="h-4 w-4 [&:hover]:text-inherit" />
+                      <span className="sr-only">删除</span>
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
 
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>确认删除</AlertDialogTitle>
@@ -162,67 +271,57 @@ export function TestCaseList({ testCases = [], loading = false, onRefresh }: Tes
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm}>删除</AlertDialogAction>
+            <AlertDialogCancel onClick={() => setShowDeleteDialog(false)}>取消</AlertDialogCancel>
+            <AlertDialogAction onClick={() => deleteTargetId && handleDelete(deleteTargetId)}>
+              删除
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      <Dialog open={!!selectedLog} onOpenChange={() => setSelectedLog(null)}>
-        <DialogContent className="max-w-3xl">
+      <Dialog open={isLogDialogOpen} onOpenChange={setIsLogDialogOpen}>
+        <DialogContent className="max-w-4xl">
           <DialogHeader>
             <DialogTitle>测试日志</DialogTitle>
           </DialogHeader>
           <Tabs defaultValue="log" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList>
               <TabsTrigger value="log">日志内容</TabsTrigger>
-              <TabsTrigger value="images">图片</TabsTrigger>
+              <TabsTrigger value="images">图像</TabsTrigger>
               <TabsTrigger value="screenshots">截图</TabsTrigger>
             </TabsList>
-            <TabsContent value="log">
-              <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-                <pre className="whitespace-pre-wrap font-mono text-sm">
-                  {selectedLog?.content || "暂无日志内容"}
-                </pre>
-              </ScrollArea>
+            <TabsContent value="log" className="mt-4">
+              <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-96 whitespace-pre-wrap">
+                {selectedLog?.log_content || "暂无日志"}
+              </pre>
             </TabsContent>
-            <TabsContent value="images">
-              <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-                <div className="grid grid-cols-2 gap-4">
-                  {selectedLog?.images?.map((image, index) => (
-                    <div key={index} className="relative aspect-video">
-                      <Image
-                        src={image}
-                        alt={`图片 ${index + 1}`}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  ))}
-                </div>
-                {(!selectedLog?.images || selectedLog.images.length === 0) && (
-                  <div className="text-center py-8">暂无图片</div>
-                )}
-              </ScrollArea>
+            <TabsContent value="images" className="mt-4">
+              <div className="grid grid-cols-2 gap-4">
+                {selectedLog?.images?.map((image, index) => (
+                  <div key={index} className="relative aspect-video">
+                    <Image
+                      src={`${BASE_URL}${image}`}
+                      alt={`测试图像 ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                )) || <div>暂无图像</div>}
+              </div>
             </TabsContent>
-            <TabsContent value="screenshots">
-              <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-                <div className="grid grid-cols-2 gap-4">
-                  {selectedLog?.screenshots?.map((screenshot, index) => (
-                    <div key={index} className="relative aspect-video">
-                      <Image
-                        src={screenshot}
-                        alt={`截图 ${index + 1}`}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  ))}
-                </div>
-                {(!selectedLog?.screenshots || selectedLog.screenshots.length === 0) && (
-                  <div className="text-center py-8">暂无截图</div>
-                )}
-              </ScrollArea>
+            <TabsContent value="screenshots" className="mt-4">
+              <div className="grid grid-cols-2 gap-4">
+                {selectedLog?.screenshots?.map((screenshot, index) => (
+                  <div key={index} className="relative aspect-video">
+                    <Image
+                      src={`${BASE_URL}${screenshot}`}
+                      alt={`测试截图 ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                )) || <div>暂无截图</div>}
+              </div>
             </TabsContent>
           </Tabs>
         </DialogContent>

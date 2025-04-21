@@ -1,0 +1,332 @@
+[2025-04-18 16:09:15] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:09:15] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:09:15] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:09:15] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [DEBUG] 日志记录器已设置，名称: utils.button_clicker, 测试ID: button_clicker, 标题: 按钮点击器
+[2025-04-18 16:09:15] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [INFO] 成功加载FUNCTIONS配置
+[2025-04-18 16:09:16] [utils.image_comparator] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.image_comparator, 测试ID: None, 标题: None
+[2025-04-18 16:09:16] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor, 测试ID: None, 标题: None
+[2025-04-18 16:09:40] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:09:40] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:09:40] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:09:40] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [DEBUG] 日志记录器已设置，名称: utils.button_clicker, 测试ID: button_clicker, 标题: 按钮点击器
+[2025-04-18 16:09:40] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [INFO] 成功加载FUNCTIONS配置
+[2025-04-18 16:09:41] [utils.image_comparator] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.image_comparator, 测试ID: None, 标题: None
+[2025-04-18 16:09:41] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor, 测试ID: None, 标题: None
+[2025-04-18 16:09:54] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:09:54] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:09:54] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:09:54] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [DEBUG] 日志记录器已设置，名称: utils.button_clicker, 测试ID: button_clicker, 标题: 按钮点击器
+[2025-04-18 16:09:54] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [INFO] 成功加载FUNCTIONS配置
+[2025-04-18 16:09:54] [utils.image_comparator] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.image_comparator, 测试ID: None, 标题: None
+[2025-04-18 16:09:54] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor, 测试ID: None, 标题: None
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.serial_manager, 测试ID: None, 标题: None
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 串口管理器初始化完成
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 串口管理器初始化完成
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 开始建立新的串口连接...
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 开始建立新的串口连接...
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [ERROR] 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 16:10:07] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 串口连接成功
+[2025-04-18 16:10:07] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] SSH管理器初始化完成
+[2025-04-18 16:10:07] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 开始建立新的SSH连接...
+[2025-04-18 16:10:07] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [INFO] 图像保存目录: E:\python\vp_180\data\img
+[2025-04-18 16:10:07] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [INFO] 初始化 GetLatestScreenshot 实例
+[2025-04-18 16:10:07] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [INFO] 截图保存目录: E:\python\data\screenshots
+[2025-04-18 16:10:07] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] ButtonClicker初始化开始
+[2025-04-18 16:10:07] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] 连接类型: CommunicationMode.SERIAL
+[2025-04-18 16:10:07] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] 串口连接已配置
+[2025-04-18 16:10:07] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] ButtonClicker初始化完成
+[2025-04-18 16:10:07] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [INFO] TestCaseExecutor初始化完成，连接类型: serial
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor.1, 测试ID: 1, 标题: 电子放大
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行测试用例: 电子放大 (ID: 1)
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 使用连接类型: serial
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 测试用例将重复执行 2 次
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 1/2 次执行
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:10:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:10:08] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:10:19] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像已保存到: E:\python\vp_180\data\img\test_1_20250418_161008.jpg
+[2025-04-18 16:10:19] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 保存的图像无效
+[2025-04-18 16:10:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:10:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 1 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:10:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 2
+[2025-04-18 16:10:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 16:10:20] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第1次): 电子放大 (0, 0)
+[2025-04-18 16:10:20] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:10:21] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:10:21] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (1/3)
+[2025-04-18 16:10:22] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第2次): 电子放大 (0, 0)
+[2025-04-18 16:10:22] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:10:23] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:10:23] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (2/3)
+[2025-04-18 16:10:24] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第3次): 电子放大 (0, 0)
+[2025-04-18 16:10:24] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:10:25] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:10:25] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (3/3)
+[2025-04-18 16:10:26] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:10:26] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 2 执行结果: 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:10:26] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 3
+[2025-04-18 16:10:27] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:10:28] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:10:28] [utils.ssh_manager] [Test ID: 1] [电子放大] [ERROR] SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 16:10:39] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像已保存到: E:\python\vp_180\data\img\test_1_20250418_161028.jpg
+[2025-04-18 16:10:39] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 保存的图像无效
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 3 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行验证步骤，共 1 步
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证步骤 1
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证: 对比图像相似度
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 2/2 次执行
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:10:39] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:10:40] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:10:51] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像已保存到: E:\python\vp_180\data\img\test_1_20250418_161040.jpg
+[2025-04-18 16:10:51] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 保存的图像无效
+[2025-04-18 16:10:51] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:10:51] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 1 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:10:51] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 2
+[2025-04-18 16:10:51] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 16:10:51] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第1次): 电子放大 (0, 0)
+[2025-04-18 16:10:51] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:10:52] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:10:52] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (1/3)
+[2025-04-18 16:10:53] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第2次): 电子放大 (0, 0)
+[2025-04-18 16:10:53] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:10:54] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:10:54] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (2/3)
+[2025-04-18 16:10:55] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第3次): 电子放大 (0, 0)
+[2025-04-18 16:10:55] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:10:57] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:10:57] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (3/3)
+[2025-04-18 16:10:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:10:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 2 执行结果: 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:10:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 3
+[2025-04-18 16:10:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:10:59] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:10:59] [utils.serial_manager] [Test ID: 1] [电子放大] [DEBUG] 串口已连接
+[2025-04-18 16:10:59] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像保存目录: E:\python\vp_180\data\img
+[2025-04-18 16:10:59] [utils.get_latest_screenshot] [Test ID: 1] [电子放大] [INFO] 初始化 GetLatestScreenshot 实例
+[2025-04-18 16:10:59] [utils.get_latest_screenshot] [Test ID: 1] [电子放大] [INFO] 截图保存目录: E:\python\data\screenshots
+[2025-04-18 16:10:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] ButtonClicker初始化开始
+[2025-04-18 16:10:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 连接类型: CommunicationMode.SERIAL
+[2025-04-18 16:10:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 串口连接已配置
+[2025-04-18 16:10:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] ButtonClicker初始化完成
+[2025-04-18 16:10:59] [utils.test_case_executor] [Test ID: 1] [电子放大] [INFO] TestCaseExecutor初始化完成，连接类型: serial
+[2025-04-18 16:10:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor.1, 测试ID: 1, 标题: 电子放大
+[2025-04-18 16:10:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行测试用例: 电子放大 (ID: 1)
+[2025-04-18 16:10:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 使用连接类型: serial
+[2025-04-18 16:10:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 测试用例将重复执行 2 次
+[2025-04-18 16:10:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 1/2 次执行
+[2025-04-18 16:10:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:11:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:11:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:11:01] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:11:10] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像已保存到: E:\python\vp_180\data\img\test_1_20250418_161059.jpg
+[2025-04-18 16:11:10] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 保存的图像无效
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 3 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行验证步骤，共 1 步
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证步骤 1
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证: 对比图像相似度
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:11:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 测试用例执行完成，状态: 失败
+[2025-04-18 16:11:12] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 未收到图像数据
+[2025-04-18 16:11:12] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:11:12] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 1 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:11:12] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 2
+[2025-04-18 16:11:12] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 16:11:12] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第1次): 电子放大 (0, 0)
+[2025-04-18 16:11:12] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:11:13] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:11:13] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (1/3)
+[2025-04-18 16:11:14] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第2次): 电子放大 (0, 0)
+[2025-04-18 16:11:14] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:11:15] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:11:15] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (2/3)
+[2025-04-18 16:11:16] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第3次): 电子放大 (0, 0)
+[2025-04-18 16:11:16] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:11:18] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:11:18] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (3/3)
+[2025-04-18 16:11:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:11:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 2 执行结果: 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:11:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 3
+[2025-04-18 16:11:19] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:11:20] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:11:31] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像已保存到: E:\python\vp_180\data\img\test_1_20250418_161120.jpg
+[2025-04-18 16:11:31] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 保存的图像无效
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 3 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行验证步骤，共 1 步
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证步骤 1
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证: 对比图像相似度
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 2/2 次执行
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:11:31] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:11:32] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:11:35] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:11:35] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:11:35] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:11:35] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [DEBUG] 日志记录器已设置，名称: utils.button_clicker, 测试ID: button_clicker, 标题: 按钮点击器
+[2025-04-18 16:11:35] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [INFO] 成功加载FUNCTIONS配置
+[2025-04-18 16:11:36] [utils.image_comparator] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.image_comparator, 测试ID: None, 标题: None
+[2025-04-18 16:11:36] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor, 测试ID: None, 标题: None
+[2025-04-18 16:11:55] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:11:55] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:11:55] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:18:17] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:18:17] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:18:17] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:19:21] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:19:21] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:19:21] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:19:21] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [DEBUG] 日志记录器已设置，名称: utils.button_clicker, 测试ID: button_clicker, 标题: 按钮点击器
+[2025-04-18 16:19:21] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [INFO] 成功加载FUNCTIONS配置
+[2025-04-18 16:19:22] [utils.image_comparator] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.image_comparator, 测试ID: None, 标题: None
+[2025-04-18 16:19:22] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor, 测试ID: None, 标题: None
+[2025-04-18 16:19:23] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.ssh_manager, 测试ID: None, 标题: None
+[2025-04-18 16:19:23] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_image, 测试ID: None, 标题: None
+[2025-04-18 16:19:23] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.get_latest_screenshot, 测试ID: None, 标题: None
+[2025-04-18 16:19:23] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [DEBUG] 日志记录器已设置，名称: utils.button_clicker, 测试ID: button_clicker, 标题: 按钮点击器
+[2025-04-18 16:19:23] [utils.button_clicker] [Test ID: button_clicker] [按钮点击器] [INFO] 成功加载FUNCTIONS配置
+[2025-04-18 16:19:23] [utils.image_comparator] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.image_comparator, 测试ID: None, 标题: None
+[2025-04-18 16:19:23] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor, 测试ID: None, 标题: None
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 日志记录器已设置，名称: utils.serial_manager, 测试ID: None, 标题: None
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 串口管理器初始化完成
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 串口管理器初始化完成
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 开始建立新的串口连接...
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 开始建立新的串口连接...
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [ERROR] 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 16:19:57] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] SSH管理器初始化完成
+[2025-04-18 16:19:57] [utils.serial_manager] [Test ID: N/A] [未命名测试] [DEBUG] 串口连接成功
+[2025-04-18 16:19:57] [utils.ssh_manager] [Test ID: N/A] [未命名测试] [DEBUG] 开始建立新的SSH连接...
+[2025-04-18 16:19:58] [utils.get_latest_image] [Test ID: N/A] [未命名测试] [INFO] 图像保存目录: E:\python\vp_180\data\img
+[2025-04-18 16:19:58] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [INFO] 初始化 GetLatestScreenshot 实例
+[2025-04-18 16:19:58] [utils.get_latest_screenshot] [Test ID: N/A] [未命名测试] [INFO] 截图保存目录: E:\python\data\screenshots
+[2025-04-18 16:19:58] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] ButtonClicker初始化开始
+[2025-04-18 16:19:58] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] 连接类型: CommunicationMode.SERIAL
+[2025-04-18 16:19:58] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] 串口连接已配置
+[2025-04-18 16:19:58] [utils.button_clicker] [Test ID: N/A] [未命名测试] [INFO] ButtonClicker初始化完成
+[2025-04-18 16:19:58] [utils.test_case_executor] [Test ID: N/A] [未命名测试] [INFO] TestCaseExecutor初始化完成，连接类型: serial
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor.1, 测试ID: 1, 标题: 电子放大
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行测试用例: 电子放大 (ID: 1)
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 使用连接类型: serial
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 测试用例将重复执行 2 次
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 1/2 次执行
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:19:58] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:19:59] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像
+[2025-04-18 16:19:59] [utils.ssh_manager] [Test ID: 1] [电子放大] [DEBUG] SSH连接成功
+[2025-04-18 16:19:59] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像保存目录: E:\python\vp_180\data\img
+[2025-04-18 16:19:59] [utils.get_latest_screenshot] [Test ID: 1] [电子放大] [INFO] 初始化 GetLatestScreenshot 实例
+[2025-04-18 16:19:59] [utils.get_latest_screenshot] [Test ID: 1] [电子放大] [INFO] 截图保存目录: E:\python\data\screenshots
+[2025-04-18 16:19:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] ButtonClicker初始化开始
+[2025-04-18 16:19:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 连接类型: CommunicationMode.SSH
+[2025-04-18 16:19:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] SSH连接已配置
+[2025-04-18 16:19:59] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] ButtonClicker初始化完成
+[2025-04-18 16:19:59] [utils.test_case_executor] [Test ID: 1] [电子放大] [INFO] TestCaseExecutor初始化完成，连接类型: ssh
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [DEBUG] 日志记录器已设置，名称: utils.test_case_executor.1, 测试ID: 1, 标题: 电子放大
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行测试用例: 电子放大 (ID: 1)
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 使用连接类型: ssh
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 测试用例将重复执行 2 次
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 1/2 次执行
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:19:59] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:00] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过SSH获取图像
+[2025-04-18 16:20:00] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 未找到图像文件
+[2025-04-18 16:20:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 1 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 2
+[2025-04-18 16:20:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第1次): 电子放大 (0, 0)
+[2025-04-18 16:20:00] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送SSH命令: click_button 电子放大 0 0
+[2025-04-18 16:20:00] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击操作失败: bash: line 1: click_button: command not found
+[2025-04-18 16:20:00] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (1/3)
+[2025-04-18 16:20:01] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第2次): 电子放大 (0, 0)
+[2025-04-18 16:20:01] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送SSH命令: click_button 电子放大 0 0
+[2025-04-18 16:20:01] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击操作失败: bash: line 1: click_button: command not found
+[2025-04-18 16:20:01] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (2/3)
+[2025-04-18 16:20:02] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第3次): 电子放大 (0, 0)
+[2025-04-18 16:20:02] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送SSH命令: click_button 电子放大 0 0
+[2025-04-18 16:20:02] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击操作失败: bash: line 1: click_button: command not found
+[2025-04-18 16:20:02] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (3/3)
+[2025-04-18 16:20:03] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:20:03] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 2 执行结果: 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:20:03] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 3
+[2025-04-18 16:20:03] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:04] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过SSH获取图像
+[2025-04-18 16:20:04] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 未找到图像文件
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 3 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行验证步骤，共 1 步
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证步骤 1
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证: 对比图像相似度
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始第 2/2 次执行
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行操作步骤，共 3 步
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 1
+[2025-04-18 16:20:04] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:05] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过SSH获取图像
+[2025-04-18 16:20:05] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 未找到图像文件
+[2025-04-18 16:20:05] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:05] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 1 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:05] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 2
+[2025-04-18 16:20:05] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:06] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第1次): 电子放大 (0, 0)
+[2025-04-18 16:20:06] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送SSH命令: click_button 电子放大 0 0
+[2025-04-18 16:20:06] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击操作失败: bash: line 1: click_button: command not found
+[2025-04-18 16:20:06] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (1/3)
+[2025-04-18 16:20:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第2次): 电子放大 (0, 0)
+[2025-04-18 16:20:07] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送SSH命令: click_button 电子放大 0 0
+[2025-04-18 16:20:07] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击操作失败: bash: line 1: click_button: command not found
+[2025-04-18 16:20:07] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (2/3)
+[2025-04-18 16:20:08] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第3次): 电子放大 (0, 0)
+[2025-04-18 16:20:08] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送SSH命令: click_button 电子放大 0 0
+[2025-04-18 16:20:08] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击操作失败: bash: line 1: click_button: command not found
+[2025-04-18 16:20:08] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (3/3)
+[2025-04-18 16:20:09] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:20:09] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 2 执行结果: 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:20:09] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 3
+[2025-04-18 16:20:09] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:10] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 图像已保存到: E:\python\vp_180\data\img\test_1_20250418_161959.jpg
+[2025-04-18 16:20:10] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 保存的图像无效
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 1 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 2
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:10] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过SSH获取图像
+[2025-04-18 16:20:10] [utils.get_latest_image] [Test ID: 1] [电子放大] [ERROR] 获取图像时出错: 未找到图像文件
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 3 执行结果: 执行操作步骤时出错: 获取图像失败
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 开始执行验证步骤，共 1 步
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证步骤 1
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行验证: 对比图像相似度
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 测试用例执行完成，状态: 失败
+[2025-04-18 16:20:10] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第1次): 电子放大 (0, 0)
+[2025-04-18 16:20:10] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:20:11] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:20:11] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (1/3)
+[2025-04-18 16:20:12] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第2次): 电子放大 (0, 0)
+[2025-04-18 16:20:12] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:20:13] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:20:13] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (2/3)
+[2025-04-18 16:20:14] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 尝试点击按钮 (第3次): 电子放大 (0, 0)
+[2025-04-18 16:20:14] [utils.button_clicker] [Test ID: 1] [电子放大] [INFO] 发送串口命令: click 电子放大
+[2025-04-18 16:20:16] [utils.button_clicker] [Test ID: 1] [电子放大] [ERROR] 点击按钮失败: 'utf-8' codec can't decode byte 0xe7 in position 0: unexpected end of data
+[2025-04-18 16:20:16] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [WARNING] 点击按钮失败，将重试 (3/3)
+[2025-04-18 16:20:17] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [ERROR] 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:20:17] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 操作步骤 2 执行结果: 执行操作步骤时出错: 点击按钮失败: 电子放大 (0, 0)
+[2025-04-18 16:20:17] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作步骤 3
+[2025-04-18 16:20:17] [utils.test_case_executor.1] [Test ID: 1] [电子放大] [INFO] 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 16:20:18] [utils.get_latest_image] [Test ID: 1] [电子放大] [INFO] 通过串口获取图像

@@ -1,0 +1,415 @@
+[2025-04-04 23:00:25] [Test ID: N/A] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:00:35] [Test ID: N/A] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:00:59] [Test ID: N/A] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:01:11] [Test ID: N/A] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:01:26] [Test ID: N/A] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:03:00] [Test ID: N/A] - DEBUG - SSH管理器初始化完成
+[2025-04-04 23:03:00] [Test ID: N/A] - DEBUG - 开始建立新的SSH连接...
+[2025-04-04 23:03:11] [Test ID: N/A] - DEBUG - SSH连接成功
+[2025-04-04 23:03:11] [Test ID: N/A] - DEBUG - 初始化 GetLatestImage 实例
+[2025-04-04 23:03:11] [Test ID: N/A] - DEBUG - 本地图像保存目录: E:\python\vp_180\data/img
+[2025-04-04 23:03:11] [Test ID: N/A] - INFO - 初始化 GetLatestScreenshot 实例
+[2025-04-04 23:03:11] [Test ID: N/A] - INFO - 截图保存目录: E:\python\data\screenshots
+[2025-04-04 23:15:20] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:15:21] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:15:54] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-04 23:15:54] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-04 23:16:04] [Test ID: N/A] [未命名测试] - DEBUG - SSH连接成功
+[2025-04-04 23:16:04] [Test ID: N/A] [未命名测试] - DEBUG - 初始化 GetLatestImage 实例
+[2025-04-04 23:16:04] [Test ID: N/A] [未命名测试] - DEBUG - 本地图像保存目录: E:\python\vp_180\data/img
+[2025-04-04 23:16:04] [Test ID: N/A] [未命名测试] - INFO - 初始化 GetLatestScreenshot 实例
+[2025-04-04 23:16:04] [Test ID: N/A] [未命名测试] - INFO - 截图保存目录: E:\python\data\screenshots
+[2025-04-04 23:22:06] [Test ID: N/A] [初始化测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:29:43] [Test ID: N/A] [初始化测试] - DEBUG - SSH管理器初始化完成
+[2025-04-04 23:29:43] [Test ID: N/A] [初始化测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-04 23:29:51] [Test ID: N/A] [初始化测试] - DEBUG - SSH已连接
+[2025-04-04 23:29:51] [Test ID: N/A] [初始化测试] - DEBUG - 初始化 GetLatestImage 实例
+[2025-04-04 23:29:51] [Test ID: N/A] [初始化测试] - DEBUG - 本地图像保存目录: E:\python\vp_180\data/img
+[2025-04-04 23:29:53] [Test ID: N/A] [初始化测试] - ERROR - 检查远程目录时出错: 
+[2025-04-04 23:29:53] [Test ID: N/A] [初始化测试] - INFO - 初始化 GetLatestScreenshot 实例
+[2025-04-04 23:29:53] [Test ID: N/A] [初始化测试] - INFO - 截图保存目录: E:\python\data\screenshots
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始执行测试用例: 213 (ID: 2)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始执行测试用例: 213 (ID: 2)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 测试用例将重复执行 1 次
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 测试用例将重复执行 1 次
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始第 1/1 次执行
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始第 1/1 次执行
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始执行操作步骤，共 3 步
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始执行操作步骤，共 3 步
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作步骤 1
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作步骤 1
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - DEBUG - 检查远程目录结构
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 获取图像失败: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 操作步骤 1 执行结果: 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 操作步骤 1 执行结果: 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作步骤 2
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作步骤 2
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - DEBUG - 找到按钮 电子放大 的坐标: (3749, 3999)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - DEBUG - 点击电子放大按钮 (3749, 3999)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - DEBUG - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 点击按钮异常: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 操作步骤 2 执行结果: 点击按钮: 电子放大
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 操作步骤 2 执行结果: 点击按钮: 电子放大
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作步骤 3
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作步骤 3
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-04 23:29:53] [Test ID: 2] [213] - DEBUG - 检查远程目录结构
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 获取图像失败: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 操作步骤 3 执行结果: 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 操作步骤 3 执行结果: 执行操作步骤时出错: SSH session not active
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始执行验证步骤，共 1 步
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 开始执行验证步骤，共 1 步
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行验证步骤 1
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行验证步骤 1
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行验证: 对比图像相似度
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 执行验证: 对比图像相似度
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 验证步骤 1 执行结果: 无法获取图像数据: img1_id=1, img2_id=3
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 测试用例执行完成，状态: 失败
+[2025-04-04 23:29:53] [Test ID: 2] [213] - INFO - 测试用例执行完成，状态: 失败
+[2025-04-04 23:29:53] [Test ID: 2] [213] - ERROR - SSH连接失败: No existing session
+[2025-04-04 23:30:52] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:30:56] [Test ID: N/A] [初始化测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:31:06] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:37:55] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:38:17] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:38:35] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-04 23:39:44] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-04 23:39:44] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-04 23:39:54] [Test ID: N/A] [未命名测试] - DEBUG - SSH连接成功
+[2025-04-04 23:39:54] [Test ID: N/A] [未命名测试] - DEBUG - 初始化 GetLatestImage 实例
+[2025-04-04 23:39:54] [Test ID: N/A] [未命名测试] - DEBUG - 本地图像保存目录: E:\python\vp_180\data/img
+[2025-04-04 23:39:54] [Test ID: N/A] [未命名测试] - INFO - 初始化 GetLatestScreenshot 实例
+[2025-04-04 23:39:54] [Test ID: N/A] [未命名测试] - INFO - 截图保存目录: E:\python\data\screenshots
+[2025-04-05 09:52:01] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-05 09:53:50] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-05 09:58:36] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-05 09:58:53] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-05 09:59:08] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-05 12:14:45] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-05 14:30:34] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-09 08:54:28] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-09 08:54:34] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 21:29:43] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 21:29:52] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:07:35] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:07:43] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:23:10] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:29:15] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:29:32] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:31:56] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:32:39] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:32:40] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:37:31] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:37:51] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:38:21] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:39:27] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:40:11] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:41:21] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:42:21] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:44:34] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:46:11] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:46:13] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:47:30] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:47:32] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:50:17] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:50:22] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:50:23] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:50:27] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 22:50:31] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 22:51:55] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:04:01] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 23:04:01] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-11 23:04:01] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: password and salt must not be empty
+[2025-04-11 23:04:03] [Test ID: N/A] [未命名测试] - DEBUG - SSH已连接
+[2025-04-11 23:04:03] [Test ID: N/A] [未命名测试] - DEBUG - 初始化 GetLatestImage 实例
+[2025-04-11 23:04:03] [Test ID: N/A] [未命名测试] - DEBUG - 本地图像保存目录: E:\python\vp_180\data/img
+[2025-04-11 23:04:15] [Test ID: N/A] [未命名测试] - DEBUG - SSH已连接
+[2025-04-11 23:04:15] [Test ID: N/A] [未命名测试] - DEBUG - 初始化 GetLatestImage 实例
+[2025-04-11 23:04:15] [Test ID: N/A] [未命名测试] - DEBUG - 本地图像保存目录: E:\python\vp_180\data/img
+[2025-04-11 23:04:54] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:04:57] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:10:28] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:10:37] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-11 23:10:37] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-11 23:10:58] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-11 23:15:09] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:15:27] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:15:48] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:16:43] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:22:28] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:24:50] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:35:28] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:35:29] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:40:08] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:52:12] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:52:52] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-11 23:55:47] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:02:24] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-12 00:02:24] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-12 00:02:45] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-12 00:03:29] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-12 00:03:34] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-12 00:03:50] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-12 00:03:55] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-12 00:04:57] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:05:35] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:05:39] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-12 00:05:39] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-12 00:06:00] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-12 00:08:14] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:08:26] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:09:03] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:09:13] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-12 00:09:13] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-12 00:09:34] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-12 00:10:35] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-12 00:11:08] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:33:32] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:33:39] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:38:15] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 13:38:15] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:38:36] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 13:41:16] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:41:39] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:47:41] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:48:46] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 13:48:46] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 13:48:46] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:48:46] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:49:07] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 13:49:07] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 13:50:33] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:51:49] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 13:51:54] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 13:51:54] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:51:54] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 13:52:15] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: password and salt must not be empty
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: password and salt must not be empty
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 13:57:53] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 13:58:44] [Test ID: N/A] [未命名测试] - DEBUG - SSH已连接
+[2025-04-18 13:58:44] [Test ID: N/A] [未命名测试] - DEBUG - SSH已连接
+[2025-04-18 14:00:09] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:02:59] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:04:03] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:06:28] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:12:06] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:12:28] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:13:56] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:14:32] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:14:32] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:14:32] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:14:32] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:14:38] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:15:05] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:15:05] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:15:05] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:15:05] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:15:26] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 14:15:56] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:15:56] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 14:16:17] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 14:18:02] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:18:05] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:19:27] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:20:04] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:23:09] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:23:41] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:23:41] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:23:41] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:23:41] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 14:24:02] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 14:24:30] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:24:56] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:25:16] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:25:39] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:26:19] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:26:51] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 14:26:56] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:26:56] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 14:26:56] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:26:56] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 14:27:17] [Test ID: N/A] [未命名测试] - DEBUG - 串口连接成功
+[2025-04-18 15:02:39] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 15:02:41] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 15:02:52] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 15:03:13] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 15:03:13] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 15:03:27] [Test ID: N/A] [未命名测试] - DEBUG - 串口连接成功
+[2025-04-18 15:03:49] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 15:03:50] [Test ID: N/A] [未命名测试] - DEBUG - 串口已连接
+[2025-04-18 15:03:50] [Test ID: N/A] [未命名测试] - DEBUG - 串口已连接
+[2025-04-18 15:05:57] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 15:06:25] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 15:06:45] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - 串口连接成功
+[2025-04-18 15:13:48] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 15:14:09] [Test ID: N/A] [未命名测试] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+[2025-04-18 15:15:27] [Test ID: N/A] [未命名测试] - INFO - 成功加载FUNCTIONS配置
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - 串口管理器初始化完成
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的串口连接...
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - ERROR - 串口连接失败: could not open port 'COM10': PermissionError(13, '拒绝访问。', None, 5)
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - SSH管理器初始化完成
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - 开始建立新的SSH连接...
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - DEBUG - 串口连接成功
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - INFO - 初始化 GetLatestScreenshot 实例
+[2025-04-18 15:23:28] [Test ID: N/A] [未命名测试] - INFO - 截图保存目录: E:\python\data\screenshots
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行测试用例: 电子放大 (ID: 1)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行测试用例: 电子放大 (ID: 1)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 使用连接类型: serial
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 使用连接类型: serial
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 测试用例将重复执行 2 次
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 测试用例将重复执行 2 次
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始第 1/2 次执行
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始第 1/2 次执行
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行操作步骤，共 3 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行操作步骤，共 3 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 1 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 1 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 2
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 2
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - ERROR - 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - ERROR - 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 2 执行结果: 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 2 执行结果: 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 3
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 3
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 3 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 3 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行验证步骤，共 1 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行验证步骤，共 1 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证: 对比图像相似度
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证: 对比图像相似度
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - ERROR - 图像比较失败: OpenCV(4.9.0) :-1: error: (-5:Bad argument) in function 'cvtColor'
+> Overload resolution failed:
+>  - src is not a numpy array, neither a scalar
+>  - Expected Ptr<cv::UMat> for argument 'src'
+
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 验证步骤 1 执行结果: 图像相似度: 0.00%
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 验证步骤 1 执行结果: 图像相似度: 0.00%
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始第 2/2 次执行
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始第 2/2 次执行
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行操作步骤，共 3 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行操作步骤，共 3 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 1 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 1 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 2
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 2
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 点击按钮, 按钮: 电子放大, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - ERROR - 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - ERROR - 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 2 执行结果: 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 2 执行结果: 执行操作步骤时出错: ButtonClicker.click_button() got an unexpected keyword argument 'description'
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 3
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作步骤 3
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行操作: 获取图像, 按钮: 未指定按钮, 坐标: (0,0)->(0,0)
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 3 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 操作步骤 3 执行结果: 成功获取图像
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行验证步骤，共 1 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 开始执行验证步骤，共 1 步
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证步骤 1
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证: 对比图像相似度
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 执行验证: 对比图像相似度
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - ERROR - 图像比较失败: OpenCV(4.9.0) :-1: error: (-5:Bad argument) in function 'cvtColor'
+> Overload resolution failed:
+>  - src is not a numpy array, neither a scalar
+>  - Expected Ptr<cv::UMat> for argument 'src'
+
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 验证步骤 1 执行结果: 图像相似度: 0.00%
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 验证步骤 1 执行结果: 图像相似度: 0.00%
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 测试用例执行完成，状态: 失败
+[2025-04-18 15:23:28] [Test ID: 1] [电子放大] - INFO - 测试用例执行完成，状态: 失败
+[2025-04-18 15:23:49] [Test ID: 1] [电子放大] - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。

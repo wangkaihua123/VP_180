@@ -1,0 +1,12 @@
+îµÂ≠êÊîæÂ§ß  
+sh: click: command not found
+root@rk3588:/# [ 1497.363677] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 21560, cnt 474
+[ 1499.297052] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 21676, cnt 479
+get_image
+sh: get_image: command not found
+root@rk3588:/# [ 1502.197004] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 21850, cnt 480
+[ 1503.347048] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 21919, cnt 481
+[ 1504.380377] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 21981, cnt 482
+[ 1505.180376] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 22029, cnt 484
+[ 1506.646998] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 22117, cnt 488
+[ 1509.213704] rkcif-mipi-lvds3: stream[0] not active buffer, frame num 22271, cnt 489

@@ -1,74 +1,20 @@
 [
   {
-    "id": 3,
-    "title": "电子放大",
-    "type": "功能测试",
-    "status": "失败",
-    "create_time": "2025-04-03 20:59",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 4, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 5, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"\"}, {\"id\": 2, \"img1\": \"3\", \"img2\": \"5\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 4,
-    "title": "电子放大",
+    "id": 11,
+    "title": "2131",
     "type": "功能测试",
     "status": "未运行",
-    "create_time": "2025-04-03 20:47",
+    "create_time": "2025-04-18 16:45",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"\"}]}"
   },
   {
-    "id": 5,
+    "id": 12,
     "title": "电子放大",
     "type": "功能测试",
     "status": "未运行",
-    "create_time": "2025-04-03 20:53",
-    "description": "21312",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 6,
-    "title": "电子放大2",
-    "type": "功能测试",
-    "status": "未运行",
-    "create_time": "2025-04-03 21:08",
+    "create_time": "2025-04-18 16:57",
     "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 7,
-    "title": "123",
-    "type": "功能测试",
-    "status": "未运行",
-    "create_time": "2025-04-03 21:11",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"1\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 8,
-    "title": "电子放大3",
-    "type": "功能测试",
-    "status": "未运行",
-    "create_time": "2025-04-03 21:14",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"1\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 9,
-    "title": "213213",
-    "type": "功能测试",
-    "status": "警告",
-    "create_time": "2025-04-03 21:20",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"1\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 10,
-    "title": "1111",
-    "type": "功能测试",
-    "status": "未运行",
-    "create_time": "2025-04-03 21:27",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"主界面\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"点击按钮\"}, {\"id\": 2, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"获取图像\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"2\", \"img2\": \"2\", \"verification_key\": \"对比图像相似度\"}]}"
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"获取图像\"}, {\"id\": 2, \"button_name\": \"图像冻结\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"点击按钮\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"获取图像\"}, {\"id\": 4, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"点击按钮\"}, {\"id\": 5, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"获取图像\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"对比图像相似度\"}, {\"id\": 2, \"img1\": \"5\", \"img2\": \"3\", \"verification_key\": \"对比图像相似度\"}]}"
   }
 ]

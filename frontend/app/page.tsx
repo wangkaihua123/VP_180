@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Plus, Play, Settings } from "lucide-react"
-import { TestCaseList } from "@/components/test-case-list"
+import { TestCaseList } from "@/components/TestCaseList"
 import { testCaseAPI } from "@/lib/api"
 import { useEffect, useState } from "react"
 import { TestCase } from "./api/routes"
@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast"
 export default function Home() {
   const [testCases, setTestCases] = useState<TestCase[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedIds, setSelectedIds] = useState<number[]>([])
   const { toast } = useToast()
 
   useEffect(() => {
@@ -120,6 +121,9 @@ export default function Home() {
             testCases={testCases}
             loading={loading}
             onRefresh={loadTestCases}
+            selectedIds={selectedIds}
+            onSelectionChange={setSelectedIds}
+            enableSelection={true}
           />
         </div>
       </main>

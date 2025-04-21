@@ -1,6 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from flask import Flask, jsonify, request, session, send_from_directory
 from flask_cors import CORS
-import os
 import json
 from datetime import datetime
 import random
@@ -461,7 +467,7 @@ def run_test_case(case_id):
         
         # 获取SSH连接
         ssh_manager = SSHManager()
-        ssh = ssh_manager.get_connection()
+        ssh = ssh_manager.get_client()
         
         if not ssh:
             return jsonify({'success': False, 'message': 'SSH连接失败'}), 500
@@ -496,7 +502,7 @@ def run_all_test_cases():
     try:
         # 获取SSH连接
         ssh_manager = SSHManager()
-        ssh = ssh_manager.get_connection()
+        ssh = ssh_manager.get_client()
         
         if not ssh:
             return jsonify({'success': False, 'message': 'SSH连接失败'}), 500

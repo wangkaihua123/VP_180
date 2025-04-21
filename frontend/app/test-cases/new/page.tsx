@@ -115,15 +115,25 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [description, setDescription] = useState(initialData?.description || "")
   const [operationSteps, setOperationSteps] = useState<OperationStep[]>(() => {
     if (initialData?.script_content) {
-      const content = JSON.parse(initialData.script_content);
-      return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
+      try {
+        const content = JSON.parse(initialData.script_content);
+        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
+      } catch (e) {
+        console.error('Error parsing script_content:', e);
+        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
+      }
     }
     return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
   })
   const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>(() => {
     if (initialData?.script_content) {
-      const content = JSON.parse(initialData.script_content);
-      return content.verificationSteps || [{ id: 1, verification_key: "" }];
+      try {
+        const content = JSON.parse(initialData.script_content);
+        return content.verificationSteps || [{ id: 1, verification_key: "" }];
+      } catch (e) {
+        console.error('Error parsing script_content:', e);
+        return [{ id: 1, verification_key: "" }];
+      }
     }
     return [{ id: 1, verification_key: "" }];
   })
@@ -187,6 +197,33 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     setVerificationSteps(newSteps)
   }
 
+  const updateOperationStep = (id: number, field: keyof OperationStep, value: any) => {
+    setOperationSteps((steps) =>
+      steps.map((step) => {
+        if (step.id === id) {
+          const updatedStep = { ...step, [field]: value }
+          if (field === 'button_name' && value) {
+            const buttonConfig = (FUNCTIONS as Functions)[value]
+            if (buttonConfig) {
+              updatedStep.x1 = buttonConfig.touch[0]
+              updatedStep.y1 = buttonConfig.touch[1]
+              updatedStep.x2 = buttonConfig.screen[0]
+              updatedStep.y2 = buttonConfig.screen[1]
+            }
+          }
+          return updatedStep
+        }
+        return step
+      })
+    )
+  }
+
+  const updateVerificationStep = (id: number, field: keyof VerificationStep, value: any) => {
+    setVerificationSteps((steps) =>
+      steps.map((step) => (step.id === id ? { ...step, [field]: value } : step))
+    )
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!title.trim()) {
@@ -241,8 +278,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       <header className="sticky top-0 z-50 bg-black text-white shadow-md">
         <div className="container mx-auto px-4 py-3 flex items-center">
           <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/20" asChild>
-            <Link href="/">
-              <ArrowLeft className="h-5 w-5 [&:hover]:text-white" />
+            <Link href="/test-cases">
+              <ArrowLeft className="h-5 w-5" />
               <span className="sr-only">返回</span>
             </Link>
           </Button>
@@ -250,7 +287,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
             <span className="font-bold text-white">优亿医疗</span>
             <span className="font-normal text-white text-sm ml-1">自动化测试平台</span>
             <span className="mx-2">-</span>
-            <span>新建测试用例</span>
+            <span>{mode === 'edit' ? '编辑测试用例' : '新建测试用例'}</span>
           </h1>
         </div>
       </header>
@@ -322,99 +359,83 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               />
             </div>
 
-            <Tabs defaultValue="operation" className="w-full">
+            <Tabs defaultValue="steps" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="operation">操作步骤</TabsTrigger>
+                <TabsTrigger value="steps">操作步骤</TabsTrigger>
                 <TabsTrigger value="verification">验证步骤</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="operation" className="space-y-4 pt-4">
-                {operationSteps.map((step, index) => (
-                  <motion.div
-                    key={step.id}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-medium">步骤 {index + 1}</h3>
-                          <div className="flex items-center space-x-1">
+              <TabsContent value="steps" className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-medium">操作步骤</h3>
+                    <Button onClick={addOperationStep} variant="outline" size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      添加步骤
+                    </Button>
+                  </div>
+                  {operationSteps.map((step, index) => (
+                    <Card key={step.id}>
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-base">步骤 {index + 1}</CardTitle>
+                          <div className="flex items-center gap-2">
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8"
                               onClick={() => moveOperationStep(step.id, "up")}
                               disabled={index === 0}
                             >
                               <ChevronUp className="h-4 w-4" />
-                              <span className="sr-only">上移</span>
                             </Button>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8"
                               onClick={() => moveOperationStep(step.id, "down")}
                               disabled={index === operationSteps.length - 1}
                             >
                               <ChevronDown className="h-4 w-4" />
-                              <span className="sr-only">下移</span>
                             </Button>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-destructive"
+                              className="text-destructive"
                               onClick={() => removeOperationStep(step.id)}
                               disabled={operationSteps.length === 1}
                             >
                               <Trash2 className="h-4 w-4" />
-                              <span className="sr-only">删除</span>
                             </Button>
                           </div>
                         </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label htmlFor={`operation-${step.id}`} className="text-sm font-medium">
-                              操作
-                            </Label>
+                            <Label>操作类型</Label>
                             <Select
                               value={step.operation_key}
-                              onValueChange={(value) => {
-                                const newSteps = [...operationSteps];
-                                newSteps[index] = { ...step, operation_key: value };
-                                setOperationSteps(newSteps);
-                              }}
+                              onValueChange={(value) => updateOperationStep(step.id, "operation_key", value)}
                             >
-                              <SelectTrigger className="w-full">
+                              <SelectTrigger>
                                 <SelectValue placeholder="选择操作类型" />
                               </SelectTrigger>
                               <SelectContent>
-                                {operationOptions.map((step) => (
-                                  <SelectItem key={step.value} value={step.value}>
-                                    {step.label}
+                                {operationOptions.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
                           </div>
-
-                          <div className="space-y-2">
-                            <Label htmlFor={`target-${step.id}`} className="text-sm font-medium">
-                              目标
-                            </Label>
-                            {step.operation_key === "点击按钮" && (
+                          {step.operation_key === "点击按钮" && (
+                            <div className="space-y-2">
+                              <Label>按钮</Label>
                               <Select
                                 value={step.button_name}
-                                onValueChange={(value) => {
-                                  const newSteps = [...operationSteps];
-                                  newSteps[index] = { ...step, button_name: value };
-                                  setOperationSteps(newSteps);
-                                }}
+                                onValueChange={(value) => updateOperationStep(step.id, "button_name", value)}
                               >
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger>
                                   <SelectValue placeholder="选择按钮" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -425,84 +446,81 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                   ))}
                                 </SelectContent>
                               </Select>
-                            )}
-                            {step.operation_key === "滑动操作" && (
-                              <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                  <Label className="text-sm font-medium">起始点</Label>
-                                  <div className="flex items-center gap-2">
-                                    <div className="flex-1">
-                                      <Label className="text-xs text-gray-500 mb-1">X坐标</Label>
-                                      <Input
-                                        type="number"
-                                        value={step.x1}
-                                        onChange={(e) => {
-                                          const newSteps = [...operationSteps];
-                                          newSteps[index] = { ...step, x1: parseInt(e.target.value) };
-                                          setOperationSteps(newSteps);
-                                        }}
-                                        className="w-full"
-                                      />
-                                    </div>
-                                    <div className="flex-1">
-                                      <Label className="text-xs text-gray-500 mb-1">Y坐标</Label>
-                                      <Input
-                                        type="number"
-                                        value={step.y1}
-                                        onChange={(e) => {
-                                          const newSteps = [...operationSteps];
-                                          newSteps[index] = { ...step, y1: parseInt(e.target.value) };
-                                          setOperationSteps(newSteps);
-                                        }}
-                                        className="w-full"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="space-y-2">
-                                  <Label className="text-sm font-medium">终点</Label>
-                                  <div className="flex items-center gap-2">
-                                    <div className="flex-1">
-                                      <Label className="text-xs text-gray-500 mb-1">X坐标</Label>
-                                      <Input
-                                        type="number"
-                                        value={step.x2}
-                                        onChange={(e) => {
-                                          const newSteps = [...operationSteps];
-                                          newSteps[index] = { ...step, x2: parseInt(e.target.value) };
-                                          setOperationSteps(newSteps);
-                                        }}
-                                        className="w-full"
-                                      />
-                                    </div>
-                                    <div className="flex-1">
-                                      <Label className="text-xs text-gray-500 mb-1">Y坐标</Label>
-                                      <Input
-                                        type="number"
-                                        value={step.y2}
-                                        onChange={(e) => {
-                                          const newSteps = [...operationSteps];
-                                          newSteps[index] = { ...step, y2: parseInt(e.target.value) };
-                                          setOperationSteps(newSteps);
-                                        }}
-                                        className="w-full"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-medium">验证步骤</h3>
+                    <Button onClick={addVerificationStep} variant="outline" size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      添加步骤
+                    </Button>
+                  </div>
+                  {verificationSteps.map((step, index) => (
+                    <Card key={step.id}>
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-base">步骤 {index + 1}</CardTitle>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => moveVerificationStep(step.id, "up")}
+                              disabled={index === 0}
+                            >
+                              <ChevronUp className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => moveVerificationStep(step.id, "down")}
+                              disabled={index === verificationSteps.length - 1}
+                            >
+                              <ChevronDown className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-destructive"
+                              onClick={() => removeVerificationStep(step.id)}
+                              disabled={verificationSteps.length === 1}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>验证类型</Label>
+                            <Select
+                              value={step.verification_key}
+                              onValueChange={(value) => updateVerificationStep(step.id, "verification_key", value)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="选择验证类型" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {verificationOptions.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
-                  </motion.div>
-                ))}
-
-                <Button type="button" variant="outline" className="w-full" onClick={addOperationStep}>
-                  <Plus className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
-                  添加操作步骤
-                </Button>
+                  ))}
+                </div>
               </TabsContent>
 
               <TabsContent value="verification" className="space-y-4 pt-4">
