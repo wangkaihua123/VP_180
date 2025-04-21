@@ -3,34 +3,53 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowLeft, Save, Server, Key, User, Database, Loader2 } from "lucide-react"
+import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
-import { sshSettingsAPI } from "@/lib/api"
-import type { SSHSettings } from "@/app/api/routes"
+import { sshSettingsAPI, serialSettingsAPI } from "@/lib/api"
+import type { SSHSettings, SerialPort } from "@/app/api/routes"
 import { Toaster } from "@/components/ui/toaster"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export default function SettingsPage() {
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState("ssh")
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [isCustomBaudRate, setIsCustomBaudRate] = useState(false)
+  
   const [settings, setSettings] = useState<SSHSettings>({
     host: "",
     port: 22,
     username: "",
-    authType: "password",
-    password: "",
-    privateKeyPath: "",
-    passphrase: "",
-    remoteDir: ""
+    password: ""
   })
+  const [serialSettings, setSerialSettings] = useState({
+    port: "",
+    baudRate: "9600"
+  })
+  const [serialPorts, setSerialPorts] = useState<SerialPort[]>([])
+  const commonBaudRates = ["9600", "19200", "38400", "57600", "115200"]
 
   useEffect(() => {
     loadSettings()
+    loadSerialSettings()
+    loadSerialPorts()
   }, [])
 
   const loadSettings = async () => {
@@ -38,13 +57,12 @@ export default function SettingsPage() {
       const data = await sshSettingsAPI.get()
       setSettings({
         ...settings,
-        ...data,
-        authType: data.password ? "password" : "key"
+        ...data
       })
     } catch (error) {
-      console.error('加载设置失败:', error)
+      console.error('加载SSH设置失败:', error)
       toast({
-        title: "加载设置失败",
+        title: "加载SSH设置失败",
         description: error instanceof Error ? error.message : "未知错误",
         variant: "destructive"
       })
@@ -53,10 +71,64 @@ export default function SettingsPage() {
     }
   }
 
+  const loadSerialSettings = async () => {
+    try {
+      const data = await serialSettingsAPI.get()
+      setSerialSettings(data)
+      
+      // 检查是否是自定义波特率
+      if (data.baudRate && !commonBaudRates.includes(data.baudRate)) {
+        setIsCustomBaudRate(true)
+      }
+    } catch (error) {
+      console.error('加载串口设置失败:', error)
+      toast({
+        title: "加载串口设置失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    }
+  }
+
+  const loadSerialPorts = async () => {
+    try {
+      const ports = await serialSettingsAPI.getPorts()
+      setSerialPorts(ports)
+    } catch (error) {
+      console.error('加载串口设备失败:', error)
+      toast({
+        title: "加载串口设备失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    }
+  }
+
   const handleInputChange = (field: keyof SSHSettings, value: string | number) => {
     setSettings(prev => ({
       ...prev,
       [field]: value
+    }))
+  }
+
+  const handleSerialInputChange = (field: string, value: string) => {
+    if (field === "baudRate" && value === "custom") {
+      setIsCustomBaudRate(true)
+      // 保留当前波特率值
+      return
+    }
+    
+    setSerialSettings(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleCustomBaudRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSerialSettings(prev => ({
+      ...prev,
+      baudRate: value
     }))
   }
 
@@ -70,7 +142,7 @@ export default function SettingsPage() {
         variant: success ? "default" : "destructive"
       })
     } catch (error) {
-      console.error('测试连接失败:', error)
+      console.error('测试SSH连接失败:', error)
       toast({
         title: "测试连接失败",
         description: error instanceof Error ? error.message : "未知错误",
@@ -81,23 +153,45 @@ export default function SettingsPage() {
     }
   }
 
-  const handleSave = async () => {
+  const handleTestSerialConnection = async () => {
     setIsLoading(true)
     try {
-      const dataToSave = {
-        host: settings.host,
-        port: settings.port,
-        username: settings.username,
-        password: settings.authType === 'password' ? settings.password : undefined,
-        privateKeyPath: settings.authType === 'key' ? settings.privateKeyPath : undefined,
-        passphrase: settings.authType === 'key' ? settings.passphrase : undefined,
-        remoteDir: settings.remoteDir
-      }
+      const { success, message } = await serialSettingsAPI.testConnection(serialSettings)
+      toast({
+        title: success ? "连接成功" : "连接失败",
+        description: message,
+        variant: success ? "default" : "destructive"
+      })
+    } catch (error) {
+      console.error('测试串口连接失败:', error)
+      toast({
+        title: "测试连接失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSaveClick = () => {
+    setShowConfirmDialog(true)
+  }
+
+  const handleConfirmSave = async () => {
+    setShowConfirmDialog(false)
+    setIsLoading(true)
+    
+    try {
+      // 保存SSH设置
+      await sshSettingsAPI.update(settings)
       
-      await sshSettingsAPI.update(dataToSave)
+      // 保存串口设置
+      await serialSettingsAPI.update(serialSettings)
+      
       toast({
         title: "保存成功",
-        description: "SSH 设置已更新"
+        description: "SSH和串口设置已更新"
       })
     } catch (error) {
       console.error('保存设置失败:', error)
@@ -109,6 +203,10 @@ export default function SettingsPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleCancelSave = () => {
+    setShowConfirmDialog(false)
   }
 
   if (isInitialLoading) {
@@ -136,68 +234,67 @@ export default function SettingsPage() {
             <span className="font-bold text-white">优亿医疗</span>
             <span className="font-normal text-white text-sm ml-1">自动化测试平台</span>
             <span className="mx-2">-</span>
-            <span>SSH 设置</span>
+            <span>设置</span>
           </h1>
         </div>
       </header>
 
       <main className="flex-1 container mx-auto px-4 py-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Server className="h-5 w-5 text-black" />
-                SSH 连接设置
-              </CardTitle>
-              <CardDescription>配置远程测试执行的 SSH 连接详情</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="host">主机</Label>
-                  <Input 
-                    id="host" 
-                    placeholder="example.com 或 192.168.1.1" 
-                    value={settings.host}
-                    onChange={(e) => handleInputChange("host", e.target.value)}
-                  />
-                </div>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="ssh">SSH 设置</TabsTrigger>
+              <TabsTrigger value="serial">串口设置</TabsTrigger>
+            </TabsList>
 
-                <div className="space-y-2">
-                  <Label htmlFor="port">端口</Label>
-                  <Input 
-                    id="port" 
-                    type="number" 
-                    placeholder="22" 
-                    value={settings.port}
-                    onChange={(e) => handleInputChange("port", parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
+            <TabsContent value="ssh">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Server className="h-5 w-5 text-black" />
+                    SSH 连接设置
+                  </CardTitle>
+                  <CardDescription>配置远程测试执行的 SSH 连接详情</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="host">主机</Label>
+                      <Input 
+                        id="host" 
+                        placeholder="example.com 或 192.168.1.1" 
+                        value={settings.host}
+                        onChange={(e) => handleInputChange("host", e.target.value)}
+                      />
+                    </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="username">用户名</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input 
-                    id="username" 
-                    placeholder="输入用户名" 
-                    className="pl-10"
-                    value={settings.username}
-                    onChange={(e) => handleInputChange("username", e.target.value)}
-                  />
-                </div>
-              </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="port">端口</Label>
+                      <Input 
+                        id="port" 
+                        type="number" 
+                        placeholder="22" 
+                        value={settings.port}
+                        onChange={(e) => handleInputChange("port", parseInt(e.target.value))}
+                      />
+                    </div>
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="auth-type">认证方式</Label>
-                <Tabs value={settings.authType} onValueChange={(value) => handleInputChange("authType", value)} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="password">密码</TabsTrigger>
-                    <TabsTrigger value="key">SSH 密钥</TabsTrigger>
-                  </TabsList>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">用户名</Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input 
+                          id="username" 
+                          placeholder="输入用户名" 
+                          className="pl-10"
+                          value={settings.username}
+                          onChange={(e) => handleInputChange("username", e.target.value)}
+                        />
+                      </div>
+                    </div>
 
-                  <TabsContent value="password" className="space-y-4 pt-4">
                     <div className="space-y-2">
                       <Label htmlFor="password">密码</Label>
                       <div className="relative">
@@ -212,87 +309,190 @@ export default function SettingsPage() {
                         />
                       </div>
                     </div>
-                  </TabsContent>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleTestConnection}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        测试中...
+                      </>
+                    ) : (
+                      "测试连接"
+                    )}
+                  </Button>
+                  <Button 
+                    className="bg-black text-white hover:bg-gray-800"
+                    onClick={handleSaveClick}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        保存中...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+                        保存设置
+                      </>
+                    )}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
 
-                  <TabsContent value="key" className="space-y-4 pt-4">
+            <TabsContent value="serial">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Laptop className="h-5 w-5 text-black" />
+                    串口设置
+                  </CardTitle>
+                  <CardDescription>配置测试所需的串口连接详情</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="private-key">私钥路径</Label>
-                      <div className="relative">
-                        <Key className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input 
-                          id="private-key" 
-                          placeholder="/path/to/private_key" 
-                          className="pl-10"
-                          value={settings.privateKeyPath}
-                          onChange={(e) => handleInputChange("privateKeyPath", e.target.value)}
-                        />
+                      <Label htmlFor="serial-port">串口设备</Label>
+                      <Select 
+                        value={serialSettings.port} 
+                        onValueChange={(value) => handleSerialInputChange("port", value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="选择串口设备" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {serialPorts.length > 0 ? (
+                            serialPorts.map(port => (
+                              <SelectItem key={port.device} value={port.device}>
+                                {port.device} - {port.description}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="none" disabled>未检测到设备</SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="baud-rate">波特率</Label>
+                      <div className="flex space-x-2">
+                        {!isCustomBaudRate ? (
+                          <Select 
+                            value={serialSettings.baudRate} 
+                            onValueChange={(value) => handleSerialInputChange("baudRate", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="选择波特率" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {commonBaudRates.map(rate => (
+                                <SelectItem key={rate} value={rate}>{rate}</SelectItem>
+                              ))}
+                              <SelectItem value="custom">自定义</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <div className="flex w-full space-x-2">
+                            <Input
+                              type="number"
+                              placeholder="输入自定义波特率"
+                              value={serialSettings.baudRate}
+                              onChange={handleCustomBaudRateChange}
+                              className="flex-1"
+                            />
+                            <Button 
+                              variant="outline" 
+                              size="icon" 
+                              onClick={() => {
+                                setIsCustomBaudRate(false);
+                                setSerialSettings(prev => ({
+                                  ...prev,
+                                  baudRate: "9600"
+                                }));
+                              }}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="passphrase">密码短语（如需）</Label>
-                      <Input 
-                        id="passphrase" 
-                        type="password" 
-                        placeholder="输入密码短语"
-                        value={settings.passphrase}
-                        onChange={(e) => handleInputChange("passphrase", e.target.value)}
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="remote-dir">远程目录</Label>
-                <div className="relative">
-                  <Database className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input 
-                    id="remote-dir" 
-                    placeholder="/path/to/test/directory" 
-                    className="pl-10"
-                    value={settings.remoteDir}
-                    onChange={(e) => handleInputChange("remoteDir", e.target.value)}
-                  />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button 
-                variant="outline" 
-                onClick={handleTestConnection}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    测试中...
-                  </>
-                ) : (
-                  "测试连接"
-                )}
-              </Button>
-              <Button 
-                className="bg-black text-white hover:bg-gray-800"
-                onClick={handleSave}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    保存中...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
-                    保存设置
-                  </>
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
+                  </div>
+                  
+                  <div className="flex justify-end mb-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={loadSerialPorts}
+                      disabled={isLoading}
+                      size="sm"
+                    >
+                      <Activity className="mr-2 h-4 w-4" />
+                      刷新设备列表
+                    </Button>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleTestSerialConnection}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        测试中...
+                      </>
+                    ) : (
+                      "测试连接"
+                    )}
+                  </Button>
+                  <Button 
+                    className="bg-black text-white hover:bg-gray-800"
+                    onClick={handleSaveClick}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        保存中...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+                        保存设置
+                      </>
+                    )}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </motion.div>
       </main>
+      
+      <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认保存设置</AlertDialogTitle>
+            <AlertDialogDescription>
+              请注意：自动化测试用例需要同时连接SSH和串口才能正常运行。确认保存这些设置吗？
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleCancelSave}>取消</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmSave}>确认</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      
       <Toaster />
     </div>
   )

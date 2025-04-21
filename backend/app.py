@@ -13,6 +13,8 @@ import random
 import paramiko
 import socket
 import logging
+import serial
+import serial.tools.list_ports
 from utils.test_case_executor import TestCaseExecutor
 from utils.ssh_manager import SSHManager
 
@@ -179,7 +181,14 @@ def load_settings():
                 return json.load(f)
         except Exception as e:
             print(f"加载设置数据出错: {e}")
-    return {"ssh_host": "", "ssh_port": 22, "ssh_username": "", "ssh_password": ""}
+    return {
+        "ssh_host": "", 
+        "ssh_port": 22, 
+        "ssh_username": "", 
+        "ssh_password": "",
+        "serial_port": "",
+        "serial_baud_rate": "9600"
+    }
 
 # 保存设置数据
 def save_settings(settings):
@@ -304,6 +313,93 @@ def update_ssh_settings():
         'success': True,
         'message': '设置已更新'
     })
+
+# 获取串口设置
+@app.route('/api/serial/settings', methods=['GET'])
+def get_serial_settings():
+    settings = load_settings()
+    return jsonify({
+        "port": settings.get("serial_port", ""),
+        "baudRate": settings.get("serial_baud_rate", "9600")
+    })
+
+# 更新串口设置
+@app.route('/api/serial/settings', methods=['PUT'])
+def update_serial_settings():
+    try:
+        data = request.get_json()
+        settings = load_settings()
+        
+        # 更新串口设置
+        settings["serial_port"] = data.get("port", "")
+        settings["serial_baud_rate"] = data.get("baudRate", "9600")
+        
+        save_settings(settings)
+        return jsonify({
+            'success': True,
+            'message': '串口设置已更新'
+        })
+    except Exception as e:
+        print(f"更新串口设置失败: {e}")
+        return jsonify({
+            'success': False,
+            'message': f'更新串口设置失败: {str(e)}'
+        }), 500
+
+# 获取可用串口列表
+@app.route('/api/serial/ports', methods=['GET'])
+def get_serial_ports():
+    try:
+        ports = []
+        for port in serial.tools.list_ports.comports():
+            ports.append({
+                'device': port.device,
+                'description': port.description,
+                'hwid': port.hwid
+            })
+        return jsonify({
+            'success': True,
+            'ports': ports
+        })
+    except Exception as e:
+        print(f"获取串口列表出错: {e}")
+        return jsonify({
+            'success': False,
+            'message': f"获取串口列表出错: {str(e)}",
+            'ports': []
+        }), 500
+
+# 测试串口连接
+@app.route('/api/serial/test', methods=['POST'])
+def test_serial_connection():
+    data = request.get_json()
+    port = data.get('port')
+    baud_rate = int(data.get('baudRate', 9600))
+    
+    print(f"尝试连接串口: {port} with baud rate {baud_rate}")
+    
+    ser = None
+    try:
+        ser = serial.Serial(port, baud_rate, timeout=1)
+        if ser.is_open:
+            return jsonify({
+                'success': True,
+                'message': f'成功连接到串口 {port}，波特率 {baud_rate}'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': f'无法打开串口 {port}'
+            }), 400
+    except Exception as e:
+        print(f"测试串口连接失败: {e}")
+        return jsonify({
+            'success': False,
+            'message': f'连接失败: {str(e)}'
+        }), 400
+    finally:
+        if ser and ser.is_open:
+            ser.close()
 
 # 初始化测试用例数据
 TEST_CASES = load_test_cases() or [

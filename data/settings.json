@@ -2,5 +2,7 @@
   "ssh_host": "10.0.18.1",
   "ssh_port": 22,
   "ssh_username": "root",
-  "ssh_password": "firefly"
+  "ssh_password": "firefly",
+  "serial_port": "COM10",
+  "serial_baud_rate": "1500000"
 }

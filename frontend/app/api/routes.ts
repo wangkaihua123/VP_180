@@ -7,6 +7,14 @@ export const API_ROUTES = {
     TEST_CONNECTION: '/api/ssh/test',
   },
   
+  // 串口设置相关
+  SERIAL_SETTINGS: {
+    GET_PORTS: '/api/serial/ports',
+    GET: '/api/serial/settings',
+    UPDATE: '/api/serial/settings',
+    TEST_CONNECTION: '/api/serial/test',
+  },
+  
   // 测试用例相关
   TEST_CASES: {
     LIST: '/api/test-cases',
@@ -31,10 +39,17 @@ export interface SSHSettings {
   port: number
   username: string
   password?: string
-  privateKeyPath?: string
-  passphrase?: string
-  remoteDir?: string
-  authType?: 'password' | 'key'  // 在前端使用，不保存到文件
+}
+
+export interface SerialPort {
+  device: string
+  description: string
+  hwid: string
+}
+
+export interface SerialSettings {
+  port: string
+  baudRate: string
 }
 
 export interface TestCase {

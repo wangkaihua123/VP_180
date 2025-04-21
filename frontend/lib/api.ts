@@ -1,4 +1,4 @@
-import { API_ROUTES, SSHSettings, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
+import { API_ROUTES, SSHSettings, SerialSettings, SerialPort, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
 
 // API请求基础配置
 export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://172.16.10.83:5000/'
@@ -47,8 +47,7 @@ export const sshSettingsAPI = {
       host: data.ssh_host,
       port: data.ssh_port,
       username: data.ssh_username,
-      password: data.ssh_password,
-      authType: data.ssh_password ? 'password' : 'key'
+      password: data.ssh_password
     }
   },
   
@@ -77,6 +76,32 @@ export const sshSettingsAPI = {
     return fetchAPI('/api/ssh/test', {
       method: 'POST',
       body: JSON.stringify(data),
+    })
+  },
+}
+
+// 串口设置相关API
+export const serialSettingsAPI = {
+  getPorts: async () => {
+    const response = await fetchAPI(API_ROUTES.SERIAL_SETTINGS.GET_PORTS)
+    return response.ports as SerialPort[]
+  },
+  
+  get: async () => {
+    return await fetchAPI(API_ROUTES.SERIAL_SETTINGS.GET) as SerialSettings
+  },
+  
+  update: (settings: SerialSettings) => {
+    return fetchAPI(API_ROUTES.SERIAL_SETTINGS.UPDATE, {
+      method: 'PUT',
+      body: JSON.stringify(settings),
+    })
+  },
+    
+  testConnection: (settings: SerialSettings) => {
+    return fetchAPI(API_ROUTES.SERIAL_SETTINGS.TEST_CONNECTION, {
+      method: 'POST',
+      body: JSON.stringify(settings),
     })
   },
 }

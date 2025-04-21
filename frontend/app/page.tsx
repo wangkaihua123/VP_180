@@ -83,12 +83,6 @@ export default function Home() {
                 </svg>
               </Link>
             </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" asChild>
-              <Link href="/settings">
-                <Settings className="h-5 w-5 [&:hover]:text-white" />
-                <span className="sr-only">设置</span>
-              </Link>
-            </Button>
           </div>
         </div>
       </header>
@@ -100,7 +94,7 @@ export default function Home() {
             <Link href="/settings">
               <Button variant="outline" className="group">
                 <Settings className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
-                SSH 设置
+                设置
               </Button>
             </Link>
             <Button variant="outline" className="group" onClick={handleRunAll}>
