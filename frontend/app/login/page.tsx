@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Eye, EyeOff, Lock, User, AlertCircle } from "lucide-react"
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { SplashCursor } from "@/components/ui/splash-cursor"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -19,64 +20,6 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [showTransition, setShowTransition] = useState(false)
-  const [particles, setParticles] = useState<
-    Array<{ x: number; y: number; size: number; vx: number; vy: number; color: string }>
-  >([])
-
-  // 创建粒子效果
-  useEffect(() => {
-    // 彩虹色系
-    const rainbowColors = [
-      "rgba(255, 0, 0, 0.5)", // 红
-      "rgba(255, 127, 0, 0.5)", // 橙
-      "rgba(255, 255, 0, 0.5)", // 黄
-      "rgba(0, 255, 0, 0.5)", // 绿
-      "rgba(0, 0, 255, 0.5)", // 蓝
-      "rgba(75, 0, 130, 0.5)", // 靛
-      "rgba(148, 0, 211, 0.5)", // 紫
-    ]
-
-    const newParticles = Array.from({ length: 50 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 5 + 1,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      color: rainbowColors[Math.floor(Math.random() * rainbowColors.length)],
-    }))
-
-    setParticles(newParticles)
-
-    const updateParticles = () => {
-      setParticles((prev) =>
-        prev.map((particle) => {
-          let newX = particle.x + particle.vx
-          let newY = particle.y + particle.vy
-
-          // 边界检查
-          if (newX < 0 || newX > window.innerWidth) {
-            particle.vx = -particle.vx
-            newX = particle.x + particle.vx
-          }
-
-          if (newY < 0 || newY > window.innerHeight) {
-            particle.vy = -particle.vy
-            newY = particle.y + particle.vy
-          }
-
-          return {
-            ...particle,
-            x: newX,
-            y: newY,
-          }
-        }),
-      )
-    }
-
-    const intervalId = setInterval(updateParticles, 50)
-
-    return () => clearInterval(intervalId)
-  }, [])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -111,26 +54,20 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-800">
-      {/* 粒子背景 */}
-      {particles.map((particle, index) => (
-        <div
-          key={index}
-          className="absolute rounded-full opacity-70"
-          style={{
-            left: `${particle.x}px`,
-            top: `${particle.y}px`,
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-            backgroundColor: particle.color,
-            boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
-            transition: "all 0.5s linear",
-          }}
-        />
-      ))}
+      {/* 流体动画背景 */}
+      <SplashCursor
+        SPLAT_RADIUS={0.3}
+        DENSITY_DISSIPATION={2.5}
+        VELOCITY_DISSIPATION={1.8}
+        SPLAT_FORCE={8000}
+        COLOR_UPDATE_SPEED={15}
+        CURL={20}
+        TRANSPARENT={true}
+      />
 
       {/* 光晕效果 */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gray-500 rounded-full opacity-10 blur-[100px]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gray-700 rounded-full opacity-10 blur-[80px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gray-500 rounded-full opacity-10 blur-[100px] z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gray-700 rounded-full opacity-10 blur-[80px] z-0" />
 
       {/* 登录成功过渡动画 */}
       {showTransition && (
