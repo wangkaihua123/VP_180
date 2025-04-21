@@ -495,3 +495,42 @@
 15:57:40 - DEBUG - 初始化 GetLatestImage 实例
 15:57:40 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
 15:57:40 - DEBUG - 初始化 GetLatestScreenshot 实例
+16:36:22 - INFO - 成功加载FUNCTIONS配置
+16:36:24 - INFO - 成功加载FUNCTIONS配置
+16:56:21 - INFO - 成功加载FUNCTIONS配置
+16:57:24 - INFO - 成功加载FUNCTIONS配置
+16:57:31 - INFO - 成功加载FUNCTIONS配置
+17:02:27 - INFO - 成功加载FUNCTIONS配置
+17:02:46 - INFO - 成功加载FUNCTIONS配置
+17:03:06 - INFO - 成功加载FUNCTIONS配置
+17:03:57 - INFO - 成功加载FUNCTIONS配置
+17:05:26 - INFO - 成功加载FUNCTIONS配置
+17:06:24 - INFO - 成功加载FUNCTIONS配置
+17:08:57 - DEBUG - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+17:08:57 - DEBUG - 开始建立新的SSH连接到 10.0.18.1:22...
+17:09:07 - DEBUG - SSH连接成功
+17:09:57 - INFO - 成功加载FUNCTIONS配置
+17:10:06 - DEBUG - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+17:10:06 - DEBUG - 开始建立新的SSH连接到 10.0.18.1:22...
+17:10:16 - DEBUG - SSH连接成功
+17:10:38 - INFO - 成功加载FUNCTIONS配置
+17:10:57 - DEBUG - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+17:10:57 - DEBUG - 开始建立新的SSH连接到 10.0.18.1:22...
+17:11:16 - DEBUG - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+17:11:16 - DEBUG - 开始建立新的SSH连接到 10.0.18.1:22...
+17:11:26 - DEBUG - SSH连接成功
+17:12:49 - INFO - 成功加载FUNCTIONS配置
+17:41:25 - INFO - 成功加载FUNCTIONS配置
+17:42:13 - INFO - 成功加载FUNCTIONS配置
+17:42:50 - INFO - 成功加载FUNCTIONS配置
+17:43:26 - INFO - 成功加载FUNCTIONS配置
+17:44:30 - INFO - 成功加载FUNCTIONS配置
+17:47:27 - INFO - 成功加载FUNCTIONS配置
+17:50:05 - DEBUG - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+17:50:05 - DEBUG - 开始建立新的SSH连接到 10.0.18.1:22...
+17:50:05 - ERROR - SSH连接失败: WSASendCB - ERROR: broken assumption, io:000001620F17F560, sent:33, remaining:0
+banner exchange: Connection to 10.0.18.1 port 22: eother
+
+17:51:57 - INFO - 成功加载FUNCTIONS配置
+17:54:30 - INFO - 成功加载FUNCTIONS配置
+18:02:07 - INFO - 成功加载FUNCTIONS配置

@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/components/ui/use-toast"
-import { testCaseAPI } from "@/lib/api"
+import { testCasesAPI } from "@/lib/api/test-cases"
 import STEP_METHODS from "@/utils/test_method_mapping"
 import { FUNCTIONS } from "@/utils/Config"
 
@@ -237,36 +237,41 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
     setIsLoading(true)
     try {
-      const testCaseData = {
+      const serializedContent = JSON.stringify({
+        repeatCount: parseInt(repeatCount) || 1,
+        operationSteps,
+        verificationSteps
+      })
+      
+      const testCaseData: any = {
         title: title.trim(),
         type: testType,
         description: description.trim(),
-        script_content: JSON.stringify({
-          repeatCount,
-          operationSteps,
-          verificationSteps
-        })
+        script_content: serializedContent,
+        status: "未执行",
+        create_time: new Date().toISOString().split('T')[0]
       }
 
       if (mode === 'edit' && initialData?.id) {
-        await testCaseAPI.update(initialData.id, testCaseData)
+        await testCasesAPI.update(initialData.id, testCaseData)
         toast({
           title: "成功",
           description: "测试用例已更新"
         })
       } else {
-        await testCaseAPI.create(testCaseData)
+        await testCasesAPI.create(testCaseData)
         toast({
           title: "成功",
           description: "测试用例已创建"
         })
       }
-      router.push('/test-cases')  // 保存成功后跳转到主页
+      router.push('/test-cases')
     } catch (error) {
+      console.error("保存测试用例失败:", error)
       toast({
-        title: mode === 'edit' ? "更新失败" : "创建失败",
-        description: error instanceof Error ? error.message : mode === 'edit' ? "更新测试用例失败" : "创建测试用例失败",
-        variant: "destructive"
+        title: "保存失败",
+        description: error instanceof Error ? error.message : "保存测试用例失败",
+        variant: "destructive",
       })
     } finally {
       setIsLoading(false)

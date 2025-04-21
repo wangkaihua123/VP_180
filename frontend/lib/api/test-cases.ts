@@ -7,6 +7,7 @@ export interface APIResponse<T> {
   data?: T;
   message?: string;
   test_cases?: TestCase[];
+  test_case?: TestCase;
 }
 
 export const testCasesAPI = {
@@ -60,4 +61,16 @@ export const testCasesAPI = {
       method: "GET",
     })
   },
+
+  getLatestLog: async (id: number): Promise<APIResponse<any>> => {
+    return fetchAPI(`/api/test-cases/${id}/latest-log`, {
+      method: "GET",
+    })
+  },
+
+  get: async (id: number): Promise<APIResponse<TestCase>> => {
+    return fetchAPI(`/api/test-cases/${id}`, {
+      method: "GET",
+    })
+  }
 } 

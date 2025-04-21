@@ -4,7 +4,7 @@ import { TestCase } from "@/app/api/routes"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { testCaseAPI, BASE_URL } from "@/lib/api"
+import { testCasesAPI } from "@/lib/api/test-cases"
 import { useToast } from "@/components/ui/use-toast"
 import { Play, Edit, Trash2, FileText } from "lucide-react"
 import Link from "next/link"
@@ -15,6 +15,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+
+// 导入BASE_URL用于图像URL
+import { BASE_URL } from "@/lib/api"
 
 interface TestCaseListProps {
   testCases: TestCase[]
@@ -52,7 +55,7 @@ export function TestCaseList({
   const handleDelete = async (id: number) => {
     try {
       setDeletingId(id)
-      await testCaseAPI.delete(id)
+      await testCasesAPI.delete(id)
       toast({
         title: "删除成功",
         description: "测试用例已删除",
@@ -86,7 +89,7 @@ export function TestCaseList({
     try {
       // 一个个删除选中的测试用例
       for (const id of selectedIds) {
-        await testCaseAPI.delete(id)
+        await testCasesAPI.delete(id)
       }
       
       toast({
@@ -111,7 +114,7 @@ export function TestCaseList({
 
   const handleRun = async (id: number) => {
     try {
-      await testCaseAPI.run(id)
+      await testCasesAPI.run(id)
       toast({
         title: "执行成功",
         description: "测试用例已开始执行",
@@ -128,8 +131,8 @@ export function TestCaseList({
 
   const handleViewLog = async (id: number) => {
     try {
-      const log = await testCaseAPI.getLatestLog(parseInt(id.toString()))
-      setSelectedLog(log)
+      const response = await testCasesAPI.getLatestLog(parseInt(id.toString()))
+      setSelectedLog(response.data || null)
       setIsLogDialogOpen(true)
     } catch (error) {
       toast({

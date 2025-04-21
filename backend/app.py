@@ -182,12 +182,12 @@ def load_settings():
         except Exception as e:
             print(f"加载设置数据出错: {e}")
     return {
-        "ssh_host": "", 
-        "ssh_port": 22, 
-        "ssh_username": "", 
-        "ssh_password": "",
-        "serial_port": "",
-        "serial_baud_rate": "9600"
+        "sshHost": "", 
+        "sshPort": 22, 
+        "sshUsername": "", 
+        "sshPassword": "",
+        "serialPort": "",
+        "serialBaudRate": "9600"
     }
 
 # 保存设置数据
@@ -200,10 +200,10 @@ def save_settings(settings):
 @app.route('/api/ssh/test', methods=['POST'])
 def test_ssh_connection():
     data = request.get_json()
-    host = data.get('ssh_host')
-    port = int(data.get('ssh_port', 22))
-    username = data.get('ssh_username')
-    password = data.get('ssh_password')
+    host = data.get('sshHost')
+    port = int(data.get('sshPort', 22))
+    username = data.get('sshUsername')
+    password = data.get('sshPassword')
 
     print(f"尝试连接 SSH: {host}:{port} with user {username}")
 
@@ -251,6 +251,14 @@ def test_ssh_connection():
             return jsonify({
                 'success': True,
                 'message': '连接成功',
+                'diagnostics': {
+                    'authentication': True,
+                    'commandExecution': True,
+                    'networkConnectivity': True,
+                    'sshService': True,
+                    'errorType': None,
+                    'errorDetails': None
+                },
                 'output': output
             })
         else:
@@ -261,19 +269,43 @@ def test_ssh_connection():
         print(f"连接超时: {host}:{port}")
         return jsonify({
             'success': False,
-            'message': '连接超时，请检查主机地址和端口是否正确'
+            'message': '连接超时，请检查主机地址和端口是否正确',
+            'diagnostics': {
+                'authentication': False,
+                'commandExecution': False,
+                'networkConnectivity': False,
+                'sshService': False,
+                'errorType': 'connection_timeout',
+                'errorDetails': '连接超时'
+            }
         }), 400
     except paramiko.AuthenticationException as e:
         print(f"认证失败: {str(e)}")
         return jsonify({
             'success': False,
-            'message': '认证失败，请检查用户名和密码是否正确'
+            'message': '认证失败，请检查用户名和密码是否正确',
+            'diagnostics': {
+                'authentication': False,
+                'commandExecution': False,
+                'networkConnectivity': True,
+                'sshService': True,
+                'errorType': 'authentication_failed',
+                'errorDetails': '认证失败'
+            }
         }), 401
     except paramiko.SSHException as e:
         print(f"SSH 异常: {str(e)}")
         return jsonify({
             'success': False,
-            'message': f'SSH 连接错误: {str(e)}'
+            'message': f'SSH 连接错误: {str(e)}',
+            'diagnostics': {
+                'authentication': False,
+                'commandExecution': False,
+                'networkConnectivity': True,
+                'sshService': False,
+                'errorType': 'ssh_error',
+                'errorDetails': str(e)
+            }
         }), 500
     except Exception as e:
         print(f"未知错误: {str(e)}")
@@ -282,7 +314,15 @@ def test_ssh_connection():
         traceback.print_exc()
         return jsonify({
             'success': False,
-            'message': f'连接失败: {str(e)}'
+            'message': f'连接失败: {str(e)}',
+            'diagnostics': {
+                'authentication': False,
+                'commandExecution': False,
+                'networkConnectivity': False,
+                'sshService': False,
+                'errorType': 'unknown_error',
+                'errorDetails': str(e)
+            }
         }), 500
 
 # SSH 设置路由
@@ -290,8 +330,8 @@ def test_ssh_connection():
 def get_ssh_settings():
     settings = load_settings()
     # 隐藏密码
-    if 'ssh_password' in settings:
-        settings['ssh_password'] = ''
+    if 'sshPassword' in settings:
+        settings['sshPassword'] = ''
     return jsonify(settings)
 
 @app.route('/api/ssh/settings', methods=['PUT'])
@@ -300,13 +340,13 @@ def update_ssh_settings():
     settings = load_settings()
 
     # 更新设置
-    for key in ['ssh_host', 'ssh_port', 'ssh_username']:
+    for key in ['sshHost', 'sshPort', 'sshUsername']:
         if key in data:
             settings[key] = data[key]
 
     # 仅当密码不为空时更新密码
-    if 'ssh_password' in data and data['ssh_password']:
-        settings['ssh_password'] = data['ssh_password']
+    if 'sshPassword' in data and data['sshPassword']:
+        settings['sshPassword'] = data['sshPassword']
 
     save_settings(settings)
     return jsonify({
@@ -319,8 +359,8 @@ def update_ssh_settings():
 def get_serial_settings():
     settings = load_settings()
     return jsonify({
-        "port": settings.get("serial_port", ""),
-        "baudRate": settings.get("serial_baud_rate", "9600")
+        "port": settings.get("serialPort", ""),
+        "baudRate": settings.get("serialBaudRate", "9600")
     })
 
 # 更新串口设置
@@ -331,8 +371,8 @@ def update_serial_settings():
         settings = load_settings()
         
         # 更新串口设置
-        settings["serial_port"] = data.get("port", "")
-        settings["serial_baud_rate"] = data.get("baudRate", "9600")
+        settings["serialPort"] = data.get("port", "")
+        settings["serialBaudRate"] = data.get("baudRate", "9600")
         
         save_settings(settings)
         return jsonify({
@@ -459,8 +499,8 @@ def manage_settings():
     if request.method == 'GET':
         settings = load_settings()
         # 隐藏密码
-        if 'ssh_password' in settings:
-            settings['ssh_password'] = ''
+        if 'sshPassword' in settings:
+            settings['sshPassword'] = ''
         return jsonify({'success': True, 'settings': settings})
     
     elif request.method == 'PUT':
@@ -468,13 +508,13 @@ def manage_settings():
         settings = load_settings()
         
         # 更新设置
-        for key in ['ssh_host', 'ssh_port', 'ssh_username']:
+        for key in ['sshHost', 'sshPort', 'sshUsername']:
             if key in data:
                 settings[key] = data[key]
         
         # 仅当密码不为空时更新密码
-        if 'ssh_password' in data and data['ssh_password']:
-            settings['ssh_password'] = data['ssh_password']
+        if 'sshPassword' in data and data['sshPassword']:
+            settings['sshPassword'] = data['sshPassword']
         
         save_settings(settings)
         return jsonify({'success': True, 'message': '设置已更新'})

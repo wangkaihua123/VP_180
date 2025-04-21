@@ -1,8 +1,26 @@
 import paramiko
+import json
+import os
 from .log_config import setup_logger
 
 # 获取日志记录器
 logger = setup_logger(__name__)
+
+# 读取设置文件
+def load_settings():
+    settings_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'settings.json')
+    try:
+        if os.path.exists(settings_file):
+            with open(settings_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception as e:
+        logger.error(f"读取设置文件失败: {e}")
+    return {
+        "sshHost": "10.0.18.1", 
+        "sshPort": 22, 
+        "sshUsername": "root", 
+        "sshPassword": "firefly"
+    }
 
 class SSHManager:
     _instance = None
@@ -13,14 +31,16 @@ class SSHManager:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, hostname="10.0.18.1", username="root", password="firefly", port=22):
+    def __init__(self):
         # 只在第一次初始化
         if not self._ssh_client:
-            self.hostname = hostname
-            self.username = username
-            self.password = password
-            self.port = port
-            logger.debug("SSH管理器初始化完成")
+            # 从设置文件加载SSH参数
+            settings = load_settings()
+            self.hostname = settings.get("sshHost", "10.0.18.1")
+            self.username = settings.get("sshUsername", "root")
+            self.password = settings.get("sshPassword", "firefly")
+            self.port = settings.get("sshPort", 22)
+            logger.debug(f"SSH管理器初始化完成，使用设置: host={self.hostname}, port={self.port}, username={self.username}")
     
     @classmethod
     def get_instance(cls):
@@ -45,7 +65,14 @@ class SSHManager:
             logger.debug("SSH已连接")
             return self._ssh_client
 
-        logger.debug("开始建立新的SSH连接...")
+        # 重新读取设置，确保使用最新的参数
+        settings = load_settings()
+        self.hostname = settings.get("sshHost", self.hostname)
+        self.username = settings.get("sshUsername", self.username)
+        self.password = settings.get("sshPassword", self.password)
+        self.port = settings.get("sshPort", self.port)
+
+        logger.debug(f"开始建立新的SSH连接到 {self.hostname}:{self.port}...")
         try:
             self._ssh_client = paramiko.SSHClient()
             self._ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
