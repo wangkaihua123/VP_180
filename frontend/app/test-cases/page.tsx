@@ -1,112 +1,150 @@
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+"use client"
+
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { RefreshCw, Plus } from "lucide-react"
+import { Plus, Play, Settings } from "lucide-react"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI } from "@/lib/api/test-cases"
-import { TestCase } from "@/app/api/routes"
+import { useEffect, useState } from "react"
+import { TestCase } from "../api/routes"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function TestCasesPage() {
-  const router = useRouter()
-  const { toast } = useToast()
   const [testCases, setTestCases] = useState<TestCase[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const { toast } = useToast()
+
+  useEffect(() => {
+    loadTestCases()
+  }, [])
 
   const loadTestCases = async () => {
     try {
       setLoading(true)
       const response = await testCasesAPI.list()
       if (response.success) {
-        setTestCases(response.data)
+        setTestCases(response.test_cases || [])
       } else {
         toast({
           title: "加载失败",
           description: response.message || "无法加载测试用例",
           variant: "destructive",
         })
+        setTestCases([])
       }
     } catch (error) {
+      console.error("加载测试用例失败:", error)
       toast({
         title: "加载失败",
-        description: "加载测试用例时发生错误",
+        description: error instanceof Error ? error.message : "加载测试用例失败",
         variant: "destructive",
       })
+      setTestCases([])
     } finally {
       setLoading(false)
     }
   }
 
-  const handleExecuteSelected = async () => {
+  const handleRunAll = async () => {
     try {
-      setLoading(true)
-      const idsToRun = selectedIds.length > 0 ? selectedIds : testCases.map(tc => tc.id)
-      const response = await testCasesAPI.runBatch(idsToRun)
+      const response = await testCasesAPI.runBatch(testCases.map(tc => tc.id))
       if (response.success) {
         toast({
           title: "执行成功",
-          description: "测试用例已开始执行",
+          description: "所有测试用例已开始执行",
         })
-        router.push("/execute-all")
+        loadTestCases() // 重新加载列表以获取最新状态
       } else {
         toast({
           title: "执行失败",
-          description: response.message || "无法执行测试用例",
+          description: response.message || "执行测试用例失败",
           variant: "destructive",
         })
       }
     } catch (error) {
       toast({
         title: "执行失败",
-        description: "执行测试用例时发生错误",
+        description: error instanceof Error ? error.message : "执行测试用例失败",
         variant: "destructive",
       })
-    } finally {
-      setLoading(false)
     }
   }
 
-  useEffect(() => {
-    loadTestCases()
-  }, [])
-
   return (
-    <div className="container mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">测试用例</h1>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={loadTestCases}
-            disabled={loading}
-          >
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-          <Button
-            onClick={() => router.push("/test-cases/new")}
-            disabled={loading}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            新建测试用例
-          </Button>
-          <Button
-            onClick={handleExecuteSelected}
-            disabled={loading || testCases.length === 0}
-          >
-            执行选中用例
-          </Button>
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-50 bg-black text-white shadow-md">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <h1 className="text-xl">
+              <span className="font-bold text-white">优亿医疗</span>
+              <span className="font-normal text-white text-sm ml-1">自动化测试平台</span>
+            </h1>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" asChild>
+              <Link href="/login">
+                <span className="sr-only">退出登录</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </Link>
+            </Button>
+          </div>
         </div>
-      </div>
-      <TestCaseList
-        testCases={testCases}
-        loading={loading}
-        selectedIds={selectedIds}
-        onSelectionChange={setSelectedIds}
-        enableSelection={true}
-        onRefresh={loadTestCases}
-      />
+      </header>
+
+      <main className="flex-1 container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">测试用例</h2>
+          <div className="flex space-x-2">
+            <Link href="/settings">
+              <Button variant="outline" className="group">
+                <Settings className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+                设置
+              </Button>
+            </Link>
+            <Button variant="outline" className="group" onClick={handleRunAll}>
+              <Play className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+              全部执行
+            </Button>
+            <Link href="/test-cases/new">
+              <Button className="group bg-black text-white hover:bg-gray-800">
+                <Plus className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+                新建用例
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-lg p-6 animate-fade-in">
+          {!loading && (!testCases || testCases.length === 0) ? (
+            <div className="text-center py-4">暂无测试用例</div>
+          ) : (
+            <TestCaseList 
+              testCases={testCases || []}
+              loading={loading}
+              onRefresh={loadTestCases}
+              selectedIds={selectedIds || []}
+              onSelectionChange={setSelectedIds}
+              enableSelection={true}
+            />
+          )}
+        </div>
+      </main>
     </div>
   )
 } 

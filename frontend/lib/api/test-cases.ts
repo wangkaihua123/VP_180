@@ -1,6 +1,13 @@
-import { APIResponse } from "@/app/api/routes"
 import { TestCase } from "@/app/api/routes"
-import { fetchAPI } from "./api"
+import { fetchAPI } from "../api"
+
+// 定义通用API响应接口
+export interface APIResponse<T> {
+  success: boolean;
+  data?: T;
+  message?: string;
+  test_cases?: TestCase[];
+}
 
 export const testCasesAPI = {
   list: async (): Promise<APIResponse<TestCase[]>> => {
@@ -39,6 +46,12 @@ export const testCasesAPI = {
     return fetchAPI("/api/test-cases/batch/run", {
       method: "POST",
       body: JSON.stringify({ ids }),
+    })
+  },
+
+  runAll: async (): Promise<APIResponse<void>> => {
+    return fetchAPI("/api/test-cases/run-all", {
+      method: "POST",
     })
   },
 

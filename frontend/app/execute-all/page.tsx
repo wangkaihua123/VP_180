@@ -37,7 +37,7 @@ import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import { TestCaseList } from "@/components/TestCaseList"
-import { testCaseAPI } from "@/lib/api"
+import { testCasesAPI } from "@/lib/api/test-cases"
 import type { TestCase } from "@/app/api/routes"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
@@ -56,6 +56,16 @@ interface TestCaseWithStatus extends TestCase {
   name: string
   color: string
   status: TestCaseStatus
+}
+
+// 根据ID生成一致的颜色
+const getRandomColor = (id: number): string => {
+  const colors = [
+    "blue", "green", "purple", "orange", "teal", 
+    "red", "indigo", "pink", "cyan", "amber"
+  ];
+  // 使用ID取模来获取一个固定的颜色
+  return colors[id % colors.length];
 }
 
 // 模拟测试用例数据
@@ -222,24 +232,44 @@ export default function ExecuteAllPage() {
     try {
       setLoading(true)
       // 加载测试用例列表
-      const testCasesResponse = await testCaseAPI.list()
+      const response = await testCasesAPI.list()
       
-      // 如果有选中的测试用例，只显示选中的
-      if (selectedIds.length > 0) {
-        const filteredTestCases = testCasesResponse.filter((tc: TestCase) => 
-          selectedIds.includes(tc.id)
-        )
-        setTestCases(filteredTestCases)
+      if (response.success && response.data) {
+        // 如果有选中的测试用例，只显示选中的
+        if (selectedIds.length > 0) {
+          const filteredTestCases = response.data
+            .filter((tc: TestCase) => selectedIds.includes(tc.id))
+            .map(tc => ({
+              ...tc,
+              name: tc.title,
+              color: getRandomColor(tc.id),
+              status: mapStatus(tc.status)
+            }));
+          setTestCases(filteredTestCases);
+        } else {
+          const formattedTestCases = response.data.map(tc => ({
+            ...tc,
+            name: tc.title,
+            color: getRandomColor(tc.id),
+            status: mapStatus(tc.status)
+          }));
+          setTestCases(formattedTestCases);
+        }
       } else {
-        setTestCases(testCasesResponse)
+        setTestCases([]);
+        toast({
+          title: "加载失败",
+          description: response.message || "无法加载测试用例",
+          variant: "destructive",
+        });
       }
       
       // 尝试执行测试用例
-      const response = await testCaseAPI.runAll()
-      if (!response.success) {
+      const runResponse = await testCasesAPI.runAll()
+      if (!runResponse.success) {
         toast({
           title: "执行失败",
-          description: response.message || "执行测试用例失败",
+          description: runResponse.message || "执行测试用例失败",
           variant: "destructive",
         })
       }
@@ -487,7 +517,7 @@ export default function ExecuteAllPage() {
           addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
 
           try {
-            const result = await testCaseAPI.run(Number(id))
+            const result = await testCasesAPI.run(Number(id))
             if (result.success) {
               updateTestCaseStatus(id, 'completed')
               addLog(id, `测试用例执行成功: ${testCase.name}`, 'success')
@@ -526,7 +556,7 @@ export default function ExecuteAllPage() {
           addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
 
           try {
-            const result = await testCaseAPI.run(Number(id))
+            const result = await testCasesAPI.run(Number(id))
             if (result.success) {
               updateTestCaseStatus(id, 'completed')
               addLog(id, `测试用例执行成功: ${testCase.name}`, 'success')
@@ -569,8 +599,8 @@ export default function ExecuteAllPage() {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 bg-black text-white shadow-md">
         <div className="container mx-auto px-4 py-3 flex items-center">
-          <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/20" asChild>
-            <Link href="/">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-2" asChild>
+            <Link href="/test-cases">
               <ArrowLeft className="h-5 w-5" />
               <span className="sr-only">返回</span>
             </Link>

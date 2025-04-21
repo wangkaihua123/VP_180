@@ -114,8 +114,8 @@ export default function TestLogsPage({ params }: { params: { id: string } }) {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 bg-black text-white shadow-md">
         <div className="container mx-auto px-4 py-3 flex items-center">
-          <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/20" asChild>
-            <Link href="/">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-2" asChild>
+            <Link href="/test-cases">
               <ArrowLeft className="h-5 w-5 [&:hover]:text-white" />
               <span className="sr-only">返回</span>
             </Link>

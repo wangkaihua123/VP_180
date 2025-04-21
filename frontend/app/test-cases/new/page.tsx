@@ -261,7 +261,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           description: "测试用例已创建"
         })
       }
-      router.push('/')  // 保存成功后跳转到主页
+      router.push('/test-cases')  // 保存成功后跳转到主页
     } catch (error) {
       toast({
         title: mode === 'edit' ? "更新失败" : "创建失败",
@@ -365,62 +365,76 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                 <TabsTrigger value="verification">验证步骤</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="steps" className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-medium">操作步骤</h3>
-                    <Button onClick={addOperationStep} variant="outline" size="sm">
-                      <Plus className="h-4 w-4 mr-2" />
-                      添加步骤
-                    </Button>
-                  </div>
-                  {operationSteps.map((step, index) => (
-                    <Card key={step.id}>
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-base">步骤 {index + 1}</CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => moveOperationStep(step.id, "up")}
-                              disabled={index === 0}
-                            >
-                              <ChevronUp className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => moveOperationStep(step.id, "down")}
-                              disabled={index === operationSteps.length - 1}
-                            >
-                              <ChevronDown className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-destructive"
-                              onClick={() => removeOperationStep(step.id)}
-                              disabled={operationSteps.length === 1}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+              <TabsContent value="steps" className="space-y-4 pt-4">
+                {operationSteps.map((step, index) => (
+                  <Card key={step.id}>
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-base">步骤 {index + 1}</CardTitle>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            type="button"
+                            onClick={() => moveOperationStep(step.id, "up")}
+                            disabled={index === 0}
+                          >
+                            <ChevronUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            type="button"
+                            onClick={() => moveOperationStep(step.id, "down")}
+                            disabled={index === operationSteps.length - 1}
+                          >
+                            <ChevronDown className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            type="button"
+                            className="text-destructive"
+                            onClick={() => removeOperationStep(step.id)}
+                            disabled={operationSteps.length === 1}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-2 gap-4">
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>操作类型</Label>
+                          <Select
+                            value={step.operation_key}
+                            onValueChange={(value) => updateOperationStep(step.id, "operation_key", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="选择操作类型" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {operationOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {(step.operation_key === "点击按钮" || step.operation_key === "长按按钮") && (
                           <div className="space-y-2">
-                            <Label>操作类型</Label>
+                            <Label>按钮</Label>
                             <Select
-                              value={step.operation_key}
-                              onValueChange={(value) => updateOperationStep(step.id, "operation_key", value)}
+                              value={step.button_name}
+                              onValueChange={(value) => updateOperationStep(step.id, "button_name", value)}
                             >
-                              <SelectTrigger>
-                                <SelectValue placeholder="选择操作类型" />
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="选择按钮" />
                               </SelectTrigger>
                               <SelectContent>
-                                {operationOptions.map((option) => (
+                                {buttonOptions.map((option) => (
                                   <SelectItem key={option.value} value={option.value}>
                                     {option.label}
                                   </SelectItem>
@@ -428,99 +442,55 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               </SelectContent>
                             </Select>
                           </div>
-                          {step.operation_key === "点击按钮" && (
-                            <div className="space-y-2">
-                              <Label>按钮</Label>
-                              <Select
-                                value={step.button_name}
-                                onValueChange={(value) => updateOperationStep(step.id, "button_name", value)}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="选择按钮" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {buttonOptions.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                      {option.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
+                        )}
+                        {step.operation_key === "滑动操作" && (
+                          <div className="space-y-2">
+                            <Label>滑动坐标</Label>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label className="text-xs text-gray-500 mb-1">起始点X (x1)</Label>
+                                <Input
+                                  type="number"
+                                  value={step.x1}
+                                  onChange={(e) => updateOperationStep(step.id, "x1", parseInt(e.target.value) || 0)}
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-xs text-gray-500 mb-1">起始点Y (y1)</Label>
+                                <Input
+                                  type="number"
+                                  value={step.y1}
+                                  onChange={(e) => updateOperationStep(step.id, "y1", parseInt(e.target.value) || 0)}
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-xs text-gray-500 mb-1">终点X (x2)</Label>
+                                <Input
+                                  type="number"
+                                  value={step.x2}
+                                  onChange={(e) => updateOperationStep(step.id, "x2", parseInt(e.target.value) || 0)}
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-xs text-gray-500 mb-1">终点Y (y2)</Label>
+                                <Input
+                                  type="number"
+                                  value={step.y2}
+                                  onChange={(e) => updateOperationStep(step.id, "y2", parseInt(e.target.value) || 0)}
+                                />
+                              </div>
                             </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-medium">验证步骤</h3>
-                    <Button onClick={addVerificationStep} variant="outline" size="sm">
-                      <Plus className="h-4 w-4 mr-2" />
-                      添加步骤
-                    </Button>
-                  </div>
-                  {verificationSteps.map((step, index) => (
-                    <Card key={step.id}>
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-base">步骤 {index + 1}</CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => moveVerificationStep(step.id, "up")}
-                              disabled={index === 0}
-                            >
-                              <ChevronUp className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => moveVerificationStep(step.id, "down")}
-                              disabled={index === verificationSteps.length - 1}
-                            >
-                              <ChevronDown className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-destructive"
-                              onClick={() => removeVerificationStep(step.id)}
-                              disabled={verificationSteps.length === 1}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>验证类型</Label>
-                            <Select
-                              value={step.verification_key}
-                              onValueChange={(value) => updateVerificationStep(step.id, "verification_key", value)}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="选择验证类型" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {verificationOptions.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                
+                <Button type="button" variant="outline" className="w-full" onClick={addOperationStep}>
+                  <Plus className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+                  添加操作步骤
+                </Button>
               </TabsContent>
 
               <TabsContent value="verification" className="space-y-4 pt-4">
@@ -541,6 +511,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8"
+                              type="button"
                               onClick={() => moveVerificationStep(step.id, "up")}
                               disabled={index === 0}
                             >
@@ -551,6 +522,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8"
+                              type="button"
                               onClick={() => moveVerificationStep(step.id, "down")}
                               disabled={index === verificationSteps.length - 1}
                             >
@@ -561,6 +533,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 text-destructive"
+                              type="button"
                               onClick={() => removeVerificationStep(step.id)}
                               disabled={verificationSteps.length === 1}
                             >
@@ -577,11 +550,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                             </Label>
                             <Select
                               value={step.verification_key}
-                              onValueChange={(value) => {
-                                const newSteps = [...verificationSteps];
-                                newSteps[index] = { ...step, verification_key: value };
-                                setVerificationSteps(newSteps);
-                              }}
+                              onValueChange={(value) => updateVerificationStep(step.id, "verification_key", value)}
                             >
                               <SelectTrigger className="w-full">
                                 <SelectValue placeholder="选择验证类型" />
@@ -597,20 +566,15 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                           </div>
 
                           {verificationOptions.find(opt => opt.value === step.verification_key)?.verification_key === "图像验证" ? (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium">预期结果</Label>
+                            <div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">图像1</Label>
                                   <Select
                                     value={step.img1}
-                                    onValueChange={(value) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, img1: value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onValueChange={(value) => updateVerificationStep(step.id, "img1", value)}
                                   >
-                                    <SelectTrigger>
+                                    <SelectTrigger className="w-full">
                                       <SelectValue placeholder="选择图像" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -633,13 +597,9 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                   <Label className="text-xs text-gray-500 mb-1">图像2</Label>
                                   <Select
                                     value={step.img2}
-                                    onValueChange={(value) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, img2: value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onValueChange={(value) => updateVerificationStep(step.id, "img2", value)}
                                   >
-                                    <SelectTrigger>
+                                    <SelectTrigger className="w-full">
                                       <SelectValue placeholder="选择图像" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -661,19 +621,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               </div>
                             </div>
                           ) : step.verification_key === "检查数值范围" ? (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium">预期结果</Label>
+                            <div>
                               <div className="grid grid-cols-3 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">数值</Label>
                                   <Input
                                     type="number"
                                     value={step.value}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, value: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "value", e.target.value)}
                                   />
                                 </div>
                                 <div>
@@ -681,11 +636,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                   <Input
                                     type="number"
                                     value={step.min_value}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, min_value: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "min_value", e.target.value)}
                                   />
                                 </div>
                                 <div>
@@ -693,67 +644,45 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                   <Input
                                     type="number"
                                     value={step.max_value}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, max_value: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "max_value", e.target.value)}
                                   />
                                 </div>
                               </div>
                             </div>
                           ) : step.verification_key === "检查文本内容" ? (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium">预期结果</Label>
+                            <div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">文本内容</Label>
                                   <Input
                                     value={step.text}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, text: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "text", e.target.value)}
                                   />
                                 </div>
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">预期文本</Label>
                                   <Input
                                     value={step.expected_text}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, expected_text: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "expected_text", e.target.value)}
                                   />
                                 </div>
                               </div>
                             </div>
                           ) : step.verification_key === "检查元素状态" ? (
-                          <div className="space-y-2">
-                              <Label className="text-sm font-medium">预期结果</Label>
+                          <div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">元素名称</Label>
                                   <Input
                                     value={step.element_name}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, element_name: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "element_name", e.target.value)}
                                   />
                                 </div>
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">预期状态</Label>
                                   <Input
                                     value={step.expected_state}
-                                    onChange={(e) => {
-                                      const newSteps = [...verificationSteps];
-                                      newSteps[index] = { ...step, expected_state: e.target.value };
-                                      setVerificationSteps(newSteps);
-                                    }}
+                                    onChange={(e) => updateVerificationStep(step.id, "expected_state", e.target.value)}
                                   />
                                 </div>
                               </div>
@@ -774,7 +703,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
             <div className="flex justify-end space-x-2 pt-4">
               <Button variant="outline" asChild>
-                <Link href="/">
+                <Link href="/test-cases">
                   <X className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
                   取消
                 </Link>

@@ -47,6 +47,7 @@ export function TestCaseList({
   const [isLogDialogOpen, setIsLogDialogOpen] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null)
+  const [showBatchDeleteDialog, setShowBatchDeleteDialog] = useState(false)
 
   const handleDelete = async (id: number) => {
     try {
@@ -73,6 +74,39 @@ export function TestCaseList({
   const handleDeleteClick = (id: number) => {
     setDeleteTargetId(id)
     setShowDeleteDialog(true)
+  }
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.length === 0) return
+    
+    setShowBatchDeleteDialog(true)
+  }
+  
+  const confirmDeleteSelected = async () => {
+    try {
+      // 一个个删除选中的测试用例
+      for (const id of selectedIds) {
+        await testCaseAPI.delete(id)
+      }
+      
+      toast({
+        title: "删除成功",
+        description: `已删除 ${selectedIds.length} 个测试用例`,
+      })
+      
+      // 清空选择
+      onSelectionChange([])
+      // 刷新列表
+      onRefresh()
+    } catch (error) {
+      toast({
+        title: "删除失败",
+        description: error instanceof Error ? error.message : "删除测试用例失败",
+        variant: "destructive",
+      })
+    } finally {
+      setShowBatchDeleteDialog(false)
+    }
   }
 
   const handleRun = async (id: number) => {
@@ -128,7 +162,7 @@ export function TestCaseList({
     return <div className="text-center py-4">加载中...</div>
   }
 
-  if (testCases.length === 0) {
+  if (!testCases || testCases.length === 0) {
     return <div className="text-center py-4">暂无测试用例</div>
   }
 
@@ -146,14 +180,25 @@ export function TestCaseList({
               已选择 {selectedIds.length} 个测试用例
             </span>
           </div>
-          <Button 
-            onClick={handleExecuteSelected}
-            disabled={selectedIds.length === 0}
-            className="bg-black text-white hover:bg-gray-800"
-          >
-            <Play className="mr-2 h-4 w-4" />
-            执行选中
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button 
+              onClick={handleDeleteSelected}
+              disabled={selectedIds.length === 0}
+              variant="outline"
+              className="text-destructive border-destructive hover:bg-destructive/10"
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              删除选中
+            </Button>
+            <Button 
+              onClick={handleExecuteSelected}
+              disabled={selectedIds.length === 0}
+              className="bg-black text-white hover:bg-gray-800"
+            >
+              <Play className="mr-2 h-4 w-4" />
+              执行选中
+            </Button>
+          </div>
         </div>
       )}
 
@@ -273,6 +318,23 @@ export function TestCaseList({
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowDeleteDialog(false)}>取消</AlertDialogCancel>
             <AlertDialogAction onClick={() => deleteTargetId && handleDelete(deleteTargetId)}>
+              删除
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      
+      <AlertDialog open={showBatchDeleteDialog} onOpenChange={setShowBatchDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认批量删除</AlertDialogTitle>
+            <AlertDialogDescription>
+              确定要删除选中的 {selectedIds.length} 个测试用例吗？此操作无法撤销。
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowBatchDeleteDialog(false)}>取消</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteSelected}>
               删除
             </AlertDialogAction>
           </AlertDialogFooter>
