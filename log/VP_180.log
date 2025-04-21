@@ -439,3 +439,59 @@
 13:50:08 - ERROR - SSH连接失败: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
 14:15:15 - INFO - 成功加载FUNCTIONS配置
 14:24:47 - INFO - 成功加载FUNCTIONS配置
+15:54:28 - DEBUG - SSH管理器初始化完成
+15:54:28 - DEBUG - 开始建立新的SSH连接...
+15:54:28 - DEBUG - 开始建立新的SSH连接...
+15:54:28 - DEBUG - SSH已连接
+15:54:28 - DEBUG - 初始化 GetLatestImage 实例
+15:54:28 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
+15:54:30 - DEBUG - SSH连接成功
+15:54:30 - DEBUG - 初始化 GetLatestImage 实例
+15:54:30 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
+15:54:31 - ERROR - 检查远程目录时出错: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+15:54:31 - ERROR - 检查远程目录时出错: Unable to open channel.
+15:54:31 - DEBUG - 初始化 GetLatestScreenshot 实例
+15:54:31 - DEBUG - 初始化 GetLatestScreenshot 实例
+15:54:31 - DEBUG - 检查远程目录结构
+15:54:31 - DEBUG - 检查远程目录结构
+15:54:31 - ERROR - 获取图像失败: SSH session not active
+15:54:31 - ERROR - 获取图像失败: SSH session not active
+15:54:31 - ERROR - 执行操作步骤时出错: SSH session not active
+15:54:31 - ERROR - 执行操作步骤时出错: SSH session not active
+15:54:31 - DEBUG - 找到按钮 电子放大 的坐标: (3749, 3999)
+15:54:31 - DEBUG - 找到按钮 电子放大 的坐标: (3749, 3999)
+15:54:31 - DEBUG - 点击电子放大按钮 (3749, 3999)
+15:54:31 - DEBUG - 点击电子放大按钮 (3749, 3999)
+15:54:31 - DEBUG - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+15:54:31 - DEBUG - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+15:54:31 - ERROR - 点击按钮异常: SSH session not active
+15:54:31 - ERROR - 点击按钮异常: SSH session not active
+15:54:32 - DEBUG - 检查远程目录结构
+15:54:32 - ERROR - 获取图像失败: SSH session not active
+15:54:32 - DEBUG - 检查远程目录结构
+15:54:32 - ERROR - 执行操作步骤时出错: SSH session not active
+15:54:32 - ERROR - 获取图像失败: SSH session not active
+15:54:32 - ERROR - 执行操作步骤时出错: SSH session not active
+15:54:32 - ERROR - SSH连接失败: No existing session
+15:56:59 - DEBUG - 开始建立新的SSH连接...
+15:56:59 - DEBUG - SSH已连接
+15:56:59 - DEBUG - 初始化 GetLatestImage 实例
+15:56:59 - DEBUG - SSH已连接
+15:56:59 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
+15:56:59 - DEBUG - 初始化 GetLatestImage 实例
+15:56:59 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
+15:57:01 - ERROR - 检查远程目录时出错: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+15:57:01 - ERROR - 检查远程目录时出错: Unable to open channel.
+15:57:01 - DEBUG - 初始化 GetLatestScreenshot 实例
+15:57:01 - DEBUG - 初始化 GetLatestScreenshot 实例
+15:57:01 - ERROR - SSH连接失败: No existing session
+15:57:35 - DEBUG - 开始建立新的SSH连接...
+15:57:35 - DEBUG - 开始建立新的SSH连接...
+15:57:35 - DEBUG - SSH连接成功
+15:57:35 - DEBUG - 初始化 GetLatestImage 实例
+15:57:35 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
+15:57:35 - DEBUG - 初始化 GetLatestScreenshot 实例
+15:57:40 - DEBUG - SSH连接成功
+15:57:40 - DEBUG - 初始化 GetLatestImage 实例
+15:57:40 - DEBUG - 本地图像保存目录: E:\python\vp_180\img
+15:57:40 - DEBUG - 初始化 GetLatestScreenshot 实例

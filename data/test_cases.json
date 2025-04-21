@@ -4,7 +4,7 @@
     "title": "电子放大",
     "type": "功能测试",
     "status": "失败",
-    "create_time": "2025-04-21 15:54",
+    "create_time": "2025-04-21 15:57",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"\"}]}"
   }
