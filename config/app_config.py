@@ -17,7 +17,7 @@ WEB_STATIC_DIR = os.path.join(BASE_DIR, 'server', 'static')
 WEB_STATIC_URL = '/static'
 
 # 日志配置
-LOG_DIR = os.path.join(BASE_DIR, 'log')
+LOG_DIR = os.path.join(BASE_DIR, 'data', 'logs', '@logs')
 LOG_LEVEL = 'DEBUG'
 
 # 测试配置

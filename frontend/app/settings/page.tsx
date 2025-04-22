@@ -44,7 +44,7 @@ export default function SettingsPage() {
     baudRate: "9600"
   })
   const [serialPorts, setSerialPorts] = useState<SerialPort[]>([])
-  const commonBaudRates = ["9600", "19200", "38400", "57600", "115200"]
+  const commonBaudRates = ["9600", "19200", "38400", "57600", "115200", "1500000"]
 
   useEffect(() => {
     loadSettings()

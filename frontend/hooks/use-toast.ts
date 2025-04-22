@@ -1,3 +1,17 @@
+/**
+ * Toast通知钩子
+ * 
+ * 该模块提供了一个React钩子用于创建和管理Toast通知：
+ * - 灵感来源于react-hot-toast库
+ * - 管理Toast的创建、更新、关闭和移除
+ * - 提供了一个中央状态管理系统，确保整个应用使用同一套Toast
+ * - 支持设置Toast的标题、描述、动作和样式变体
+ * - 支持自定义Toast的持续时间
+ * 
+ * 使用方法：
+ * const { toast } = useToast()
+ * toast({ title: "成功", description: "操作已完成" })
+ */
 "use client"
 
 // Inspired by react-hot-toast library

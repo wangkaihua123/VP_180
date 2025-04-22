@@ -1,3 +1,14 @@
+/**
+ * API服务模块
+ * 
+ * 该文件提供了与后端API通信的核心功能：
+ * - 定义基础URL和通用请求处理函数fetchAPI
+ * - 提供SSH设置相关API (sshSettingsAPI)：获取、更新、测试连接
+ * - 提供串口设置相关API (serialSettingsAPI)：获取可用端口、获取设置、更新设置、测试连接
+ * - 提供批量执行相关API (batchExecutionAPI)：执行所有测试、获取批次状态
+ * 
+ * 该模块是前端与后端通信的核心桥梁，封装了所有API调用的实现细节。
+ */
 import { API_ROUTES, SSHSettings, SerialSettings, SerialPort, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
 
 // API请求基础配置

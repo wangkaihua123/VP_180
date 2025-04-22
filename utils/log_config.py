@@ -9,7 +9,7 @@ def setup_logger(name):
     logger.setLevel(logging.DEBUG)  # 设置logger的级别为DEBUG，这样所有处理器都能收到消息
 
     # 设置日志目录
-    log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'log')
+    log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'logs', '@logs')
     os.makedirs(log_dir, exist_ok=True)
 
     # 创建一个文件处理器，并设置编码为 UTF-8

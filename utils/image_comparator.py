@@ -12,7 +12,7 @@ logger = setup_logger(__name__)
 # logger.setLevel(logging.INFO)
 
 # # 设置日志目录
-# LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'log')
+# LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'logs', '@logs')
 # os.makedirs(LOG_DIR, exist_ok=True)
 
 # # 创建一个文件处理器，并设置编码为 UTF-8

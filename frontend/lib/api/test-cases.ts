@@ -1,3 +1,19 @@
+/**
+ * 测试用例API模块
+ * 
+ * 该模块提供了与测试用例相关的所有API调用：
+ * - 获取测试用例列表 (list)
+ * - 创建新测试用例 (create)
+ * - 更新测试用例 (update)
+ * - 删除测试用例 (delete)
+ * - 运行单个测试用例 (run)
+ * - 批量运行测试用例 (runBatch)
+ * - 运行所有测试用例 (runAll)
+ * - 获取测试用例日志 (getLatestLogs, getLatestLog)
+ * - 获取单个测试用例详情 (get)
+ * 
+ * 所有API调用都使用标准的APIResponse接口返回结果，确保数据格式一致性。
+ */
 import { TestCase } from "@/app/api/routes"
 import { fetchAPI } from "../api"
 

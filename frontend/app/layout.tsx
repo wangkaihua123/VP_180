@@ -1,3 +1,10 @@
+/**
+ * 根布局组件
+ * 
+ * 该组件是整个应用程序的根布局，定义了应用的基本HTML结构。
+ * 它包含页面的元数据设置（标题、描述等）、字体设置，并渲染所有页面的共享结构。
+ * 所有页面组件都会被渲染在这个布局内的children位置。
+ */
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"

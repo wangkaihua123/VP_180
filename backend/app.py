@@ -697,7 +697,7 @@ def get_method_mappings():
 def get_latest_log(id):
     try:
         # 获取测试用例的最新日志
-        log_dir = os.path.join(app.root_path, 'logs', str(id))
+        log_dir = os.path.join(os.path.dirname(app.root_path), 'data', 'logs', '@logs', str(id))
         log_content = ""
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
