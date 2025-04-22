@@ -14,8 +14,8 @@ logger = setup_logger(__name__)
 
 # 修改BASE_IMG_DIR确保路径正确
 BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
-# 添加本地图片保存路径
-LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img")
+# 使用data/img目录存储图片
+LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
 
 class GetLatestImage:
     def __init__(self, ssh_connection, test_name="Test"):
@@ -23,7 +23,8 @@ class GetLatestImage:
         self.ssh = ssh_connection
         self.test_name = test_name
         self.base_dir = "/ue/ue_harddisk/ue_data"
-        self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img")
+        # 更新本地目录路径
+        self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
         logger.debug("初始化 GetLatestImage 实例")
         logger.debug(f"本地图像保存目录: {self.local_dir}")

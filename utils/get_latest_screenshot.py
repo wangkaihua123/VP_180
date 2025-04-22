@@ -11,8 +11,8 @@ from .log_config import setup_logger
 logger = setup_logger(__name__)
 
 BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
-# 添加本地截图保存路径
-LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "screenshots")
+# 使用data/screenshots目录存储截图
+LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "screenshots")
 
 class GetLatestScreenshot:
     def __init__(self, ssh, test_name=None):

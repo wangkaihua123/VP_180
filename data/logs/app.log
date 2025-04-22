@@ -1,0 +1,37 @@
+2025-04-22 16:44:28,627 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 16:44:29,645 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 16:44:29,647 - werkzeug - INFO -  * Debugger PIN: 119-943-723
+2025-04-22 16:44:29,962 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 16:44:29,967 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 16:45:12,189 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 16:45:12] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 16:45:12,208 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-22 16:45:12,212 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 16:45:12] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 16:48:46,843 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\utils\\log_config.py', reloading
+2025-04-22 16:48:47,011 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 16:48:48,078 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 16:48:48,081 - werkzeug - INFO -  * Debugger PIN: 119-943-723
+2025-04-22 16:48:48,409 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 16:48:48,413 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 16:49:05,863 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\utils\\test_case_executor.py', reloading
+2025-04-22 16:49:05,996 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 16:49:06,980 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 16:49:06,983 - werkzeug - INFO -  * Debugger PIN: 119-943-723
+2025-04-22 16:49:07,338 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 16:49:07,341 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 16:49:50,239 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\config\\app_config.py', reloading
+2025-04-22 16:49:50,527 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 16:49:51,634 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 16:49:51,637 - werkzeug - INFO -  * Debugger PIN: 119-943-723
+2025-04-22 16:49:51,952 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 16:49:51,957 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 16:50:26,284 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\move_logs.py', reloading
+2025-04-22 16:50:26,449 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 16:50:27,413 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 16:50:27,416 - werkzeug - INFO -  * Debugger PIN: 119-943-723
+2025-04-22 16:50:27,750 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 16:50:27,755 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)

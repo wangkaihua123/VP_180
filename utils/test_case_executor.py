@@ -29,7 +29,7 @@ class TestCaseExecutor:
                 script_content = test_case['script_content']
 
             # 创建日志目录
-            log_dir = os.path.join('data', 'logs', '@logs', str(test_case['id']))
+            log_dir = os.path.join('data', 'logs', str(test_case['id']))
             os.makedirs(log_dir, exist_ok=True)
             log_file = os.path.join(log_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
 

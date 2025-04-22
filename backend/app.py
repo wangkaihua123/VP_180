@@ -16,13 +16,17 @@ from backend.routes.serial import serial_bp
 from backend.routes.test_cases import test_cases_bp
 from backend.routes.files import files_bp
 
+# 设置日志目录
+LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'logs')
+os.makedirs(LOG_DIR, exist_ok=True)
+
 # 配置日志
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler('app.log')
+        logging.FileHandler(os.path.join(LOG_DIR, 'app.log'))
     ]
 )
 
