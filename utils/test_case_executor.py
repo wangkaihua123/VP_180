@@ -14,7 +14,7 @@ logger = setup_logger(__name__)
 class TestCaseExecutor:
     def __init__(self, ssh_connection=None):
         """初始化测试用例执行器"""
-        self.ssh = ssh_connection or SSHManager().get_connection()
+        self.ssh = ssh_connection or SSHManager().connect()
         self.image_getter = GetLatestImage(self.ssh)
         self.screenshot_getter = GetLatestScreenshot(self.ssh)
         self.button_clicker = ButtonClicker(self.ssh)
