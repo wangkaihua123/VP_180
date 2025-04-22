@@ -141,5 +141,11 @@ class SSHService:
     @staticmethod
     def get_client():
         """获取SSH客户端"""
-        ssh_manager = SSHManager()
-        return ssh_manager.get_client() 
+        # 获取SSHManager单例
+        ssh_manager = SSHManager.get_instance()
+        
+        # 使用改进的get_client方法获取连接
+        client = ssh_manager.get_client()
+        
+        # 不再需要额外的日志记录，SSHManager内部已经处理
+        return client 

@@ -23,8 +23,13 @@ def load_settings():
     }
 
 class SSHManager:
+    # 类变量，用于单例模式，确保所有实例共享
     _instance = None
     _ssh_client = None
+    
+    # 连接重试状态跟踪
+    _connection_attempts = 0
+    _max_retries = 1  # 最多尝试2次 (初始尝试 + 1次重试)
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -33,13 +38,14 @@ class SSHManager:
 
     def __init__(self):
         # 只在第一次初始化
-        if not self._ssh_client:
+        if not hasattr(self, 'initialized'):
             # 从设置文件加载SSH参数
             settings = load_settings()
             self.hostname = settings.get("sshHost", "10.0.18.1")
             self.username = settings.get("sshUsername", "root")
             self.password = settings.get("sshPassword", "firefly")
             self.port = settings.get("sshPort", 22)
+            self.initialized = True
             logger.debug(f"SSH管理器初始化完成，使用设置: host={self.hostname}, port={self.port}, username={self.username}")
     
     @classmethod
@@ -52,15 +58,24 @@ class SSHManager:
     @classmethod
     def get_client(cls):
         """获取已存在的SSH客户端或创建新的"""
+        # 检查现有连接是否有效
         if cls._ssh_client and cls._ssh_client.get_transport() and cls._ssh_client.get_transport().is_active():
             logger.debug("返回现有SSH连接")
             return cls._ssh_client
         
+        # 获取或创建实例
         instance = cls.get_instance()
+        
+        # 重置连接尝试计数
+        if cls._connection_attempts > cls._max_retries:
+            cls._connection_attempts = 0
+            
+        # 尝试连接
         return instance.connect()
 
     def connect(self):
-        """建立SSH连接"""
+        """建立SSH连接，最多尝试两次"""
+        # 检查现有连接是否有效
         if self._ssh_client and self._ssh_client.get_transport() and self._ssh_client.get_transport().is_active():
             logger.debug("SSH已连接")
             return self._ssh_client
@@ -72,7 +87,10 @@ class SSHManager:
         self.password = settings.get("sshPassword", self.password)
         self.port = settings.get("sshPort", self.port)
 
-        logger.debug(f"开始建立新的SSH连接到 {self.hostname}:{self.port}...")
+        # 增加连接尝试计数
+        self.__class__._connection_attempts += 1
+        attempt_number = self.__class__._connection_attempts
+        
         try:
             self._ssh_client = paramiko.SSHClient()
             self._ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -80,12 +98,26 @@ class SSHManager:
                 hostname=self.hostname,
                 username=self.username,
                 password=self.password,
-                port=self.port
+                port=self.port,
+                timeout=10  # 设置10秒超时
             )
-            logger.debug("SSH连接成功")
+            
+            # 连接成功，重置计数器
+            logger.info("SSH连接成功")
+            self.__class__._connection_attempts = 0
+            
             return self._ssh_client
         except Exception as e:
-            logger.error(f"SSH连接失败: {e}")
+            # 根据尝试次数记录不同的日志
+            if attempt_number == 1:
+                logger.error(f"第一次ssh连接失败: {e}")
+            else:
+                logger.error(f"第二次ssh连接失败: {e}")
+            
+            # 如果已尝试次数达到或超过最大重试次数，重置计数器
+            if attempt_number > self.__class__._max_retries:
+                self.__class__._connection_attempts = 0
+                
             return None
     
     def disconnect(self):
@@ -105,6 +137,14 @@ class SSHManager:
             return None
         
         try:
+            # 确保连接有效
+            if not self._ssh_client.get_transport() or not self._ssh_client.get_transport().is_active():
+                logger.warning("SSH连接已关闭，尝试重新连接")
+                self.connect()
+                if not self._ssh_client:
+                    logger.error("重新连接失败，无法执行命令")
+                    return None
+            
             stdin, stdout, stderr = self._ssh_client.exec_command(command)
             result = stdout.read().decode('utf-8').strip()
             error = stderr.read().decode('utf-8').strip()

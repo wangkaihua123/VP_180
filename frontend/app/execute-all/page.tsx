@@ -210,6 +210,18 @@ export default function ExecuteAllPage() {
     }
   }, [searchParams])
 
+  // 新增：检查是否需要自动执行测试用例
+  useEffect(() => {
+    // 检查URL参数中是否有autoExecute=true
+    const autoExecute = searchParams.get('autoExecute') === 'true'
+    
+    // 如果需要自动执行且测试用例已加载完成且未在执行中
+    if (autoExecute && !loading && !executing && testCases.length > 0) {
+      // 自动执行测试用例
+      handleExecuteSelected();
+    }
+  }, [searchParams, loading, testCases, executing]);
+
   // 初始化图片和截图数据
   useEffect(() => {
     const images: { [key: number]: any[] } = {}
@@ -246,6 +258,8 @@ export default function ExecuteAllPage() {
               status: mapStatus(tc.status)
             }));
           setTestCases(filteredTestCases);
+          // 同步设置 testCaseStatus 状态
+          setTestCaseStatus(filteredTestCases);
         } else {
           const formattedTestCases = response.data.map(tc => ({
             ...tc,
@@ -254,33 +268,27 @@ export default function ExecuteAllPage() {
             status: mapStatus(tc.status)
           }));
           setTestCases(formattedTestCases);
+          // 同步设置 testCaseStatus 状态
+          setTestCaseStatus(formattedTestCases);
         }
       } else {
         setTestCases([]);
+        setTestCaseStatus([]);
         toast({
           title: "加载失败",
           description: response.message || "无法加载测试用例",
           variant: "destructive",
         });
       }
-      
-      // 尝试执行测试用例
-      const runResponse = await testCasesAPI.runAll()
-      if (!runResponse.success) {
-        toast({
-          title: "执行失败",
-          description: runResponse.message || "执行测试用例失败",
-          variant: "destructive",
-        })
-      }
     } catch (error) {
+      console.error("加载测试用例失败:", error);
       toast({
         title: "加载失败",
-        description: error instanceof Error ? error.message : "未知错误",
+        description: error instanceof Error ? error.message : "加载测试用例失败",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -328,6 +336,11 @@ export default function ExecuteAllPage() {
   // 模拟测试执行过程
   useEffect(() => {
     if (!isRunning) return
+    
+    if (testCases.length > 0 && testCaseStatus.length === 0) {
+      // 确保 testCaseStatus 被初始化
+      setTestCaseStatus([...testCases]);
+    }
 
     // 模拟测试用例执行顺序和状态变化
     const runTestCases = async () => {
@@ -665,7 +678,7 @@ export default function ExecuteAllPage() {
               <Progress value={progress} className="h-2 mb-4" />
 
               <div className="space-y-2">
-                {testCaseStatus.map((testCase) => (
+                {testCases.map((testCase) => (
                   <Collapsible
                     key={testCase.id}
                     open={expandedTestCases.includes(testCase.id)}

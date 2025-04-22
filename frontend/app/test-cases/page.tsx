@@ -12,6 +12,7 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Plus, Play, Settings } from "lucide-react"
 import { TestCaseList } from "@/components/TestCaseList"
@@ -25,6 +26,7 @@ export default function TestCasesPage() {
   const [loading, setLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const { toast } = useToast()
+  const router = useRouter()
 
   useEffect(() => {
     loadTestCases()
@@ -58,28 +60,8 @@ export default function TestCasesPage() {
   }
 
   const handleRunAll = async () => {
-    try {
-      const response = await testCasesAPI.runBatch(testCases.map(tc => tc.id))
-      if (response.success) {
-        toast({
-          title: "执行成功",
-          description: "所有测试用例已开始执行",
-        })
-        loadTestCases() // 重新加载列表以获取最新状态
-      } else {
-        toast({
-          title: "执行失败",
-          description: response.message || "执行测试用例失败",
-          variant: "destructive",
-        })
-      }
-    } catch (error) {
-      toast({
-        title: "执行失败",
-        description: error instanceof Error ? error.message : "执行测试用例失败",
-        variant: "destructive",
-      })
-    }
+    // 跳转到执行页面并设置自动执行参数
+    router.push('/execute-all?autoExecute=true');
   }
 
   return (
