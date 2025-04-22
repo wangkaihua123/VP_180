@@ -35,3 +35,125 @@
 2025-04-22 16:50:27,750 - werkzeug - WARNING -  * Running on all addresses.
    WARNING: This is a development server. Do not use it in a production deployment.
 2025-04-22 16:50:27,755 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:17:53,300 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:17:54,327 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:17:54,332 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:17:54,908 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:17:54,912 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:18:48,377 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:48] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:48,380 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:48] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:48,391 - backend.models.test_case - INFO - ³É¹¦´ÓÎÄ¼ş¼ÓÔØ²âÊÔÓÃÀı: E:\python\vp_180\data\test_cases.json
+2025-04-22 17:18:48,394 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:48,400 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:55,212 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:55,217 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:55,224 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:55,231 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:55,240 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:18:55,249 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "OPTIONS /api/test-cases/run-all HTTP/1.1" 200 -
+2025-04-22 17:18:55,266 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:18:55] "OPTIONS /api/test-cases/run-all HTTP/1.1" 200 -
+2025-04-22 17:18:55,280 - utils.ssh_manager - DEBUG - SSH¹ÜÀíÆ÷³õÊ¼»¯Íê³É£¬Ê¹ÓÃÉèÖÃ: host=10.0.18.1, port=22, username=root
+2025-04-22 17:18:55,283 - utils.ssh_manager - DEBUG - SSH¹ÜÀíÆ÷³õÊ¼»¯Íê³É£¬Ê¹ÓÃÉèÖÃ: host=10.0.18.1, port=22, username=root
+2025-04-22 17:18:55,284 - utils.ssh_manager - DEBUG - ¿ªÊ¼½¨Á¢ĞÂµÄSSHÁ¬½Óµ½ 10.0.18.1:22...
+2025-04-22 17:18:55,285 - utils.ssh_manager - DEBUG - ¿ªÊ¼½¨Á¢ĞÂµÄSSHÁ¬½Óµ½ 10.0.18.1:22...
+2025-04-22 17:18:55,291 - utils.ssh_manager - DEBUG - ¿ªÊ¼½¨Á¢ĞÂµÄSSHÁ¬½Óµ½ 10.0.18.1:22...
+2025-04-22 17:19:16,328 - utils.ssh_manager - ERROR - SSHÁ¬½ÓÊ§°Ü: [WinError 10060] ÓÉÓÚÁ¬½Ó·½ÔÚÒ»¶ÎÊ±¼äºóÃ»ÓĞÕıÈ·´ğ¸´»òÁ¬½ÓµÄÖ÷»úÃ»ÓĞ·´Ó¦£¬Á¬½Ó³¢ÊÔÊ§°Ü¡£
+2025-04-22 17:19:16,328 - utils.ssh_manager - ERROR - SSHÁ¬½ÓÊ§°Ü: [WinError 10060] ÓÉÓÚÁ¬½Ó·½ÔÚÒ»¶ÎÊ±¼äºóÃ»ÓĞÕıÈ·´ğ¸´»òÁ¬½ÓµÄÖ÷»úÃ»ÓĞ·´Ó¦£¬Á¬½Ó³¢ÊÔÊ§°Ü¡£
+2025-04-22 17:19:16,328 - utils.ssh_manager - ERROR - SSHÁ¬½ÓÊ§°Ü: [WinError 10060] ÓÉÓÚÁ¬½Ó·½ÔÚÒ»¶ÎÊ±¼äºóÃ»ÓĞÕıÈ·´ğ¸´»òÁ¬½ÓµÄÖ÷»úÃ»ÓĞ·´Ó¦£¬Á¬½Ó³¢ÊÔÊ§°Ü¡£
+2025-04-22 17:19:16,329 - backend.services.test_case_service - ERROR - SSHÁ¬½ÓÊ§°Ü
+2025-04-22 17:19:16,329 - backend.services.test_case_service - ERROR - SSHÁ¬½ÓÊ§°Ü
+2025-04-22 17:19:16,330 - backend.services.test_case_service - ERROR - SSHÁ¬½ÓÊ§°Ü
+2025-04-22 17:19:16,332 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:19:16] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:19:16,332 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:19:16] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:19:16,333 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:19:16] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:20:37,711 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-22 17:20:37,872 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:20:39,046 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:20:39,048 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:20:39,417 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:20:39,420 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:21:23,711 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:21:24,680 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:21:24,682 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:21:25,005 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:21:25,021 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:21:42,843 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:42] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:42,845 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:42] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:42,859 - backend.models.test_case - INFO - æˆåŠŸä»æ–‡ä»¶åŠ è½½æµ‹è¯•ç”¨ä¾‹: E:\python\vp_180\data\test_cases.json
+2025-04-22 17:21:42,860 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:42] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:42,868 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:42] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:44,932 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\utils\\image_comparator.py', reloading
+2025-04-22 17:21:45,064 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:21:45,304 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\utils\\image_comparator.py', reloading
+2025-04-22 17:21:45,483 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:21:46,330 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:21:46,334 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:21:46,557 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:21:46,560 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:21:46,684 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:21:46,689 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:21:46,903 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:21:46,906 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:21:47,458 - backend.models.test_case - INFO - æˆåŠŸä»æ–‡ä»¶åŠ è½½æµ‹è¯•ç”¨ä¾‹: E:\python\vp_180\data\test_cases.json
+2025-04-22 17:21:47,459 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:47] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:47,468 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:47] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:47,475 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:47] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:21:47,481 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:21:47] "OPTIONS /api/test-cases/run-all HTTP/1.1" 200 -
+2025-04-22 17:21:47,492 - utils.ssh_manager - DEBUG - SSHç®¡ç†å™¨åˆå§‹åŒ–å®Œæˆï¼Œä½¿ç”¨è®¾ç½®: host=10.0.18.1, port=22, username=root
+2025-04-22 17:21:47,492 - utils.ssh_manager - DEBUG - å¼€å§‹å»ºç«‹æ–°çš„SSHè¿æ¥åˆ° 10.0.18.1:22...
+2025-04-22 17:21:47,499 - utils.ssh_manager - DEBUG - å¼€å§‹å»ºç«‹æ–°çš„SSHè¿æ¥åˆ° 10.0.18.1:22...
+2025-04-22 17:21:47,499 - utils.ssh_manager - DEBUG - å¼€å§‹å»ºç«‹æ–°çš„SSHè¿æ¥åˆ° 10.0.18.1:22...
+2025-04-22 17:22:08,527 - utils.ssh_manager - ERROR - SSHè¿æ¥å¤±è´¥: [WinError 10060] ç”±äºè¿æ¥æ–¹åœ¨ä¸€æ®µæ—¶é—´åæ²¡æœ‰æ­£ç¡®ç­”å¤æˆ–è¿æ¥çš„ä¸»æœºæ²¡æœ‰ååº”ï¼Œè¿æ¥å°è¯•å¤±è´¥ã€‚
+2025-04-22 17:22:08,528 - backend.services.test_case_service - ERROR - SSHè¿æ¥å¤±è´¥
+2025-04-22 17:22:08,528 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:22:08] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:22:08,542 - utils.ssh_manager - ERROR - SSHè¿æ¥å¤±è´¥: [WinError 10060] ç”±äºè¿æ¥æ–¹åœ¨ä¸€æ®µæ—¶é—´åæ²¡æœ‰æ­£ç¡®ç­”å¤æˆ–è¿æ¥çš„ä¸»æœºæ²¡æœ‰ååº”ï¼Œè¿æ¥å°è¯•å¤±è´¥ã€‚
+2025-04-22 17:22:08,542 - utils.ssh_manager - ERROR - SSHè¿æ¥å¤±è´¥: [WinError 10060] ç”±äºè¿æ¥æ–¹åœ¨ä¸€æ®µæ—¶é—´åæ²¡æœ‰æ­£ç¡®ç­”å¤æˆ–è¿æ¥çš„ä¸»æœºæ²¡æœ‰ååº”ï¼Œè¿æ¥å°è¯•å¤±è´¥ã€‚
+2025-04-22 17:22:08,542 - backend.services.test_case_service - ERROR - SSHè¿æ¥å¤±è´¥
+2025-04-22 17:22:08,543 - backend.services.test_case_service - ERROR - SSHè¿æ¥å¤±è´¥
+2025-04-22 17:22:08,543 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:22:08] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:22:08,544 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:22:08] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:23:15,773 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:23:16,751 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:23:16,753 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:23:17,073 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:23:17,076 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:23:21,229 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-22 17:23:21,350 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:23:22,435 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:23:22,437 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:23:22,759 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:23:22,764 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-22 17:23:35,456 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:23:35] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:23:35,468 - backend.models.test_case - INFO - æˆåŠŸä»æ–‡ä»¶åŠ è½½æµ‹è¯•ç”¨ä¾‹: E:\python\vp_180\data\test_cases.json
+2025-04-22 17:23:35,469 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:23:35] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:23:39,158 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:23:39] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:23:39,165 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:23:39] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:23:39,172 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:23:39] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-22 17:23:39,187 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:23:39] "OPTIONS /api/test-cases/run-all HTTP/1.1" 200 -
+2025-04-22 17:23:39,202 - utils.ssh_manager - DEBUG - SSHç®¡ç†å™¨åˆå§‹åŒ–å®Œæˆï¼Œä½¿ç”¨è®¾ç½®: host=10.0.18.1, port=22, username=root
+2025-04-22 17:23:39,202 - utils.ssh_manager - DEBUG - SSHç®¡ç†å™¨åˆå§‹åŒ–å®Œæˆï¼Œä½¿ç”¨è®¾ç½®: host=10.0.18.1, port=22, username=root
+2025-04-22 17:23:39,203 - utils.ssh_manager - DEBUG - å¼€å§‹å»ºç«‹æ–°çš„SSHè¿æ¥åˆ° 10.0.18.1:22...
+2025-04-22 17:23:39,203 - utils.ssh_manager - DEBUG - å¼€å§‹å»ºç«‹æ–°çš„SSHè¿æ¥åˆ° 10.0.18.1:22...
+2025-04-22 17:23:39,221 - utils.ssh_manager - DEBUG - å¼€å§‹å»ºç«‹æ–°çš„SSHè¿æ¥åˆ° 10.0.18.1:22...
+2025-04-22 17:24:00,241 - utils.ssh_manager - ERROR - SSHè¿æ¥å¤±è´¥: [WinError 10060] ç”±äºè¿æ¥æ–¹åœ¨ä¸€æ®µæ—¶é—´åæ²¡æœ‰æ­£ç¡®ç­”å¤æˆ–è¿æ¥çš„ä¸»æœºæ²¡æœ‰ååº”ï¼Œè¿æ¥å°è¯•å¤±è´¥ã€‚
+2025-04-22 17:24:00,241 - utils.ssh_manager - ERROR - SSHè¿æ¥å¤±è´¥: [WinError 10060] ç”±äºè¿æ¥æ–¹åœ¨ä¸€æ®µæ—¶é—´åæ²¡æœ‰æ­£ç¡®ç­”å¤æˆ–è¿æ¥çš„ä¸»æœºæ²¡æœ‰ååº”ï¼Œè¿æ¥å°è¯•å¤±è´¥ã€‚
+2025-04-22 17:24:00,241 - backend.services.test_case_service - ERROR - SSHè¿æ¥å¤±è´¥
+2025-04-22 17:24:00,241 - backend.services.test_case_service - ERROR - SSHè¿æ¥å¤±è´¥
+2025-04-22 17:24:00,242 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:24:00] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:24:00,242 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:24:00] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:24:00,271 - utils.ssh_manager - ERROR - SSHè¿æ¥å¤±è´¥: [WinError 10060] ç”±äºè¿æ¥æ–¹åœ¨ä¸€æ®µæ—¶é—´åæ²¡æœ‰æ­£ç¡®ç­”å¤æˆ–è¿æ¥çš„ä¸»æœºæ²¡æœ‰ååº”ï¼Œè¿æ¥å°è¯•å¤±è´¥ã€‚
+2025-04-22 17:24:00,271 - backend.services.test_case_service - ERROR - SSHè¿æ¥å¤±è´¥
+2025-04-22 17:24:00,272 - werkzeug - INFO - 172.16.10.83 - - [22/Apr/2025 17:24:00] "[35m[1mPOST /api/test-cases/run-all HTTP/1.1[0m" 500 -
+2025-04-22 17:25:21,997 - werkzeug - INFO -  * Restarting with stat
+2025-04-22 17:25:23,010 - werkzeug - WARNING -  * Debugger is active!
+2025-04-22 17:25:23,012 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-22 17:25:23,332 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-22 17:25:23,336 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
