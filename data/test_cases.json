@@ -4,17 +4,9 @@
     "title": "电子放大",
     "type": "功能测试",
     "status": "失败",
-    "create_time": "2025-04-21 15:57",
+    "create_time": "2025-04-23 10:42",
+    "last_execution_time": "2025-04-23 10:45:52",
     "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 2, \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}, {\"id\": 3, \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"operation_key\": \"\"}], \"verificationSteps\": [{\"id\": 1, \"img1\": \"1\", \"img2\": \"3\", \"verification_key\": \"\"}]}"
-  },
-  {
-    "id": 2,
-    "title": "pip功能",
-    "type": "功能测试",
-    "status": "未运行",
-    "create_time": "2025-04-23 09:13",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"画中画\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}"
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"3\"}]}"
   }
 ]

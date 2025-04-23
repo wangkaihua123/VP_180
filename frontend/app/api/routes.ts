@@ -60,6 +60,7 @@ export interface TestCase {
   create_time: string;
   description: string;
   script_content: string;
+  last_execution_time?: string;
 }
 
 export interface TestLog {

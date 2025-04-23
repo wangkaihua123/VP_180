@@ -421,7 +421,7 @@ export default function ExecuteAllPage() {
           if (!testCase) continue
 
           // 更新状态为执行中
-          updateTestCaseStatus(id, 'running')
+          await updateTestCaseStatus(id, 'running')
           addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
           
           // 自动展开当前执行的测试用例
@@ -430,14 +430,14 @@ export default function ExecuteAllPage() {
           try {
             const result = await testCasesAPI.run(Number(id))
             if (result.success) {
-              updateTestCaseStatus(id, 'completed')
+              await updateTestCaseStatus(id, 'completed')
               addLog(id, `测试用例执行成功: ${testCase.name}`, 'success')
               setExecutionStats(prev => ({
                 ...prev,
                 completed: prev.completed + 1
               }))
             } else {
-              updateTestCaseStatus(id, 'failed')
+              await updateTestCaseStatus(id, 'failed')
               addLog(id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
               setExecutionStats(prev => ({
                 ...prev,
@@ -445,7 +445,7 @@ export default function ExecuteAllPage() {
               }))
             }
           } catch (error) {
-            updateTestCaseStatus(id, 'failed')
+            await updateTestCaseStatus(id, 'failed')
             addLog(id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
             setExecutionStats(prev => ({
               ...prev,
@@ -469,20 +469,20 @@ export default function ExecuteAllPage() {
           const testCase = testCases.find(tc => tc.id === id)
           if (!testCase) return
 
-          updateTestCaseStatus(id, 'running')
+          await updateTestCaseStatus(id, 'running')
           addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
 
           try {
             const result = await testCasesAPI.run(Number(id))
             if (result.success) {
-              updateTestCaseStatus(id, 'completed')
+              await updateTestCaseStatus(id, 'completed')
               addLog(id, `测试用例执行成功: ${testCase.name}`, 'success')
               setExecutionStats(prev => ({
                 ...prev,
                 completed: prev.completed + 1
               }))
             } else {
-              updateTestCaseStatus(id, 'failed')
+              await updateTestCaseStatus(id, 'failed')
               addLog(id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
               setExecutionStats(prev => ({
                 ...prev,
@@ -490,7 +490,7 @@ export default function ExecuteAllPage() {
               }))
             }
           } catch (error) {
-            updateTestCaseStatus(id, 'failed')
+            await updateTestCaseStatus(id, 'failed')
             addLog(id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
             setExecutionStats(prev => ({
               ...prev,
@@ -519,10 +519,58 @@ export default function ExecuteAllPage() {
    * @param id 测试用例ID
    * @param status 新状态
    */
-  const updateTestCaseStatus = (id: number, status: string) => {
+  const updateTestCaseStatus = async (id: number, status: string) => {
+    // 更新本地状态
     setTestCases(prev => prev.map(tc => 
       tc.id === id ? { ...tc, status: mapStatus(status) } : tc
     ))
+    
+    // 同时更新后端数据库中的状态
+    try {
+      // 将状态映射为适合持久化的格式
+      let persistStatus = status.toLowerCase();
+      switch(persistStatus) {
+        case 'running':
+          persistStatus = '进行中';
+          break;
+        case 'completed':
+          persistStatus = '通过';
+          break;
+        case 'failed':
+          persistStatus = '失败';
+          break;
+        case 'skipped':
+          persistStatus = '跳过';
+          break;
+        case 'pending':
+          persistStatus = '未运行';
+          break;
+      }
+      
+      // 调用API更新状态
+      console.log(`更新测试用例 ${id} 状态为: ${persistStatus}`);
+      
+      // 更新JSON文件中的状态
+      const response = await testCasesAPI.updateStatus(id, persistStatus);
+      
+      if (!response.success) {
+        console.error(`更新测试用例 ${id} 状态失败:`, response.message);
+        toast({
+          title: "状态更新失败",
+          description: response.message || "无法更新测试用例状态",
+          variant: "destructive",
+        });
+      } else {
+        console.log(`测试用例 ${id} 状态已更新为 ${persistStatus}`);
+      }
+    } catch (error) {
+      console.error(`更新测试用例 ${id} 状态出错:`, error);
+      toast({
+        title: "状态更新出错",
+        description: error instanceof Error ? error.message : "更新状态时发生错误",
+        variant: "destructive",
+      });
+    }
   }
 
   /**

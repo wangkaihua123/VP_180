@@ -8,13 +8,14 @@
  * - 使用TestCaseList组件展示测试用例详情
  * - 处理测试用例的加载状态和错误提示
  * - 支持选择和批量操作测试用例
+ * - 展示最近一次测试用例执行结果
  */
 "use client"
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Plus, Play, Settings } from "lucide-react"
+import { Plus, Play, Settings, RefreshCw } from "lucide-react"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import { useEffect, useState } from "react"
@@ -25,6 +26,7 @@ export default function TestCasesPage() {
   const [testCases, setTestCases] = useState<TestCase[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const [refreshing, setRefreshing] = useState(false)
   const { toast } = useToast()
   const router = useRouter()
 
@@ -36,8 +38,13 @@ export default function TestCasesPage() {
     try {
       setLoading(true)
       const response = await testCasesAPI.list()
+      
       if (response.success) {
-        setTestCases(response.test_cases || [])
+        const testCasesData = response.test_cases || [];
+        
+        // 直接使用API返回的测试用例数据，包括status字段
+        console.log("测试用例数据:", testCasesData);
+        setTestCases(testCasesData);
       } else {
         toast({
           title: "加载失败",
@@ -58,6 +65,26 @@ export default function TestCasesPage() {
       setLoading(false)
     }
   }
+  
+  // 刷新测试用例状态，获取最新执行结果
+  const refreshTestResults = async () => {
+    try {
+      setRefreshing(true);
+      await loadTestCases();
+      toast({
+        title: "刷新成功",
+        description: "已获取最新测试结果",
+      });
+    } catch (error) {
+      toast({
+        title: "刷新失败",
+        description: error instanceof Error ? error.message : "刷新测试结果失败",
+        variant: "destructive",
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const handleRunAll = async () => {
     // 跳转到执行页面并设置自动执行参数
@@ -104,6 +131,15 @@ export default function TestCasesPage() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">测试用例</h2>
           <div className="flex space-x-2">
+            <Button 
+              variant="outline" 
+              className="group"
+              onClick={refreshTestResults}
+              disabled={refreshing}
+            >
+              <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? '刷新中...' : '刷新结果'}
+            </Button>
             <Link href="/settings">
               <Button variant="outline" className="group">
                 <Settings className="mr-2 h-4 w-4 [&:hover]:text-inherit" />

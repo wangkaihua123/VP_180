@@ -73,5 +73,6 @@ DEFAULT_TEST_CASE = {
     'type': '功能测试',
     'status': '未运行',
     'description': '测试登录界面的表单验证和提交功能',
+    'last_execution_time': '',
     'script_content': '{"repeatCount": 1, "operationSteps": [{"id": 1, "operation_key": "获取图像", "button_name": "", "x1": 0, "y1": 0, "x2": 0, "y2": 0}], "verificationSteps": [{"id": 1, "verification_key": "对比图像相似度", "img1": "1", "img2": "1"}]}'
 } 

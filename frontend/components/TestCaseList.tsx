@@ -233,6 +233,7 @@ export function TestCaseList({
               <TableHead>状态</TableHead>
               <TableHead>重复次数</TableHead>
               <TableHead>创建时间</TableHead>
+              <TableHead>最后执行时间</TableHead>
               <TableHead className="text-right">操作</TableHead>
             </TableRow>
           </TableHeader>
@@ -271,6 +272,7 @@ export function TestCaseList({
                 </TableCell>
                 <TableCell>{JSON.parse(testCase.script_content).repeatCount || 1}</TableCell>
                 <TableCell>{testCase.create_time}</TableCell>
+                <TableCell>{testCase.last_execution_time || '未执行'}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
                     <Button

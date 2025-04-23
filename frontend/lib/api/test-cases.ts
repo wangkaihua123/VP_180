@@ -11,6 +11,7 @@
  * - 运行所有测试用例 (runAll)
  * - 获取测试用例日志 (getLatestLogs, getLatestLog)
  * - 获取单个测试用例详情 (get)
+ * - 更新测试用例状态 (updateStatus)
  * 
  * 所有API调用都使用标准的APIResponse接口返回结果，确保数据格式一致性。
  */
@@ -87,6 +88,19 @@ export const testCasesAPI = {
   get: async (id: number): Promise<APIResponse<TestCase>> => {
     return fetchAPI(`/api/test-cases/${id}`, {
       method: "GET",
+    })
+  },
+  
+  /**
+   * 更新测试用例状态
+   * @param id 测试用例ID
+   * @param status 要更新的状态（通过、失败等）
+   * @returns API响应
+   */
+  updateStatus: async (id: number, status: string): Promise<APIResponse<void>> => {
+    return fetchAPI(`/api/test-cases/${id}/status`, {
+      method: "PUT",
+      body: JSON.stringify({ status }),
     })
   }
 } 

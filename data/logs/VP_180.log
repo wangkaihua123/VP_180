@@ -71,3 +71,39 @@
 2025-04-23 09:10:23 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
 2025-04-23 09:13:18 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
 2025-04-23 09:13:29 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 09:28:48 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 09:28:59 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 09:31:58 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 09:32:10 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 09:48:09 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 09:48:20 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 09:48:59 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 09:49:10 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 09:53:01 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 09:53:12 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:01:40 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:01:41 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:06:23 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-23 10:06:33 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:06:44 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:13:05 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:13:16 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:14:23 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:14:35 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:19:29 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:19:45 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:20:40 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-23 10:20:50 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:21:01 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:28:45 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:29:27 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:31:28 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:32:22 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:35:53 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-23 10:39:43 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-23 10:39:53 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:40:04 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:41:17 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:41:28 - ERROR - utils.ssh_manager - 第二次ssh连接失败: timed out
+2025-04-23 10:42:40 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-23 10:44:31 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置

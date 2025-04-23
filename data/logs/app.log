@@ -401,3 +401,457 @@
 2025-04-23 09:21:23,759 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:21:23] "OPTIONS /api/test-cases HTTP/1.1" 200 -
 2025-04-23 09:21:23,773 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:21:23] "GET /api/test-cases HTTP/1.1" 200 -
 2025-04-23 09:21:27,745 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:21:27] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:22:30,071 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:22:30] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:22:30,073 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:22:30] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:22:30,088 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:22:30] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:22:30,095 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:22:30] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:28:37,670 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:37] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:28:37,674 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:37] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:28:37,688 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:37] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:28:37,698 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:37] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:28:38,227 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:38] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 09:28:48,254 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:28:48,254 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:48] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 09:28:49,273 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:49] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 09:28:59,299 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:28:59,301 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:28:59] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 09:29:36,043 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:29:36] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:29:36,044 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:29:36] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:29:36,061 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:29:36] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:29:36,067 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:29:36] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:31:48,130 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:31:48] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:31:48,133 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:31:48] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:31:48,146 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:31:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:31:48,156 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:31:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:31:48,682 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:31:48] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 09:31:58,701 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:31:58,701 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:31:58] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 09:32:00,179 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:32:00] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 09:32:10,210 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:32:10,211 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:32:10] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 09:38:36,933 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:38:36] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:38:36,936 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:38:36] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:38:36,950 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:38:36] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:38:36,960 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:38:36] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:47:58,544 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:47:58] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:47:58,549 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:47:58] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:47:58,566 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:47:58] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:47:58,577 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:47:58] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:47:59,112 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:47:59] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 09:48:09,130 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:48:09,131 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:09] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 09:48:10,155 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:10] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 09:48:20,177 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:48:20,179 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:20] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 09:48:33,214 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:33] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:33,217 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:33] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:33,226 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:33] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:33,235 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:33] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:49,337 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:49] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:49,338 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:49] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:49,352 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:49] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:49,360 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:49] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:48:49,888 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:49] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 09:48:59,911 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:48:59,912 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:48:59] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 09:49:00,930 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:49:00] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 09:49:10,955 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:49:10,957 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:49:10] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 09:52:48,825 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:48] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:52:48,828 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:48] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:52:48,840 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:52:48,848 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:52:50,685 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:50] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:52:50,695 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:50] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:52:51,233 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:52:51] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 09:53:01,250 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:53:01,250 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:53:01] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 09:53:02,270 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:53:02] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 09:53:12,287 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 09:53:12,287 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:53:12] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 09:57:07,908 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:57:07] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:57:07,909 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:57:07] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:57:07,920 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:57:07] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 09:57:07,926 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 09:57:07] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:00:44,965 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:44] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:00:44,968 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:44] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:00:44,980 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:44] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:00:44,987 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:44] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:00:45,519 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:45] "[33mOPTIONS /api/test-cases/1/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:00:45,538 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:45] "OPTIONS /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:00:45,553 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:00:45,555 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:45] "PUT /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:00:46,590 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:46] "[33mOPTIONS /api/test-cases/2/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:00:46,608 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:46] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:00:46,619 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:00:46,621 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:00:46] "PUT /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:01:15,524 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:01:15] "[33mOPTIONS /api/test-cases/1/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:01:15,556 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:01:15] "OPTIONS /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:01:15,571 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:01:15,572 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:01:15] "PUT /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:01:16,600 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:01:16] "[33mOPTIONS /api/test-cases/2/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:01:16,618 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:01:16] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:01:16,634 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:01:16,635 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:01:16] "PUT /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:01:41,078 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:01:42,049 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:01:42,053 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:01:42,454 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:01:42,460 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:02:56,518 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:02:56] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:02:56,533 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:02:56,534 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:02:56] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:02:56,751 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:02:56] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:02:56,756 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:02:56] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:03:01,908 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:01] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:03:01,912 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:01] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:03:01,925 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:01] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:03:01,933 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:01] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:03:02,491 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:02] "[33mOPTIONS /api/test-cases/1/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:03:02,511 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:02] "OPTIONS /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:03:02,524 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:03:02,525 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:02] "PUT /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:03:03,547 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:03] "[33mOPTIONS /api/test-cases/2/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:03:03,578 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:03] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:03:03,592 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:03:03,593 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:03:03] "PUT /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:04:43,166 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:43] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:43,166 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:43] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:43,183 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:43] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:43,194 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:43] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:58,869 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:58] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:58,870 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:58] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:58,883 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:58] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:58,891 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:58] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:04:59,419 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:04:59] "[33mOPTIONS /api/test-cases/1/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:05:00,439 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:00] "[33mOPTIONS /api/test-cases/1/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:05:02,464 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:02] "[33mOPTIONS /api/test-cases/1/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:05:02,482 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:02] "OPTIONS /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:05:02,502 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:05:02,503 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:02] "PUT /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:05:04,182 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:04] "[33mOPTIONS /api/test-cases/2/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:05:06,179 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:06] "[33mOPTIONS /api/test-cases/2/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:05:09,170 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:09] "[33mOPTIONS /api/test-cases/2/execute HTTP/1.1[0m" 404 -
+2025-04-23 10:05:09,186 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:09] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:05:09,199 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:05:09,200 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:05:09] "PUT /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:06:21,612 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:21] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:06:21,612 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:21] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:06:21,623 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:21] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:06:21,629 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:21] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:06:22,963 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:22] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:06:22,971 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:22] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:06:23,504 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:23] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:06:33,532 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:06:33,532 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:33] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:06:34,554 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:34] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 10:06:44,575 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:06:44,575 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:06:44] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 10:08:18,702 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:08:18] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:08:18,718 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:08:18] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:08:18,746 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:08:18] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:08:18,749 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:08:18] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:08:18,766 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:08:18] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:08:18,771 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:08:18] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,511 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:12:53,514 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:12:53,524 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:12:53,530 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:12:53,543 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,544 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,550 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,552 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,561 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,562 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,567 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:53,575 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:53] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:12:54,591 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:54] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:12:54,599 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:54] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:12:55,126 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:12:55] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:13:05,150 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:13:05,151 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:05] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:13:06,175 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:06] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 10:13:16,199 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:13:16,199 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:16] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 10:13:22,154 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:13:22,157 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:13:22,167 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:13:22,176 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:13:22,185 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,187 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,194 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,195 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,204 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,205 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,216 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:13:22,217 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:13:22] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:14:11,240 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:11] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:14:11,250 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:11] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:14:11,266 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:11] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:14:11,267 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:11] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:14:11,277 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:11] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:14:11,279 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:11] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:14:13,177 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:13] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:14:13,189 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:13] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:14:13,717 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:13] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:14:23,740 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:14:23,741 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:23] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:14:25,176 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:25] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 10:14:35,193 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:14:35,193 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:14:35] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 10:19:28,677 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:19:28,865 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:19:29,962 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:19:29,967 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:19:30,309 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:19:30,312 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:19:45,055 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:19:45,216 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:19:46,197 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:19:46,200 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:19:46,528 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:19:46,533 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:20:36,336 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:20:36,337 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:20:36,353 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:20:36,355 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:20:36,364 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:20:36,373 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,374 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,389 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,390 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,398 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,402 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,408 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:36,412 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:36] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:20:39,746 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:39] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:20:39,753 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:39] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:20:40,285 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:40] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:20:40,301 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:40] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:20:40,317 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:40] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:20:50,348 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:20:50,349 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:50] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:20:50,364 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:50] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:20:50,377 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:50] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:20:51,398 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:51] "OPTIONS /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:20:51,407 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:51] "PUT /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:20:51,422 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:20:51] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 10:21:01,441 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:21:01,441 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:01] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 10:21:01,471 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:01] "OPTIONS /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:21:01,486 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:01] "PUT /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:21:06,339 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:21:06,343 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:21:06,352 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:21:06,365 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:21:06,374 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,376 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,383 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,384 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,390 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,393 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,403 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:06,410 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:06] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:20,236 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:20] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:21:20,247 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:20] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:21:20,266 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:20] "OPTIONS /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:20,267 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:20] "OPTIONS /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:20,278 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:20] "GET /api/test-cases/1/latest-log HTTP/1.1" 200 -
+2025-04-23 10:21:20,282 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:21:20] "GET /api/test-cases/2/latest-log HTTP/1.1" 200 -
+2025-04-23 10:24:56,090 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:24:56] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:24:56,102 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:24:56] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:25:29,912 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:25:29] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:25:29,922 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:25:29] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:25:30,690 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:25:30] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:25:31,363 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:25:31] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:28:44,926 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:28:45,074 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:28:46,233 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:28:46,235 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:28:46,561 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:28:46,565 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:29:26,468 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:29:26,605 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:29:27,623 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:29:27,625 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:29:27,947 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:29:27,950 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:31:27,178 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\models\\test_case.py', reloading
+2025-04-23 10:31:27,326 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:31:28,473 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:31:28,477 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:31:28,809 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:31:28,813 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:32:09,156 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:32:09] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:32:09,184 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:32:09,185 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:32:09] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:32:21,951 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:32:22,130 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:32:23,133 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:32:23,137 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:32:23,473 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:32:23,476 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:35:52,207 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\models\\test_case.py', reloading
+2025-04-23 10:35:52,347 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:35:53,473 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:35:53,476 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:35:53,809 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:35:53,813 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:39:42,769 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:42] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:39:42,771 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:42] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:39:42,784 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:39:42,785 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:42] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:39:42,794 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:39:42,795 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:42] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:39:43,325 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:43] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:39:43,337 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:43] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:39:43,352 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:43] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:39:43,383 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:39:53,392 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:39:53,394 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:53] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:39:53,411 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:53] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:39:53,425 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:53] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:39:54,459 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:54] "OPTIONS /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:39:54,470 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:54] "PUT /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:39:54,482 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:39:54] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 10:39:54,493 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:04,515 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:40:04,516 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:04] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 10:40:04,533 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:04] "OPTIONS /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:40:04,547 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:04] "PUT /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:40:07,768 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:07] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:07,770 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:07] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:07,783 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:07,784 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:07] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:07,792 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:07,793 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:07] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:30,274 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:30] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:40:30,276 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:30] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:40:30,286 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:30,287 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:30] "GET /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:40:30,295 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:30,296 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:30] "GET /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:40:45,672 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:45] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:40:45,682 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:45,684 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:45,686 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:45,687 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:45] "PUT /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:40:45,789 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:45] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:45,791 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:45] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:45,804 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:45,806 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:45] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:40:45,816 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:40:45,818 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:40:45] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:03,434 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:03] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:03,458 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:03,459 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:03] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:07,171 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:07,173 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:07] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:07,182 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:07,183 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:07] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:07,710 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:07] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:41:07,723 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:07] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:41:07,743 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:07] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:41:07,772 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:17,789 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:41:17,789 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:17] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:41:17,807 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:17] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:41:17,824 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:17] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:41:18,849 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:18] "OPTIONS /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:41:18,862 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:18] "PUT /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:41:18,875 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:18] "OPTIONS /api/test-cases/2/run HTTP/1.1" 200 -
+2025-04-23 10:41:18,888 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:28,908 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:41:28,909 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:28] "[35m[1mPOST /api/test-cases/2/run HTTP/1.1[0m" 500 -
+2025-04-23 10:41:28,924 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:28] "OPTIONS /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:41:28,937 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:28] "PUT /api/test-cases/2/status HTTP/1.1" 200 -
+2025-04-23 10:41:33,203 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:33] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:33,206 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:33] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:33,222 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:33,224 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:33] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:33,232 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:33,234 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:33] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:54,956 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:54] "OPTIONS /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:41:54,967 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:54,969 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:54,971 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:54,974 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:54] "DELETE /api/test-cases/1 HTTP/1.1" 200 -
+2025-04-23 10:41:54,994 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:54] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:55,027 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:55,028 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:55] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:41:56,353 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:56] "OPTIONS /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:41:56,365 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:56,366 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:56,366 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:56,368 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:56] "DELETE /api/test-cases/2 HTTP/1.1" 200 -
+2025-04-23 10:41:56,393 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:41:56,394 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:41:56] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:26,416 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:26] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:26,427 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:26,428 - backend.models.test_case - INFO - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:26,431 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:26] "[35m[1mPOST /api/test-cases HTTP/1.1[0m" 201 -
+2025-04-23 10:42:26,543 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:26,544 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:26] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:26,551 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:26,552 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:26] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:30,185 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:30,185 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:30] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:30,194 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:30,195 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:30] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:30,723 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:30] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:42:30,741 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:30] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:42:30,759 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:30] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:42:30,789 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:40,807 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:42:40,807 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:40] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:42:40,831 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:40] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:42:40,847 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:40] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:42:53,828 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:53] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:53,832 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:53] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:53,848 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:53,849 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:53] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:42:53,858 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:42:53,859 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:42:53] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:44:30,501 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:44:30,687 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:44:31,796 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:44:31,799 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:44:32,129 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:44:32,132 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:44:57,614 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\config.py', reloading
+2025-04-23 10:44:57,828 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:44:58,793 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:44:58,795 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:44:59,116 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:44:59,120 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:45:40,625 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:40] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:45:40,642 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:45:40,643 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:40] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:45:41,953 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:45:41,955 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:41] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:45:41,966 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:45:41,967 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:41] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:45:42,513 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:42] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:45:42,528 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:42] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:45:42,543 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:42] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 10:45:42,572 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:45:51,843 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:51] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:45:51,854 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:45:51,856 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:51] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:45:52,580 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 10:45:52,580 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:52] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 10:45:52,602 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:52] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:45:52,616 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:45:52] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 10:46:05,562 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:46:05] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:46:05,577 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:46:05,578 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:46:05] "GET /api/test-cases HTTP/1.1" 200 -

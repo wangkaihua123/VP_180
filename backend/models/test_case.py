@@ -108,9 +108,8 @@ class TestCase:
     @classmethod
     def get_all(cls):
         """获取所有测试用例"""
-        if cls._test_cases is None:
-            return cls.load()
-        return cls._test_cases
+        # 不使用缓存，每次都重新加载最新数据
+        return cls.load()
     
     @classmethod
     def get_by_id(cls, case_id):
@@ -133,6 +132,7 @@ class TestCase:
             'type': test_case_data.get('type', '功能测试'),
             'status': '未运行',
             'create_time': datetime.now().strftime('%Y-%m-%d %H:%M'),
+            'last_execution_time': '',  # 添加空的最新执行时间
             'description': test_case_data.get('description', ''),
             'script_content': test_case_data.get('script_content', '')
         }
@@ -185,8 +185,9 @@ class TestCase:
         if not case:
             return False
         
-        # 更新状态和时间
+        # 更新状态和最新执行时间
         case['status'] = status
-        case['create_time'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        case['last_execution_time'] = current_time  # 更新最新执行时间
         
         return cls.save(test_cases) 
