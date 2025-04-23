@@ -37,3 +37,119 @@
 2025-04-23 17:31:16 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
 2025-04-23 17:32:44 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
 2025-04-23 17:32:45 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:54:59 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:55:08 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:55:09 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:58:06 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:58:07 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:59:15 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:59:16 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:59:38 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 17:59:38 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:00:00 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:00:00 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:00:10 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:00:11 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:00:32 - DEBUG - utils.serial_manager - serial_manager.py:22 - 串口管理器初始化完成
+2025-04-23 18:00:32 - DEBUG - utils.serial_manager - serial_manager.py:47 - 开始建立新的串口连接...
+2025-04-23 18:00:32 - ERROR - utils.serial_manager - serial_manager.py:57 - 串口连接失败: could not open port 'COM4': PermissionError(13, '拒绝访问。', None, 5)
+2025-04-23 18:01:55 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:01:55 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:01:55 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:02:04 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:02:28 - DEBUG - utils.serial_manager - serial_manager.py:22 - 串口管理器初始化完成
+2025-04-23 18:02:28 - DEBUG - utils.serial_manager - serial_manager.py:47 - 开始建立新的串口连接...
+2025-04-23 18:02:28 - ERROR - utils.serial_manager - serial_manager.py:57 - 串口连接失败: could not open port 'COM4': PermissionError(13, '拒绝访问。', None, 5)
+2025-04-23 18:02:31 - DEBUG - utils.serial_manager - serial_manager.py:22 - 串口管理器初始化完成
+2025-04-23 18:02:31 - DEBUG - utils.serial_manager - serial_manager.py:47 - 开始建立新的串口连接...
+2025-04-23 18:02:31 - ERROR - utils.serial_manager - serial_manager.py:57 - 串口连接失败: could not open port 'COM4': PermissionError(13, '拒绝访问。', None, 5)
+2025-04-23 18:03:06 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:05:25 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:05:32 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:07:34 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:07:39 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:22:41 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:23:09 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:25:51 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:25:52 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:26:06 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:26:07 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:29:33 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:29:40 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:29:41 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:30:37 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:30:37 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:31:02 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:31:04 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:31:46 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:31:47 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:33:13 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:33:13 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:33:13 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:00 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:00 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:00 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:42 - DEBUG - utils.serial_manager - serial_manager.py:22 - 串口管理器初始化完成
+2025-04-23 18:34:42 - DEBUG - utils.serial_manager - serial_manager.py:47 - 开始建立新的串口连接...
+2025-04-23 18:34:42 - DEBUG - utils.serial_manager - serial_manager.py:54 - 串口连接成功
+2025-04-23 18:34:42 - DEBUG - utils.serial_manager - serial_manager.py:66 - 串口连接已关闭
+2025-04-23 18:34:51 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:51 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:51 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:54 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:55 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:34:55 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:36:08 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:36:09 - INFO - utils.button_clicker - button_clicker.py:9 - 成功加载FUNCTIONS配置
+2025-04-23 18:36:35 - DEBUG - utils.serial_manager - serial_manager.py:22 - 串口管理器初始化完成
+2025-04-23 18:36:35 - DEBUG - utils.serial_manager - serial_manager.py:47 - 开始建立新的串口连接...
+2025-04-23 18:36:36 - ERROR - utils.serial_manager - serial_manager.py:57 - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-23 18:36:38 - DEBUG - utils.serial_manager - serial_manager.py:22 - 串口管理器初始化完成
+2025-04-23 18:36:38 - DEBUG - utils.serial_manager - serial_manager.py:47 - 开始建立新的串口连接...
+2025-04-23 18:36:38 - DEBUG - utils.serial_manager - serial_manager.py:54 - 串口连接成功
+2025-04-23 18:36:38 - DEBUG - utils.serial_manager - serial_manager.py:66 - 串口连接已关闭
+2025-04-23 18:47:54 - DEBUG - utils.ssh_manager - ssh_manager.py:49 - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-23 18:47:59 - DEBUG - utils.ssh_manager - ssh_manager.py:80 - SSH已连接
+2025-04-23 18:47:59 - DEBUG - utils.get_latest_image - get_latest_image.py:29 - 初始化 GetLatestImage 实例
+2025-04-23 18:47:59 - DEBUG - utils.get_latest_image - get_latest_image.py:30 - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-23 18:48:04 - ERROR - utils.ssh_manager - ssh_manager.py:113 - 第一次ssh连接失败: No existing session
+2025-04-23 18:48:04 - ERROR - utils.get_latest_image - get_latest_image.py:43 - 检查远程目录时出错: 
+2025-04-23 18:48:04 - DEBUG - utils.get_latest_screenshot - get_latest_screenshot.py:22 - 初始化 GetLatestScreenshot 实例
+2025-04-23 18:48:04 - DEBUG - utils.get_latest_image - get_latest_image.py:69 - 检查远程目录结构
+2025-04-23 18:48:04 - ERROR - utils.get_latest_image - get_latest_image.py:145 - 获取图像失败: SSH session not active
+2025-04-23 18:48:04 - ERROR - utils.test_case_executor - test_case_executor.py:146 - 执行操作步骤时出错: SSH session not active
+2025-04-23 18:48:04 - DEBUG - utils.button_clicker - button_clicker.py:46 - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-23 18:48:04 - DEBUG - utils.button_clicker - button_clicker.py:58 - 点击电子放大按钮 (3749, 3999)
+2025-04-23 18:48:04 - DEBUG - utils.button_clicker - button_clicker.py:68 - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-23 18:48:04 - ERROR - utils.button_clicker - button_clicker.py:83 - 点击按钮异常: SSH session not active
+2025-04-23 18:48:04 - DEBUG - utils.get_latest_image - get_latest_image.py:69 - 检查远程目录结构
+2025-04-23 18:48:04 - ERROR - utils.get_latest_image - get_latest_image.py:145 - 获取图像失败: SSH session not active
+2025-04-23 18:48:04 - ERROR - utils.test_case_executor - test_case_executor.py:146 - 执行操作步骤时出错: SSH session not active
+2025-04-23 18:48:32 - INFO - utils.ssh_manager - ssh_manager.py:106 - SSH连接成功
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:29 - 初始化 GetLatestImage 实例
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:30 - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_screenshot - get_latest_screenshot.py:22 - 初始化 GetLatestScreenshot 实例
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:69 - 检查远程目录结构
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:78 - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:111 - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:114 - 开始下载图像文件
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:127 - 解码并保存图像
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:133 - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
+2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - get_latest_image.py:136 - 读取图像数据
+2025-04-23 18:48:32 - ERROR - utils.get_latest_image - get_latest_image.py:139 - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
+2025-04-23 18:48:32 - ERROR - utils.get_latest_image - get_latest_image.py:145 - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
+2025-04-23 18:48:32 - ERROR - utils.test_case_executor - test_case_executor.py:146 - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
+2025-04-23 18:48:32 - DEBUG - utils.button_clicker - button_clicker.py:46 - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-23 18:48:32 - DEBUG - utils.button_clicker - button_clicker.py:58 - 点击电子放大按钮 (3749, 3999)
+2025-04-23 18:48:32 - DEBUG - utils.button_clicker - button_clicker.py:68 - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-23 18:48:33 - ERROR - utils.button_clicker - button_clicker.py:77 - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:69 - 检查远程目录结构
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:78 - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:111 - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:114 - 开始下载图像文件
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:127 - 解码并保存图像
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:133 - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
+2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - get_latest_image.py:136 - 读取图像数据
+2025-04-23 18:48:33 - ERROR - utils.get_latest_image - get_latest_image.py:139 - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
+2025-04-23 18:48:33 - ERROR - utils.get_latest_image - get_latest_image.py:145 - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
+2025-04-23 18:48:33 - ERROR - utils.test_case_executor - test_case_executor.py:146 - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff

@@ -11,11 +11,11 @@ from datetime import datetime
 # 定义数据目录
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
 
-# 创建蓝图
-test_cases_bp = Blueprint('test_cases', __name__)
+# 使用已经在__init__.py中创建的蓝图实例
+from backend.routes import test_cases_bp
 test_case_service = TestCaseService()
 
-@test_cases_bp.route('/api/test-cases', methods=['GET'])
+@test_cases_bp.route('', methods=['GET'])
 def get_test_cases():
     """获取所有测试用例"""
     test_cases = TestCaseService.get_all()
@@ -24,7 +24,7 @@ def get_test_cases():
         'test_cases': test_cases
     })
 
-@test_cases_bp.route('/api/test-cases', methods=['POST'])
+@test_cases_bp.route('', methods=['POST'])
 def create_test_case():
     """创建新测试用例"""
     data = request.get_json()
@@ -42,7 +42,7 @@ def create_test_case():
             'message': '创建测试用例失败'
         }), 500
 
-@test_cases_bp.route('/api/test-cases/<int:case_id>', methods=['GET'])
+@test_cases_bp.route('/<int:case_id>', methods=['GET'])
 def get_test_case(case_id):
     """获取单个测试用例"""
     case = TestCaseService.get_by_id(case_id)
@@ -58,7 +58,7 @@ def get_test_case(case_id):
             'message': '测试用例不存在'
         }), 404
 
-@test_cases_bp.route('/api/test-cases/<int:case_id>', methods=['PUT'])
+@test_cases_bp.route('/<int:case_id>', methods=['PUT'])
 def update_test_case(case_id):
     """更新测试用例"""
     data = request.get_json()
@@ -76,7 +76,7 @@ def update_test_case(case_id):
             'message': '更新测试用例失败'
         }), 500
 
-@test_cases_bp.route('/api/test-cases/<int:case_id>', methods=['DELETE'])
+@test_cases_bp.route('/<int:case_id>', methods=['DELETE'])
 def delete_test_case(case_id):
     """删除测试用例"""
     if TestCaseService.delete(case_id):
@@ -90,7 +90,7 @@ def delete_test_case(case_id):
             'message': '删除测试用例失败'
         }), 500
 
-@test_cases_bp.route('/api/test-cases/<int:case_id>/run', methods=['POST'])
+@test_cases_bp.route('/<int:case_id>/run', methods=['POST'])
 def run_test_case(case_id):
     """执行单个测试用例"""
     result = TestCaseService.run(case_id)
@@ -100,7 +100,7 @@ def run_test_case(case_id):
     else:
         return jsonify(result), 500
 
-@test_cases_bp.route('/api/test-cases/batch/run', methods=['POST'])
+@test_cases_bp.route('/batch/run', methods=['POST'])
 def run_batch_test_cases():
     """批量执行测试用例"""
     data = request.get_json()
@@ -113,7 +113,7 @@ def run_batch_test_cases():
     else:
         return jsonify(result), 500
 
-@test_cases_bp.route('/api/test-cases/run-all', methods=['POST'])
+@test_cases_bp.route('/run-all', methods=['POST'])
 def run_all_test_cases():
     """执行所有测试用例"""
     result = TestCaseService.run_all()
@@ -123,7 +123,7 @@ def run_all_test_cases():
     else:
         return jsonify(result), 500
 
-@test_cases_bp.route('/api/test-cases/<int:case_id>/latest-log', methods=['GET'])
+@test_cases_bp.route('/<int:case_id>/latest-log', methods=['GET'])
 def get_latest_log(case_id):
     """获取测试用例的最新日志"""
     result = TestCaseService.get_latest_log(case_id)
@@ -133,7 +133,7 @@ def get_latest_log(case_id):
     else:
         return jsonify(result), 500
 
-@test_cases_bp.route('/api/method-mappings', methods=['GET'])
+@test_cases_bp.route('/method-mappings', methods=['GET'])
 def get_method_mappings():
     """获取方法映射"""
     method_mappings = TestCaseService.get_method_mappings()
@@ -143,7 +143,7 @@ def get_method_mappings():
         'method_mappings': method_mappings
     })
 
-@test_cases_bp.route('/api/test-cases/<int:test_case_id>/status', methods=['PUT'])
+@test_cases_bp.route('/<int:test_case_id>/status', methods=['PUT'])
 def update_test_case_status(test_case_id):
     """
     更新测试用例的状态

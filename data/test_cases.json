@@ -3,9 +3,9 @@
     "id": 1,
     "title": "电子放大",
     "type": "功能测试",
-    "status": "失败",
+    "status": "通过",
     "create_time": "2025-04-23 10:42",
-    "last_execution_time": "2025-04-23 10:45:52",
+    "last_execution_time": "2025-04-23 18:48:33",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"3\"}]}"
   }

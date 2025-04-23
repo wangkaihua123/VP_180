@@ -1,20 +1,16 @@
 """
-主应用入口 - 组装所有模块并启动服务
+主应用入口 - 配置和启动Flask服务器
 """
 import os
 import logging
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # 导入配置
 from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 
 # 导入路由蓝图
-from backend.routes.auth import auth_bp
-from backend.routes.ssh import ssh_bp
-from backend.routes.serial import serial_bp
-from backend.routes.test_cases import test_cases_bp
-from backend.routes.files import files_bp
+from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp
 
 # 设置日志目录
 LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'logs')
@@ -30,16 +26,30 @@ logging.basicConfig(
     ]
 )
 
-def create_app():
-    """创建并配置Flask应用"""
-    # 创建Flask实例
+def create_app(config=None):
+    """
+    创建Flask应用实例
+    
+    Args:
+        config: 配置对象
+    
+    Returns:
+        Flask应用实例
+    """
     app = Flask(__name__)
     
-    # 配置应用
-    app.secret_key = SECRET_KEY
+    # 设置默认配置
+    app.config.from_mapping(
+        SECRET_KEY=os.environ.get('SECRET_KEY', 'dev_key'),
+        DATABASE=os.path.join(app.instance_path, 'database.sqlite'),
+    )
     
-    # 配置CORS
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    if config:
+        # 加载传入的配置
+        app.config.from_mapping(config)
+    
+    # 配置CORS，允许前端访问
+    CORS(app, resources={r"/api/*": {"origins": "*", "supports_credentials": True}})
     
     # 注册蓝图
     app.register_blueprint(auth_bp)
@@ -47,6 +57,10 @@ def create_app():
     app.register_blueprint(serial_bp)
     app.register_blueprint(test_cases_bp)
     app.register_blueprint(files_bp)
+    
+    @app.route('/')
+    def index():
+        return {"message": "Visual Protocol 180 API"}
     
     return app
 

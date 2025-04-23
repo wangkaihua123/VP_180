@@ -12,7 +12,7 @@
 import { API_ROUTES, SSHSettings, SerialSettings, SerialPort, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
 
 // API请求基础配置
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://172.16.10.83:5000/'
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.189:5000/'
 
 // 通用请求处理函数
 export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
@@ -111,7 +111,7 @@ export const serialSettingsAPI = {
   
   update: (settings: SerialSettings) => {
     return fetchAPI(API_ROUTES.SERIAL_SETTINGS.UPDATE, {
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify(settings),
     })
   },

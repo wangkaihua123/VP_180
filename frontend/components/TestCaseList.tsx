@@ -167,7 +167,7 @@ export function TestCaseList({
 
   const handleExecuteSelected = () => {
     if (selectedIds.length > 0) {
-      router.push(`/execute-all?ids=${selectedIds.join(',')}`)
+      router.push(`/execute-all?ids=${selectedIds.join(',')}&autoExecute=true`)
     }
   }
 
