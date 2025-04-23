@@ -855,3 +855,515 @@
 2025-04-23 10:46:05,562 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:46:05] "OPTIONS /api/test-cases HTTP/1.1" 200 -
 2025-04-23 10:46:05,577 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
 2025-04-23 10:46:05,578 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:46:05] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:46:56,042 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\test_cases.py', reloading
+2025-04-23 10:46:56,168 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:46:57,266 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:46:57,269 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:46:57,596 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:46:57,600 - werkzeug - INFO -  * Running on http://172.16.10.83:5000/ (Press CTRL+C to quit)
+2025-04-23 10:48:25,454 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:48:25,458 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:48:25,460 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:48:25,461 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:48:25,462 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:48:25,468 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:48:25,477 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:48:25,485 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:25] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:48:32,692 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:32] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:48:32,694 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:32] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:48:32,703 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:48:32,705 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:32] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:48:32,712 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:48:32,713 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:48:32] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:49:19,582 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:19] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:49:19,598 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:49:19,599 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:19] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:49:36,646 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:49:36,648 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:49:36,649 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:49:36,650 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:49:36,653 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:49:36,655 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:49:36,669 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:49:36,679 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:49:36] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:52:32,124 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:52:32] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:52:32,125 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:52:32] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:52:32,144 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:52:32,145 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:52:32] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:52:32,151 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 10:52:32,152 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:52:32] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 10:56:09,083 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:56:09,083 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:56:09,084 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:56:09,085 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:56:09,085 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:56:09,086 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:56:09,104 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:56:09,111 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:56:09] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:58:53,152 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 10:58:53,335 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:58:54,577 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:58:54,580 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:58:54,918 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:58:54,921 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 10:59:13,580 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 10:59:13,719 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 10:59:14,862 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 10:59:14,865 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 10:59:15,200 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 10:59:15,205 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 10:59:58,037 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:59:58] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 10:59:58,038 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:59:58] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 10:59:58,041 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:59:58] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 10:59:58,061 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 10:59:58] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:06,362 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:06] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:06,372 - backend.models.settings - INFO - 成功保存设置到文件
+2025-04-23 11:00:06,386 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:06] "POST /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:06,403 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:06] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:00:11,433 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:11] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:00:22,451 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:22] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 11:00:22,453 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:22] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 11:00:22,467 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 11:00:22,469 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:22] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 11:00:22,477 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 11:00:22,478 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:22] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 11:00:25,769 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:25,770 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:00:25,771 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:25,772 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:00:25,775 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:00:25,776 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:00:25,796 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:25,806 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:25] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:37,196 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:37] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:00:37,198 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:37] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:00:37,199 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:37] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:00:37,225 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:00:37] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:02:44,431 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 11:02:44,721 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:02:46,079 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:02:46,082 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:02:46,413 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:02:46,419 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:03:10,364 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 11:03:10,506 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:03:11,517 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:03:11,520 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:03:11,843 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:03:11,846 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:03:18,681 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:18] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:03:18,682 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:18] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:03:18,683 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:18] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:03:18,698 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:18] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:03:25,331 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:25] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:03:39,396 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:39] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:03:39,399 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:39] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:03:39,401 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:03:39] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:04:36,925 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 11:04:37,181 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:04:38,217 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:04:38,221 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:04:38,546 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:04:38,550 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:04:50,207 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 11:04:50,437 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:04:51,511 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:04:51,515 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:04:51,866 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:04:51,869 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:05:04,340 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 11:05:04,469 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:05:05,624 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:05:05,626 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:05:06,029 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:05:06,034 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:05:13,007 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 11:05:13,165 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:05:14,155 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:05:14,158 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:05:14,482 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:05:14,486 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:05:46,910 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:05:46] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:05:46,912 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:05:46] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:05:46,914 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:05:46] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:06:08,643 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:08] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 11:06:08,663 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 11:06:08,665 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:08] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 11:06:09,229 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:09] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 11:06:09,247 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:09] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-23 11:06:09,264 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:09] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-23 11:06:09,292 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 11:06:13,949 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:13] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:06:13,952 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:13] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:06:13,953 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:13] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:06:19,332 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 11:06:19,354 - backend.services.test_case_service - ERROR - SSH连接失败
+2025-04-23 11:06:19,355 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:06:19] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-23 11:07:04,589 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:07:05,660 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:07:05,662 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:07:05,978 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:07:05,981 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:07:09,556 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:07:09] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:07:09,557 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:07:09] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:07:09,561 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:07:09] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:07:13,123 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:07:13] "OPTIONS /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 11:07:23,155 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 11:07:23,167 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:07:23] "[31m[1mPOST /api/ssh/test HTTP/1.1[0m" 400 -
+2025-04-23 11:08:03,330 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 11:08:03,534 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:08:04,613 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:08:04,616 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:08:04,956 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:08:04,961 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:08:34,622 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 11:08:34,843 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:08:35,884 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:08:35,888 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:08:36,370 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:08:36,379 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:09:03,658 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:09:03] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:09:03,661 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:09:03] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:09:03,662 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:09:03] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 11:09:27,819 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:09:27] "OPTIONS /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 11:09:37,864 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 11:09:38,162 - paramiko.transport - INFO - Authentication (password) successful!
+2025-04-23 11:09:38,164 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:09:38] "POST /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 11:15:42,531 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:15:42] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:15:44,420 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:15:44] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:15:44,421 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:15:44] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:19:27,666 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:19:27] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:23:57,124 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 11:23:57,495 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:23:59,326 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:23:59,328 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:23:59,684 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:23:59,720 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:27:05,603 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:27:05] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:27:05,604 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:27:05] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:30:35,829 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:30:35] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:30:35,831 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:30:35] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:40:43,756 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:40:43] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 11:40:43,758 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 11:40:43] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 11:42:41,395 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 11:42:41,632 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:42:42,984 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:42:42,988 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:42:43,324 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:42:43,327 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 11:43:40,123 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 11:43:40,319 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 11:43:41,496 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 11:43:41,498 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 11:43:41,833 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 11:43:41,838 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 13:02:31,785 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:02:31] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 13:02:32,887 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:02:32] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 13:13:41,223 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:13:41] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 13:13:41,223 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:13:41] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 13:24:18,171 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:24:18] "[33mGET /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 13:24:18,172 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:24:18] "[33mGET /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 13:24:22,784 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:24:22] "[33mOPTIONS /api/serial/test HTTP/1.1[0m" 404 -
+2025-04-23 13:26:04,361 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 13:26:04,759 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 13:26:05,817 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 13:26:05,820 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 13:26:06,131 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 13:26:06,135 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 13:26:24,589 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 13:26:24,877 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 13:26:25,949 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 13:26:25,952 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 13:26:26,287 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 13:26:26,291 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 13:26:40,459 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:26:40] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 13:26:40,469 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 13:26:40,470 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 13:26:40,479 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 13:26:40,479 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 13:26:40,480 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 13:26:40,481 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:26:40] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 13:26:49,215 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:26:49] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 13:26:49,233 - backend.models.settings - INFO - 成功保存设置到文件
+2025-04-23 13:26:49,250 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 13:26:49] "POST /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 13:26:58,240 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 13:26:58,521 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 13:26:59,528 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 13:26:59,530 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 13:26:59,859 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 13:26:59,864 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 13:27:00,168 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 13:27:00,383 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 13:27:01,486 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 13:27:01,488 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 13:27:01,829 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 13:27:01,833 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 13:29:02,080 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\utils\\ssh_manager.py', reloading
+2025-04-23 13:29:02,306 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 13:29:03,375 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 13:29:03,378 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 13:29:03,727 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 13:29:03,732 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 13:29:32,806 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\services\\ssh_service.py', reloading
+2025-04-23 13:29:33,013 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 13:29:34,050 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 13:29:34,053 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 13:29:34,388 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 13:29:34,393 - werkzeug - INFO -  * Running on http://10.0.18.132:5000/ (Press CTRL+C to quit)
+2025-04-23 14:38:09,076 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\utils\\ssh_manager.py', reloading
+2025-04-23 14:38:09,463 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 14:38:10,901 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 14:38:10,905 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 14:38:11,244 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 14:38:11,249 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 14:38:28,691 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:28] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:38:28,692 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:28] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:38:28,700 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 14:38:28,701 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 14:38:28,710 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 14:38:28,711 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 14:38:28,711 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 14:38:28,713 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:28] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 14:38:31,017 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:31] "OPTIONS /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 14:38:41,061 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 14:38:43,063 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:43] "POST /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 14:38:48,397 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 14:38:48,397 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 14:38:48,402 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 14:38:48,403 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 14:38:48,403 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 14:38:48,404 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:48] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 14:38:51,432 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:51] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:38:51,449 - backend.models.settings - INFO - 成功保存设置到文件
+2025-04-23 14:38:51,468 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:51] "POST /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:38:51,499 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:51] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:38:51,517 - backend.models.settings - INFO - 成功保存设置到文件
+2025-04-23 14:38:51,523 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:51] "POST /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:38:54,872 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:54] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:38:54,874 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:38:54] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:45:07,217 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:07] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:45:19,934 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:19] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:45:19,938 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:19] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:45:19,940 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 14:45:19,942 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 14:45:19,945 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:19] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:45:19,951 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:19] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:45:19,954 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 14:45:19,955 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 14:45:19,955 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 14:45:19,957 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:19] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 14:45:19,965 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 14:45:19,966 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 14:45:19,974 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 14:45:19,975 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 14:45:19,975 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 14:45:19,976 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:19] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 14:45:26,139 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:26] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:45:26,143 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:26] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:45:45,317 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 14:45:46,282 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 14:45:46,285 - werkzeug - INFO -  * Debugger PIN: 602-528-017
+2025-04-23 14:45:46,602 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 14:45:46,605 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 14:45:49,928 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:45:49] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:46:28,731 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:46:28] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:46:28,743 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:46:28] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:46:28,751 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:46:28] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 14:46:28,754 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 14:46:28,754 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 14:46:28,758 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:46:28] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 14:46:28,767 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 14:46:28,768 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 14:46:28,768 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 14:46:28,769 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:46:28] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 14:46:28,780 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 14:46:28,780 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 14:46:28,786 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 14:46:28,786 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 14:46:28,786 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 14:46:28,787 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:46:28] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 14:47:44,176 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:47:44] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:47:44,185 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:47:44] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 14:55:32,459 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 14:55:33,645 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 14:55:33,647 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 14:55:33,996 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 14:55:34,000 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 14:56:15,758 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 14:56:15] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:01:40,770 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:01:40] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:06:45,605 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:06:45] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:07:22,773 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 15:07:23,753 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 15:07:23,756 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 15:07:24,080 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 15:07:24,084 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 15:07:28,136 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:07:28] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:08:00,916 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,918 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,921 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,921 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,929 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:08:00,929 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:08:00,929 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:08:00,929 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:08:00,942 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:08:00,942 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:08:00,944 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:08:00,944 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:08:00,944 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:08:00,946 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,947 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:08:00,947 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:08:00,949 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:08:00,949 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,964 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,968 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:08:00,976 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:08:00,977 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:08:00,983 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:08:00,984 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:08:00,985 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:08:00,986 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:00] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:08:00,995 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:08:00,995 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:08:01,000 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:08:01,001 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:08:01,001 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:08:01,002 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:01] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:08:03,881 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:03] "OPTIONS /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 15:08:13,928 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 15:08:15,963 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:15] "POST /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 15:08:19,960 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:19] "[35m[1mOPTIONS /api/serial/test HTTP/1.1[0m" 500 -
+2025-04-23 15:08:34,948 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:34] "[35m[1mOPTIONS /api/serial/test HTTP/1.1[0m" 500 -
+2025-04-23 15:08:43,003 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:43] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:08:43,007 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:08:43] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:10:37,590 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:10:37] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:12:19,914 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:19] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:12:30,285 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,285 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:12:30,287 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,290 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:12:30,291 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,291 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:12:30,292 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,292 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:12:30,300 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:12:30,300 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:12:30,301 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:12:30,302 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:12:30,302 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:12:30,302 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:12:30,303 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:12:30,303 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:12:30,312 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,319 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,324 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,332 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:12:30,333 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:12:30,335 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:12:30,340 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:12:30,341 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:12:30,342 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:12:30,343 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:12:30,351 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:12:30,352 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:12:30,358 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:12:30,359 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:12:30,359 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:12:30,360 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:30] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:12:34,190 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:34] "[35m[1mOPTIONS /api/serial/test HTTP/1.1[0m" 500 -
+2025-04-23 15:12:35,953 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:35] "OPTIONS /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 15:12:46,009 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 15:12:50,035 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:12:50] "POST /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 15:13:38,846 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:38] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:13:38,848 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:38] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:13:38,849 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:13:38,851 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:13:38,858 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:13:38,858 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:13:38,860 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:13:38,861 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:38] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:13:38,882 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:38] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:13:38,886 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:38] "GET /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 15:13:38,890 - backend.routes.serial - INFO - 操作系统: nt
+2025-04-23 15:13:38,890 - backend.routes.serial - INFO - 尝试使用serial.tools.list_ports.comports()获取串口列表
+2025-04-23 15:13:38,897 - backend.routes.serial - INFO - 标准方法发现串口数量: 1
+2025-04-23 15:13:38,898 - backend.routes.serial - INFO - 发现串口: COM4, 描述: USB-SERIAL CH340 (COM4)
+2025-04-23 15:13:38,898 - backend.routes.serial - INFO - 最终返回串口列表数量: 1
+2025-04-23 15:13:38,900 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:38] "GET /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 15:13:41,829 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:41] "[35m[1mOPTIONS /api/serial/test HTTP/1.1[0m" 500 -
+2025-04-23 15:13:48,138 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:48] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:13:48,141 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:13:48] "[33mOPTIONS /api/test-cases HTTP/1.1[0m" 404 -
+2025-04-23 15:16:44,800 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 15:16:44,999 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 15:16:46,110 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 15:16:46,113 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 15:16:46,447 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 15:16:46,452 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 15:16:54,489 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:16:54] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:16:54,509 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 15:16:54,510 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:16:54] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:17:22,557 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 15:17:23,510 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 15:17:23,512 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 15:17:23,835 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 15:17:23,839 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 15:17:33,163 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:17:33] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:17:33,188 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 15:17:33,190 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:17:33] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:18:14,198 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:18:14,201 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 15:18:14,202 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 15:18:14,203 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:18:14,205 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 15:18:14,210 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 15:18:14,249 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:18:14,260 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:14] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:18:24,976 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:24] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:18:24,977 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:24] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 15:18:24,979 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:24] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 15:18:25,004 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:25] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:18:35,863 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:35] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:18:35,865 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:35] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:18:35,887 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 15:18:35,888 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:35] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:18:35,897 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 15:18:35,899 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:18:35] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:19:08,382 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:08] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:19:08,399 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 15:19:08,403 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:08] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 15:19:11,339 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:19:11,342 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 15:19:11,343 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 15:19:11,344 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "OPTIONS /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:19:11,345 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 15:19:11,346 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 15:19:11,370 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "GET /api/ssh/settings HTTP/1.1" 200 -
+2025-04-23 15:19:11,383 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 15:19:11] "GET /api/ssh/settings HTTP/1.1" 200 -
