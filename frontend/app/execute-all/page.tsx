@@ -1,3 +1,13 @@
+/**
+ * 测试用例执行页面
+ * 
+ * 该页面用于批量执行测试用例并实时显示执行结果：
+ * - 支持从URL参数加载指定的测试用例
+ * - 提供测试用例执行进度和状态的实时反馈
+ * - 展示每个测试用例的详细日志
+ * - 查看执行过程中的图片和截图
+ * - 提供暂停、继续和导出日志等控制功能
+ */
 "use client"
 
 import { useState, useEffect, useRef } from "react"
@@ -42,8 +52,14 @@ import type { TestCase } from "@/app/api/routes"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 
+/**
+ * 测试用例状态类型
+ */
 type TestCaseStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped'
 
+/**
+ * 测试用例日志接口
+ */
 interface TestCaseLog {
   id: number
   timestamp: string
@@ -52,13 +68,33 @@ interface TestCaseLog {
   testCaseId: number
 }
 
+/**
+ * 带状态的测试用例接口
+ */
 interface TestCaseWithStatus extends TestCase {
   name: string
   color: string
   status: TestCaseStatus
 }
 
-// 根据ID生成一致的颜色
+/**
+ * 测试图片接口
+ */
+interface TestImage {
+  id: string
+  testCaseId: number
+  timestamp: string
+  title: string
+  description: string
+  url: string
+  type: 'image' | 'screenshot'
+}
+
+/**
+ * 根据ID生成一致的颜色
+ * @param id 测试用例ID
+ * @returns 颜色字符串
+ */
 const getRandomColor = (id: number): string => {
   const colors = [
     "blue", "green", "purple", "orange", "teal", 
@@ -68,106 +104,9 @@ const getRandomColor = (id: number): string => {
   return colors[id % colors.length];
 }
 
-// 模拟测试用例数据
-const testCases = [
-  { id: 1, name: "登录功能", type: "功能测试", status: "进行中", color: "blue" },
-  { id: 2, name: "用户注册", type: "功能测试", status: "等待中", color: "green" },
-  { id: 3, name: "支付处理", type: "集成测试", status: "等待中", color: "purple" },
-  { id: 4, name: "数据导出", type: "性能测试", status: "等待中", color: "orange" },
-  { id: 5, name: "API响应时间", type: "性能测试", status: "等待中", color: "teal" },
-]
-
-// 生成随机日志消息
-const generateLogMessage = (testCaseId: number) => {
-  const testCase = testCases.find((tc) => tc.id === testCaseId)
-  const actions = [
-    "初始化测试环境",
-    "加载测试数据",
-    "执行前置条件",
-    "点击元素",
-    "输入文本",
-    "验证元素存在",
-    "验证文本内容",
-    "等待元素可见",
-    "截取屏幕截图",
-    "检查API响应",
-    "验证数据库记录",
-    "清理测试数据",
-    "关闭测试连接",
-  ]
-
-  const results = [
-    "成功",
-    "完成",
-    "通过",
-    "失败: 元素未找到",
-    "失败: 超时",
-    "失败: 断言错误",
-    "警告: 响应时间过长",
-    "警告: 资源使用率高",
-  ]
-
-  const action = actions[Math.floor(Math.random() * actions.length)]
-  const result = results[Math.floor(Math.random() * results.length)]
-  const isError = result.includes("失败")
-  const isWarning = result.includes("警告")
-
-  const type: TestCaseLog['type'] = isError ? "error" : isWarning ? "warning" : "info"
-
-  const log: TestCaseLog = {
-    id: Date.now() + Math.floor(Math.random() * 1000),
-    timestamp: new Date().toISOString().replace("T", " ").substring(0, 19),
-    message: `${action} - ${result}`,
-    type,
-    testCaseId,
-  }
-  return log
-}
-
-// 模拟图片和截图数据
-const generateMockImages = (testCaseId: number) => {
-  // 为每个测试用例生成2-5张图片
-  const count = Math.floor(Math.random() * 4) + 2
-  return Array.from({ length: count }, (_, i) => ({
-    id: `img-${testCaseId}-${i}`,
-    testCaseId,
-    timestamp: new Date(Date.now() - i * 30000).toISOString().replace("T", " ").substring(0, 19),
-    title: `测试图片 ${i + 1}`,
-    description: `测试用例 #${testCaseId} 的图片 ${i + 1}`,
-    url: `/placeholder.svg?height=400&width=600&text=测试图片${i + 1}`,
-    type: "image",
-  }))
-}
-
-const generateMockScreenshots = (testCaseId: number) => {
-  // 为每个测试用例生成3-7张截图
-  const count = Math.floor(Math.random() * 5) + 3
-  return Array.from({ length: count }, (_, i) => ({
-    id: `scr-${testCaseId}-${i}`,
-    testCaseId,
-    timestamp: new Date(Date.now() - i * 20000).toISOString().replace("T", " ").substring(0, 19),
-    title: `截图 ${i + 1}`,
-    description: `测试步骤 ${i + 1} 的截图`,
-    url: `/placeholder.svg?height=1080&width=1920&text=测试截图${i + 1}`,
-    type: "screenshot",
-  }))
-}
-
-const mapStatus = (status: string): TestCaseStatus => {
-  switch (status) {
-    case '进行中':
-      return 'running'
-    case '通过':
-      return 'completed'
-    case '失败':
-      return 'failed'
-    case '跳过':
-      return 'skipped'
-    default:
-      return 'pending'
-  }
-}
-
+/**
+ * 测试用例执行页面组件
+ */
 export default function ExecuteAllPage() {
   const router = useRouter()
   const { toast } = useToast()
@@ -192,15 +131,16 @@ export default function ExecuteAllPage() {
   const [progress, setProgress] = useState(0)
   const [expandedTestCases, setExpandedTestCases] = useState<number[]>([1])
   const [completedTestCases, setCompletedTestCases] = useState(0)
-  const [testCaseImages, setTestCaseImages] = useState<{ [key: number]: any[] }>({})
-  const [testCaseScreenshots, setTestCaseScreenshots] = useState<{ [key: number]: any[] }>({})
-  const [selectedImage, setSelectedImage] = useState<any>(null)
+  const [testCaseImages, setTestCaseImages] = useState<{ [key: number]: TestImage[] }>({})
+  const [testCaseScreenshots, setTestCaseScreenshots] = useState<{ [key: number]: TestImage[] }>({})
+  const [selectedImage, setSelectedImage] = useState<TestImage | null>(null)
   const [imageDialogOpen, setImageDialogOpen] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(1)
   const [rotation, setRotation] = useState(0)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [loading, setLoading] = useState(true)
   const searchParams = useSearchParams()
+  const autoExecuteAttemptedRef = useRef(false)
 
   useEffect(() => {
     // 从 URL 参数中获取选中的测试用例 ID
@@ -210,70 +150,83 @@ export default function ExecuteAllPage() {
     }
   }, [searchParams])
 
-  // 新增：检查是否需要自动执行测试用例
+  // 修改：检查是否需要自动执行测试用例
   useEffect(() => {
     // 检查URL参数中是否有autoExecute=true
     const autoExecute = searchParams.get('autoExecute') === 'true'
     
-    // 如果需要自动执行且测试用例已加载完成且未在执行中
-    if (autoExecute && !loading && !executing && testCases.length > 0) {
-      // 自动执行测试用例
-      handleExecuteSelected();
+    // 记录更详细的日志以便调试
+    console.log('自动执行检查:', { 
+      autoExecute, 
+      loading, 
+      executing, 
+      testCasesLength: testCases.length,
+      attempted: autoExecuteAttemptedRef.current 
+    });
+
+    // 如果需要自动执行、未加载中、未执行中、有测试用例、且未尝试过自动执行
+    if (autoExecute && !loading && !executing && testCases.length > 0 && !autoExecuteAttemptedRef.current) {
+      console.log('触发自动执行');
+      // 标记已尝试自动执行
+      autoExecuteAttemptedRef.current = true;
+      // 设置短暂延时确保DOM完全渲染
+      setTimeout(() => {
+        // 自动执行测试用例
+        handleExecuteSelected();
+      }, 500);
     }
   }, [searchParams, loading, testCases, executing]);
-
-  // 初始化图片和截图数据
-  useEffect(() => {
-    const images: { [key: number]: any[] } = {}
-    const screenshots: { [key: number]: any[] } = {}
-
-    testCases.forEach((tc) => {
-      images[tc.id] = generateMockImages(tc.id)
-      screenshots[tc.id] = generateMockScreenshots(tc.id)
-    })
-
-    setTestCaseImages(images)
-    setTestCaseScreenshots(screenshots)
-  }, [testCases])
 
   useEffect(() => {
     loadTestCases()
   }, [selectedIds])
 
+  /**
+   * 加载测试用例
+   */
   const loadTestCases = async () => {
     try {
       setLoading(true)
       // 加载测试用例列表
       const response = await testCasesAPI.list()
       
-      if (response.success && response.data) {
-        // 如果有选中的测试用例，只显示选中的
-        if (selectedIds.length > 0) {
-          const filteredTestCases = response.data
-            .filter((tc: TestCase) => selectedIds.includes(tc.id))
-            .map(tc => ({
+      console.log("API返回测试用例数据:", response); // 调试日志
+      
+      if (response.success && (response.data || response.test_cases)) {
+        // 处理API可能返回不同格式数据的情况
+        const apiTestCases = response.data || response.test_cases || [];
+        console.log("处理后的测试用例数据:", apiTestCases);
+        
+        if (apiTestCases && apiTestCases.length > 0) {
+          // 如果有选中的测试用例，只显示选中的
+          if (selectedIds.length > 0) {
+            const filteredTestCases = apiTestCases
+              .filter((tc: TestCase) => selectedIds.includes(tc.id))
+              .map((tc: TestCase) => ({
+                ...tc,
+                name: tc.title || `测试用例 #${tc.id}`,
+                color: getRandomColor(tc.id),
+                status: mapStatus(tc.status)
+              }));
+            console.log("过滤后的测试用例:", filteredTestCases);
+            setTestCases(filteredTestCases);
+          } else {
+            const formattedTestCases = apiTestCases.map((tc: TestCase) => ({
               ...tc,
-              name: tc.title,
+              name: tc.title || `测试用例 #${tc.id}`,
               color: getRandomColor(tc.id),
               status: mapStatus(tc.status)
             }));
-          setTestCases(filteredTestCases);
-          // 同步设置 testCaseStatus 状态
-          setTestCaseStatus(filteredTestCases);
+            console.log("所有测试用例:", formattedTestCases);
+            setTestCases(formattedTestCases);
+          }
         } else {
-          const formattedTestCases = response.data.map(tc => ({
-            ...tc,
-            name: tc.title,
-            color: getRandomColor(tc.id),
-            status: mapStatus(tc.status)
-          }));
-          setTestCases(formattedTestCases);
-          // 同步设置 testCaseStatus 状态
-          setTestCaseStatus(formattedTestCases);
+          console.warn("API返回了空的测试用例数组");
+          setTestCases([]);
         }
       } else {
+        console.error("API返回错误:", response.message);
         setTestCases([]);
-        setTestCaseStatus([]);
         toast({
           title: "加载失败",
           description: response.message || "无法加载测试用例",
@@ -289,23 +242,48 @@ export default function ExecuteAllPage() {
       });
     } finally {
       setLoading(false);
+      
+      // 直接在loadTestCases完成后检查是否需要自动执行
+      setTimeout(() => {
+        const autoExecute = searchParams.get('autoExecute') === 'true';
+        console.log("测试用例加载完成后检查自动执行:", {
+          autoExecute,
+          testCasesCount: testCases.length,
+          executing,
+          attempted: autoExecuteAttemptedRef.current
+        });
+        
+        if (autoExecute && !executing && !autoExecuteAttemptedRef.current && testCases.length > 0) {
+          console.log("加载完成后立即执行");
+          autoExecuteAttemptedRef.current = true;
+          handleExecuteSelected();
+        }
+      }, 300); // 短延时确保状态已更新
     }
   }
 
-  // 切换测试用例展开/折叠状态
+  /**
+   * 切换测试用例展开/折叠状态
+   * @param id 测试用例ID
+   */
   const toggleTestCase = (id: number) => {
     setExpandedTestCases((prev) => (prev.includes(id) ? prev.filter((tcId) => tcId !== id) : [...prev, id]))
   }
 
-  // 打开图片查看器
-  const openImageViewer = (image: any) => {
+  /**
+   * 打开图片查看器
+   * @param image 要查看的图片
+   */
+  const openImageViewer = (image: TestImage) => {
     setSelectedImage(image)
     setImageDialogOpen(true)
     setZoomLevel(1)
     setRotation(0)
   }
 
-  // 切换到下一张图片
+  /**
+   * 切换到下一张图片
+   */
   const nextImage = () => {
     if (!selectedImage) return
 
@@ -319,7 +297,9 @@ export default function ExecuteAllPage() {
     }
   }
 
-  // 切换到上一张图片
+  /**
+   * 切换到上一张图片
+   */
   const prevImage = () => {
     if (!selectedImage) return
 
@@ -333,93 +313,6 @@ export default function ExecuteAllPage() {
     }
   }
 
-  // 模拟测试执行过程
-  useEffect(() => {
-    if (!isRunning) return
-    
-    if (testCases.length > 0 && testCaseStatus.length === 0) {
-      // 确保 testCaseStatus 被初始化
-      setTestCaseStatus([...testCases]);
-    }
-
-    // 模拟测试用例执行顺序和状态变化
-    const runTestCases = async () => {
-      // 第一个测试用例已经在进行中
-      let currentTestCaseIndex = 0
-
-      while (currentTestCaseIndex < testCases.length && isRunning) {
-        const currentTestCase = testCases[currentTestCaseIndex]
-
-        // 更新当前测试用例状态为"进行中"
-        setTestCaseStatus((prev) => prev.map((tc) => (tc.id === currentTestCase.id ? { ...tc, status: "running" } : tc)))
-
-        // 模拟测试用例执行时间 (3-8秒)
-        const executionTime = Math.floor(Math.random() * 5000) + 3000
-        const startTime = Date.now()
-        const logInterval = setInterval(() => {
-          // 每隔一段时间添加一条日志
-          const newLog = generateLogMessage(currentTestCase.id)
-          setLogs((prev) => [...prev, newLog])
-
-          // 更新进度
-          const elapsed = Date.now() - startTime
-          const testCaseProgress = Math.min(elapsed / executionTime, 1)
-          const overallProgress = (currentTestCaseIndex + testCaseProgress) / testCases.length
-          setProgress(Math.floor(overallProgress * 100))
-        }, 500)
-
-        // 等待测试用例执行完成
-        await new Promise((resolve) => setTimeout(resolve, executionTime))
-        clearInterval(logInterval)
-
-        // 随机决定测试结果 (80%成功率)
-        const isSuccess = Math.random() < 0.8
-
-        // 更新测试用例状态
-        setTestCaseStatus((prev) =>
-          prev.map((tc) => (tc.id === currentTestCase.id ? { ...tc, status: isSuccess ? "completed" : "failed" } : tc)),
-        )
-
-        // 添加测试结果日志
-        setLogs((prev) => [
-          ...prev,
-          {
-            id: Date.now() + Math.floor(Math.random() * 1000),
-            timestamp: new Date().toISOString().replace("T", " ").substring(0, 19),
-            message: `测试用例 "${currentTestCase.name}" ${isSuccess ? "执行成功" : "执行失败"}`,
-            type: isSuccess ? "success" : "error",
-            testCaseId: currentTestCase.id,
-          },
-        ])
-
-        // 更新已完成测试用例数量
-        setCompletedTestCases((prev) => prev + 1)
-
-        // 移动到下一个测试用例
-        currentTestCaseIndex++
-
-        // 如果还有下一个测试用例，更新其状态为"进行中"
-        if (currentTestCaseIndex < testCases.length) {
-          const nextTestCase = testCases[currentTestCaseIndex]
-          setTestCaseStatus((prev) => prev.map((tc) => (tc.id === nextTestCase.id ? { ...tc, status: "running" } : tc)))
-
-          // 自动展开当前执行的测试用例
-          setExpandedTestCases((prev) => (prev.includes(nextTestCase.id) ? prev : [...prev, nextTestCase.id]))
-        } else {
-          // 所有测试用例执行完成
-          setIsRunning(false)
-          setProgress(100)
-        }
-      }
-    }
-
-    runTestCases()
-
-    return () => {
-      // 清理函数
-    }
-  }, [isRunning])
-
   // 自动滚动到底部
   useEffect(() => {
     if (scrollAreaRef.current && isRunning) {
@@ -428,43 +321,9 @@ export default function ExecuteAllPage() {
     }
   }, [logs, isRunning])
 
-  // 获取日志类型的样式
-  const getLogTypeStyle = (type: string) => {
-    switch (type) {
-      case "error":
-        return "text-red-500 font-medium"
-      case "warning":
-        return "text-yellow-500"
-      case "success":
-        return "text-green-500 font-medium"
-      case "info":
-        return "text-blue-500"
-      default:
-        return "text-gray-500"
-    }
-  }
-
-  // 获取测试用例状态的样式和图标
-  const getStatusBadge = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return <Badge variant="outline"><Clock className="w-4 h-4 mr-1" />等待中</Badge>
-      case 'running':
-        return <Badge variant="default"><Play className="w-4 h-4 mr-1" />执行中</Badge>
-      case 'completed':
-      case '通过':
-        return <Badge variant="success"><CheckCircle className="w-4 h-4 mr-1" />通过</Badge>
-      case 'failed':
-      case '失败':
-        return <Badge variant="destructive"><XCircle className="w-4 h-4 mr-1" />失败</Badge>
-      case 'skipped':
-        return <Badge variant="secondary"><ArrowRight className="w-4 h-4 mr-1" />跳过</Badge>
-      default:
-        return <Badge variant="outline">{status}</Badge>
-    }
-  }
-
-  // 保存日志到文件
+  /**
+   * 保存日志到文件
+   */
   const saveLogsToFile = () => {
     const content = logs.map((log) => `[${log.timestamp}] [测试用例 #${log.testCaseId}] ${log.message}`).join("\n")
 
@@ -479,15 +338,25 @@ export default function ExecuteAllPage() {
     URL.revokeObjectURL(url)
   }
 
-  // 按测试用例ID过滤日志
+  /**
+   * 按测试用例ID过滤日志
+   * @param testCaseId 测试用例ID
+   * @returns 过滤后的日志数组
+   */
   const getTestCaseLogs = (testCaseId: number) => {
     return logs.filter((log) => log.testCaseId === testCaseId)
   }
 
+  /**
+   * 添加日志条目
+   * @param testCaseId 测试用例ID
+   * @param message 日志消息
+   * @param type 日志类型
+   */
   const addLog = (testCaseId: number, message: string, type: TestCaseLog['type']) => {
     const newLog: TestCaseLog = {
       id: Date.now(),
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString().replace("T", " ").substring(0, 19),
       message,
       type,
       testCaseId
@@ -495,12 +364,37 @@ export default function ExecuteAllPage() {
     setLogs(prev => [...prev, newLog])
   }
 
+  /**
+   * 将状态字符串映射为TestCaseStatus类型
+   * @param status 状态字符串
+   * @returns 标准化的测试用例状态
+   */
+  const mapStatus = (status: string): TestCaseStatus => {
+    switch (status) {
+      case '进行中':
+        return 'running'
+      case '通过':
+        return 'completed'
+      case '失败':
+        return 'failed'
+      case '跳过':
+        return 'skipped'
+      default:
+        return 'pending'
+    }
+  }
+
+  /**
+   * 执行选中的测试用例
+   */
   const handleExecuteSelected = async () => {
     if (executing) return
 
     setExecuting(true)
     setIsPaused(false)
     setLogs([])
+    setProgress(0)
+    setCompletedTestCases(0)
     setExecutionStats({
       total: selectedIds.length || testCases.length,
       completed: 0,
@@ -509,17 +403,18 @@ export default function ExecuteAllPage() {
     })
 
     // 重置所有测试用例状态为待执行
-    setTestCaseStatus(prev =>
-      prev.map(tc => ({
-        ...tc,
-        status: 'pending'
-      }))
-    )
+    const idsToExecute = selectedIds.length > 0 ? selectedIds : testCases.map(tc => tc.id)
+    const updatedTestCases = testCases.map(tc => ({
+      ...tc,
+      status: idsToExecute.includes(tc.id) ? 'pending' : tc.status
+    }))
+    setTestCases(updatedTestCases)
 
     try {
       if (executionOrder === 'sequential') {
         // 串行执行
-        for (const id of (selectedIds.length > 0 ? selectedIds : testCases.map(tc => tc.id))) {
+        for (let i = 0; i < idsToExecute.length; i++) {
+          const id = idsToExecute[i]
           if (isPaused) break
 
           const testCase = testCases.find(tc => tc.id === id)
@@ -528,6 +423,9 @@ export default function ExecuteAllPage() {
           // 更新状态为执行中
           updateTestCaseStatus(id, 'running')
           addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
+          
+          // 自动展开当前执行的测试用例
+          setExpandedTestCases(prev => prev.includes(id) ? prev : [...prev, id])
 
           try {
             const result = await testCasesAPI.run(Number(id))
@@ -555,13 +453,19 @@ export default function ExecuteAllPage() {
             }))
           }
 
+          // 更新进度
+          setCompletedTestCases(i + 1)
+          setProgress(Math.floor(((i + 1) / idsToExecute.length) * 100))
+
+          // 加载测试用例的图片和截图
+          await loadTestCaseMedia(id)
+
           // 等待一小段时间再执行下一个
           await new Promise(resolve => setTimeout(resolve, 1000))
         }
       } else {
         // 并行执行
-        const idsToExecute = selectedIds.length > 0 ? selectedIds : testCases.map(tc => tc.id)
-        const promises = idsToExecute.map(async id => {
+        const promises = idsToExecute.map(async (id, index) => {
           const testCase = testCases.find(tc => tc.id === id)
           if (!testCase) return
 
@@ -593,23 +497,133 @@ export default function ExecuteAllPage() {
               failed: prev.failed + 1
             }))
           }
+
+          // 加载测试用例的图片和截图
+          await loadTestCaseMedia(id)
+
+          // 更新进度
+          setCompletedTestCases(prev => prev + 1)
+          setProgress(prev => Math.floor((setCompletedTestCases.length / idsToExecute.length) * 100))
         })
 
         await Promise.all(promises)
       }
     } finally {
       setExecuting(false)
+      setProgress(100) // 确保进度达到100%
     }
   }
 
+  /**
+   * 更新测试用例状态
+   * @param id 测试用例ID
+   * @param status 新状态
+   */
   const updateTestCaseStatus = (id: number, status: string) => {
-    setTestCaseStatus(prev => prev.map(tc => 
+    setTestCases(prev => prev.map(tc => 
       tc.id === id ? { ...tc, status: mapStatus(status) } : tc
     ))
   }
 
+  /**
+   * 加载测试用例的图片和截图
+   * @param testCaseId 测试用例ID
+   */
+  const loadTestCaseMedia = async (testCaseId: number) => {
+    try {
+      // 这里应该调用真实API获取图片和截图
+      // 示例: const response = await testCasesAPI.getMedia(testCaseId)
+      // 注意: 这里需要根据实际API实现
+      
+      // 目前使用空数组占位，实际项目中应替换为API调用
+      setTestCaseImages(prev => ({
+        ...prev,
+        [testCaseId]: []
+      }))
+      
+      setTestCaseScreenshots(prev => ({
+        ...prev,
+        [testCaseId]: []
+      }))
+    } catch (error) {
+      console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, error)
+    }
+  }
+
+  /**
+   * 获取日志类型的样式
+   * @param type 日志类型
+   * @returns CSS类名
+   */
+  const getLogTypeStyle = (type: string) => {
+    switch (type) {
+      case "error":
+        return "text-red-500 font-medium"
+      case "warning":
+        return "text-yellow-500"
+      case "success":
+        return "text-green-500 font-medium"
+      case "info":
+        return "text-blue-500"
+      default:
+        return "text-gray-500"
+    }
+  }
+
+  /**
+   * 获取测试用例状态的样式和图标
+   * @param status 状态字符串
+   * @returns Badge组件
+   */
+  const getStatusBadge = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return <Badge variant="outline"><Clock className="w-4 h-4 mr-1" />等待中</Badge>
+      case 'running':
+        return <Badge variant="default"><Play className="w-4 h-4 mr-1" />执行中</Badge>
+      case 'completed':
+      case '通过':
+        return <Badge variant="success"><CheckCircle className="w-4 h-4 mr-1" />通过</Badge>
+      case 'failed':
+      case '失败':
+        return <Badge variant="destructive"><XCircle className="w-4 h-4 mr-1" />失败</Badge>
+      case 'skipped':
+        return <Badge variant="secondary"><ArrowRight className="w-4 h-4 mr-1" />跳过</Badge>
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  /**
+   * 重新执行测试用例
+   */
+  const handleReExecute = () => {
+    // 重置执行状态
+    setProgress(0);
+    setCompletedTestCases(0);
+    setLogs([]);
+    setIsPaused(false);
+    setExecutionStats({
+      total: 0,
+      completed: 0,
+      failed: 0,
+      skipped: 0
+    });
+    
+    // 重置所有测试用例状态为待执行
+    const updatedTestCases = testCases.map(tc => ({
+      ...tc,
+      status: 'pending' as TestCaseStatus
+    }));
+    setTestCases(updatedTestCases);
+    
+    // 重新执行测试用例
+    handleExecuteSelected();
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
+      {/* 页面头部 */}
       <header className="sticky top-0 z-50 bg-black text-white shadow-md">
         <div className="container mx-auto px-4 py-3 flex items-center">
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-2" asChild>
@@ -627,15 +641,17 @@ export default function ExecuteAllPage() {
         </div>
       </header>
 
+      {/* 主要内容区域 */}
       <main className="flex-1 container mx-auto px-4 py-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+          {/* 测试执行进度卡片 */}
           <Card className="mb-6">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg flex items-center">
                   <Play className="mr-2 h-5 w-5" />
                   测试执行进度
-                  {isRunning && (
+                  {executing && (
                     <Badge variant="outline" className="ml-2 animate-pulse">
                       <RefreshCw className="mr-1 h-3 w-3 animate-spin" />
                       执行中
@@ -643,13 +659,23 @@ export default function ExecuteAllPage() {
                   )}
                 </CardTitle>
                 <div className="flex items-center gap-2">
+                  {/* 重新执行按钮 */}
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setIsRunning(!isRunning)}
-                    disabled={progress === 100}
+                    onClick={handleReExecute}
+                    disabled={executing && !isPaused}
                   >
-                    {isRunning ? (
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    重新执行
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsPaused(!isPaused)}
+                    disabled={!executing}
+                  >
+                    {!isPaused ? (
                       <>
                         <Pause className="mr-2 h-4 w-4" />
                         暂停
@@ -661,7 +687,12 @@ export default function ExecuteAllPage() {
                       </>
                     )}
                   </Button>
-                  <Button variant="outline" size="sm" onClick={saveLogsToFile}>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={saveLogsToFile}
+                    disabled={logs.length === 0}
+                  >
                     <Download className="mr-2 h-4 w-4" />
                     导出日志
                   </Button>
@@ -669,6 +700,7 @@ export default function ExecuteAllPage() {
               </div>
             </CardHeader>
             <CardContent>
+              {/* 进度条 */}
               <div className="mb-2 flex justify-between text-sm">
                 <span>总进度: {progress}%</span>
                 <span>
@@ -677,6 +709,7 @@ export default function ExecuteAllPage() {
               </div>
               <Progress value={progress} className="h-2 mb-4" />
 
+              {/* 测试用例列表及其状态 */}
               <div className="space-y-2">
                 {testCases.map((testCase) => (
                   <Collapsible
@@ -717,6 +750,7 @@ export default function ExecuteAllPage() {
                             </TabsTrigger>
                           </TabsList>
 
+                          {/* 日志选项卡 */}
                           <TabsContent value="logs">
                             <ScrollArea className="h-[200px] rounded-md bg-black p-4 font-mono text-xs text-white">
                               {getTestCaseLogs(testCase.id).length > 0 ? (
@@ -732,6 +766,7 @@ export default function ExecuteAllPage() {
                             </ScrollArea>
                           </TabsContent>
 
+                          {/* 图片选项卡 */}
                           <TabsContent value="images">
                             {testCaseImages[testCase.id]?.length > 0 ? (
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -761,6 +796,7 @@ export default function ExecuteAllPage() {
                             )}
                           </TabsContent>
 
+                          {/* 截图选项卡 */}
                           <TabsContent value="screenshots">
                             {testCaseScreenshots[testCase.id]?.length > 0 ? (
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -798,11 +834,12 @@ export default function ExecuteAllPage() {
             </CardContent>
             <CardFooter className="pt-2">
               <div className="text-sm text-muted-foreground">
-                {isRunning ? "测试执行中..." : progress === 100 ? "测试执行完成" : "测试执行已暂停"}
+                {executing ? "测试执行中..." : progress === 100 ? "测试执行完成" : "测试执行已暂停"}
               </div>
             </CardFooter>
           </Card>
 
+          {/* 完整执行日志卡片 */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center">
@@ -831,24 +868,6 @@ export default function ExecuteAllPage() {
             </CardContent>
           </Card>
         </motion.div>
-
-        <div className="flex justify-between items-center mt-6">
-          <h2 className="text-2xl font-bold">批量执行测试用例</h2>
-          <Button
-            onClick={handleExecuteSelected}
-            disabled={executing || testCases.length === 0}
-          >
-            {executing ? "执行中..." : "执行选中"}
-          </Button>
-        </div>
-
-        <TestCaseList
-          testCases={testCases}
-          loading={loading}
-          selectedIds={selectedIds}
-          onSelectionChange={setSelectedIds}
-          onRefresh={loadTestCases}
-        />
       </main>
 
       {/* 图片查看器对话框 */}
