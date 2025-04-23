@@ -49,45 +49,52 @@ export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
   }
 }
 
+// 检查是否在客户端环境
+const isClient = () => {
+  return typeof window !== 'undefined'
+}
+
 // SSH设置相关API
 export const sshSettingsAPI = {
   get: async () => {
-    const data = await fetchAPI('/api/ssh/settings')
-    // 后端已使用驼峰命名，不需要转换
-    return {
-      host: data.sshHost,
-      port: data.sshPort,
-      username: data.sshUsername,
-      password: data.sshPassword
+    // 确保在客户端环境下执行
+    if (isClient()) {
+      // 从localStorage获取SSH设置
+      const storedSettings = localStorage.getItem('sshSettings');
+      if (storedSettings) {
+        return JSON.parse(storedSettings);
+      }
     }
+    
+    // 如果没有存储设置或不在客户端环境，返回默认设置
+    return {
+      host: "10.0.18.1",
+      port: 22,
+      username: "root",
+      password: "firefly"
+    };
   },
   
   update: (settings: SSHSettings) => {
-    // 转换字段名以匹配后端
-    const data = {
-      sshHost: settings.host,
-      sshPort: settings.port,
-      sshUsername: settings.username,
-      sshPassword: settings.password
+    // 确保在客户端环境下执行
+    if (isClient()) {
+      // 将设置保存到localStorage
+      localStorage.setItem('sshSettings', JSON.stringify(settings));
     }
-    return fetchAPI('/api/ssh/settings', {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    })
+    
+    // 返回成功响应的Promise
+    return Promise.resolve({
+      success: true,
+      message: 'SSH设置已更新'
+    });
   },
     
   testConnection: (settings: SSHSettings) => {
-    // 转换字段名以匹配后端
-    const data = {
-      sshHost: settings.host,
-      sshPort: settings.port,
-      sshUsername: settings.username,
-      sshPassword: settings.password
-    }
+    // 测试连接仍然需要调用后端API
     return fetchAPI('/api/ssh/test', {
       method: 'POST',
-      body: JSON.stringify(data),
-    })
+      body: JSON.stringify(settings),
+    });
   },
 }
 

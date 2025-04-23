@@ -57,29 +57,20 @@ def test_connection():
     """测试SSH连接"""
     try:
         data = request.json
-        ssh_manager = SSHManager()
         
-        # 使用提供的设置信息临时覆盖SSHManager的配置
-        ssh_manager.hostname = data.get('host', ssh_manager.hostname)
-        ssh_manager.port = data.get('port', ssh_manager.port)
-        ssh_manager.username = data.get('username', ssh_manager.username)
-        ssh_manager.password = data.get('password', ssh_manager.password)
+        # 从请求数据中获取SSH设置
+        ssh_settings = {
+            'host': data.get('host'),
+            'port': int(data.get('port', 22)),
+            'username': data.get('username'),
+            'password': data.get('password')
+        }
         
-        # 尝试连接
-        client = ssh_manager.connect()
+        # 调用SSH服务的测试连接方法
+        from backend.services.ssh_service import SSHService
+        result = SSHService.test_connection(ssh_settings)
         
-        if client:
-            # 连接成功，断开连接
-            ssh_manager.disconnect()
-            return jsonify({
-                'success': True,
-                'message': "SSH连接测试成功"
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'message': "SSH连接测试失败: 无法建立连接"
-            }), 400
+        return jsonify(result)
     except Exception as e:
         return jsonify({
             'success': False,
