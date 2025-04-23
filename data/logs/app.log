@@ -1536,3 +1536,295 @@
 2025-04-23 16:57:26,618 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 16:57:26] "POST /api/ssh/test HTTP/1.1" 200 -
 2025-04-23 16:59:01,436 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\ssh.py', reloading
 2025-04-23 16:59:01,636 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 16:59:02,808 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 16:59:02,811 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 16:59:03,128 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 16:59:03,133 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 16:59:20,359 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 16:59:20] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 16:59:20,361 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 16:59:20] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:03:43,303 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:43] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:03:43,435 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:43] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:03:47,360 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:47] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:03:47,684 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:47] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:03:47,714 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 17:03:47,717 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:47] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:03:48,044 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 17:03:48,044 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:48] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:03:50,433 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:50] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:03:50,434 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:50] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:03:50,436 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:50] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:03:50,437 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 17:03:50] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:04:42,900 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:42] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:04:42,965 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:42] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:04:51,303 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:51] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:04:51,304 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:51] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:04:51,329 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 17:04:51,331 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:51] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:04:51,341 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 17:04:51,343 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:51] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:04:53,295 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:53] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:04:53,297 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:53] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:04:53,298 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:53] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:04:53,300 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:04:53] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:05:27,730 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:05:27] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:05:27,786 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:05:27] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:06:29,658 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:06:29] "OPTIONS /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 17:06:29,667 - backend.services.ssh_service - INFO - 尝试连接 SSH: 10.0.18.1:22 with user root
+2025-04-23 17:06:39,690 - paramiko.transport - INFO - Connected (version 2.0, client dropbear_2022.82)
+2025-04-23 17:06:39,792 - paramiko.transport - INFO - Authentication (password) successful!
+2025-04-23 17:06:39,807 - backend.services.ssh_service - INFO - 命令执行成功，输出: Test connection successful
+
+2025-04-23 17:06:39,809 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:06:39] "POST /api/ssh/test HTTP/1.1" 200 -
+2025-04-23 17:07:21,813 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:07:22,009 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:07:23,230 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:07:23,233 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:07:23,557 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:07:23,562 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:07:29,022 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:07:29,193 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:07:30,259 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:07:30,261 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:07:30,581 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:07:30,586 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:07:41,257 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\ssh.py', reloading
+2025-04-23 17:07:41,435 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:07:42,707 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:07:42,709 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:07:43,038 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:07:43,042 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:07:46,061 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:07:46,232 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:07:47,451 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:07:47,454 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:07:47,778 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:07:47,783 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:07:59,868 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:07:59] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:07:59,944 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:07:59] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:13:41,640 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:13:41,852 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:13:43,019 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:13:43,021 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:13:43,371 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:13:43,377 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:13:58,103 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:13:58,253 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:13:59,382 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:13:59,384 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:13:59,778 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:13:59,784 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:16:34,947 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:16:35,194 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:16:36,423 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:16:36,425 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:16:36,801 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:16:36,807 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:17:11,662 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:17:11,916 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:17:13,003 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:17:13,006 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:17:13,307 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:17:13,311 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:17:18,752 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:17:18,909 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:17:20,028 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:17:20,031 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:17:20,357 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:17:20,362 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:17:27,217 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:17:27,412 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:17:28,532 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:17:28,534 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:17:28,859 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:17:28,863 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:18:19,006 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:18:20,407 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:18:20,413 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:18:20,812 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:18:20,816 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:18:23,096 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:18:23] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:18:23,234 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:18:23] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:18:27,300 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:18:27] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:18:27,373 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:18:27] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:20:14,960 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:20:15,206 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:20:16,247 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:20:16,250 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:20:16,561 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:20:16,565 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:20:29,580 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:20:29,786 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:20:30,768 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:20:30,771 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:20:31,106 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:20:31,110 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:20:48,749 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:20:48,979 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:20:49,961 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:20:49,963 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:20:50,286 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:20:50,290 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:21:06,283 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:21:06,421 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:21:07,511 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:21:07,515 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:21:07,907 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:21:07,912 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:21:22,596 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:21:22,739 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:21:24,041 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:21:24,045 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:21:24,549 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:21:24,554 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:23:02,392 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:02] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 17:23:02,404 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:02] "[31m[1mGET /api/serial/settings HTTP/1.1[0m" 405 -
+2025-04-23 17:23:02,467 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:02] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 17:23:02,496 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:02] "[31m[1mGET /api/serial/ports HTTP/1.1[0m" 405 -
+2025-04-23 17:23:11,348 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:23:12,348 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:23:12,350 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:23:12,675 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:23:12,678 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:23:20,132 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:20] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 17:23:20,156 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:20] "[31m[1mGET /api/serial/settings HTTP/1.1[0m" 405 -
+2025-04-23 17:23:20,218 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:20] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 17:23:20,248 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:23:20] "[31m[1mGET /api/serial/ports HTTP/1.1[0m" 405 -
+2025-04-23 17:24:31,548 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:24:31,725 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:24:32,868 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:24:32,871 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:24:33,198 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:24:33,203 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:24:46,586 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:24:46,748 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:24:47,815 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:24:47,818 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:24:48,146 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:24:48,150 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:24:55,343 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:24:55,574 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:24:56,697 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:24:56,700 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:24:57,016 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:24:57,021 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:25:03,861 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:25:04,113 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:25:05,246 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:25:05,249 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:25:05,564 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:25:05,569 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:25:17,621 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:25:17,769 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:25:18,837 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:25:18,841 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:25:19,166 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:25:19,171 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:25:27,227 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-23 17:25:27,419 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:25:28,460 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:25:28,463 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:25:28,798 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:25:28,804 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:25:57,183 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:25:58,215 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:25:58,218 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:25:58,545 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:25:58,549 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:26:10,773 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:26:10] "OPTIONS /api/serial/settings HTTP/1.1" 200 -
+2025-04-23 17:26:10,794 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:26:10] "[31m[1mGET /api/serial/settings HTTP/1.1[0m" 405 -
+2025-04-23 17:26:10,846 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:26:10] "OPTIONS /api/serial/ports HTTP/1.1" 200 -
+2025-04-23 17:26:10,871 - werkzeug - INFO - 10.0.18.189 - - [23/Apr/2025 17:26:10] "[31m[1mGET /api/serial/ports HTTP/1.1[0m" 405 -
+2025-04-23 17:27:37,108 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:27:37,347 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:27:38,636 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:27:38,639 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:27:38,963 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:27:38,967 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:28:04,402 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:28:04,593 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:28:05,741 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:28:05,744 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:28:06,070 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:28:06,074 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:28:40,684 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:28:40,825 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:28:41,858 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:28:41,861 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:28:42,177 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:28:42,181 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:29:00,666 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:29:00,820 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:29:01,892 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:29:01,895 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:29:02,240 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:29:02,245 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:29:18,188 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:29:18,335 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:29:19,459 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:29:19,462 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:29:19,812 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:29:19,816 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:30:01,107 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:30:01,296 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:30:02,362 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:30:02,366 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:30:02,693 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:30:02,698 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:31:15,880 - werkzeug - INFO -  * Detected change in 'E:\\python\\vp_180\\backend\\routes\\serial.py', reloading
+2025-04-23 17:31:16,050 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:31:17,203 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:31:17,206 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:31:17,537 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:31:17,540 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:32:45,258 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 17:32:46,360 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 17:32:46,364 - werkzeug - INFO -  * Debugger PIN: 844-285-679
+2025-04-23 17:32:46,807 - werkzeug - WARNING -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-23 17:32:46,815 - werkzeug - INFO -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-23 17:33:50,459 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:33:50] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:33:50,473 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:33:50] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:33:52,268 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:33:52] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:33:52,271 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:33:52] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:33:52,289 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 17:33:52,290 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:33:52] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:33:52,300 - backend.models.test_case - INFO - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-23 17:33:52,301 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:33:52] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-23 17:34:03,581 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:34:03] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:34:03,583 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:34:03] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:34:03,585 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:34:03] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:34:03,586 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:34:03] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
+2025-04-23 17:34:26,701 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:34:26] "[33mOPTIONS /api/serial/settings HTTP/1.1[0m" 404 -
+2025-04-23 17:34:26,704 - werkzeug - INFO - 172.16.10.83 - - [23/Apr/2025 17:34:26] "[33mOPTIONS /api/serial/ports HTTP/1.1[0m" 404 -
