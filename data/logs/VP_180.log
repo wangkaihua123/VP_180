@@ -1,319 +1,179 @@
-2025-04-23 16:55:33 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 16:56:57 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 16:59:02 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:07:22 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:07:29 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:07:42 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:07:46 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:13:42 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:13:58 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:16:35 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:17:12 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:17:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:17:28 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:18:18 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:18:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:20:15 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:20:30 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:20:49 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:21:07 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:21:23 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:23:10 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:23:11 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:24:32 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:24:47 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:24:56 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:25:04 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:25:18 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:25:28 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:25:56 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:25:57 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:27:38 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:28:05 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:28:41 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:29:01 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:29:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:30:01 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:31:16 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:32:44 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:32:45 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:54:59 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:55:08 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:55:09 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:58:06 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:58:07 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:59:15 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:59:16 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:59:38 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 17:59:38 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:00:00 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:00:00 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:00:10 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:00:11 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:00:32 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-23 18:00:32 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-23 18:00:32 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': PermissionError(13, '拒绝访问。', None, 5)
-2025-04-23 18:01:55 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:01:55 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:01:55 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:02:04 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:02:28 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-23 18:02:28 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-23 18:02:28 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': PermissionError(13, '拒绝访问。', None, 5)
-2025-04-23 18:02:31 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-23 18:02:31 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-23 18:02:31 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': PermissionError(13, '拒绝访问。', None, 5)
-2025-04-23 18:03:06 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:05:25 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:05:32 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:07:34 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:07:39 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:22:41 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:23:09 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:25:51 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:25:52 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:26:06 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:26:07 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:29:33 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:29:40 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:29:41 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:30:37 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:30:37 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:31:02 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:31:04 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:31:46 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:31:47 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:33:13 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:33:13 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:33:13 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:00 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:00 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:00 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:42 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-23 18:34:42 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-23 18:34:42 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-23 18:34:42 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-04-23 18:34:51 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:51 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:51 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:54 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:55 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:34:55 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:36:08 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:36:09 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-23 18:36:35 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-23 18:36:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-23 18:36:36 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM1': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-23 18:36:38 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-23 18:36:38 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-23 18:36:38 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-23 18:36:38 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-04-23 18:47:54 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-23 18:47:59 - DEBUG - utils.ssh_manager - SSH已连接
-2025-04-23 18:47:59 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-23 18:47:59 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-23 18:48:04 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-23 18:48:04 - ERROR - utils.get_latest_image - 检查远程目录时出错: 
-2025-04-23 18:48:04 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-23 18:48:04 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-23 18:48:04 - ERROR - utils.get_latest_image - 获取图像失败: SSH session not active
-2025-04-23 18:48:04 - ERROR - utils.test_case_executor - 执行操作步骤时出错: SSH session not active
-2025-04-23 18:48:04 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-23 18:48:04 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-23 18:48:04 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-23 18:48:04 - ERROR - utils.button_clicker - 点击按钮异常: SSH session not active
-2025-04-23 18:48:04 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-23 18:48:04 - ERROR - utils.get_latest_image - 获取图像失败: SSH session not active
-2025-04-23 18:48:04 - ERROR - utils.test_case_executor - 执行操作步骤时出错: SSH session not active
-2025-04-23 18:48:32 - INFO - utils.ssh_manager - SSH连接成功
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
-2025-04-23 18:48:32 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-23 18:48:32 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
-2025-04-23 18:48:32 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
-2025-04-23 18:48:32 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184832.tiff
-2025-04-23 18:48:32 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-23 18:48:32 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-23 18:48:32 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-23 18:48:33 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
-2025-04-23 18:48:33 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-23 18:48:33 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
-2025-04-23 18:48:33 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
-2025-04-23 18:48:33 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
-2025-04-23 18:54:30 - DEBUG - utils.ssh_manager - SSH已连接
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-23 18:54:30 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:30 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:30 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:30 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-23 18:54:30 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-23 18:54:30 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-23 18:54:30 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-23 18:54:31 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-23 18:54:31 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:31 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-23 18:54:31 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:31 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-23 18:54:31 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
-2025-04-24 08:54:06 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 08:54:07 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 08:57:12 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 08:57:22 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 09:10:27 - INFO - utils.ssh_manager - SSH连接成功
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 09:10:27 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:27 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:27 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:27 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-24 09:10:27 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-24 09:10:27 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-24 09:10:27 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 09:10:28 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:28 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:10:28 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
-2025-04-24 09:16:25 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:16:53 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:31:18 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:31:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:38:08 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:38:10 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:38:22 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 09:38:32 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 09:42:44 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:42:45 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:44:08 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 09:44:18 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 09:47:11 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:47:11 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:47:20 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 09:47:30 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 09:47:50 - DEBUG - utils.ssh_manager - SSH已连接
-2025-04-24 09:47:50 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-24 09:47:50 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-24 09:47:50 - ERROR - utils.get_latest_image - 检查远程目录时出错: 
-2025-04-24 09:47:50 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-24 09:47:50 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 09:47:50 - ERROR - utils.get_latest_image - 获取图像失败: SSH session not active
-2025-04-24 09:47:50 - ERROR - utils.test_case_executor - 执行操作步骤时出错: SSH session not active
-2025-04-24 09:47:50 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-24 09:47:50 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-24 09:47:50 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-24 09:47:50 - ERROR - utils.button_clicker - 点击按钮异常: SSH session not active
-2025-04-24 09:47:50 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 09:47:50 - ERROR - utils.get_latest_image - 获取图像失败: SSH session not active
-2025-04-24 09:47:50 - ERROR - utils.test_case_executor - 执行操作步骤时出错: SSH session not active
-2025-04-24 09:51:08 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:51:58 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:51:59 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:52:54 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:52:56 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:53:04 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 09:53:14 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 09:58:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:58:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:58:48 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:58:48 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:59:49 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 09:59:49 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:00:18 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:00:19 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:00:48 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:00:48 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:00:58 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:00:58 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:01:16 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:01:16 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
-2025-04-24 10:01:18 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 10:01:28 - INFO - utils.ssh_manager - SSH连接成功
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 10:01:28 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-24 10:01:28 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-24 10:01:28 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-24 10:01:28 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 10:01:28 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
-2025-04-24 10:01:28 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424100128.tiff
 
-2025-04-24 10:27:53 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 10:28:03 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 10:28:11 - DEBUG - utils.ssh_manager - SSH已连接
-2025-04-24 10:28:11 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
-2025-04-24 10:28:11 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
-2025-04-24 10:28:11 - ERROR - utils.get_latest_image - 检查远程目录时出错: 
-2025-04-24 10:28:11 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
-2025-04-24 10:28:11 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 10:28:11 - ERROR - utils.get_latest_image - 获取图像失败: SSH session not active
-2025-04-24 10:28:11 - ERROR - utils.test_case_executor - 执行操作步骤时出错: SSH session not active
-2025-04-24 10:28:11 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-24 10:28:11 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-24 10:28:11 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-24 10:28:11 - ERROR - utils.button_clicker - 点击按钮异常: SSH session not active
-2025-04-24 10:28:11 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 10:28:11 - ERROR - utils.get_latest_image - 获取图像失败: SSH session not active
-2025-04-24 10:28:11 - ERROR - utils.test_case_executor - 执行操作步骤时出错: SSH session not active
-2025-04-24 10:36:19 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 10:36:57 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 10:37:07 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-24 10:42:37 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-24 10:42:47 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-04-24 14:57:21 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 14:57:21 - DEBUG - utils.ssh_manager - SSH客户端不存在
+2025-04-24 14:57:21 - DEBUG - utils.ssh_manager - SSH客户端不存在
+2025-04-24 14:57:21 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 14:57:32 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 14:57:32 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 14:57:32 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 14:57:32 - DEBUG - utils.ssh_manager - SSH连接有效并活动
+2025-04-24 14:57:32 - DEBUG - utils.ssh_manager - SSH连接有效并活动
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424145732.tiff
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 14:57:32 - DEBUG - utils.ssh_manager - SSH连接有效并活动
+2025-04-24 14:57:32 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 14:57:32 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 14:57:32 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 14:57:32 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 14:57:32 - DEBUG - utils.ssh_manager - SSH连接有效并活动
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 14:57:32 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 14:57:33 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 14:57:33 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424145732.tiff
+2025-04-24 14:57:33 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 14:57:33 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:06:10 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 15:06:10 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 15:06:20 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 15:06:20 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 15:06:20 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424150620.tiff
+2025-04-24 15:06:20 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:06:21 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 15:06:21 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 15:06:21 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 15:06:21 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424150621.tiff
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:06:21 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:13:12 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 15:13:12 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 15:13:22 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 15:13:22 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 15:13:22 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424151322.tiff
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:13:22 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:13:22 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 15:13:22 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 15:13:22 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 15:13:22 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424151323.tiff
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:13:23 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:26:21 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 15:26:21 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 15:26:31 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 15:26:31 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 15:26:31 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424152631.tiff
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:26:31 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:26:31 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 15:26:31 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 15:26:31 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 15:26:32 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424152632.tiff
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:26:32 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:27:41 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 15:27:41 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 15:27:51 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 15:27:51 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 15:27:51 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 15:27:51 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 15:27:51 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 15:27:51 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424152752.tiff
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:27:52 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 15:27:52 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 15:27:52 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 15:27:52 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\Test_20250424152752.tiff
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:27:52 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 15:29:57 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 15:29:57 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 15:30:08 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 15:30:08 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 15:30:08 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:30:08 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:08 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:08 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:08 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 15:30:08 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 15:30:08 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 15:30:08 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 15:30:08 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 15:30:09 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 15:30:09 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 15:30:09 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 15:30:09 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 15:30:09 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:09 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 15:30:09 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:09 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424153008.tiff
+2025-04-24 15:30:09 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424153008.tiff

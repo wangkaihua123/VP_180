@@ -11,7 +11,7 @@ from flask_cors import CORS
 from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 
 # 导入路由蓝图
-from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp
+from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp
 
 # 设置日志文件路径 - 直接使用data目录，不创建logs子目录
 LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
@@ -42,6 +42,7 @@ def create_app(config=None):
     app.config.from_mapping(
         SECRET_KEY=os.environ.get('SECRET_KEY', 'dev_key'),
         DATABASE=os.path.join(app.instance_path, 'database.sqlite'),
+        DATA_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data'),  # 添加DATA_DIR配置
     )
     
     if config:
@@ -57,6 +58,7 @@ def create_app(config=None):
     app.register_blueprint(serial_bp)
     app.register_blueprint(test_cases_bp)
     app.register_blueprint(files_bp)
+    app.register_blueprint(logs_bp)
     
     @app.route('/')
     def index():

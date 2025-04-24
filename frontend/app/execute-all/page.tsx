@@ -111,6 +111,10 @@ export default function ExecuteAllPage() {
   const router = useRouter()
   const { toast } = useToast()
   const [logs, setLogs] = useState<TestCaseLog[]>([])
+  const [systemLogs, setSystemLogs] = useState<any[]>([])
+  const [systemLogLoading, setSystemLogLoading] = useState(false)
+  const [activeLogTab, setActiveLogTab] = useState<'execution' | 'system'>('execution')
+  const systemLogScrollAreaRef = useRef<HTMLDivElement>(null)
   const [testCases, setTestCases] = useState<TestCaseWithStatus[]>([])
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [executing, setExecuting] = useState(false)
@@ -602,6 +606,67 @@ export default function ExecuteAllPage() {
     handleExecuteSelected();
   };
 
+  // 添加获取系统日志的函数
+  const fetchSystemLogs = async () => {
+    try {
+      setSystemLogLoading(true)
+      const response = await testCasesAPI.getSystemLog()
+      
+      if (response.success && response.data) {
+        setSystemLogs(response.data)
+        
+        // 滚动到底部
+        setTimeout(() => {
+          if (systemLogScrollAreaRef.current && activeLogTab === 'system') {
+            systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight
+          }
+        }, 100)
+      } else {
+        console.error("获取系统日志失败:", response.message)
+        toast({
+          title: "获取系统日志失败",
+          description: response.message || "无法获取系统日志",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error("获取系统日志出错:", error)
+    } finally {
+      setSystemLogLoading(false)
+    }
+  }
+  
+  // 定期刷新系统日志
+  useEffect(() => {
+    fetchSystemLogs()
+    
+    // 创建定时器，每5秒刷新一次
+    const intervalId = setInterval(() => {
+      fetchSystemLogs()
+    }, 5000)
+    
+    // 组件卸载时清除定时器
+    return () => clearInterval(intervalId)
+  }, [activeLogTab])
+
+  // 系统日志级别样式
+  const getSystemLogLevelStyle = (level: string) => {
+    switch (level.toUpperCase()) {
+      case "ERROR":
+        return "text-red-500 font-medium"
+      case "WARNING":
+        return "text-yellow-500"
+      case "INFO":
+        return "text-blue-500"
+      case "DEBUG":
+        return "text-cyan-500"
+      case "TRACE":
+        return "text-purple-500"
+      default:
+        return "text-gray-500"
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* 页面头部 */}
@@ -823,29 +888,70 @@ export default function ExecuteAllPage() {
           {/* 完整执行日志卡片 */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center">
-                <Clock className="mr-2 h-5 w-5" />
-                完整执行日志
+              <CardTitle className="text-lg flex items-center justify-between">
+                <div className="flex items-center">
+                  <Clock className="mr-2 h-5 w-5" />
+                  完整执行日志
+                </div>
+                <div>
+                  <Tabs value={activeLogTab} onValueChange={(value) => setActiveLogTab(value as 'execution' | 'system')}>
+                    <TabsList>
+                      <TabsTrigger value="execution" className="flex items-center">
+                        <FileText className="mr-1 h-4 w-4" />
+                        测试执行日志
+                      </TabsTrigger>
+                      <TabsTrigger value="system" className="flex items-center">
+                        <FileText className="mr-1 h-4 w-4" />
+                        系统日志 (VP_180.log)
+                        {systemLogLoading && <RefreshCw className="ml-1 h-3 w-3 animate-spin" />}
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea
-                className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
-                ref={scrollAreaRef}
-              >
-                {logs.map((log, index) => {
-                  const testCase = testCases.find((tc) => tc.id === log.testCaseId)
-                  return (
-                    <div key={index} className="mb-1">
-                      <span className="text-gray-400">[{log.timestamp}]</span>{" "}
-                      <span className="px-1 rounded" style={{ backgroundColor: `${testCase?.color}40` }}>
-                        [测试用例 #{log.testCaseId}]
-                      </span>{" "}
-                      <span className={getLogTypeStyle(log.type)}>{log.message}</span>
+              {activeLogTab === 'execution' ? (
+                <ScrollArea
+                  className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
+                  ref={scrollAreaRef}
+                >
+                  {logs.map((log, index) => {
+                    const testCase = testCases.find((tc) => tc.id === log.testCaseId)
+                    return (
+                      <div key={index} className="mb-1">
+                        <span className="text-gray-400">[{log.timestamp}]</span>{" "}
+                        <span className="px-1 rounded" style={{ backgroundColor: `${testCase?.color}40` }}>
+                          [测试用例 #{log.testCaseId}]
+                        </span>{" "}
+                        <span className={getLogTypeStyle(log.type)}>{log.message}</span>
+                      </div>
+                    )
+                  })}
+                </ScrollArea>
+              ) : (
+                <ScrollArea
+                  className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
+                  ref={systemLogScrollAreaRef}
+                >
+                  {systemLogs.length > 0 ? (
+                    systemLogs.map((log, index) => (
+                      <div key={index} className="mb-1">
+                        <span className="text-gray-400">[{log.timestamp}]</span>{" "}
+                        <span className={getSystemLogLevelStyle(log.level)}>
+                          [{log.level}]
+                        </span>{" "}
+                        <span className="text-gray-400">[{log.source}]</span>{" "}
+                        <span className="text-white">{log.message}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      {systemLogLoading ? "加载系统日志中..." : "暂无系统日志数据"}
                     </div>
-                  )
-                })}
-              </ScrollArea>
+                  )}
+                </ScrollArea>
+              )}
             </CardContent>
           </Card>
         </motion.div>

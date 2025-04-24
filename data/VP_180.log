@@ -2,3 +2,193 @@
 2025-04-24 11:05:27 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
 2025-04-24 11:06:44 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
 2025-04-24 11:06:54 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-04-24 15:08:52,866 - WARNING - werkzeug -  * Debugger is active!
+2025-04-24 15:08:52,869 - INFO - werkzeug -  * Debugger PIN: 229-698-311
+2025-04-24 15:08:53,197 - WARNING - werkzeug -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-24 15:08:53,201 - INFO - werkzeug -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-24 15:09:18,651 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:09:18,655 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:09:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:09:20,946 - INFO - werkzeug -  * Detected change in 'E:\\python\\vp_180\\backend\\app.py', reloading
+2025-04-24 15:09:22 - WARNING - werkzeug -  * Debugger is active!
+2025-04-24 15:09:22 - INFO - werkzeug -  * Debugger PIN: 229-698-311
+2025-04-24 15:09:22 - WARNING - werkzeug -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-24 15:09:22 - INFO - werkzeug -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-24 15:10:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:10:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:10:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:11:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:11:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:11:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:12:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:12:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:12:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:12:57 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:12:57 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:12:57] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:00 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:00 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:00] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:05 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:05 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:05] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:10 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:10 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:10] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:11 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:11] "OPTIONS /api/test-cases HTTP/1.1" 200 -
+2025-04-24 15:13:11 - INFO - backend.models.test_case - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-24 15:13:11 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:11] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-24 15:13:11 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:11 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:11] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:11 - INFO - backend.models.test_case - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-24 15:13:11 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:11] "GET /api/test-cases HTTP/1.1" 200 -
+2025-04-24 15:13:12 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:12] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-24 15:13:12 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:12] "OPTIONS /api/test-cases/1/run HTTP/1.1" 200 -
+2025-04-24 15:13:12 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:12] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-24 15:13:12 - INFO - backend.models.test_case - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-24 15:13:12 - INFO - backend.services.test_case_service - 当前执行测试用例名称为电子放大，测试用例ID为1
+2025-04-24 15:13:15 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:15 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:15] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:20 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:20 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:20] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:22 - INFO - paramiko.transport - Connected (version 2.0, client dropbear_2022.82)
+2025-04-24 15:13:22 - INFO - paramiko.transport - Authentication (password) successful!
+2025-04-24 15:13:23 - INFO - backend.models.test_case - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-24 15:13:23 - INFO - backend.models.test_case - 成功从文件加载测试用例: E:\python\vp_180\data\test_cases.json
+2025-04-24 15:13:23 - INFO - backend.models.test_case - 成功保存测试用例到文件: E:\python\vp_180\data\test_cases.json
+2025-04-24 15:13:23 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:23] "[35m[1mPOST /api/test-cases/1/run HTTP/1.1[0m" 500 -
+2025-04-24 15:13:23 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:23] "OPTIONS /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-24 15:13:23 - INFO - werkzeug - 10.0.18.189 - - [24/Apr/2025 15:13:23] "PUT /api/test-cases/1/status HTTP/1.1" 200 -
+2025-04-24 15:13:25 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:25 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:25] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:30 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:30 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:30] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:35 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:35 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:35] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:40 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:40 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:40] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:45 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:45 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:45] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:50 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:50 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:50] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:13:55 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:13:55 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:13:55] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:00 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:00 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:00] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:05 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:05 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:05] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:10 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:10 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:10] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:15 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:15 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:15] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:20 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:20 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:20] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:25 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:25 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:25] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:30 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:30 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:30] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:35 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:35 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:35] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:40 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:40 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:40] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:45 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:45 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:45] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:50 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:50 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:50] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:14:55 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:14:55 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:14:55] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:00 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:00 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:00] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:05 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:05 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:05] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:10 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:10 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:10] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:15 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:15 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:15] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:20 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:20 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:20] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:25 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:25 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:25] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:30 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:30 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:30] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:35 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:35 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:35] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:40 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:40 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:40] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:45 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:45 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:45] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:50 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:50 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:50] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:15:55 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:15:55 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:15:55] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:00 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:00 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:00] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:05 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:05 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:05] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:10 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:10 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:10] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:15 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:15 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:15] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:15 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:15 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:15] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:16 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:16 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:16] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:21 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:21 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:21] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:26 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:26 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:26] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:31 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:31 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:31] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:36 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:36 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:36] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:41 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:41 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:41] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:46 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:46 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:46] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:51 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:51 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:51] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:16:56 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:16:56 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:16:56] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:17:01 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:17:01 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:17:01] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:17:06 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:17:06 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:17:06] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:17:11 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:17:11 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:17:11] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:17:16 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:17:16 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:17:16] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:17:21 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:17:21 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:17:21] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:18:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:18:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:18:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:19:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:19:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:19:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:20:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:20:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:20:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:21:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:21:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:21:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:22:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:22:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:22:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:23:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:23:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:23:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:24:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:24:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:24:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:18 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:18 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:18] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:37 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:37 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:37] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:41 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:41 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:41] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:46 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:46 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:46] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:51 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:51 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:51] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:53 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:53 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:53] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:25:58 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:25:58 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:25:58] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:26:03 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:26:03 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:26:03] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:26:08 - INFO - app - 找到日志文件: E:\python\vp_180\data\logs\VP_180.log
+2025-04-24 15:26:08 - INFO - werkzeug - 127.0.0.1 - - [24/Apr/2025 15:26:08] "GET /api/logs/vp180 HTTP/1.1" 200 -
+2025-04-24 15:26:12 - INFO - werkzeug -  * Detected change in 'E:\\python\\vp_180\\backend\\services\\test_case_service.py', reloading
+2025-04-24 15:30:25 - WARNING - werkzeug -  * Debugger is active!
+2025-04-24 15:30:25 - INFO - werkzeug -  * Debugger PIN: 229-698-311
+2025-04-24 15:30:25 - WARNING - werkzeug -  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-04-24 15:30:25 - INFO - werkzeug -  * Running on http://10.0.18.189:5000/ (Press CTRL+C to quit)
+2025-04-24 15:30:27 - INFO - werkzeug -  * Detected change in 'E:\\python\\vp_180\\backend\\services\\test_case_service.py', reloading

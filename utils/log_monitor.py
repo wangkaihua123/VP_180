@@ -1,8 +1,8 @@
 """
 VP180 日志监控工具
 
-注意：此工具的功能已部分禁用，因为VP_180.log文件生成功能已被移除。
-此工具保留仅用于兼容性和未来可能的恢复。
+此工具提供对VP_180.log日志文件的实时监控功能，类似于'tail -f'命令。
+支持彩色输出和命令行参数配置。
 """
 
 import os
@@ -92,10 +92,6 @@ class LogMonitor:
         Args:
             tail_lines: 启动时显示的最后几行日志数
         """
-        # 警告用户日志功能已禁用
-        print(f"{self.COLORS['WARNING']}警告: 日志文件功能已禁用，VP_180.log不再生成。{self.COLORS['RESET']}")
-        print(f"{self.COLORS['WARNING']}日志现在只会输出到控制台。{self.COLORS['RESET']}")
-        
         # 确保文件存在
         if not os.path.exists(self.log_file):
             print(f"错误: 日志文件 '{self.log_file}' 不存在")
@@ -143,12 +139,11 @@ class LogMonitor:
 
 def main():
     """主函数，处理命令行参数并启动日志监控"""
-    print("注意: 日志文件功能已禁用，VP_180.log不再生成。此工具保留仅用于兼容性。")
     
     # 计算默认日志文件路径
     default_log_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        'data', 'VP_180.log'
+        'data', 'logs', 'VP_180.log'
     )
 
     # 设置命令行参数

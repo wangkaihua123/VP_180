@@ -82,7 +82,6 @@ class SSHManager:
         """检查SSH连接是否有效并活动"""
         # 检查客户端是否存在
         if not cls._ssh_client:
-            logger.debug("SSH客户端不存在")
             cls._is_connected = False
             return False
         
@@ -99,7 +98,7 @@ class SSHManager:
             stdin, stdout, stderr = cls._ssh_client.exec_command("echo ping", timeout=3)
             response = stdout.read().decode().strip()
             if response == "ping":
-                logger.debug("SSH连接有效并活动")
+                # logger.debug("SSH连接有效并活动")
                 cls._is_connected = True
                 return True
             else:

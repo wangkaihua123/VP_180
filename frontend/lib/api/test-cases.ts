@@ -102,5 +102,24 @@ export const testCasesAPI = {
       method: "PUT",
       body: JSON.stringify({ status }),
     })
+  },
+
+  /**
+   * 获取VP_180.log日志文件内容
+   * @returns VP_180.log日志文件内容
+   */
+  async getSystemLog() {
+    try {
+      const response = await fetch('/api/logs/vp180');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("获取系统日志失败:", error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "获取系统日志失败",
+        data: []
+      };
+    }
   }
 } 
