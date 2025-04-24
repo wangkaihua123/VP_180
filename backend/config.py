@@ -18,13 +18,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 TEST_CASES_FILE = os.path.join(DATA_DIR, 'test_cases.json')
 SETTINGS_FILE = os.path.join(DATA_DIR, 'settings.json')
+LOGS_DIR = os.path.join(DATA_DIR, 'logs')
 
 # 文件存储目录
 IMAGES_DIR = os.path.join(DATA_DIR, 'img')
 SCREENSHOTS_DIR = os.path.join(DATA_DIR, 'screenshots')
 
 # 确保必要的目录存在
-for directory in (DATA_DIR, IMAGES_DIR, SCREENSHOTS_DIR):
+for directory in (DATA_DIR, LOGS_DIR, IMAGES_DIR, SCREENSHOTS_DIR):
     os.makedirs(directory, exist_ok=True)
 
 # 默认数据库配置

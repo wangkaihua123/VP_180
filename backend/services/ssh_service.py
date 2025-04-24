@@ -50,9 +50,18 @@ class SSHService:
 
                 logger.info(f"命令执行成功，输出: {output}")
 
-                # 关闭连接
-                ssh.close()
-                transport.close()
+                # 更新全局SSHManager实例
+                ssh_manager = SSHManager.get_instance()
+                # 更新SSHManager的连接配置
+                ssh_manager.hostname = host
+                ssh_manager.port = port
+                ssh_manager.username = username
+                ssh_manager.password = password
+                # 更新连接客户端
+                SSHManager._ssh_client = ssh
+                logger.info("已更新SSHManager的连接实例")
+
+                # 注意：不再关闭连接，让SSHManager管理它
 
                 return {
                     'success': True,

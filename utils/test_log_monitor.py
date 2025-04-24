@@ -1,8 +1,8 @@
 """
 测试日志监控工具的脚本
 
-该脚本生成一些测试日志条目，以便测试log_monitor.py的功能。
-运行此脚本后，可以同时运行log_monitor.py来观察日志更新。
+该脚本生成一些测试日志条目，以用于测试目的。
+由于已移除VP_180.log文件的生成，日志将只输出到控制台。
 """
 
 import os
@@ -11,19 +11,15 @@ import logging
 import random
 from datetime import datetime
 
-# 获取VP_180.log文件路径 - 更新为直接指向data目录
+# 日志目录设置 - 不再输出到文件
 log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
-log_file = os.path.join(log_dir, 'VP_180.log')
 
-# 不再创建logs目录
-
-# 设置日志格式
+# 设置日志格式 - 只输出到控制台
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    filename=log_file,
-    filemode='a'  # 追加模式
+    datefmt="%Y-%m-%d %H:%M:%S"
+    # 已移除: 输出到文件的配置
 )
 
 # 测试消息
@@ -64,8 +60,8 @@ def generate_log_entries(count=20, interval=0.5):
     """
     logger = logging.getLogger("utils.test_log_generator")
     
-    print(f"开始生成{count}条测试日志到 {log_file}")
-    print("请同时运行 python -m utils.log_monitor 来查看实时日志更新")
+    print(f"开始生成{count}条测试日志到控制台")
+    print("日志文件功能已禁用，所有日志只会显示在控制台")
     
     for i in range(count):
         # 随机选择日志级别和消息

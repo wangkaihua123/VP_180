@@ -7,15 +7,6 @@ import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-# 禁用WebSocket功能 - 直接禁用所有可能尝试导入的相关模块
-# 这将阻止任何代码尝试启用WebSocket功能
-sys.modules['flask_socketio'] = None
-sys.modules['socketio'] = None
-
-# 清除模块缓存中任何可能的log_socket模块
-if 'backend.log_socket' in sys.modules:
-    del sys.modules['backend.log_socket']
-
 # 导入配置
 from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 
@@ -77,6 +68,5 @@ def create_app(config=None):
 app = create_app()
 
 if __name__ == '__main__':
-    # 启动应用 - 确保使用标准Flask运行方式，不使用SocketIO
-    logging.info("WebSocket功能已禁用")
+    # 启动应用
     app.run(host=HOST, debug=DEBUG, port=PORT) 

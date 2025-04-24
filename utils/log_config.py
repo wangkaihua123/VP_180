@@ -20,19 +20,14 @@ def setup_logger(name):
     logger = logging.getLogger(name)
     logger.setLevel(TRACE)  # 设置logger的级别为TRACE，这样所有处理器都能收到消息
 
-    # 设置日志文件路径 - 直接放在data目录下，不创建logs子目录
+    # 设置日志文件路径 - 不再使用
     log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
-    # 注意：不再创建logs子目录
     
     # 创建一个控制台处理器用于详细输出
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)  # 控制台只显示INFO及以上级别
 
-    # 创建一个文件处理器，并设置编码为 UTF-8
-    file_handler = logging.FileHandler(os.path.join(log_dir, "VP_180.log"), encoding="utf-8")
-    file_handler.setLevel(TRACE)  # 文件处理器接收所有级别的日志
-    
-    # 注意：删除了VP_180_debug.log的处理器
+    # 已移除: 创建一个文件处理器到VP_180.log
 
     # 创建一个Allure处理器
     class AllureHandler(logging.Handler):
@@ -51,13 +46,11 @@ def setup_logger(name):
     )
     
     console_handler.setFormatter(formatter)
-    file_handler.setFormatter(formatter)
     allure_handler.setFormatter(formatter)
 
     # 如果 logger 没有处理器，则添加处理器
     if not logger.handlers:
         logger.addHandler(console_handler)
-        logger.addHandler(file_handler)
         logger.addHandler(allure_handler)
         
     # 避免日志传播到父记录器
