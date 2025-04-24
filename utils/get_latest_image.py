@@ -26,7 +26,6 @@ class GetLatestImage:
         # 更新本地目录路径
         self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
-        logger.debug("初始化 GetLatestImage 实例")
         logger.debug(f"本地图像保存目录: {self.local_dir}")
         
         # 检查远程目录是否存在

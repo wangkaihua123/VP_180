@@ -19,7 +19,6 @@ class GetLatestScreenshot:
         """初始化时传入已建立的 SSH 连接和测试用例名称"""
         self.ssh = ssh
         self.test_name = test_name
-        logger.debug("初始化 GetLatestScreenshot 实例")
         # 确保本地截图目录存在
         os.makedirs(LOCAL_SCREENSHOT_DIR, exist_ok=True)
         # logger.debug(f"本地截图保存目录: {LOCAL_SCREENSHOT_DIR}")
@@ -44,8 +43,6 @@ class GetLatestScreenshot:
         Returns:
             解析后的图像对象
         """
-        # logger.debug("开始获取最新截图")
-        # logger.debug(f"当前测试用例名称: {self.test_name}")
         
         # 获取最新目录
         latest_dir = self.execute_command(f"ls -td {BASE_IMG_DIR}/* | head -n 1")

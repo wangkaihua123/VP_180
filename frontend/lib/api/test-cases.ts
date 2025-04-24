@@ -27,6 +27,17 @@ export interface APIResponse<T> {
   test_case?: TestCase;
 }
 
+// 定义测试执行结果接口
+export interface TestExecutionResponse {
+  success: boolean;
+  message?: string;
+  status?: string;
+  details?: {
+    operation_results?: { success: boolean; message?: string; data?: any }[];
+    verification_results?: { success: boolean; message?: string }[];
+  };
+}
+
 export const testCasesAPI = {
   list: async (): Promise<APIResponse<TestCase[]>> => {
     return fetchAPI("/api/test-cases", {
@@ -54,7 +65,7 @@ export const testCasesAPI = {
     })
   },
 
-  run: async (id: number): Promise<APIResponse<void>> => {
+  run: async (id: number): Promise<TestExecutionResponse> => {
     return fetchAPI(`/api/test-cases/${id}/run`, {
       method: "POST",
     })

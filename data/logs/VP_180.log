@@ -151,3 +151,70 @@
 2025-04-24 16:00:59 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424160059.tiff
 2025-04-24 16:00:59 - DEBUG - utils.get_latest_image - 读取图像数据
 2025-04-24 16:00:59 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 16:09:05 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 16:09:05 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 16:09:15 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 16:09:15 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 16:09:15 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 16:09:15 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，ID: 1
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 16:09:15 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424160915.tiff
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 16:09:16 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 16:09:16 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 16:09:16 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 16:09:16 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424160916.tiff
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 16:09:16 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 16:21:27 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 16:21:27 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 16:21:37 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 16:21:37 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 16:21:37 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 16:21:37 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，测试用例ID: 1
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424162137.tiff
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 16:21:37 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 16:21:37 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-24 16:21:37 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 16:21:37 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 16:21:37 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 16:21:38 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600475.tiff']
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424162138.tiff
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 16:21:38 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
+2025-04-24 16:21:38 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
+2025-04-24 16:21:38 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
+2025-04-24 16:21:38 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 存在失败

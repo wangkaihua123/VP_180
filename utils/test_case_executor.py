@@ -119,6 +119,10 @@ class TestCaseExecutor:
                 script_content = json.loads(test_case['script_content'])
             else:
                 script_content = test_case['script_content']
+            logger.info(f"当前执行测试用例名称: {test_case['title']}，测试用例ID: {test_case_id}")
+
+            # 创建一个字典来存储操作步骤的结果，特别是图像数据
+            operation_data = {}
 
             # 执行操作步骤
             operation_results = []
@@ -126,13 +130,26 @@ class TestCaseExecutor:
                 for step in script_content['operationSteps']:
                     result = self._execute_operation_step(step, test_case['title'], test_case_id)
                     operation_results.append(result)
+                    
+                    # 存储关键操作的结果数据，特别是图像和截图
+                    step_id = step.get('id')
+                    if step_id and result.get('success') and 'data' in result:
+                        operation_data[str(step_id)] = result['data']
+                        logger.info(f"保存操作步骤 {step_id} 的结果数据")
 
             # 执行验证步骤
             verification_results = []
             if 'verificationSteps' in script_content:
+                logger.info(f"开始执行验证步骤，共 {len(script_content['verificationSteps'])} 个验证步骤")
                 for step in script_content['verificationSteps']:
-                    result = self._execute_verification_step(step)
+                    logger.info(f"执行验证步骤: {step.get('verification_key', '未知类型')} (ID: {step.get('id', 'n/a')})")
+                    # 将操作步骤的结果数据传递给验证步骤
+                    result = self._execute_verification_step(step, operation_data)
                     verification_results.append(result)
+                    logger.info(f"验证步骤结果: {result.get('success', False)} - {result.get('message', '无消息')}")
+                logger.info(f"验证步骤执行完成，结果: {'全部通过' if all(r['success'] for r in verification_results) else '存在失败'}")
+            else:
+                logger.warning("测试用例中没有验证步骤")
 
             # 判断测试结果
             success = all(r['success'] for r in operation_results + verification_results)
@@ -247,34 +264,53 @@ class TestCaseExecutor:
                 'message': f"操作执行出错: {str(e)}"
             }
 
-    def _execute_verification_step(self, step):
+    def _execute_verification_step(self, step, operation_data):
         """执行单个验证步骤"""
         try:
             verification_key = step.get('verification_key', '')
             
             if verification_key in ['对比图像相似度', '对比图像关键点']:
-                img1_path = step.get('img1', '')
-                img2_path = step.get('img2', '')
+                img1_ref = step.get('img1', '')
+                img2_ref = step.get('img2', '')
                 
-                # 检查图像文件是否存在
-                if not os.path.exists(img1_path) or not os.path.exists(img2_path):
+                # 尝试从操作步骤的结果中获取图像
+                img1 = None
+                img2 = None
+                
+                # 首先尝试从操作步骤数据中获取图像
+                if img1_ref in operation_data and 'image' in operation_data[img1_ref]:
+                    img1 = operation_data[img1_ref]['image']
+                    logger.info(f"从操作步骤 {img1_ref} 获取到图像1")
+                
+                if img2_ref in operation_data and 'image' in operation_data[img2_ref]:
+                    img2 = operation_data[img2_ref]['image']
+                    logger.info(f"从操作步骤 {img2_ref} 获取到图像2")
+                
+                # 如果无法从操作步骤数据中获取，尝试从文件路径获取
+                if img1 is None and isinstance(img1_ref, str) and os.path.exists(img1_ref):
+                    try:
+                        img1 = cv2.imread(img1_ref)
+                        logger.info(f"从文件路径 {img1_ref} 读取图像1")
+                    except Exception as e:
+                        logger.warning(f"无法从文件 {img1_ref} 读取图像1: {str(e)}")
+                
+                if img2 is None and isinstance(img2_ref, str) and os.path.exists(img2_ref):
+                    try:
+                        img2 = cv2.imread(img2_ref)
+                        logger.info(f"从文件路径 {img2_ref} 读取图像2")
+                    except Exception as e:
+                        logger.warning(f"无法从文件 {img2_ref} 读取图像2: {str(e)}")
+                
+                # 如果仍然无法获取图像，返回失败
+                if img1 is None or img2 is None:
+                    logger.error(f"无法获取用于对比的图像: img1={img1_ref}, img2={img2_ref}")
                     return {
                         'success': False,
-                        'message': f'图像文件不存在: {img1_path} 或 {img2_path}'
+                        'message': f'无法获取用于对比的图像: img1={img1_ref}, img2={img2_ref}'
                     }
                 
+                # 根据验证类型调用不同的对比方法
                 try:
-                    # 读取图像
-                    img1 = cv2.imread(img1_path)
-                    img2 = cv2.imread(img2_path)
-                    
-                    if img1 is None or img2 is None:
-                        return {
-                            'success': False,
-                            'message': f'无法读取图像文件: {img1_path} 或 {img2_path}'
-                        }
-                    
-                    # 根据验证类型调用不同的对比方法
                     if verification_key == '对比图像相似度':
                         result = ImageComparator.is_ssim(img1, img2)
                         method = 'SSIM相似度'
@@ -282,9 +318,10 @@ class TestCaseExecutor:
                         result = ImageComparator.is_orb(img1, img2)
                         method = 'ORB关键点'
                     
+                    logger.info(f"图像对比完成 ({method}): 结果: {result}")
                     return {
                         'success': result,
-                        'message': f'图像对比完成 ({method}): {img1_path} vs {img2_path}, 结果: {"通过" if result else "不通过"}'
+                        'message': f'图像对比完成 ({method}): 结果: {"通过" if result else "不通过"}'
                     }
                     
                 except Exception as e:

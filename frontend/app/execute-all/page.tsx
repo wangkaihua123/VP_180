@@ -47,7 +47,7 @@ import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import { TestCaseList } from "@/components/TestCaseList"
-import { testCasesAPI } from "@/lib/api/test-cases"
+import { testCasesAPI, TestExecutionResponse } from "@/lib/api/test-cases"
 import type { TestCase } from "@/app/api/routes"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
@@ -414,10 +414,44 @@ export default function ExecuteAllPage() {
       console.log(`开始执行测试用例 #${testCase.id}:`, testCase.name)
 
       try {
-        const result = await testCasesAPI.run(Number(testCase.id))
+        // 添加显式类型断言，因为API可能返回详细结果
+        const result = await testCasesAPI.run(Number(testCase.id)) as TestExecutionResponse;
+        
         if (result.success) {
           await updateTestCaseStatus(testCase.id, 'completed')
           addLog(testCase.id, `测试用例执行成功: ${testCase.name}`, 'success')
+          
+          // 记录操作步骤和验证步骤的详细结果
+          if (result.details) {
+            // 记录操作步骤结果
+            if (result.details.operation_results && result.details.operation_results.length > 0) {
+              addLog(testCase.id, '操作步骤结果:', 'info')
+              result.details.operation_results.forEach((opResult, idx) => {
+                const status = opResult.success ? '成功' : '失败'
+                addLog(
+                  testCase.id, 
+                  `步骤 ${idx + 1}: ${status} - ${opResult.message || '无消息'}`, 
+                  opResult.success ? 'success' : 'error'
+                )
+              })
+            }
+            
+            // 记录验证步骤结果
+            if (result.details.verification_results && result.details.verification_results.length > 0) {
+              addLog(testCase.id, '验证步骤结果:', 'info')
+              result.details.verification_results.forEach((verResult, idx) => {
+                const status = verResult.success ? '通过' : '不通过'
+                addLog(
+                  testCase.id, 
+                  `验证 ${idx + 1}: ${status} - ${verResult.message || '无消息'}`, 
+                  verResult.success ? 'success' : 'error'
+                )
+              })
+            } else {
+              addLog(testCase.id, '没有验证步骤执行', 'warning')
+            }
+          }
+          
           setExecutionStats(prev => ({
             ...prev,
             completed: prev.completed + 1
@@ -425,6 +459,30 @@ export default function ExecuteAllPage() {
         } else {
           await updateTestCaseStatus(testCase.id, 'failed')
           addLog(testCase.id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
+          
+          // 如果有详细错误信息，也一并记录
+          if (result.details) {
+            if (result.details.operation_results) {
+              // 查找失败的操作步骤
+              const failedOps = result.details.operation_results.filter(r => !r.success)
+              if (failedOps.length > 0) {
+                failedOps.forEach((op, idx) => {
+                  addLog(testCase.id, `操作步骤失败 ${idx + 1}: ${op.message || '无错误信息'}`, 'error')
+                })
+              }
+            }
+            
+            if (result.details.verification_results) {
+              // 查找失败的验证步骤
+              const failedVerifications = result.details.verification_results.filter(r => !r.success)
+              if (failedVerifications.length > 0) {
+                failedVerifications.forEach((ver, idx) => {
+                  addLog(testCase.id, `验证步骤失败 ${idx + 1}: ${ver.message || '无错误信息'}`, 'error')
+                })
+              }
+            }
+          }
+          
           setExecutionStats(prev => ({
             ...prev,
             failed: prev.failed + 1
