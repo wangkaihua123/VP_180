@@ -35,7 +35,8 @@
 │   ├── ssh_manager.py     # SSH连接管理
 │   ├── serial_manager.py  # 串口连接管理
 │   ├── test_method_mapping.py # 测试方法映射
-│   └── log_config.py      # 日志配置
+│   ├── log_config.py      # 日志配置
+│   └── log_monitor.py     # 日志监控工具(实时监控日志文件)
 │
 ├── data/                  # 数据存储目录
 │   ├── test_cases.json    # 测试用例数据
@@ -140,6 +141,24 @@ npm run dev
 ```
 
 前端应用将运行在 http://localhost:3000
+
+### 日志监控工具
+
+使用日志监控工具实时查看日志：
+
+```bash
+# 查看默认VP_180.log日志文件
+python -m utils.log_monitor
+
+# 自定义参数示例
+python -m utils.log_monitor -f data/logs/custom.log -n 20 --no-color
+```
+
+可用选项:
+- `-f, --file`: 指定要监控的日志文件路径
+- `-n, --lines`: 开始时显示的最后几行日志数 (默认: 10)
+- `--no-color`: 禁用彩色输出
+- `-s, --sleep`: 检查文件变化的时间间隔(秒) (默认: 0.1)
 
 ## API 文档
 

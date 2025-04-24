@@ -3,8 +3,18 @@
 """
 import os
 import logging
+import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+# 禁用WebSocket功能 - 直接禁用所有可能尝试导入的相关模块
+# 这将阻止任何代码尝试启用WebSocket功能
+sys.modules['flask_socketio'] = None
+sys.modules['socketio'] = None
+
+# 清除模块缓存中任何可能的log_socket模块
+if 'backend.log_socket' in sys.modules:
+    del sys.modules['backend.log_socket']
 
 # 导入配置
 from backend.config import SECRET_KEY, DEBUG, HOST, PORT
@@ -12,17 +22,16 @@ from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 # 导入路由蓝图
 from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp
 
-# 设置日志目录
-LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'logs')
-os.makedirs(LOG_DIR, exist_ok=True)
+# 设置日志文件路径 - 直接使用data目录，不创建logs子目录
+LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+# 不再创建logs子目录
 
-# 配置日志
+# 配置日志 - 只输出到控制台，不生成app.log文件
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler(os.path.join(LOG_DIR, 'app.log'), encoding='utf-8')
     ]
 )
 
@@ -68,5 +77,6 @@ def create_app(config=None):
 app = create_app()
 
 if __name__ == '__main__':
-    # 启动应用
+    # 启动应用 - 确保使用标准Flask运行方式，不使用SocketIO
+    logging.info("WebSocket功能已禁用")
     app.run(host=HOST, debug=DEBUG, port=PORT) 

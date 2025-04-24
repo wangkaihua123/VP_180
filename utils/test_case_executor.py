@@ -28,20 +28,12 @@ class TestCaseExecutor:
             else:
                 script_content = test_case['script_content']
 
-            # 创建日志目录
-            log_dir = os.path.join('data', 'logs', str(test_case['id']))
-            os.makedirs(log_dir, exist_ok=True)
-            log_file = os.path.join(log_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-
             # 执行操作步骤
             operation_results = []
             if 'operationSteps' in script_content:
                 for step in script_content['operationSteps']:
                     result = self._execute_operation_step(step, test_case['title'])
                     operation_results.append(result)
-                    # 记录日志
-                    with open(log_file, 'a', encoding='utf-8') as f:
-                        f.write(f"操作步骤 {step['id']}: {result['message']}\n")
 
             # 执行验证步骤
             verification_results = []
@@ -49,9 +41,6 @@ class TestCaseExecutor:
                 for step in script_content['verificationSteps']:
                     result = self._execute_verification_step(step)
                     verification_results.append(result)
-                    # 记录日志
-                    with open(log_file, 'a', encoding='utf-8') as f:
-                        f.write(f"验证步骤 {step['id']}: {result['message']}\n")
 
             # 判断测试结果
             success = all(r['success'] for r in operation_results + verification_results)
@@ -61,8 +50,7 @@ class TestCaseExecutor:
                 'success': success,
                 'status': status,
                 'operation_results': operation_results,
-                'verification_results': verification_results,
-                'log_file': log_file
+                'verification_results': verification_results
             }
 
         except Exception as e:

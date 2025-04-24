@@ -6,7 +6,7 @@ from .log_config import setup_logger
 try:
     from .Config import FUNCTIONS
     logger = setup_logger(__name__)
-    logger.info("成功加载FUNCTIONS配置")
+    # logger.info("成功加载FUNCTIONS配置")
 except ImportError as e:
     logger = setup_logger(__name__)
     logger.error(f"加载FUNCTIONS配置失败: {str(e)}")

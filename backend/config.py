@@ -18,14 +18,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 TEST_CASES_FILE = os.path.join(DATA_DIR, 'test_cases.json')
 SETTINGS_FILE = os.path.join(DATA_DIR, 'settings.json')
-LOGS_DIR = os.path.join(DATA_DIR, 'logs')
 
 # 文件存储目录
 IMAGES_DIR = os.path.join(DATA_DIR, 'img')
 SCREENSHOTS_DIR = os.path.join(DATA_DIR, 'screenshots')
 
 # 确保必要的目录存在
-for directory in (DATA_DIR, LOGS_DIR, IMAGES_DIR, SCREENSHOTS_DIR):
+for directory in (DATA_DIR, IMAGES_DIR, SCREENSHOTS_DIR):
     os.makedirs(directory, exist_ok=True)
 
 # 默认数据库配置
@@ -33,7 +32,6 @@ DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:///' + os.path.join(DATA_DIR, '
 
 # 日志配置
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
-LOG_FILE = os.path.join(BASE_DIR, 'app.log')
 
 # SSH相关配置
 SSH_TIMEOUT = int(os.getenv('SSH_TIMEOUT', 10))
@@ -48,9 +46,9 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 TEST_CASES_DIR = os.path.join(DATA_DIR, 'test_cases')
 os.makedirs(TEST_CASES_DIR, exist_ok=True)
 
-# 测试用例日志目录
-TEST_CASE_LOGS_DIR = os.path.join(LOGS_DIR, 'logs')
-os.makedirs(TEST_CASE_LOGS_DIR, exist_ok=True)
+# 测试用例日志目录 - 已移除
+# TEST_CASE_LOGS_DIR = os.path.join(LOGS_DIR, 'logs')
+# os.makedirs(TEST_CASE_LOGS_DIR, exist_ok=True)
 
 # SSH默认配置
 DEFAULT_SSH_CONFIG = {

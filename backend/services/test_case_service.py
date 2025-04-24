@@ -7,7 +7,7 @@ from datetime import datetime
 from utils.test_case_executor import TestCaseExecutor
 from backend.models.test_case import TestCase
 from backend.services.ssh_service import SSHService
-from backend.config import TEST_CASE_LOGS_DIR, IMAGES_DIR, SCREENSHOTS_DIR
+from backend.config import IMAGES_DIR, SCREENSHOTS_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -143,22 +143,10 @@ class TestCaseService:
     
     @classmethod
     def get_latest_log(cls, case_id):
-        """获取测试用例的最新日志"""
+        """获取测试用例的最新日志 - 已移除日志文件访问功能"""
         try:
-            # 获取测试用例日志目录
-            log_dir = os.path.join(TEST_CASE_LOGS_DIR, str(case_id))
-            log_content = ""
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
-            # 查找最新日志文件
-            if os.path.exists(log_dir):
-                log_files = [f for f in os.listdir(log_dir) if f.endswith('.log')]
-                if log_files:
-                    # 按修改时间排序，获取最新的
-                    latest_log = sorted(log_files, key=lambda f: os.path.getmtime(os.path.join(log_dir, f)), reverse=True)[0]
-                    with open(os.path.join(log_dir, latest_log), 'r', encoding='utf-8') as f:
-                        log_content = f.read()
-
             # 获取截图
             screenshots = []
             if os.path.exists(SCREENSHOTS_DIR):
@@ -176,7 +164,7 @@ class TestCaseService:
             return {
                 'success': True,
                 'data': {
-                    'log_content': log_content,
+                    'log_content': "日志功能已禁用",
                     'images': images,
                     'screenshots': screenshots,
                     'timestamp': timestamp
@@ -184,10 +172,10 @@ class TestCaseService:
             }
 
         except Exception as e:
-            logger.error(f"获取测试用例日志时出错: {str(e)}")
+            logger.error(f"获取测试资源时出错: {str(e)}")
             return {
                 'success': False,
-                'message': f'获取日志失败: {str(e)}'
+                'message': f'获取资源失败: {str(e)}'
             }
     
     @classmethod
