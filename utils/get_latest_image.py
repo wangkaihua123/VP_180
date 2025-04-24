@@ -52,8 +52,16 @@ class GetLatestImage:
             logger.error(f"命令执行错误: {error}")
         return result
 
-    def get_latest_image(self):
-        """获取最新的图像文件，返回图像数据"""
+    def get_latest_image(self, id=None):
+        """
+        获取最新的图像文件，返回图像数据
+        
+        Args:
+            id: 测试用例中的ID，用于标识图像
+            
+        Returns:
+            解析后的图像对象
+        """
         try:
             # 检查SSH连接是否有效
             if not self.ssh or not hasattr(self.ssh, 'exec_command'):
@@ -62,7 +70,13 @@ class GetLatestImage:
             
             # 获取最新的图像文件
             timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            filename = f"{self.test_name}_{timestamp}.tiff"
+            
+            # 构建文件名，只包含id和时间戳
+            if id:
+                filename = f"id_{id}_{timestamp}.tiff"
+            else:
+                filename = f"{timestamp}.tiff"
+            
             local_path = os.path.join(self.local_dir, filename)
             
             # 检查远程目录结构

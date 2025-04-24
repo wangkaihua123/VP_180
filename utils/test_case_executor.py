@@ -111,6 +111,9 @@ class TestCaseExecutor:
                 self.screenshot_getter.ssh = self.ssh
                 self.button_clicker.ssh = self.ssh
             
+            # 获取测试用例的顶级id
+            test_case_id = test_case.get('id')
+            
             # 解析测试用例内容
             if isinstance(test_case['script_content'], str):
                 script_content = json.loads(test_case['script_content'])
@@ -121,7 +124,7 @@ class TestCaseExecutor:
             operation_results = []
             if 'operationSteps' in script_content:
                 for step in script_content['operationSteps']:
-                    result = self._execute_operation_step(step, test_case['title'])
+                    result = self._execute_operation_step(step, test_case['title'], test_case_id)
                     operation_results.append(result)
 
             # 执行验证步骤
@@ -150,7 +153,7 @@ class TestCaseExecutor:
                 'message': f"执行出错: {str(e)}"
             }
 
-    def _execute_operation_step(self, step, test_name):
+    def _execute_operation_step(self, step, test_name, test_case_id=None):
         """执行单个操作步骤"""
         try:
             # 再次检查SSH连接状态
@@ -177,7 +180,8 @@ class TestCaseExecutor:
             if operation_key == '获取图像':
                 # 使用 GetLatestImage 获取图像
                 self.image_getter.test_name = test_name
-                image = self.image_getter.get_latest_image()
+                # 将测试用例id参数传递给get_latest_image方法
+                image = self.image_getter.get_latest_image(id=test_case_id)
                 return {
                     'success': True,
                     'message': f'成功获取图像',
@@ -187,7 +191,8 @@ class TestCaseExecutor:
             elif operation_key == '获取截图':
                 # 使用 GetLatestScreenshot 获取截图
                 self.screenshot_getter.test_name = test_name
-                screenshot = self.screenshot_getter.get_latest_screenshot()
+                # 将测试用例id参数传递给get_latest_screenshot方法
+                screenshot = self.screenshot_getter.get_latest_screenshot(id=test_case_id)
                 return {
                     'success': True,
                     'message': f'成功获取截图',

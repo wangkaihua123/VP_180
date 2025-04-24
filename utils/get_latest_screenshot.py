@@ -34,8 +34,16 @@ class GetLatestScreenshot:
             logger.error(f"命令执行错误: {error}")
         return result
 
-    def get_latest_screenshot(self):
-        """获取最新的截图并保存到本地"""
+    def get_latest_screenshot(self, id=None):
+        """
+        获取最新的截图并保存到本地
+        
+        Args:
+            id: 测试用例中的ID，用于标识截图
+        
+        Returns:
+            解析后的图像对象
+        """
         # logger.debug("开始获取最新截图")
         # logger.debug(f"当前测试用例名称: {self.test_name}")
         
@@ -53,14 +61,17 @@ class GetLatestScreenshot:
 
         # logger.debug(f"最新截图路径: {img_path}")
 
-        # 获取原始文件名并添加测试用例名称前缀
+        # 获取原始文件名和扩展名
         original_filename = os.path.basename(img_path)
-        if self.test_name:
-            new_filename = f"{self.test_name}_{original_filename}"
-            # logger.debug(f"添加测试用例前缀后的文件名: {new_filename}")
+        file_extension = os.path.splitext(original_filename)[1]
+        
+        # 生成新文件名，只包含id和时间戳
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        if id:
+            new_filename = f"id_{id}_{timestamp}{file_extension}"
         else:
-            new_filename = original_filename
-            # logger.debug(f"使用原始文件名: {new_filename}")
+            new_filename = f"{timestamp}{file_extension}"
+            
         local_path = os.path.join(LOCAL_SCREENSHOT_DIR, new_filename)
 
         # 通过 SFTP 读取远程截图
