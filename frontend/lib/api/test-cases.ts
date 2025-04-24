@@ -132,5 +132,25 @@ export const testCasesAPI = {
         data: []
       };
     }
+  },
+
+  /**
+   * 清空VP_180.log日志文件
+   * @returns 操作结果
+   */
+  async clearSystemLog() {
+    try {
+      const response = await fetch('/api/logs/vp180/clear', {
+        method: 'POST'
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("清空系统日志失败:", error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "清空系统日志失败"
+      };
+    }
   }
 } 

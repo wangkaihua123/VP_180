@@ -113,8 +113,11 @@ export default function ExecuteAllPage() {
   const [logs, setLogs] = useState<TestCaseLog[]>([])
   const [systemLogs, setSystemLogs] = useState<any[]>([])
   const [systemLogLoading, setSystemLogLoading] = useState(false)
-  const [activeLogTab, setActiveLogTab] = useState<'execution' | 'system'>('execution')
   const systemLogScrollAreaRef = useRef<HTMLDivElement>(null)
+  const [pollInterval, setPollInterval] = useState(2000) // 初始轮询间隔为2秒
+  const [noNewLogCount, setNoNewLogCount] = useState(0) // 连续无新日志的次数
+  const lastLogCountRef = useRef(0) // 上次日志数量的引用
+  const timerRef = useRef<NodeJS.Timeout | null>(null) // 定时器引用
   const [testCases, setTestCases] = useState<TestCaseWithStatus[]>([])
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [executing, setExecuting] = useState(false)
@@ -378,6 +381,24 @@ export default function ExecuteAllPage() {
     setLogs([]) // 确保清空之前的日志
     setProgress(0)
     setCompletedTestCases(0)
+    
+    // 清空系统日志文件
+    try {
+      console.log('清空系统日志文件...')
+      const clearResult = await testCasesAPI.clearSystemLog()
+      if (clearResult.success) {
+        console.log('系统日志文件已清空')
+      } else {
+        console.warn('清空系统日志文件失败:', clearResult.message)
+        toast({
+          title: "清空系统日志失败",
+          description: clearResult.message || "无法清空系统日志文件",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('清空系统日志文件出错:', error)
+    }
     
     // 添加执行开始的明确日志记录
     console.log('开始执行测试用例:', selectedIds)
@@ -671,11 +692,54 @@ export default function ExecuteAllPage() {
       const response = await testCasesAPI.getSystemLog()
       
       if (response.success && response.data) {
+        // 添加调试代码，记录一些日志内容以便开发调试
+        if (response.data.length > 0 && response.data.length !== lastLogCountRef.current) {
+          // 打印前3条日志的示例，以便观察格式
+          console.log('系统日志格式示例 (新增日志):', 
+            response.data.slice(-3).map((log: {level: string, source: string, message: string}) => ({
+              level: log.level,
+              source: log.source,
+              message: log.message
+            })));
+        }
+        
+        // 获取当前日志数量
+        const currentLogCount = response.data.length;
+        
+        // 比较与上次日志数量
+        if (currentLogCount > lastLogCountRef.current) {
+          // 有新日志
+          setNoNewLogCount(0); // 重置无新日志计数
+          
+          // 如果当前轮询间隔是10秒，改回2秒
+          if (pollInterval === 10000) {
+            console.log('检测到新日志，轮询间隔调整为2秒');
+            setPollInterval(2000);
+          }
+        } else {
+          // 无新日志，增加计数
+          setNoNewLogCount(prev => {
+            const newCount = prev + 1;
+            
+            // 如果连续三次无新日志且当前轮询间隔是2秒，改为10秒
+            if (newCount >= 3 && pollInterval === 2000) {
+              console.log('连续三次无新日志，轮询间隔调整为10秒');
+              setPollInterval(10000);
+            }
+            
+            return newCount;
+          });
+        }
+        
+        // 更新上次日志数量
+        lastLogCountRef.current = currentLogCount;
+        
+        // 设置日志数据
         setSystemLogs(response.data)
         
         // 滚动到底部
         setTimeout(() => {
-          if (systemLogScrollAreaRef.current && activeLogTab === 'system') {
+          if (systemLogScrollAreaRef.current) {
             systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight
           }
         }, 100)
@@ -696,16 +760,36 @@ export default function ExecuteAllPage() {
   
   // 定期刷新系统日志
   useEffect(() => {
-    fetchSystemLogs()
+    // 首次加载时获取日志
+    fetchSystemLogs();
     
-    // 创建定时器，每5秒刷新一次
-    const intervalId = setInterval(() => {
-      fetchSystemLogs()
-    }, 5000)
+    // 创建轮询函数
+    const poll = () => {
+      // 清除现有定时器
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      
+      // 设置新的定时器
+      timerRef.current = setTimeout(() => {
+        fetchSystemLogs().then(() => {
+          // 递归调用poll，形成循环
+          poll();
+        });
+      }, pollInterval);
+    };
+    
+    // 开始轮询
+    poll();
     
     // 组件卸载时清除定时器
-    return () => clearInterval(intervalId)
-  }, [activeLogTab])
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pollInterval]); // 仅当轮询间隔变化时重新设置定时器
 
   // 系统日志级别样式
   const getSystemLogLevelStyle = (level: string) => {
@@ -724,6 +808,72 @@ export default function ExecuteAllPage() {
         return "text-gray-500"
     }
   }
+
+  /**
+   * 获取特定测试用例的系统日志
+   * @param testCaseId 测试用例ID
+   * @returns 与该测试用例相关的系统日志
+   */
+  const getTestCaseSystemLogs = (testCaseId: number) => {
+    // 从systemLogs数组中过滤包含特定测试用例ID的日志
+    // 测试用例ID可能出现在日志的source或message字段中
+    return systemLogs.filter(log => {
+      // 组合source和message以进行全文搜索
+      const logText = `${log.source || ''} ${log.message || ''}`.toLowerCase();
+      
+      // 添加更多可能的匹配模式
+      return logText.includes(`#${testCaseId}`) || 
+             // 匹配"当前执行测试用例名称: XXX，测试用例ID: 数字"格式
+             logText.includes(`测试用例id: ${testCaseId}`) ||
+             logText.includes(`，测试用例id: ${testCaseId}`) ||
+             // 特别检查是否包含"测试用例ID"字符串，不区分大小写
+             (logText.includes("测试用例id") && logText.includes(testCaseId.toString()));
+    });
+  };
+
+  /**
+   * 获取特定测试用例的系统日志（按区间）
+   * 从该测试用例开始执行到下一个测试用例开始执行之前的所有日志
+   * @param testCaseId 测试用例ID
+   * @returns 该测试用例执行期间的所有系统日志
+   */
+  const getTestCaseSystemLogsByRange = (testCaseId: number) => {
+    if (systemLogs.length === 0) return [];
+    
+    // 查找所有测试用例开始执行的位置
+    const testCaseStartIndices: { id: number; index: number }[] = [];
+    
+    systemLogs.forEach((log, index) => {
+      const logText = `${log.source || ''} ${log.message || ''}`.toLowerCase();
+      // 查找测试用例开始执行的标记
+      if (logText.includes("当前执行测试用例名称")) {
+        // 尝试提取测试用例ID
+        const match = logText.match(/测试用例id:\s*(\d+)/i);
+        if (match && match[1]) {
+          const id = parseInt(match[1], 10);
+          if (!isNaN(id)) {
+            testCaseStartIndices.push({ id, index });
+          }
+        }
+      }
+    });
+    
+    // 按日志索引排序
+    testCaseStartIndices.sort((a, b) => a.index - b.index);
+    
+    // 找到目标测试用例的开始索引
+    const targetIndex = testCaseStartIndices.findIndex(item => item.id === testCaseId);
+    if (targetIndex === -1) return []; // 未找到该测试用例
+    
+    const startIndex = testCaseStartIndices[targetIndex].index;
+    // 如果有下一个测试用例，结束索引为下一个测试用例的开始索引，否则为日志末尾
+    const endIndex = targetIndex < testCaseStartIndices.length - 1 
+      ? testCaseStartIndices[targetIndex + 1].index
+      : systemLogs.length;
+    
+    // 返回区间内的所有日志
+    return systemLogs.slice(startIndex, endIndex);
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -842,7 +992,11 @@ export default function ExecuteAllPage() {
                           <TabsList className="mb-3">
                             <TabsTrigger value="logs" className="flex items-center">
                               <FileText className="mr-1 h-4 w-4" />
-                              日志
+                              执行日志
+                            </TabsTrigger>
+                            <TabsTrigger value="systemLogs" className="flex items-center">
+                              <FileText className="mr-1 h-4 w-4" />
+                              系统日志 ({getTestCaseSystemLogsByRange(testCase.id).length})
                             </TabsTrigger>
                             <TabsTrigger value="images" className="flex items-center">
                               <ImageIcon className="mr-1 h-4 w-4" />
@@ -866,6 +1020,30 @@ export default function ExecuteAllPage() {
                                 ))
                               ) : (
                                 <div className="text-gray-500">暂无日志</div>
+                              )}
+                            </ScrollArea>
+                          </TabsContent>
+
+                          {/* 系统日志选项卡 */}
+                          <TabsContent value="systemLogs">
+                            <ScrollArea className="h-[200px] rounded-md bg-black p-4 font-mono text-xs text-white">
+                              {getTestCaseSystemLogsByRange(testCase.id).length > 0 ? (
+                                getTestCaseSystemLogsByRange(testCase.id).map((log, index) => (
+                                  <div key={index} className="mb-1">
+                                    <span className="text-gray-400">[{log.timestamp}]</span>{" "}
+                                    <span className={getSystemLogLevelStyle(log.level)}>
+                                      [{log.level}]
+                                    </span>{" "}
+                                    <span className="text-gray-400">[{log.source}]</span>{" "}
+                                    <span className="text-white">{log.message}</span>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="text-gray-500">
+                                  {systemLogs.length > 0 ? 
+                                    `暂无与测试用例 #${testCase.id} (${testCase.name}) 相关的系统日志 (总日志数: ${systemLogs.length})` : 
+                                    "暂无系统日志"}
+                                </div>
                               )}
                             </ScrollArea>
                           </TabsContent>
@@ -951,65 +1129,37 @@ export default function ExecuteAllPage() {
                   <Clock className="mr-2 h-5 w-5" />
                   完整执行日志
                 </div>
-                <div>
-                  <Tabs value={activeLogTab} onValueChange={(value) => setActiveLogTab(value as 'execution' | 'system')}>
-                    <TabsList>
-                      <TabsTrigger value="execution" className="flex items-center">
-                        <FileText className="mr-1 h-4 w-4" />
-                        测试执行日志
-                      </TabsTrigger>
-                      <TabsTrigger value="system" className="flex items-center">
-                        <FileText className="mr-1 h-4 w-4" />
-                        系统日志 (VP_180.log)
-                        {systemLogLoading && <RefreshCw className="ml-1 h-3 w-3 animate-spin" />}
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">
+                    轮询间隔: {pollInterval === 2000 ? '2秒' : '10秒'}
+                    {pollInterval === 10000 && noNewLogCount >= 3 && ' (空闲)'}
+                  </span>
+                  {systemLogLoading && <RefreshCw className="h-3 w-3 animate-spin" />}
                 </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              {activeLogTab === 'execution' ? (
-                <ScrollArea
-                  className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
-                  ref={scrollAreaRef}
-                >
-                  {logs.map((log, index) => {
-                    const testCase = testCases.find((tc) => tc.id === log.testCaseId)
-                    return (
-                      <div key={index} className="mb-1">
-                        <span className="text-gray-400">[{log.timestamp}]</span>{" "}
-                        <span className="px-1 rounded" style={{ backgroundColor: `${testCase?.color}40` }}>
-                          [测试用例 #{log.testCaseId}]
-                        </span>{" "}
-                        <span className={getLogTypeStyle(log.type)}>{log.message}</span>
-                      </div>
-                    )
-                  })}
-                </ScrollArea>
-              ) : (
-                <ScrollArea
-                  className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
-                  ref={systemLogScrollAreaRef}
-                >
-                  {systemLogs.length > 0 ? (
-                    systemLogs.map((log, index) => (
-                      <div key={index} className="mb-1">
-                        <span className="text-gray-400">[{log.timestamp}]</span>{" "}
-                        <span className={getSystemLogLevelStyle(log.level)}>
-                          [{log.level}]
-                        </span>{" "}
-                        <span className="text-gray-400">[{log.source}]</span>{" "}
-                        <span className="text-white">{log.message}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      {systemLogLoading ? "加载系统日志中..." : "暂无系统日志数据"}
+              <ScrollArea
+                className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
+                ref={systemLogScrollAreaRef}
+              >
+                {systemLogs.length > 0 ? (
+                  systemLogs.map((log, index) => (
+                    <div key={index} className="mb-1">
+                      <span className="text-gray-400">[{log.timestamp}]</span>{" "}
+                      <span className={getSystemLogLevelStyle(log.level)}>
+                        [{log.level}]
+                      </span>{" "}
+                      <span className="text-gray-400">[{log.source}]</span>{" "}
+                      <span className="text-white">{log.message}</span>
                     </div>
-                  )}
-                </ScrollArea>
-              )}
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    {systemLogLoading ? "加载系统日志中..." : "暂无系统日志数据"}
+                  </div>
+                )}
+              </ScrollArea>
             </CardContent>
           </Card>
         </motion.div>

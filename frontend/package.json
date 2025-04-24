@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 10.0.18.132 -p 3000",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start -H 10.0.18.132 -p 3000",
+    "lint": "next lint",
+    "dev:custom": "cross-env FRONTEND_HOST=%npm_config_host% FRONTEND_PORT=%npm_config_port% next dev -H %npm_config_host% -p %npm_config_port%"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",

@@ -4,7 +4,14 @@
 准备工作：
 连接串口，ssh线
 将touch_click.py文件放进设备的app/jzj文件夹下面
-将ip设置成10.0.18.189
+将ip设置成10.0.18.132
+
+
+
+##  QS
+解决跨域问题：
+修改前端修改next.config，package.json
+后端修改config.py
 
 ## 项目结构
 

@@ -147,7 +147,7 @@ class TestCaseExecutor:
                     result = self._execute_verification_step(step, operation_data)
                     verification_results.append(result)
                     logger.info(f"验证步骤结果: {result.get('success', False)} - {result.get('message', '无消息')}")
-                logger.info(f"验证步骤执行完成，结果: {'全部通过' if all(r['success'] for r in verification_results) else '存在失败'}")
+                logger.info(f"验证步骤执行完成，结果: {'全部通过' if all(r['success'] for r in verification_results) else '测试不通过'}")
             else:
                 logger.warning("测试用例中没有验证步骤")
 

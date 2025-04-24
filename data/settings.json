@@ -3,6 +3,6 @@
   "sshPort": 22,
   "sshUsername": "root",
   "sshPassword": "firefly",
-  "serialPort": "COM10",
+  "serialPort": "COM4",
   "serialBaudRate": "1500000"
 }

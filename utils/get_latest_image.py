@@ -26,7 +26,6 @@ class GetLatestImage:
         # 更新本地目录路径
         self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
-        logger.debug(f"本地图像保存目录: {self.local_dir}")
         
         # 检查远程目录是否存在
         if self.ssh and hasattr(self.ssh, 'exec_command'):
@@ -66,17 +65,6 @@ class GetLatestImage:
             if not self.ssh or not hasattr(self.ssh, 'exec_command'):
                 logger.error("SSH连接无效，无法获取图像")
                 raise Exception("SSH连接无效，无法获取图像")
-            
-            # 获取最新的图像文件
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            
-            # 构建文件名，只包含id和时间戳
-            if id:
-                filename = f"id_{id}_{timestamp}.tiff"
-            else:
-                filename = f"{timestamp}.tiff"
-            
-            local_path = os.path.join(self.local_dir, filename)
             
             # 检查远程目录结构
             logger.debug("检查远程目录结构")
@@ -122,6 +110,17 @@ class GetLatestImage:
                 raise Exception("未找到图像文件")
             
             logger.debug(f"找到最新图像文件: {latest_file}")
+            
+            # 提取原始文件名
+            original_filename = os.path.basename(latest_file)
+            
+            # 构建新文件名，只包含id和原始文件名
+            if id:
+                filename = f"id_{id}_{original_filename}"
+            else:
+                filename = original_filename
+                
+            local_path = os.path.join(self.local_dir, filename)
                 
             # 下载图像文件
             logger.debug("开始下载图像文件")
