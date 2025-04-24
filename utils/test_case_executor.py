@@ -42,8 +42,8 @@ class TestCaseExecutor:
         # 如果连接尝试失败，记录日志
         if not ssh_connection:
             logger.error("无法建立SSH连接，测试可能会失败")
-        else:
-            logger.info("SSH连接就绪，初始化测试组件")
+        # else:
+        #     logger.info("SSH连接就绪，初始化测试组件")
         
         # 保存SSH连接实例
         self.ssh = ssh_connection
@@ -85,7 +85,7 @@ class TestCaseExecutor:
                 logger.warning(f"SSH测试命令响应异常: {output}")
                 return False
             
-            logger.debug("SSH连接验证成功")
+            # logger.debug("SSH连接验证成功")
             return True
         except Exception as e:
             logger.error(f"验证SSH连接时出错: {e}")

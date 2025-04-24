@@ -325,15 +325,6 @@ export default function ExecuteAllPage() {
   }
 
   /**
-   * 按测试用例ID过滤日志
-   * @param testCaseId 测试用例ID
-   * @returns 过滤后的日志数组
-   */
-  const getTestCaseLogs = (testCaseId: number) => {
-    return logs.filter((log) => log.testCaseId === testCaseId)
-  }
-
-  /**
    * 添加日志条目
    * @param testCaseId 测试用例ID
    * @param message 日志消息
@@ -418,13 +409,6 @@ export default function ExecuteAllPage() {
     let completedCount = 0
 
     for (let i = 0; i < cases.length; i++) {
-      // 如果暂停，则停止执行
-      if (isPaused) {
-        console.log('执行已暂停')
-        addLog(0, '执行已暂停', 'warning')
-        break
-      }
-
       const testCase = cases[i]
       
       // 更新当前测试用例状态为"运行中"
@@ -721,8 +705,8 @@ export default function ExecuteAllPage() {
           setNoNewLogCount(prev => {
             const newCount = prev + 1;
             
-            // 如果连续三次无新日志且当前轮询间隔是2秒，改为10秒
-            if (newCount >= 3 && pollInterval === 2000) {
+            // 如果连续五次无新日志且当前轮询间隔是2秒，改为10秒
+            if (newCount >= 5 && pollInterval === 2000) {
               console.log('连续三次无新日志，轮询间隔调整为10秒');
               setPollInterval(10000);
             }
@@ -905,12 +889,6 @@ export default function ExecuteAllPage() {
                 <CardTitle className="text-lg flex items-center">
                   <Play className="mr-2 h-5 w-5" />
                   测试执行进度
-                  {executing && (
-                    <Badge variant="outline" className="ml-2 animate-pulse">
-                      <RefreshCw className="mr-1 h-3 w-3 animate-spin" />
-                      执行中
-                    </Badge>
-                  )}
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {/* 重新执行按钮 */}
@@ -918,28 +896,9 @@ export default function ExecuteAllPage() {
                     variant="outline"
                     size="sm"
                     onClick={handleReExecute}
-                    disabled={executing && !isPaused}
                   >
                     <RefreshCw className="mr-2 h-4 w-4" />
                     重新执行
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsPaused(!isPaused)}
-                    disabled={!executing}
-                  >
-                    {!isPaused ? (
-                      <>
-                        <Pause className="mr-2 h-4 w-4" />
-                        暂停
-                      </>
-                    ) : (
-                      <>
-                        <Play className="mr-2 h-4 w-4" />
-                        继续
-                      </>
-                    )}
                   </Button>
                   <Button 
                     variant="outline" 
@@ -988,12 +947,8 @@ export default function ExecuteAllPage() {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <div className="border-t p-3 bg-black/5">
-                        <Tabs defaultValue="logs" className="w-full">
+                        <Tabs defaultValue="systemLogs" className="w-full">
                           <TabsList className="mb-3">
-                            <TabsTrigger value="logs" className="flex items-center">
-                              <FileText className="mr-1 h-4 w-4" />
-                              执行日志
-                            </TabsTrigger>
                             <TabsTrigger value="systemLogs" className="flex items-center">
                               <FileText className="mr-1 h-4 w-4" />
                               系统日志 ({getTestCaseSystemLogsByRange(testCase.id).length})
@@ -1008,25 +963,9 @@ export default function ExecuteAllPage() {
                             </TabsTrigger>
                           </TabsList>
 
-                          {/* 日志选项卡 */}
-                          <TabsContent value="logs">
-                            <ScrollArea className="h-[200px] rounded-md bg-black p-4 font-mono text-xs text-white">
-                              {getTestCaseLogs(testCase.id).length > 0 ? (
-                                getTestCaseLogs(testCase.id).map((log, index) => (
-                                  <div key={index} className="mb-1">
-                                    <span className="text-gray-400">[{log.timestamp}]</span>{" "}
-                                    <span className={getLogTypeStyle(log.type)}>{log.message}</span>
-                                  </div>
-                                ))
-                              ) : (
-                                <div className="text-gray-500">暂无日志</div>
-                              )}
-                            </ScrollArea>
-                          </TabsContent>
-
                           {/* 系统日志选项卡 */}
                           <TabsContent value="systemLogs">
-                            <ScrollArea className="h-[200px] rounded-md bg-black p-4 font-mono text-xs text-white">
+                            <ScrollArea className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white">
                               {getTestCaseSystemLogsByRange(testCase.id).length > 0 ? (
                                 getTestCaseSystemLogsByRange(testCase.id).map((log, index) => (
                                   <div key={index} className="mb-1">
@@ -1114,11 +1053,7 @@ export default function ExecuteAllPage() {
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="pt-2">
-              <div className="text-sm text-muted-foreground">
-                {executing ? "测试执行中..." : progress === 100 ? "测试执行完成" : "测试执行已暂停"}
-              </div>
-            </CardFooter>
+            
           </Card>
 
           {/* 完整执行日志卡片 */}
@@ -1132,7 +1067,7 @@ export default function ExecuteAllPage() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">
                     轮询间隔: {pollInterval === 2000 ? '2秒' : '10秒'}
-                    {pollInterval === 10000 && noNewLogCount >= 3 && ' (空闲)'}
+                    {pollInterval === 10000 && noNewLogCount >= 5 && ' (空闲)'}
                   </span>
                   {systemLogLoading && <RefreshCw className="h-3 w-3 animate-spin" />}
                 </div>
@@ -1140,7 +1075,7 @@ export default function ExecuteAllPage() {
             </CardHeader>
             <CardContent className="p-0">
               <ScrollArea
-                className="h-[300px] rounded-md bg-black p-4 font-mono text-xs text-white"
+                className="h-[400px] rounded-md bg-black p-4 font-mono text-xs text-white"
                 ref={systemLogScrollAreaRef}
               >
                 {systemLogs.length > 0 ? (
