@@ -153,3 +153,63 @@
 2025-04-23 18:48:33 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
 2025-04-23 18:48:33 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
 2025-04-23 18:48:33 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423184833.tiff
+2025-04-23 18:54:30 - DEBUG - utils.ssh_manager - SSH已连接
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-23 18:54:30 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:30 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:30 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:30 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-23 18:54:30 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-23 18:54:30 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-23 18:54:30 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
+2025-04-23 18:54:30 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-23 18:54:31 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-23 18:54:31 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:31 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-23 18:54:31 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:31 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-23 18:54:31 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250423185430.tiff
+2025-04-24 08:54:06 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-24 08:54:07 - INFO - utils.button_clicker - 成功加载FUNCTIONS配置
+2025-04-24 08:57:12 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 08:57:22 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-04-24 09:10:27 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 初始化 GetLatestImage 实例
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_screenshot - 初始化 GetLatestScreenshot 实例
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 09:10:27 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:27 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:27 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:27 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 09:10:27 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 09:10:27 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 09:10:27 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
+2025-04-24 09:10:27 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161606178.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605989.tiff', '/ue/ue_harddisk/ue_data/2504151615/B/161605811.tiff', '/ue/ue_harddisk/ue_data/2504151615/A/161600700.tiff']
+2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151619/A/161942204.tiff
+2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:28 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 09:10:28 - ERROR - utils.get_latest_image - 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:28 - ERROR - utils.get_latest_image - 获取图像失败: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff
+2025-04-24 09:10:28 - ERROR - utils.test_case_executor - 执行操作步骤时出错: 无法读取图像: E:\python\vp_180\data\img\电子放大_20250424091027.tiff

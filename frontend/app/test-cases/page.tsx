@@ -67,7 +67,31 @@ export default function TestCasesPage() {
 
   const handleRunAll = async () => {
     // 跳转到执行页面并设置自动执行参数
-    router.push('/execute-all?autoExecute=true');
+    console.log("点击了全部执行按钮，准备跳转到执行页面");
+    
+    if (testCases && testCases.length > 0) {
+      // 如果有选中的测试用例，则只执行选中的测试用例
+      if (selectedIds && selectedIds.length > 0) {
+        console.log("执行选中的测试用例:", selectedIds);
+        router.push(`/execute-all?autoExecute=true&ids=${selectedIds.join(',')}`);
+      } else {
+        // 没有选中的测试用例，执行所有测试用例
+        console.log("执行所有测试用例");
+        
+        // 构建所有测试用例的ID列表
+        const allIds = testCases.map(testCase => testCase.id);
+        console.log("所有测试用例ID:", allIds);
+        
+        router.push(`/execute-all?autoExecute=true&ids=${allIds.join(',')}`);
+      }
+    } else {
+      // 没有测试用例时显示提示
+      toast({
+        title: "无法执行",
+        description: "没有可执行的测试用例",
+        variant: "destructive",
+      });
+    }
   }
 
   return (

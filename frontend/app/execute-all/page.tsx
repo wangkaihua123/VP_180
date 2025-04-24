@@ -141,41 +141,32 @@ export default function ExecuteAllPage() {
   const [loading, setLoading] = useState(true)
   const searchParams = useSearchParams()
   const autoExecuteAttemptedRef = useRef(false)
-
+  
   useEffect(() => {
     // 从 URL 参数中获取选中的测试用例 ID
     const ids = searchParams.get('ids')
     if (ids) {
       setSelectedIds(ids.split(',').map(id => parseInt(id)))
     }
+    
+    // 重置自动执行标记，确保页面每次加载时都能尝试自动执行
+    autoExecuteAttemptedRef.current = false
   }, [searchParams])
 
-  // 修改：检查是否需要自动执行测试用例
+  // 测试用例加载完成后的处理
   useEffect(() => {
-    // 检查URL参数中是否有autoExecute=true
-    const autoExecute = searchParams.get('autoExecute') === 'true'
-    
-    // 记录更详细的日志以便调试
-    console.log('自动执行检查:', { 
-      autoExecute, 
-      loading, 
-      executing, 
-      testCasesLength: testCases.length,
-      attempted: autoExecuteAttemptedRef.current 
-    });
-
-    // 如果需要自动执行、未加载中、未执行中、有测试用例、且未尝试过自动执行
-    if (autoExecute && !loading && !executing && testCases.length > 0 && !autoExecuteAttemptedRef.current) {
-      console.log('触发自动执行');
-      // 标记已尝试自动执行
+    // 只在测试用例加载完成且未执行过的情况下自动执行
+    if (!loading && testCases.length > 0 && !autoExecuteAttemptedRef.current && !executing) {
+      console.log('测试用例加载完成，准备执行测试:', testCases.length, '个测试用例');
+      // 设置标记防止重复执行
       autoExecuteAttemptedRef.current = true;
-      // 设置短暂延时确保DOM完全渲染
+      
+      // 延迟执行以确保UI更新完成
       setTimeout(() => {
-        // 自动执行测试用例
         handleExecuteSelected();
-      }, 500);
+      }, 100);
     }
-  }, [searchParams, loading, testCases, executing]);
+  }, [loading, testCases, executing]);
 
   useEffect(() => {
     loadTestCases()
@@ -190,7 +181,7 @@ export default function ExecuteAllPage() {
       // 加载测试用例列表
       const response = await testCasesAPI.list()
       
-      console.log("API返回测试用例数据:", response); // 调试日志
+      console.log("API返回测试用例数据:", response);
       
       if (response.success && (response.data || response.test_cases)) {
         // 处理API可能返回不同格式数据的情况
@@ -223,6 +214,11 @@ export default function ExecuteAllPage() {
         } else {
           console.warn("API返回了空的测试用例数组");
           setTestCases([]);
+          toast({
+            title: "无测试用例",
+            description: "没有可执行的测试用例",
+            variant: "destructive",
+          });
         }
       } else {
         console.error("API返回错误:", response.message);
@@ -242,23 +238,6 @@ export default function ExecuteAllPage() {
       });
     } finally {
       setLoading(false);
-      
-      // 直接在loadTestCases完成后检查是否需要自动执行
-      setTimeout(() => {
-        const autoExecute = searchParams.get('autoExecute') === 'true';
-        console.log("测试用例加载完成后检查自动执行:", {
-          autoExecute,
-          testCasesCount: testCases.length,
-          executing,
-          attempted: autoExecuteAttemptedRef.current
-        });
-        
-        if (autoExecute && !executing && !autoExecuteAttemptedRef.current && testCases.length > 0) {
-          console.log("加载完成后立即执行");
-          autoExecuteAttemptedRef.current = true;
-          handleExecuteSelected();
-        }
-      }, 300); // 短延时确保状态已更新
     }
   }
 
@@ -392,126 +371,80 @@ export default function ExecuteAllPage() {
 
     setExecuting(true)
     setIsPaused(false)
-    setLogs([])
+    setLogs([]) // 确保清空之前的日志
     setProgress(0)
     setCompletedTestCases(0)
-    setExecutionStats({
-      total: selectedIds.length || testCases.length,
-      completed: 0,
-      failed: 0,
-      skipped: 0
-    })
-
-    // 重置所有测试用例状态为待执行
-    const idsToExecute = selectedIds.length > 0 ? selectedIds : testCases.map(tc => tc.id)
-    const updatedTestCases = testCases.map(tc => ({
-      ...tc,
-      status: idsToExecute.includes(tc.id) ? 'pending' : tc.status
-    }))
-    setTestCases(updatedTestCases)
-
-    try {
-      if (executionOrder === 'sequential') {
-        // 串行执行
-        for (let i = 0; i < idsToExecute.length; i++) {
-          const id = idsToExecute[i]
-          if (isPaused) break
-
-          const testCase = testCases.find(tc => tc.id === id)
-          if (!testCase) continue
-
-          // 更新状态为执行中
-          await updateTestCaseStatus(id, 'running')
-          addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
-          
-          // 自动展开当前执行的测试用例
-          setExpandedTestCases(prev => prev.includes(id) ? prev : [...prev, id])
-
-          try {
-            const result = await testCasesAPI.run(Number(id))
-            if (result.success) {
-              await updateTestCaseStatus(id, 'completed')
-              addLog(id, `测试用例执行成功: ${testCase.name}`, 'success')
-              setExecutionStats(prev => ({
-                ...prev,
-                completed: prev.completed + 1
-              }))
-            } else {
-              await updateTestCaseStatus(id, 'failed')
-              addLog(id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
-              setExecutionStats(prev => ({
-                ...prev,
-                failed: prev.failed + 1
-              }))
-            }
-          } catch (error) {
-            await updateTestCaseStatus(id, 'failed')
-            addLog(id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
-            setExecutionStats(prev => ({
-              ...prev,
-              failed: prev.failed + 1
-            }))
-          }
-
-          // 更新进度
-          setCompletedTestCases(i + 1)
-          setProgress(Math.floor(((i + 1) / idsToExecute.length) * 100))
-
-          // 加载测试用例的图片和截图
-          await loadTestCaseMedia(id)
-
-          // 等待一小段时间再执行下一个
-          await new Promise(resolve => setTimeout(resolve, 1000))
-        }
-      } else {
-        // 并行执行
-        const promises = idsToExecute.map(async (id, index) => {
-          const testCase = testCases.find(tc => tc.id === id)
-          if (!testCase) return
-
-          await updateTestCaseStatus(id, 'running')
-          addLog(id, `开始执行测试用例: ${testCase.name}`, 'info')
-
-          try {
-            const result = await testCasesAPI.run(Number(id))
-            if (result.success) {
-              await updateTestCaseStatus(id, 'completed')
-              addLog(id, `测试用例执行成功: ${testCase.name}`, 'success')
-              setExecutionStats(prev => ({
-                ...prev,
-                completed: prev.completed + 1
-              }))
-            } else {
-              await updateTestCaseStatus(id, 'failed')
-              addLog(id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
-              setExecutionStats(prev => ({
-                ...prev,
-                failed: prev.failed + 1
-              }))
-            }
-          } catch (error) {
-            await updateTestCaseStatus(id, 'failed')
-            addLog(id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
-            setExecutionStats(prev => ({
-              ...prev,
-              failed: prev.failed + 1
-            }))
-          }
-
-          // 加载测试用例的图片和截图
-          await loadTestCaseMedia(id)
-
-          // 更新进度
-          setCompletedTestCases(prev => prev + 1)
-          setProgress(prev => Math.floor((setCompletedTestCases.length / idsToExecute.length) * 100))
-        })
-
-        await Promise.all(promises)
-      }
-    } finally {
-      setExecuting(false)
-      setProgress(100) // 确保进度达到100%
+    
+    // 添加执行开始的明确日志记录
+    console.log('开始执行测试用例:', selectedIds)
+    
+    // 添加总体执行开始日志
+    const startLog: TestCaseLog = {
+      id: Date.now(),
+      timestamp: new Date().toISOString(),
+      message: `开始执行 ${testCases.length} 个测试用例`,
+      type: 'info',
+      testCaseId: 0 // 0表示系统级日志
     }
+    setLogs(prev => [...prev, startLog])
+
+    // 复制当前测试用例数组以进行处理
+    const cases = [...testCases]
+    let completedCount = 0
+
+    for (let i = 0; i < cases.length; i++) {
+      // 如果暂停，则停止执行
+      if (isPaused) {
+        console.log('执行已暂停')
+        addLog(0, '执行已暂停', 'warning')
+        break
+      }
+
+      const testCase = cases[i]
+      
+      // 更新当前测试用例状态为"运行中"
+      updateTestCaseStatus(testCase.id, 'running')
+      
+      // 添加开始执行此测试用例的日志
+      addLog(testCase.id, `开始执行: ${testCase.name}`, 'info')
+      console.log(`开始执行测试用例 #${testCase.id}:`, testCase.name)
+
+      try {
+        const result = await testCasesAPI.run(Number(testCase.id))
+        if (result.success) {
+          await updateTestCaseStatus(testCase.id, 'completed')
+          addLog(testCase.id, `测试用例执行成功: ${testCase.name}`, 'success')
+          setExecutionStats(prev => ({
+            ...prev,
+            completed: prev.completed + 1
+          }))
+        } else {
+          await updateTestCaseStatus(testCase.id, 'failed')
+          addLog(testCase.id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
+          setExecutionStats(prev => ({
+            ...prev,
+            failed: prev.failed + 1
+          }))
+        }
+      } catch (error) {
+        await updateTestCaseStatus(testCase.id, 'failed')
+        addLog(testCase.id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
+        setExecutionStats(prev => ({
+          ...prev,
+          failed: prev.failed + 1
+        }))
+      }
+
+      // 加载测试用例的图片和截图
+      await loadTestCaseMedia(testCase.id)
+
+      // 更新进度
+      completedCount++;
+      setCompletedTestCases(completedCount)
+      setProgress(Math.floor((completedCount / cases.length) * 100))
+    }
+
+    setProgress(100) // 确保进度达到100%
   }
 
   /**
