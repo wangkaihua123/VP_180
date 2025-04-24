@@ -410,9 +410,7 @@ export default function ExecuteAllPage() {
 
     for (let i = 0; i < cases.length; i++) {
       const testCase = cases[i]
-      
-      // 更新当前测试用例状态为"运行中"
-      updateTestCaseStatus(testCase.id, 'running')
+
       
       // 添加开始执行此测试用例的日志
       addLog(testCase.id, `开始执行: ${testCase.name}`, 'info')
@@ -579,22 +577,79 @@ export default function ExecuteAllPage() {
    */
   const loadTestCaseMedia = async (testCaseId: number) => {
     try {
-      // 这里应该调用真实API获取图片和截图
-      // 示例: const response = await testCasesAPI.getMedia(testCaseId)
-      // 注意: 这里需要根据实际API实现
+      // 调用API获取最新日志，包含图片和截图URL
+      const response = await testCasesAPI.getLatestLog(testCaseId);
       
-      // 目前使用空数组占位，实际项目中应替换为API调用
-      setTestCaseImages(prev => ({
-        ...prev,
-        [testCaseId]: []
-      }))
-      
-      setTestCaseScreenshots(prev => ({
-        ...prev,
-        [testCaseId]: []
-      }))
+      if (response.success && response.data) {
+        // 解析图片URL
+        const imagesUrls: string[] = response.data.images || [];
+        const screenshotsUrls: string[] = response.data.screenshots || [];
+        
+        // 处理图片
+        const testImages: TestImage[] = [];
+        imagesUrls.forEach((url: string) => {
+          // 从URL提取文件名
+          const filename = url.split('/').pop() || '';
+          
+          // 检查文件名是否符合格式：id_{步骤ID}_*.tiff
+          const idMatch = filename.match(/^id_(\d+)_/);
+          if (idMatch) {
+            const stepId = parseInt(idMatch[1]);
+            
+            // 创建图片对象
+            testImages.push({
+              id: filename,
+              testCaseId: testCaseId,
+              timestamp: new Date().toISOString(),
+              title: `步骤 ${stepId} 图片`,
+              description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
+              url: url,
+              type: 'image'
+            });
+          }
+        });
+        
+        // 处理截图
+        const testScreenshots: TestImage[] = [];
+        screenshotsUrls.forEach((url: string) => {
+          // 从URL提取文件名
+          const filename = url.split('/').pop() || '';
+          
+          // 检查文件名是否符合格式：id_{步骤ID}_*.tiff/png/jpg
+          const idMatch = filename.match(/^id_(\d+)_/);
+          if (idMatch) {
+            const stepId = parseInt(idMatch[1]);
+            
+            // 创建截图对象
+            testScreenshots.push({
+              id: filename,
+              testCaseId: testCaseId,
+              timestamp: new Date().toISOString(),
+              title: `步骤 ${stepId} 截图`,
+              description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
+              url: url,
+              type: 'screenshot'
+            });
+          }
+        });
+        
+        console.log(`测试用例 ${testCaseId} 加载到 ${testImages.length} 张图片和 ${testScreenshots.length} 张截图`);
+        
+        // 更新状态
+        setTestCaseImages(prev => ({
+          ...prev,
+          [testCaseId]: testImages
+        }));
+        
+        setTestCaseScreenshots(prev => ({
+          ...prev,
+          [testCaseId]: testScreenshots
+        }));
+      } else {
+        console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, response.message);
+      }
     } catch (error) {
-      console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, error)
+      console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, error);
     }
   }
 
@@ -641,6 +696,21 @@ export default function ExecuteAllPage() {
         return <Badge variant="outline">{status}</Badge>
     }
   }
+
+  /**
+   * 重新加载执行页面
+   */
+  const handleReload = () => {
+    if (selectedIds.length > 0) {
+      // 添加一个时间戳作为额外参数，确保页面被重新加载而不是从缓存加载
+      const timestamp = new Date().getTime();
+      // 使用window.location.href强制浏览器完全刷新页面
+      window.location.href = `/execute-all?ids=${selectedIds.join(',')}&t=${timestamp}`;
+    } else {
+      // 如果没有选中的测试用例ID，直接重新加载页面
+      window.location.href = '/execute-all';
+    }
+  };
 
   /**
    * 重新执行测试用例
@@ -859,6 +929,29 @@ export default function ExecuteAllPage() {
     return systemLogs.slice(startIndex, endIndex);
   };
 
+  // 添加一个useEffect来定期刷新图片
+  useEffect(() => {
+    // 只在执行过程中刷新
+    if (executing && !isPaused) {
+      console.log('开始定期刷新测试用例图片');
+      // 创建一个定时器，每5秒更新一次图片
+      const timer = setInterval(() => {
+        // 获取当前正在执行的测试用例ID
+        testCases.forEach(tc => {
+          if (tc.status === 'running' || tc.status === 'completed') {
+            loadTestCaseMedia(tc.id);
+          }
+        });
+      }, 5000);
+      
+      return () => {
+        console.log('停止刷新测试用例图片');
+        clearInterval(timer);
+      };
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [executing, isPaused, JSON.stringify(testCases)]);
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* 页面头部 */}
@@ -895,7 +988,7 @@ export default function ExecuteAllPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={handleReExecute}
+                    onClick={handleReload}
                   >
                     <RefreshCw className="mr-2 h-4 w-4" />
                     重新执行

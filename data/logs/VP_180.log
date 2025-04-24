@@ -1,66 +1,82 @@
-2025-04-24 21:40:27 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-24 21:40:27 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，测试用例ID: 1
-2025-04-24 21:40:27 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 21:40:27 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
-2025-04-24 21:40:27 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
-2025-04-24 21:40:27 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_105637376.tiff
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-24 21:40:28 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
-2025-04-24 21:40:28 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
-2025-04-24 21:40:28 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-24 21:40:28 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-24 21:40:28 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_105637376.tiff
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 21:40:28 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-24 21:40:28 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
-2025-04-24 21:40:28 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-24 21:40:28 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
-2025-04-24 21:40:28 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
-2025-04-24 21:40:28 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
-2025-04-24 21:40:29 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
-2025-04-24 21:40:29 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
-2025-04-24 21:40:29 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
-2025-04-24 21:40:29 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
-2025-04-24 21:40:29 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-04-24 21:40:29 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-24 21:40:29 - INFO - utils.test_case_executor - 当前执行测试用例名称: pip功能，测试用例ID: 2
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_2_105637376.tiff
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 21:40:29 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-24 21:40:29 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
-2025-04-24 21:40:29 - DEBUG - utils.button_clicker - 找到按钮 画中画 的坐标: (5249, 7838)
-2025-04-24 21:40:29 - DEBUG - utils.button_clicker - 点击画中画按钮 (5249, 7838)
-2025-04-24 21:40:29 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 5249 7838
-2025-04-24 21:40:30 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=5249, Y=7838
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 解码并保存图像
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_2_105637376.tiff
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 读取图像数据
-2025-04-24 21:40:30 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
-2025-04-24 21:40:30 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
-2025-04-24 21:40:30 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
-2025-04-24 21:40:30 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-04-24 22:06:52 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-24 22:06:52 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，测试用例ID: 1
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_105637376.tiff
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 22:06:52 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 22:06:52 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-24 22:06:52 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 22:06:52 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 22:06:52 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 22:06:53 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_105637376.tiff
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 22:06:53 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
+2025-04-24 22:06:53 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
+2025-04-24 22:06:53 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
+2025-04-24 22:06:53 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-04-24 22:06:54 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-24 22:06:54 - INFO - utils.test_case_executor - 当前执行测试用例名称: pip功能，测试用例ID: 2
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_2_105637376.tiff
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 22:06:55 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-24 22:06:55 - DEBUG - utils.button_clicker - 找到按钮 画中画 的坐标: (5249, 7838)
+2025-04-24 22:06:55 - DEBUG - utils.button_clicker - 点击画中画按钮 (5249, 7838)
+2025-04-24 22:06:55 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 5249 7838
+2025-04-24 22:06:55 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=5249, Y=7838
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_2_105637376.tiff
+2025-04-24 22:06:55 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 22:06:56 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
+2025-04-24 22:06:56 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
+2025-04-24 22:06:56 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
+2025-04-24 22:06:56 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-04-24 22:06:56 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-24 22:06:57 - INFO - utils.test_case_executor - 当前执行测试用例名称: 112，测试用例ID: 3
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_3_105637376.tiff
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 22:06:57 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 22:06:57 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-24 22:06:57 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-24 22:06:57 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-24 22:06:57 - ERROR - utils.test_case_executor - 无法获取用于对比的图像: img1=, img2=
+2025-04-24 22:06:57 - INFO - utils.test_case_executor - 验证步骤结果: False - 无法获取用于对比的图像: img1=, img2=
+2025-04-24 22:06:57 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
