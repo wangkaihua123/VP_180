@@ -218,3 +218,73 @@
 2025-04-24 16:21:38 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
 2025-04-24 16:21:38 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
 2025-04-24 16:21:38 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 存在失败
+2025-04-24 17:45:57 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 17:45:57 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 17:46:07 - INFO - utils.ssh_manager - SSH连接成功
+2025-04-24 17:46:07 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 17:46:07 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 17:46:07 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，测试用例ID: 1
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424174607.tiff
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 17:46:07 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 17:46:07 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-24 17:46:07 - DEBUG - utils.button_clicker - 找到按钮 电子放大 的坐标: (3749, 3999)
+2025-04-24 17:46:07 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-24 17:46:07 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-24 17:46:08 - ERROR - utils.button_clicker - 点击按钮出错: Traceback (most recent call last):
+  File "/app/jzj/touch_click.py", line 9, in <module>
+    import paramiko
+ModuleNotFoundError: No module named 'paramiko'
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424174608.tiff
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 17:46:08 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
+2025-04-24 17:46:08 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
+2025-04-24 17:46:08 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
+2025-04-24 17:46:08 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 存在失败
+2025-04-24 17:51:54 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-24 17:51:54 - DEBUG - utils.test_case_executor - SSH连接验证成功
+2025-04-24 17:51:54 - INFO - utils.test_case_executor - SSH连接就绪，初始化测试组件
+2025-04-24 17:51:54 - DEBUG - utils.get_latest_image - 本地图像保存目录: E:\python\vp_180\data\img
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 当前执行测试用例名称: 登录界面测试，测试用例ID: 1
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637051.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134447770.tiff', '/ue/ue_harddisk/ue_data/2504161344/B/134441777.tiff', '/ue/ue_harddisk/ue_data/2504161053/105317122.tiff']
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 解码并保存图像
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 已保存图像到: E:\python\vp_180\data\img\id_1_20250424175155.tiff
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 读取图像数据
+2025-04-24 17:51:55 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像2
+2025-04-24 17:51:55 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
+2025-04-24 17:51:55 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
+2025-04-24 17:51:55 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 存在失败
+2025-04-24 17:55:44 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 17:55:44 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 17:55:54 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-04-24 17:57:47 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-24 17:57:47 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-24 17:57:57 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session

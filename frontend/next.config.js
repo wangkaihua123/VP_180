@@ -12,7 +12,7 @@ const nextConfig = {
   },
   env: {
     // API地址配置
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.189:5000/',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.132:5000/',
   },
 }
 

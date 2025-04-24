@@ -64,6 +64,22 @@ def create_app(config=None):
     def index():
         return {"message": "Visual Protocol 180 API"}
     
+    # 添加服务器信息API端点
+    @app.route('/api/server/info', methods=['GET'])
+    def server_info():
+        """返回服务器运行信息，便于前端验证连接"""
+        return jsonify({
+            "success": True,
+            "message": "服务器信息",
+            "data": {
+                "host": HOST,
+                "port": PORT,
+                "debug": DEBUG,
+                "version": "1.0.0",
+                "server_time": os.popen("date").read().strip()
+            }
+        })
+    
     return app
 
 # 创建应用实例

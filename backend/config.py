@@ -10,7 +10,7 @@ load_dotenv()
 # 基础配置
 SECRET_KEY = os.getenv('SECRET_KEY', 'youyi_medical_test_platform_secret_key')
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')
-HOST = os.getenv('HOST', '0.0.0.0')
+HOST = os.getenv('HOST', '10.0.18.132')
 PORT = int(os.getenv('PORT', 5000))
 
 # 数据目录
