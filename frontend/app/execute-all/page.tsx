@@ -776,8 +776,8 @@ export default function ExecuteAllPage() {
             const newCount = prev + 1;
             
             // 如果连续五次无新日志且当前轮询间隔是2秒，改为10秒
-            if (newCount >= 5 && pollInterval === 2000) {
-              console.log('连续三次无新日志，轮询间隔调整为10秒');
+            if (newCount >= 8 && pollInterval === 2000) {
+              console.log('连续八次无新日志，轮询间隔调整为10秒');
               setPollInterval(10000);
             }
             
@@ -1160,7 +1160,7 @@ export default function ExecuteAllPage() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">
                     轮询间隔: {pollInterval === 2000 ? '2秒' : '10秒'}
-                    {pollInterval === 10000 && noNewLogCount >= 5 && ' (空闲)'}
+                    {pollInterval === 10000 && noNewLogCount >= 8 && ' (空闲)'}
                   </span>
                   {systemLogLoading && <RefreshCw className="h-3 w-3 animate-spin" />}
                 </div>
