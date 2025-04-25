@@ -192,7 +192,7 @@ export default function ExecuteAllPage() {
   const [testCaseStatus, setTestCaseStatus] = useState<TestCaseWithStatus[]>([])
   const [isRunning, setIsRunning] = useState(true)
   const [progress, setProgress] = useState(0)
-  const [expandedTestCases, setExpandedTestCases] = useState<number[]>([1])
+  const [expandedTestCases, setExpandedTestCases] = useState<number[]>([])
   const [completedTestCases, setCompletedTestCases] = useState(0)
   const [testCaseImages, setTestCaseImages] = useState<{ [key: number]: TestImage[] }>({})
   const [testCaseScreenshots, setTestCaseScreenshots] = useState<{ [key: number]: TestImage[] }>({})
@@ -230,6 +230,25 @@ export default function ExecuteAllPage() {
       }, 100);
     }
   }, [loading, testCases, executing]);
+  
+  // 单独的useEffect钩子，用于确保第一个测试用例自动展开
+  useEffect(() => {
+    if (!loading && testCases.length > 0) {
+      const firstTestCaseId = testCases[0].id;
+      console.log('自动展开第一个测试用例:', firstTestCaseId);
+      
+      // 确保展开状态设置正确
+      setExpandedTestCases(prev => {
+        // 如果已经包含这个ID，则不需要再添加
+        if (prev.includes(firstTestCaseId)) {
+          console.log('第一个测试用例已经展开');
+          return prev;
+        }
+        console.log('添加第一个测试用例到展开列表');
+        return [...prev, firstTestCaseId];
+      });
+    }
+  }, [loading, testCases]);
 
   useEffect(() => {
     loadTestCases()
@@ -274,6 +293,13 @@ export default function ExecuteAllPage() {
             console.log("所有测试用例:", formattedTestCases);
             setTestCases(formattedTestCases);
           }
+          
+          // 如果有测试用例，自动展开第一个测试用例
+          if (apiTestCases.length > 0 && expandedTestCases.length === 0) {
+            const firstTestCaseId = apiTestCases[0].id;
+            setExpandedTestCases([firstTestCaseId]);
+            console.log('自动展开第一个测试用例:', firstTestCaseId);
+          }
         } else {
           console.warn("API返回了空的测试用例数组");
           setTestCases([]);
@@ -312,12 +338,9 @@ export default function ExecuteAllPage() {
     setExpandedTestCases((prev) => (prev.includes(id) ? prev.filter((tcId) => tcId !== id) : [...prev, id]))
   }
 
-  /**
-   * 确保图片查看器始终从60%缩放开始
-   */
+
   useEffect(() => {
     if (imageDialogOpen) {
-      // 每次对话框打开时设置缩放级别为0.6（60%）
       setZoomLevel(1);
     }
   }, [imageDialogOpen]);
@@ -564,7 +587,6 @@ export default function ExecuteAllPage() {
         const result = await testCasesAPI.run(Number(testCase.id)) as TestExecutionResponse;
         
         if (result.success) {
-          await updateTestCaseStatus(testCase.id, 'completed')
           addLog(testCase.id, `测试用例执行成功: ${testCase.name}`, 'success')
           
           // 记录操作步骤和验证步骤的详细结果
@@ -603,7 +625,6 @@ export default function ExecuteAllPage() {
             completed: prev.completed + 1
           }))
         } else {
-          await updateTestCaseStatus(testCase.id, 'failed')
           addLog(testCase.id, `测试用例执行失败: ${testCase.name} - ${result.message}`, 'error')
           
           // 如果有详细错误信息，也一并记录
@@ -635,7 +656,6 @@ export default function ExecuteAllPage() {
           }))
         }
       } catch (error) {
-        await updateTestCaseStatus(testCase.id, 'failed')
         addLog(testCase.id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
         setExecutionStats(prev => ({
           ...prev,
@@ -653,65 +673,6 @@ export default function ExecuteAllPage() {
     }
 
     setProgress(100) // 确保进度达到100%
-  }
-
-  /**
-   * 更新测试用例状态
-   * @param id 测试用例ID
-   * @param status 新状态
-   */
-  const updateTestCaseStatus = async (id: number, status: string) => {
-    // 更新本地状态
-    setTestCases(prev => prev.map(tc => 
-      tc.id === id ? { ...tc, status: mapStatus(status) } : tc
-    ))
-    
-    // 同时更新后端数据库中的状态
-    try {
-      // 将状态映射为适合持久化的格式
-      let persistStatus = status.toLowerCase();
-      switch(persistStatus) {
-        case 'running':
-          persistStatus = '进行中';
-          break;
-        case 'completed':
-          persistStatus = '通过';
-          break;
-        case 'failed':
-          persistStatus = '失败';
-          break;
-        case 'skipped':
-          persistStatus = '跳过';
-          break;
-        case 'pending':
-          persistStatus = '未运行';
-          break;
-      }
-      
-      // 调用API更新状态
-      console.log(`更新测试用例 ${id} 状态为: ${persistStatus}`);
-      
-      // 更新JSON文件中的状态
-      const response = await testCasesAPI.updateStatus(id, persistStatus);
-      
-      if (!response.success) {
-        console.error(`更新测试用例 ${id} 状态失败:`, response.message);
-        toast({
-          title: "状态更新失败",
-          description: response.message || "无法更新测试用例状态",
-          variant: "destructive",
-        });
-      } else {
-        console.log(`测试用例 ${id} 状态已更新为 ${persistStatus}`);
-      }
-    } catch (error) {
-      console.error(`更新测试用例 ${id} 状态出错:`, error);
-      toast({
-        title: "状态更新出错",
-        description: error instanceof Error ? error.message : "更新状态时发生错误",
-        variant: "destructive",
-      });
-    }
   }
 
   /**
@@ -1048,11 +1009,9 @@ export default function ExecuteAllPage() {
         // 检查日志中是否包含测试结果信息
         if (logMessage.includes('结果: 测试通过')) {
           console.log(`从日志中检测到测试用例 #${testCase.id} 通过`);
-          updateTestCaseStatus(testCase.id, '通过');
           break;
         } else if (logMessage.includes('结果: 测试不通过')) {
           console.log(`从日志中检测到测试用例 #${testCase.id} 不通过`);
-          updateTestCaseStatus(testCase.id, '失败');
           break;
         }
       }
