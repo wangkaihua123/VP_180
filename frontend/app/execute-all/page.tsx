@@ -12,7 +12,6 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { motion } from "framer-motion"
 import {
   ArrowLeft,
@@ -581,33 +580,51 @@ export default function ExecuteAllPage() {
       const response = await testCasesAPI.getLatestLog(testCaseId);
       
       if (response.success && response.data) {
-        // 解析图片URL
-        const imagesUrls: string[] = response.data.images || [];
+        // 仍然保留用于截图的API调用
         const screenshotsUrls: string[] = response.data.screenshots || [];
         
-        // 处理图片
-        const testImages: TestImage[] = [];
-        imagesUrls.forEach((url: string) => {
-          // 从URL提取文件名
-          const filename = url.split('/').pop() || '';
-          
-          // 检查文件名是否符合格式：id_{步骤ID}_*.tiff
-          const idMatch = filename.match(/^id_(\d+)_/);
-          if (idMatch) {
-            const stepId = parseInt(idMatch[1]);
-            
-            // 创建图片对象
-            testImages.push({
-              id: filename,
-              testCaseId: testCaseId,
-              timestamp: new Date().toISOString(),
-              title: `步骤 ${stepId} 图片`,
-              description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
-              url: url,
-              type: 'image'
-            });
+        // 从/img目录中获取图片
+        try {
+          // 获取从本地匹配id_{testCaseId}_*.png的图片文件列表
+          const localImagesResponse = await fetch(`/api/files/images/list?testCaseId=${testCaseId}`);
+          if (!localImagesResponse.ok) {
+            throw new Error(`获取本地图片列表失败: ${localImagesResponse.statusText}`);
           }
-        });
+          
+          const localImagesData = await localImagesResponse.json();
+          const localImageFiles: string[] = localImagesData.images || [];
+          
+          // 处理本地图片
+          const testImages: TestImage[] = [];
+          localImageFiles.forEach((filename: string) => {
+            // 检查文件名是否符合格式：id_{步骤ID}_*.png
+            const idMatch = filename.match(/^id_(\d+)_/);
+            if (idMatch) {
+              const stepId = parseInt(idMatch[1]);
+              
+              // 创建图片对象，使用/img目录路径
+              testImages.push({
+                id: filename,
+                testCaseId: testCaseId,
+                timestamp: new Date().toISOString(),
+                title: `步骤 ${stepId} 图片`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
+                url: `/img/${filename}`,
+                type: 'image'
+              });
+            }
+          });
+          
+          console.log(`测试用例 ${testCaseId} 从本地加载到 ${testImages.length} 张图片`);
+          
+          // 更新状态
+          setTestCaseImages(prev => ({
+            ...prev,
+            [testCaseId]: testImages
+          }));
+        } catch (imgError) {
+          console.error(`加载本地图片失败:`, imgError);
+        }
         
         // 处理截图
         const testScreenshots: TestImage[] = [];
@@ -620,27 +637,20 @@ export default function ExecuteAllPage() {
           if (idMatch) {
             const stepId = parseInt(idMatch[1]);
             
-            // 创建截图对象
+            // 创建截图对象，使用/screenshot目录路径
             testScreenshots.push({
               id: filename,
               testCaseId: testCaseId,
               timestamp: new Date().toISOString(),
               title: `步骤 ${stepId} 截图`,
               description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
-              url: url,
+              url: `/screenshot/${filename}`,
               type: 'screenshot'
             });
           }
         });
         
-        console.log(`测试用例 ${testCaseId} 加载到 ${testImages.length} 张图片和 ${testScreenshots.length} 张截图`);
-        
-        // 更新状态
-        setTestCaseImages(prev => ({
-          ...prev,
-          [testCaseId]: testImages
-        }));
-        
+        // 更新截图状态
         setTestCaseScreenshots(prev => ({
           ...prev,
           [testCaseId]: testScreenshots
@@ -1091,11 +1101,10 @@ export default function ExecuteAllPage() {
                                     onClick={() => openImageViewer(image)}
                                   >
                                     <div className="relative h-40">
-                                      <Image
+                                      <img
                                         src={image.url || "/placeholder.svg"}
                                         alt={image.title}
-                                        fill
-                                        className="object-cover"
+                                        className="object-cover w-full h-full"
                                       />
                                     </div>
                                     <div className="p-2">
@@ -1121,11 +1130,10 @@ export default function ExecuteAllPage() {
                                     onClick={() => openImageViewer(screenshot)}
                                   >
                                     <div className="relative h-40">
-                                      <Image
+                                      <img
                                         src={screenshot.url || "/placeholder.svg"}
                                         alt={screenshot.title}
-                                        fill
-                                        className="object-cover"
+                                        className="object-cover w-full h-full"
                                       />
                                     </div>
                                     <div className="p-2">
@@ -1198,8 +1206,10 @@ export default function ExecuteAllPage() {
         <DialogContent className="max-w-4xl p-0 bg-black/90 border-gray-800">
           <div className="relative">
             <DialogClose className="absolute right-2 top-2 z-10">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <X className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" asChild>
+                <span>
+                  <X className="h-5 w-5" />
+                </span>
               </Button>
             </DialogClose>
 
@@ -1256,11 +1266,9 @@ export default function ExecuteAllPage() {
                     transition: "transform 0.2s ease",
                   }}
                 >
-                  <Image
+                  <img
                     src={selectedImage.url || "/placeholder.svg"}
                     alt={selectedImage.title}
-                    width={800}
-                    height={600}
                     className="max-w-none"
                   />
                 </div>

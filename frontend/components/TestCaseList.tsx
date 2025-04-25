@@ -23,7 +23,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 // 导入BASE_URL用于图像URL
@@ -376,11 +375,10 @@ export function TestCaseList({
               <div className="grid grid-cols-2 gap-4">
                 {selectedLog?.images?.map((image, index) => (
                   <div key={index} className="relative aspect-video">
-                    <Image
+                    <img
                       src={`${BASE_URL}${image}`}
                       alt={`测试图像 ${index + 1}`}
-                      fill
-                      className="object-contain"
+                      className="object-contain w-full h-full"
                     />
                   </div>
                 )) || <div>暂无图像</div>}
@@ -390,11 +388,10 @@ export function TestCaseList({
               <div className="grid grid-cols-2 gap-4">
                 {selectedLog?.screenshots?.map((screenshot, index) => (
                   <div key={index} className="relative aspect-video">
-                    <Image
+                    <img
                       src={`${BASE_URL}${screenshot}`}
                       alt={`测试截图 ${index + 1}`}
-                      fill
-                      className="object-contain"
+                      className="object-contain w-full h-full"
                     />
                   </div>
                 )) || <div>暂无截图</div>}

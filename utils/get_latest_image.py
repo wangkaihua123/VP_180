@@ -9,14 +9,16 @@ from .log_config import setup_logger
 from .button_clicker import ButtonClicker  # 添加ButtonClicker导入
 import re
 import time
+import base64  # 将base64导入移到顶部，确保可以在类外访问
+import io
 
 # 获取日志记录器
 logger = setup_logger(__name__)
 
 # 修改BASE_IMG_DIR确保路径正确
 BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
-# 使用data/img目录存储图片
-LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
+# 修改为使用frontend/public/img目录存储图片
+LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public", "img")
 
 class GetLatestImage:
     def __init__(self, ssh_connection, test_name="Test"):
@@ -24,9 +26,10 @@ class GetLatestImage:
         self.ssh = ssh_connection
         self.test_name = test_name
         self.base_dir = "/ue/ue_harddisk/ue_data"
-        # 更新本地目录路径
-        self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
+        # 更新本地目录路径为frontend/public/img
+        self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public", "img")
         os.makedirs(self.local_dir, exist_ok=True)
+        logger.debug(f"图片将保存到目录: {self.local_dir}")
         
         # 创建ButtonClicker实例
         self.button_clicker = ButtonClicker(ssh_connection)
@@ -58,7 +61,7 @@ class GetLatestImage:
         """
         获取最新的图像文件，返回图像数据
         
-        首先点击保存图像按钮，然后获取最新保存的图像
+        首先点击保存图像按钮，然后获取最新保存的图像，将TIFF转换为PNG格式，并删除远程原始文件
         
         Args:
             id: 测试用例中的ID，用于标识图像
@@ -126,14 +129,16 @@ class GetLatestImage:
             
             logger.debug(f"找到最新图像文件: {latest_file}")
             
-            # 提取原始文件名
+            # 提取原始文件名并将扩展名替换为.png
             original_filename = os.path.basename(latest_file)
+            # 将.tiff或.tif替换为.png
+            png_filename = re.sub(r'\.(tiff|tif)$', '.png', original_filename, flags=re.IGNORECASE)
             
             # 构建新文件名，只包含id和原始文件名
             if id:
-                filename = f"id_{id}_{original_filename}"
+                filename = f"id_{id}_{png_filename}"
             else:
-                filename = original_filename
+                filename = png_filename
                 
             local_path = os.path.join(self.local_dir, filename)
                 
@@ -150,21 +155,32 @@ class GetLatestImage:
                 logger.error("无法读取图像文件")
                 raise Exception("无法读取图像文件")
                 
-            # 解码并保存图像
-            logger.debug("解码并保存图像")
-            import base64
-            with open(local_path, "wb") as f:
-                image_data = base64.b64decode(encoded_data)
-                f.write(image_data)
-                
-            logger.debug(f"已保存图像到: {local_path}")
+            # 解码图像数据
+            logger.debug("解码图像数据")
+            image_data = base64.b64decode(encoded_data)
             
-            # 读取图像数据并返回
-            logger.debug("读取图像数据")
-            image = cv2.imread(local_path)
-            if image is None:
-                logger.error(f"无法读取图像: {local_path}")
-                raise Exception(f"无法读取图像: {local_path}")
+            # 使用OpenCV从内存中读取TIFF图像并直接保存为PNG格式
+            logger.debug("将TIFF图像转换为PNG格式")
+            try:
+                # 将二进制数据转换为numpy数组
+                nparr = np.frombuffer(image_data, np.uint8)
+                # 从numpy数组解码图像
+                image = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)
+                if image is None:
+                    logger.error("无法解码图像数据")
+                    raise Exception("无法解码图像数据")
+                
+                # 保存为PNG格式
+                cv2.imwrite(local_path, image)
+                logger.debug(f"已保存PNG图像到: {local_path}")
+                
+                # 删除远程TIFF文件
+                self.ssh.exec_command(f"rm -f {latest_file}")
+                # logger.debug(f"已删除远程文件: {latest_file}")
+                
+            except Exception as e:
+                logger.error(f"图像转换失败: {str(e)}")
+                raise Exception(f"图像转换失败: {str(e)}")
                 
             logger.debug("图像获取成功")
             return image

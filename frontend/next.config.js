@@ -8,7 +8,45 @@ const nextConfig = {
         port: '5000',
         pathname: '/api/files/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '10.0.18.132',
+        port: '3000',
+        pathname: '/api/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '10.0.18.132',
+        port: '3000',
+        pathname: '/api/files/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '10.0.18.132',
+        port: '3000',
+        pathname: '/api/files/screenshots/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/files/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/files/screenshots/**',
+      },
     ],
+    domains: ['localhost', '10.0.18.132'],
+    unoptimized: true,
   },
   env: {
     // API地址配置

@@ -11,8 +11,8 @@ from .log_config import setup_logger
 logger = setup_logger(__name__)
 
 BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
-# 使用data/screenshots目录存储截图
-LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "screenshots")
+# 修改为使用frontend/public/screenshot目录存储截图
+LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public", "screenshot")
 
 class GetLatestScreenshot:
     def __init__(self, ssh, test_name=None):
@@ -21,7 +21,7 @@ class GetLatestScreenshot:
         self.test_name = test_name
         # 确保本地截图目录存在
         os.makedirs(LOCAL_SCREENSHOT_DIR, exist_ok=True)
-        # logger.debug(f"本地截图保存目录: {LOCAL_SCREENSHOT_DIR}")
+        logger.debug(f"截图将保存到目录: {LOCAL_SCREENSHOT_DIR}")
 
     def execute_command(self, command):
         """封装 SSH 执行命令的方法"""
