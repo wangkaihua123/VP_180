@@ -43,7 +43,7 @@ class ButtonClicker:
                     x, y = value['touch']
                     description = button_name
                     found = True
-                    logger.debug(f"找到按钮 {button_name} 的坐标: ({x}, {y})")
+                    # logger.debug(f"找到按钮 {button_name} 的坐标: ({x}, {y})")
                     break
             
             if not found:

@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from .ssh_manager import SSHManager  # 替换为ssh_manager
 from .log_config import setup_logger
+from .button_clicker import ButtonClicker  # 添加ButtonClicker导入
 import re
 import time
 
@@ -26,6 +27,9 @@ class GetLatestImage:
         # 更新本地目录路径
         self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
+        
+        # 创建ButtonClicker实例
+        self.button_clicker = ButtonClicker(ssh_connection)
         
         # 检查远程目录是否存在
         if self.ssh and hasattr(self.ssh, 'exec_command'):
@@ -54,6 +58,8 @@ class GetLatestImage:
         """
         获取最新的图像文件，返回图像数据
         
+        首先点击保存图像按钮，然后获取最新保存的图像
+        
         Args:
             id: 测试用例中的ID，用于标识图像
             
@@ -65,6 +71,15 @@ class GetLatestImage:
             if not self.ssh or not hasattr(self.ssh, 'exec_command'):
                 logger.error("SSH连接无效，无法获取图像")
                 raise Exception("SSH连接无效，无法获取图像")
+            
+            # 点击保存图像按钮
+            # logger.debug("点击保存图像按钮")
+            if not self.button_clicker.click_button(button_name="保存图像"):
+                logger.error("点击保存图像按钮失败")
+                raise Exception("点击保存图像按钮失败")
+            
+            # 等待图像保存完成
+            time.sleep(0.5)  # 等待0.5秒，确保图像保存完成
             
             # 检查远程目录结构
             logger.debug("检查远程目录结构")
