@@ -1000,6 +1000,9 @@ export default function ExecuteAllPage() {
         // 设置日志数据
         setSystemLogs(response.data)
         
+        // 根据日志更新测试用例状态
+        updateTestCaseStatusFromLogs(response.data)
+        
         // 滚动到底部
         setTimeout(() => {
           if (systemLogScrollAreaRef.current) {
@@ -1021,38 +1024,40 @@ export default function ExecuteAllPage() {
     }
   }
   
-  // 定期刷新系统日志
-  useEffect(() => {
-    // 首次加载时获取日志
-    fetchSystemLogs();
+  /**
+   * 根据系统日志更新测试用例状态
+   * 检查日志中是否包含"结果: 测试通过"或"结果: 测试不通过"
+   * @param logs 系统日志数组
+   */
+  const updateTestCaseStatusFromLogs = (logs: any[]) => {
+    // 如果没有测试用例或日志，则直接返回
+    if (testCases.length === 0 || logs.length === 0) return;
     
-    // 创建轮询函数
-    const poll = () => {
-      // 清除现有定时器
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+    console.log('根据系统日志更新测试用例状态...');
+    
+    // 遍历所有测试用例
+    testCases.forEach(testCase => {
+      // 获取与此测试用例相关的日志
+      const testCaseLogs = getTestCaseSystemLogsByRange(testCase.id);
+      if (testCaseLogs.length === 0) return;
       
-      // 设置新的定时器
-      timerRef.current = setTimeout(() => {
-        fetchSystemLogs().then(() => {
-          // 递归调用poll，形成循环
-          poll();
-        });
-      }, pollInterval);
-    };
-    
-    // 开始轮询
-    poll();
-    
-    // 组件卸载时清除定时器
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
+      // 查找包含结果信息的日志
+      for (const log of testCaseLogs) {
+        const logMessage = log.message || '';
+        
+        // 检查日志中是否包含测试结果信息
+        if (logMessage.includes('结果: 测试通过')) {
+          console.log(`从日志中检测到测试用例 #${testCase.id} 通过`);
+          updateTestCaseStatus(testCase.id, '通过');
+          break;
+        } else if (logMessage.includes('结果: 测试不通过')) {
+          console.log(`从日志中检测到测试用例 #${testCase.id} 不通过`);
+          updateTestCaseStatus(testCase.id, '失败');
+          break;
+        }
       }
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pollInterval]); // 仅当轮询间隔变化时重新设置定时器
+    });
+  }
 
   // 系统日志级别样式
   const getSystemLogLevelStyle = (level: string) => {
@@ -1160,6 +1165,39 @@ export default function ExecuteAllPage() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [executing, isPaused, JSON.stringify(testCases)]);
+
+  // 定期刷新系统日志
+  useEffect(() => {
+    // 首次加载时获取日志
+    fetchSystemLogs();
+    
+    // 创建轮询函数
+    const poll = () => {
+      // 清除现有定时器
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      
+      // 设置新的定时器
+      timerRef.current = setTimeout(() => {
+        fetchSystemLogs().then(() => {
+          // 递归调用poll，形成循环
+          poll();
+        });
+      }, pollInterval);
+    };
+    
+    // 开始轮询
+    poll();
+    
+    // 组件卸载时清除定时器
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pollInterval]); // 仅当轮询间隔变化时重新设置定时器
 
   return (
     <div className="flex min-h-screen flex-col">
