@@ -11,6 +11,7 @@ import re
 import time
 import base64  # 将base64导入移到顶部，确保可以在类外访问
 import io
+import uuid  # 导入uuid用于生成临时文件名
 
 # 获取日志记录器
 logger = setup_logger(__name__)
@@ -30,6 +31,11 @@ class GetLatestImage:
         self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public", "img")
         os.makedirs(self.local_dir, exist_ok=True)
         logger.debug(f"图片将保存到目录: {self.local_dir}")
+        
+        # 创建临时目录用于保存TIFF文件
+        self.temp_dir = os.path.join(self.local_dir, "temp")
+        os.makedirs(self.temp_dir, exist_ok=True)
+        logger.debug(f"临时文件将保存到目录: {self.temp_dir}")
         
         # 创建ButtonClicker实例
         self.button_clicker = ButtonClicker(ssh_connection)
@@ -63,6 +69,14 @@ class GetLatestImage:
         
         首先点击保存图像按钮，然后获取最新保存的图像，将TIFF转换为PNG格式，并删除远程原始文件
         
+        流程：
+        1. 点击保存图像按钮
+        2. 查找远程服务器上最新的TIFF图像
+        3. 将TIFF图像下载到本地临时目录
+        4. 将本地TIFF图像转换为PNG格式
+        5. 删除本地临时TIFF图像
+        6. 删除远程TIFF图像
+        
         Args:
             id: 测试用例中的ID，用于标识图像
             
@@ -94,11 +108,11 @@ class GetLatestImage:
                 logger.warning(f"查找图像文件时出现警告: {error}")
             
             if all_images and all_images[0]:
-                logger.debug(f"找到以下图像文件: {all_images}")
+                # logger.debug(f"找到以下图像文件: {all_images}")
                 latest_file = all_images[0]
             else:
                 # 尝试其他可能的目录
-                logger.debug("在其他可能的目录中查找图像文件")
+                # logger.debug("在其他可能的目录中查找图像文件")
                 possible_dirs = [
                     "/ue/ue_harddisk/ue_data",
                     "/ue/ue_harddisk",
@@ -113,7 +127,7 @@ class GetLatestImage:
                     result = stdout.read().decode().strip()
                     if result:
                         latest_file = result
-                        logger.debug(f"在目录 {dir_path} 中找到图像文件: {latest_file}")
+                        # logger.debug(f"在目录 {dir_path} 中找到图像文件: {latest_file}")
                         break
                 
                 if not latest_file:
@@ -121,13 +135,14 @@ class GetLatestImage:
                     stdin, stdout, stderr = self.ssh.exec_command("find / -name '*.tiff' -o -name '*.tif' 2>/dev/null | sort -r | head -1")
                     latest_file = stdout.read().decode().strip()
                     if latest_file:
-                        logger.debug(f"通过全局搜索找到图像文件: {latest_file}")
+                        # logger.debug(f"通过全局搜索找到图像文件: {latest_file}")
+                        pass
             
             if not latest_file:
                 logger.error("未找到图像文件")
                 raise Exception("未找到图像文件")
             
-            logger.debug(f"找到最新图像文件: {latest_file}")
+            # logger.debug(f"找到最新图像文件: {latest_file}")
             
             # 提取原始文件名并将扩展名替换为.png
             original_filename = os.path.basename(latest_file)
@@ -140,7 +155,12 @@ class GetLatestImage:
             else:
                 filename = png_filename
                 
-            local_path = os.path.join(self.local_dir, filename)
+            # 为临时TIFF文件生成唯一文件名
+            temp_tiff_filename = f"temp_{uuid.uuid4().hex}_{original_filename}"
+            temp_tiff_path = os.path.join(self.temp_dir, temp_tiff_filename)
+            
+            # 目标PNG文件路径
+            local_png_path = os.path.join(self.local_dir, filename)
                 
             # 下载图像文件
             logger.debug("开始下载图像文件")
@@ -159,27 +179,51 @@ class GetLatestImage:
             logger.debug("解码图像数据")
             image_data = base64.b64decode(encoded_data)
             
-            # 使用OpenCV从内存中读取TIFF图像并直接保存为PNG格式
-            logger.debug("将TIFF图像转换为PNG格式")
+            # 先将图像数据保存为本地临时TIFF文件
+            logger.debug(f"保存临时TIFF文件到: {temp_tiff_path}")
+            with open(temp_tiff_path, 'wb') as f:
+                f.write(image_data)
+            
+            # 检查临时文件是否成功保存
+            if not os.path.exists(temp_tiff_path):
+                logger.error("临时TIFF文件保存失败")
+                raise Exception("临时TIFF文件保存失败")
+            
+            logger.debug("临时TIFF文件保存成功，开始转换为PNG格式")
+            
+            # 使用OpenCV读取临时TIFF文件并转换为PNG格式
             try:
-                # 将二进制数据转换为numpy数组
-                nparr = np.frombuffer(image_data, np.uint8)
-                # 从numpy数组解码图像
-                image = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)
+                # 读取TIFF图像
+                image = cv2.imread(temp_tiff_path, cv2.IMREAD_UNCHANGED)
                 if image is None:
-                    logger.error("无法解码图像数据")
-                    raise Exception("无法解码图像数据")
+                    logger.error(f"无法读取临时TIFF文件: {temp_tiff_path}")
+                    raise Exception(f"无法读取临时TIFF文件: {temp_tiff_path}")
                 
                 # 保存为PNG格式
-                cv2.imwrite(local_path, image)
-                logger.debug(f"已保存PNG图像到: {local_path}")
+                cv2.imwrite(local_png_path, image)
+                logger.debug(f"已保存PNG图像到: {local_png_path}")
+                
+                # 删除本地临时TIFF文件
+                logger.debug(f"删除临时TIFF文件: {temp_tiff_path}")
+                try:
+                    os.remove(temp_tiff_path)
+                    logger.debug(f"已删除临时TIFF文件")
+                except Exception as e:
+                    logger.warning(f"删除临时TIFF文件失败: {str(e)}")
                 
                 # 删除远程TIFF文件
                 self.ssh.exec_command(f"rm -f {latest_file}")
-                # logger.debug(f"已删除远程文件: {latest_file}")
+                logger.debug(f"已删除远程TIFF文件: {latest_file}")
                 
             except Exception as e:
                 logger.error(f"图像转换失败: {str(e)}")
+                # 尝试删除临时文件（如果存在）
+                if os.path.exists(temp_tiff_path):
+                    try:
+                        os.remove(temp_tiff_path)
+                        logger.debug(f"已清理临时TIFF文件")
+                    except:
+                        pass
                 raise Exception(f"图像转换失败: {str(e)}")
                 
             logger.debug("图像获取成功")

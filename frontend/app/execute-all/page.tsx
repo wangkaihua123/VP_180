@@ -111,28 +111,53 @@ const getRandomColor = (id: number): string => {
  * @returns 转换后的URL
  */
 const convertImageUrlToApiPath = (url: string): string => {
+  console.log('转换前的URL:', url);
+  
+  // 如果URL为空，则返回占位符
+  if (!url) {
+    console.log('URL为空，返回占位符');
+    return "/placeholder.svg";
+  }
+  
   // 如果已经是API路径，则直接返回
   if (url.startsWith('/api/files/')) {
+    console.log('URL已经是API路径格式，直接返回:', url);
     return url;
   }
+  
+  let apiUrl = url;
   
   // 根据原始URL模式转换为API路径
   if (url.includes('/data/img/')) {
     const filename = url.split('/').pop() || '';
-    return `/api/files/images/${filename}`;
+    apiUrl = `/api/files/images/${filename}`;
+    console.log('从/data/img/路径转换:', url, ' -> ', apiUrl);
   } else if (url.includes('/data/screenshots/')) {
     const filename = url.split('/').pop() || '';
-    return `/api/files/screenshots/${filename}`;
+    apiUrl = `/api/files/screenshots/${filename}`;
+    console.log('从/data/screenshots/路径转换:', url, ' -> ', apiUrl);
   } else if (url.includes('/img/')) {
     const filename = url.split('/').pop() || '';
-    return `/api/files/images/${filename}`;
+    apiUrl = `/api/files/images/${filename}`;
+    console.log('从/img/路径转换:', url, ' -> ', apiUrl);
   } else if (url.includes('/screenshot/')) {
     const filename = url.split('/').pop() || '';
-    return `/api/files/screenshots/${filename}`;
+    apiUrl = `/api/files/screenshots/${filename}`;
+    console.log('从/screenshot/路径转换:', url, ' -> ', apiUrl);
+  } else if (url.startsWith('/api/images/')) {
+    // 处理旧API路径格式
+    const filename = url.split('/').pop() || '';
+    apiUrl = `/api/files/images/${filename}`;
+    console.log('从旧API路径格式转换:', url, ' -> ', apiUrl);
+  } else if (url.startsWith('/api/screenshots/')) {
+    // 处理旧API路径格式
+    const filename = url.split('/').pop() || '';
+    apiUrl = `/api/files/screenshots/${filename}`;
+    console.log('从旧API路径格式转换:', url, ' -> ', apiUrl);
   }
   
-  // 如果没有匹配的模式，则返回原始URL
-  return url;
+  console.log('转换后的URL:', apiUrl);
+  return apiUrl;
 }
 
 /**
@@ -302,15 +327,39 @@ export default function ExecuteAllPage() {
    * @param image 要查看的图片
    */
   const openImageViewer = (image: TestImage) => {
+    console.log('打开图片查看器 - 原始图片:', image);
+    
     // 转换图片路径，确保使用API路径而不是直接路径
     const modifiedImage = { ...image };
-    modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
     
-    // 设置缩放级别为默认的60%
+    // 确保URL不为空
+    if (!modifiedImage.url) {
+      console.error('图片URL为空，无法打开查看器');
+      toast({
+        title: "图片查看失败",
+        description: "图片URL无效",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // 确保URL使用API路径格式
+    if (!modifiedImage.url.startsWith('/api/')) {
+      modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
+    }
+    
+    console.log('打开图片查看器 - 处理后的图片:', modifiedImage);
+    
+    // 设置缩放级别为默认值
     setZoomLevel(1);
     setSelectedImage(modifiedImage);
     setImageDialogOpen(true);
     setRotation(0);
+    
+    // 添加延迟检查，确认图片是否成功加载
+    setTimeout(() => {
+      console.log('图片查看器已打开，当前selectedImage:', selectedImage);
+    }, 100);
   }
 
   /**
@@ -320,18 +369,22 @@ export default function ExecuteAllPage() {
     if (!selectedImage) return
 
     const allImages = [...Object.values(testCaseImages).flat(), ...Object.values(testCaseScreenshots).flat()]
+    console.log('切换到下一张图片 - 所有图片数量:', allImages.length);
 
     const currentIndex = allImages.findIndex((img) => img.id === selectedImage.id)
+    console.log('当前图片索引:', currentIndex);
+    
     if (currentIndex < allImages.length - 1) {
       const nextImg = allImages[currentIndex + 1];
+      console.log('下一张图片:', nextImg);
       
-      // 转换图片路径，确保使用API路径
+      // 保持URL格式一致，不再调用convertImageUrlToApiPath
       const modifiedImage = { ...nextImg };
-      modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
       
       // 保持当前缩放级别，只重置旋转
       setSelectedImage(modifiedImage)
       setRotation(0)
+      console.log('已切换到下一张图片:', modifiedImage);
     }
   }
 
@@ -342,18 +395,22 @@ export default function ExecuteAllPage() {
     if (!selectedImage) return
 
     const allImages = [...Object.values(testCaseImages).flat(), ...Object.values(testCaseScreenshots).flat()]
+    console.log('切换到上一张图片 - 所有图片数量:', allImages.length);
 
     const currentIndex = allImages.findIndex((img) => img.id === selectedImage.id)
+    console.log('当前图片索引:', currentIndex);
+    
     if (currentIndex > 0) {
       const prevImg = allImages[currentIndex - 1];
+      console.log('上一张图片:', prevImg);
       
-      // 转换图片路径，确保使用API路径
+      // 保持URL格式一致，不再调用convertImageUrlToApiPath
       const modifiedImage = { ...prevImg };
-      modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
       
       // 保持当前缩放级别，只重置旋转
       setSelectedImage(modifiedImage)
       setRotation(0)
+      console.log('已切换到上一张图片:', modifiedImage);
     }
   }
 
@@ -449,26 +506,54 @@ export default function ExecuteAllPage() {
       console.error('清空系统日志文件出错:', error)
     }
     
+    // 清空图片和截图目录
+    try {
+      console.log('清空图片和截图目录...')
+      const clearImagesResult = await testCasesAPI.clearImages()
+      if (clearImagesResult.success) {
+        console.log('图片和截图目录已清空')
+        addLog(0, '已清空图片和截图目录', 'info')
+      } else {
+        console.warn('清空图片和截图目录失败:', clearImagesResult.message)
+        toast({
+          title: "清空图片和截图目录失败",
+          description: clearImagesResult.message || "无法清空图片和截图目录",
+          variant: "destructive",
+        })
+        addLog(0, `清空图片和截图目录失败: ${clearImagesResult.message}`, 'error')
+      }
+    } catch (error) {
+      console.error('清空图片和截图目录出错:', error)
+      addLog(0, `清空图片和截图目录出错: ${error instanceof Error ? error.message : '未知错误'}`, 'error')
+    }
+    
+    // 确定要执行的测试用例
+    let casesToExecute = [...testCases];
+    
+    // 如果有选择的测试用例ID，则只执行被选中的测试用例
+    if (selectedIds.length > 0) {
+      casesToExecute = testCases.filter(testCase => selectedIds.includes(testCase.id));
+      console.log('根据选择的ID过滤测试用例:', selectedIds);
+      console.log('要执行的测试用例数量:', casesToExecute.length);
+    }
+    
     // 添加执行开始的明确日志记录
-    console.log('开始执行测试用例:', selectedIds)
+    console.log('开始执行测试用例:', selectedIds.length > 0 ? selectedIds : '所有测试用例')
     
     // 添加总体执行开始日志
     const startLog: TestCaseLog = {
       id: Date.now(),
       timestamp: new Date().toISOString(),
-      message: `开始执行 ${testCases.length} 个测试用例`,
+      message: `开始执行 ${casesToExecute.length} 个测试用例`,
       type: 'info',
       testCaseId: 0 // 0表示系统级日志
     }
     setLogs(prev => [...prev, startLog])
 
-    // 复制当前测试用例数组以进行处理
-    const cases = [...testCases]
     let completedCount = 0
 
-    for (let i = 0; i < cases.length; i++) {
-      const testCase = cases[i]
-
+    for (let i = 0; i < casesToExecute.length; i++) {
+      const testCase = casesToExecute[i]
       
       // 添加开始执行此测试用例的日志
       addLog(testCase.id, `开始执行: ${testCase.name}`, 'info')
@@ -564,7 +649,7 @@ export default function ExecuteAllPage() {
       // 更新进度
       completedCount++;
       setCompletedTestCases(completedCount)
-      setProgress(Math.floor((completedCount / cases.length) * 100))
+      setProgress(Math.floor((completedCount / casesToExecute.length) * 100))
     }
 
     setProgress(100) // 确保进度达到100%
@@ -639,9 +724,6 @@ export default function ExecuteAllPage() {
       const response = await testCasesAPI.getLatestLog(testCaseId);
       
       if (response.success && response.data) {
-        // 仍然保留用于截图的API调用
-        const screenshotsUrls: string[] = response.data.screenshots || [];
-        
         // 从/img目录中获取图片
         try {
           // 获取从本地匹配id_{testCaseId}_*.png的图片文件列表
@@ -661,14 +743,37 @@ export default function ExecuteAllPage() {
             if (idMatch) {
               const stepId = parseInt(idMatch[1]);
               
-              // 创建图片对象，使用/img目录路径
+              // 尝试从文件名中提取时间戳，如果无法提取则使用当前时间
+              // 假设文件名格式可能包含时间信息，如id_1_20230415120000.png
+              const timestampMatch = filename.match(/_(\d{14})/);
+              let timestamp = new Date().toISOString();
+              if (timestampMatch && timestampMatch[1]) {
+                // 尝试将提取的时间字符串转换为日期格式
+                try {
+                  const timeStr = timestampMatch[1];
+                  // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
+                  const year = timeStr.substring(0, 4);
+                  const month = timeStr.substring(4, 6);
+                  const day = timeStr.substring(6, 8);
+                  const hour = timeStr.substring(8, 10);
+                  const minute = timeStr.substring(10, 12);
+                  const second = timeStr.substring(12, 14);
+                  
+                  const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+                  timestamp = new Date(formattedTime).toISOString();
+                } catch (e) {
+                  console.warn('无法从文件名解析时间戳:', filename);
+                }
+              }
+              
+              // 创建图片对象，使用API路径而不是本地路径
               testImages.push({
                 id: filename,
                 testCaseId: testCaseId,
-                timestamp: new Date().toISOString(),
+                timestamp: timestamp,
                 title: `步骤 ${stepId} 图片`,
                 description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
-                url: convertImageUrlToApiPath(`/api/files/images/${filename}`),
+                url: `/api/files/images/${filename}`, // 直接使用API路径，不再调用convertImageUrlToApiPath
                 type: 'image'
               });
             }
@@ -685,35 +790,70 @@ export default function ExecuteAllPage() {
           console.error(`加载本地图片失败:`, imgError);
         }
         
-        // 处理截图
-        const testScreenshots: TestImage[] = [];
-        screenshotsUrls.forEach((url: string) => {
-          // 从URL提取文件名
-          const filename = url.split('/').pop() || '';
-          
-          // 检查文件名是否符合格式：id_{步骤ID}_*.tiff/png/jpg
-          const idMatch = filename.match(/^id_(\d+)_/);
-          if (idMatch) {
-            const stepId = parseInt(idMatch[1]);
-            
-            // 创建截图对象，使用/screenshot目录路径
-            testScreenshots.push({
-              id: filename,
-              testCaseId: testCaseId,
-              timestamp: new Date().toISOString(),
-              title: `步骤 ${stepId} 截图`,
-              description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
-              url: convertImageUrlToApiPath(`/api/files/screenshots/${filename}`),
-              type: 'screenshot'
-            });
+        // 从/screenshot目录中获取截图
+        try {
+          // 获取从本地匹配id_{testCaseId}_*.png/tiff/jpg的截图文件列表
+          const localScreenshotsResponse = await fetch(`/api/files/screenshots/list?testCaseId=${testCaseId}`);
+          if (!localScreenshotsResponse.ok) {
+            throw new Error(`获取本地截图列表失败: ${localScreenshotsResponse.statusText}`);
           }
-        });
-        
-        // 更新截图状态
-        setTestCaseScreenshots(prev => ({
-          ...prev,
-          [testCaseId]: testScreenshots
-        }));
+          
+          const localScreenshotsData = await localScreenshotsResponse.json();
+          const localScreenshotFiles: string[] = localScreenshotsData.screenshots || [];
+          
+          // 处理本地截图
+          const testScreenshots: TestImage[] = [];
+          localScreenshotFiles.forEach((filename: string) => {
+            // 检查文件名是否符合格式：id_{步骤ID}_*.png/tiff/jpg
+            const idMatch = filename.match(/^id_(\d+)_/);
+            if (idMatch) {
+              const stepId = parseInt(idMatch[1]);
+              
+              // 尝试从文件名中提取时间戳，如果无法提取则使用当前时间
+              const timestampMatch = filename.match(/_(\d{14})/);
+              let timestamp = new Date().toISOString();
+              if (timestampMatch && timestampMatch[1]) {
+                // 尝试将提取的时间字符串转换为日期格式
+                try {
+                  const timeStr = timestampMatch[1];
+                  // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
+                  const year = timeStr.substring(0, 4);
+                  const month = timeStr.substring(4, 6);
+                  const day = timeStr.substring(6, 8);
+                  const hour = timeStr.substring(8, 10);
+                  const minute = timeStr.substring(10, 12);
+                  const second = timeStr.substring(12, 14);
+                  
+                  const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+                  timestamp = new Date(formattedTime).toISOString();
+                } catch (e) {
+                  console.warn('无法从文件名解析时间戳:', filename);
+                }
+              }
+              
+              // 创建截图对象，使用API路径而不是本地路径
+              testScreenshots.push({
+                id: filename,
+                testCaseId: testCaseId,
+                timestamp: timestamp,
+                title: `步骤 ${stepId} 截图`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
+                url: `/api/files/screenshots/${filename}`, // 直接使用API路径，不再调用convertImageUrlToApiPath
+                type: 'screenshot'
+              });
+            }
+          });
+          
+          console.log(`测试用例 ${testCaseId} 从本地加载到 ${testScreenshots.length} 张截图`);
+          
+          // 更新截图状态
+          setTestCaseScreenshots(prev => ({
+            ...prev,
+            [testCaseId]: testScreenshots
+          }));
+        } catch (screenshotError) {
+          console.error(`加载本地截图失败:`, screenshotError);
+        }
       } else {
         console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, response.message);
       }
@@ -1099,7 +1239,6 @@ export default function ExecuteAllPage() {
                         <span className="font-medium">
                           测试用例 #{testCase.id}: {testCase.name}
                         </span>
-                        {getStatusBadge(testCase.status)}
                       </div>
                       {expandedTestCases.includes(testCase.id) ? (
                         <ChevronDown className="h-5 w-5 text-gray-400" />
@@ -1162,7 +1301,7 @@ export default function ExecuteAllPage() {
                                     <div className="relative h-40 flex items-center justify-center overflow-hidden bg-gray-50">
                                       <div className="w-full h-full flex items-center justify-center">
                                         <img
-                                          src={convertImageUrlToApiPath(image.url) || "/placeholder.svg"}
+                                          src={image.url || "/placeholder.svg"}
                                           alt={image.title}
                                           className="max-h-full max-w-full object-contain"
                                           style={{
@@ -1173,8 +1312,17 @@ export default function ExecuteAllPage() {
                                       </div>
                                     </div>
                                     <div className="p-2">
-                                      <h4 className="font-medium text-sm">{image.title}</h4>
-                                      <p className="text-xs text-gray-500">{image.timestamp}</p>
+                                      <h4 className="font-medium text-sm">{image.id}</h4>
+                                      <p className="text-xs text-gray-500">
+                                        {new Date(image.timestamp).toLocaleString('zh-CN', {
+                                          year: 'numeric',
+                                          month: '2-digit',
+                                          day: '2-digit',
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                          second: '2-digit'
+                                        })}
+                                      </p>
                                     </div>
                                   </div>
                                 ))}
@@ -1197,7 +1345,7 @@ export default function ExecuteAllPage() {
                                     <div className="relative h-40 flex items-center justify-center overflow-hidden bg-gray-50">
                                       <div className="w-full h-full flex items-center justify-center">
                                         <img
-                                          src={convertImageUrlToApiPath(screenshot.url) || "/placeholder.svg"}
+                                          src={screenshot.url || "/placeholder.svg"}
                                           alt={screenshot.title}
                                           className="max-h-full max-w-full object-contain"
                                           style={{
@@ -1208,8 +1356,17 @@ export default function ExecuteAllPage() {
                                       </div>
                                     </div>
                                     <div className="p-2">
-                                      <h4 className="font-medium text-sm">{screenshot.title}</h4>
-                                      <p className="text-xs text-gray-500">{screenshot.timestamp}</p>
+                                      <h4 className="font-medium text-sm">{screenshot.id}</h4>
+                                      <p className="text-xs text-gray-500">
+                                        {new Date(screenshot.timestamp).toLocaleString('zh-CN', {
+                                          year: 'numeric',
+                                          month: '2-digit',
+                                          day: '2-digit',
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                          second: '2-digit'
+                                        })}
+                                      </p>
                                     </div>
                                   </div>
                                 ))}
@@ -1286,7 +1443,7 @@ export default function ExecuteAllPage() {
 
             <div className="flex justify-between items-center p-4 border-b border-gray-800 w-full">
               <div className="text-white">
-                <h3 className="font-medium">{selectedImage?.title}</h3>
+                <h3 className="font-medium">{selectedImage?.id}</h3>
                 <p className="text-sm text-gray-400">{selectedImage?.description}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -1341,12 +1498,35 @@ export default function ExecuteAllPage() {
                   }}
                 >
                   <img
-                    src={selectedImage ? convertImageUrlToApiPath(selectedImage.url) : "/placeholder.svg"}
-                    alt={selectedImage?.title}
+                    src={selectedImage?.url || "/placeholder.svg"}
+                    alt={selectedImage?.title || "图片"}
                     className="max-w-full max-h-full object-contain"
                     style={{
                       transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
                       transition: "transform 0.2s ease",
+                    }}
+                    onError={(e) => {
+                      console.error('图片加载失败:', selectedImage?.url);
+                      console.error('图片URL详情:', {
+                        url: selectedImage?.url,
+                        isApiPath: selectedImage?.url?.startsWith('/api/') ? true : false,
+                        id: selectedImage?.id,
+                        type: selectedImage?.type
+                      });
+                      // 设置一个错误占位图
+                      (e.target as HTMLImageElement).src = "/placeholder.svg";
+                      toast({
+                        title: "图片加载失败",
+                        description: `无法加载图片: ${selectedImage?.id}`,
+                        variant: "destructive",
+                      });
+                    }}
+                    onLoad={() => {
+                      console.log('图片成功加载:', {
+                        url: selectedImage?.url,
+                        id: selectedImage?.id,
+                        type: selectedImage?.type
+                      });
                     }}
                   />
                 </div>
@@ -1377,7 +1557,7 @@ export default function ExecuteAllPage() {
               <div>
                 {selectedImage && (
                   <span>
-                    {selectedImage.title}
+                    {selectedImage.id}
                     {selectedImage.description && <span className="ml-2">- {selectedImage.description}</span>}
                   </span>
                 )}

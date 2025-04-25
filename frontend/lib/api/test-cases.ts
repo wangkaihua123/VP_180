@@ -152,5 +152,25 @@ export const testCasesAPI = {
         message: error instanceof Error ? error.message : "清空系统日志失败"
       };
     }
+  },
+
+  /**
+   * 清空图片和截图目录
+   * @returns 操作结果
+   */
+  async clearImages() {
+    try {
+      const response = await fetch('/api/files/clear', {
+        method: 'POST'
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("清空图片和截图目录失败:", error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "清空图片和截图目录失败"
+      };
+    }
   }
 } 

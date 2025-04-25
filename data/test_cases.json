@@ -5,7 +5,7 @@
     "type": "功能测试",
     "status": "失败",
     "create_time": "2025-04-23 10:42",
-    "last_execution_time": "2025-04-25 14:19:53",
+    "last_execution_time": "2025-04-25 16:21:40",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"3\"}]}"
   },
@@ -15,7 +15,7 @@
     "type": "功能测试",
     "status": "失败",
     "create_time": "2025-04-24 20:46",
-    "last_execution_time": "2025-04-25 14:18:53",
+    "last_execution_time": "2025-04-25 15:02:18",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"画中画\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"3\"}]}"
   },
@@ -25,7 +25,7 @@
     "type": "功能测试",
     "status": "失败",
     "create_time": "2025-04-24 21:49",
-    "last_execution_time": "2025-04-25 14:18:55",
+    "last_execution_time": "2025-04-25 14:27:02",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}"
   },
@@ -35,8 +35,38 @@
     "type": "功能测试",
     "status": "失败",
     "create_time": "2025-04-25 13:09",
-    "last_execution_time": "2025-04-25 14:18:56",
+    "last_execution_time": "2025-04-25 14:27:04",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"1\"}]}"
+  },
+  {
+    "id": 5,
+    "title": "2",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-04-25 14:35",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}"
+  },
+  {
+    "id": 6,
+    "title": "截图",
+    "type": "功能测试",
+    "status": "失败",
+    "create_time": "2025-04-25 15:18",
+    "last_execution_time": "2025-04-25 16:02:13",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}"
+  },
+  {
+    "id": 7,
+    "title": "乱点",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-04-25 15:30",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 3, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"长按按钮\", \"button_name\": \"白平衡\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"点击按钮\", \"button_name\": \"录制\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 4, \"operation_key\": \"点击按钮\", \"button_name\": \"图像冻结\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}"
   }
 ]

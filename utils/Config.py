@@ -76,7 +76,7 @@ FUNCTIONS = {
     "ImageEnhance": {"screen": (600, 250), "touch": (5624, 3999), "chinese_name": "图像增强"},
     "Freeze": {"screen": (800, 210), "touch": (7499, 3359), "chinese_name": "图像冻结"},
     "SaveImage": {"screen": (930, 210), "touch": (8718, 3359), "chinese_name": "保存图像"},
-    "Screenshot": {"screen": (800, 380), "touch": (7499, 6078), "chinese_name": "屏幕截图"},
+    "Screenshot": {"screen": (800, 380), "touch": (7499, 6078), "chinese_name": "保存截图"},
     "Record": {"screen": (930, 380), "touch": (8718, 6078), "chinese_name": "录制"},
     "USBExit": {"screen": (930, 510), "touch": (8718, 8158), "chinese_name": "USB退出"},
     "Export": {"screen": (800, 510), "touch": (7499, 8158), "chinese_name": "导出"},
