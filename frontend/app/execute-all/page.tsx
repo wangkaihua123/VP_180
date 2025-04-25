@@ -34,6 +34,8 @@ import {
   X,
   ArrowLeftIcon,
   ArrowRight,
+  Minus,
+  Plus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -171,7 +173,7 @@ export default function ExecuteAllPage() {
   const [testCaseScreenshots, setTestCaseScreenshots] = useState<{ [key: number]: TestImage[] }>({})
   const [selectedImage, setSelectedImage] = useState<TestImage | null>(null)
   const [imageDialogOpen, setImageDialogOpen] = useState(false)
-  const [zoomLevel, setZoomLevel] = useState(0.6)
+  const [zoomLevel, setZoomLevel] = useState(1)
   const [rotation, setRotation] = useState(0)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [loading, setLoading] = useState(true)
@@ -291,7 +293,7 @@ export default function ExecuteAllPage() {
   useEffect(() => {
     if (imageDialogOpen) {
       // 每次对话框打开时设置缩放级别为0.6（60%）
-      setZoomLevel(0.6);
+      setZoomLevel(1);
     }
   }, [imageDialogOpen]);
 
@@ -304,10 +306,11 @@ export default function ExecuteAllPage() {
     const modifiedImage = { ...image };
     modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
     
-    // 不在这里设置缩放级别，让useEffect处理
-    setSelectedImage(modifiedImage)
-    setImageDialogOpen(true)
-    setRotation(0)
+    // 设置缩放级别为默认的60%
+    setZoomLevel(1);
+    setSelectedImage(modifiedImage);
+    setImageDialogOpen(true);
+    setRotation(0);
   }
 
   /**
@@ -326,7 +329,7 @@ export default function ExecuteAllPage() {
       const modifiedImage = { ...nextImg };
       modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
       
-      // 保持当前缩放级别，不重置为0.6
+      // 保持当前缩放级别，只重置旋转
       setSelectedImage(modifiedImage)
       setRotation(0)
     }
@@ -348,7 +351,7 @@ export default function ExecuteAllPage() {
       const modifiedImage = { ...prevImg };
       modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
       
-      // 保持当前缩放级别，不重置为0.6
+      // 保持当前缩放级别，只重置旋转
       setSelectedImage(modifiedImage)
       setRotation(0)
     }
@@ -1271,8 +1274,8 @@ export default function ExecuteAllPage() {
 
       {/* 图片查看器对话框 */}
       <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
-        <DialogContent className="max-w-4xl p-0 bg-black/90 border-gray-800">
-          <div className="relative">
+        <DialogContent className="max-w-4xl p-0 bg-black/90 border-gray-800 max-h-[90vh] overflow-hidden">
+          <div className="relative flex flex-col h-full">
             <DialogClose className="absolute right-2 top-2 z-10">
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" asChild>
                 <span>
@@ -1281,93 +1284,114 @@ export default function ExecuteAllPage() {
               </Button>
             </DialogClose>
 
-            <div className="flex justify-between items-center p-4 border-b border-gray-800">
+            <div className="flex justify-between items-center p-4 border-b border-gray-800 w-full">
               <div className="text-white">
                 <h3 className="font-medium">{selectedImage?.title}</h3>
                 <p className="text-sm text-gray-400">{selectedImage?.description}</p>
               </div>
               <div className="flex items-center gap-2">
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-white hover:bg-white/20"
-                  onClick={() => alert("由于缩放值已硬编码为60%，此按钮暂不可用")}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center text-white bg-gray-800 hover:bg-gray-700 border-gray-700"
+                  onClick={() => setZoomLevel(Math.max(zoomLevel - 0.1, 0.1))}
                 >
-                  <ZoomOut className="h-5 w-5" />
+                  <Minus className="h-4 w-4" /> <span className="ml-1">缩小</span>
+                </Button>
+                <div className="px-2 py-1 rounded-md bg-gray-800 text-white min-w-14 text-center">
+                  {(zoomLevel * 100).toFixed(0)}%
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center text-white bg-gray-800 hover:bg-gray-700 border-gray-700"
+                  onClick={() => setZoomLevel(zoomLevel + 0.1)}
+                >
+                  <Plus className="h-4 w-4" /> <span className="ml-1">放大</span>
                 </Button>
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-white hover:bg-white/20"
-                  onClick={() => alert("由于缩放值已硬编码为60%，此按钮暂不可用")}
+                  variant="outline"
+                  size="sm"
+                  className="ml-2 flex items-center text-white bg-gray-800 hover:bg-gray-700 border-gray-700"
+                  onClick={() => setRotation((rotation + 90) % 360)}
                 >
-                  <ZoomIn className="h-5 w-5" />
+                  <RotateCw className="h-4 w-4" /> <span className="ml-1">旋转</span>
                 </Button>
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-white hover:bg-white/20"
-                  onClick={() => setRotation((prev) => prev + 90)}
+                  variant="outline"
+                  size="sm"
+                  className="ml-2 flex items-center text-white bg-gray-800 hover:bg-gray-700 border-gray-700"
+                  onClick={() => {
+                    setZoomLevel(1)
+                    setRotation(0)
+                  }}
                 >
-                  <RotateCw className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-white hover:bg-white/20"
-                  onClick={() => setRotation(0)}
-                >
-                  <Maximize className="h-5 w-5" />
+                  <RefreshCw className="h-4 w-4" /> <span className="ml-1">重置</span>
                 </Button>
               </div>
             </div>
 
-            <div className="relative h-[70vh] flex items-center justify-center overflow-auto p-4">
+            <div className="flex-1 w-full relative flex items-center justify-center bg-black overflow-hidden">
               {selectedImage && (
                 <div
-                  className="relative"
+                  className="relative flex items-center justify-center w-full h-full max-h-[calc(90vh-140px)]"
                   style={{
-                    transform: `scale(0.6) rotate(${rotation}deg)`, // 强制使用0.6缩放比例来测试
-                    transition: "transform 0.2s ease",
-                    margin: "0 auto" // 居中显示
+                    overflow: "hidden",
+                    padding: "20px"
                   }}
                 >
                   <img
                     src={selectedImage ? convertImageUrlToApiPath(selectedImage.url) : "/placeholder.svg"}
                     alt={selectedImage?.title}
-                    className="max-w-none"
+                    className="max-w-full max-h-full object-contain"
+                    style={{
+                      transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
+                      transition: "transform 0.2s ease",
+                    }}
                   />
                 </div>
               )}
 
               <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-2 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                variant="outline"
+                size="sm"
+                className="absolute left-2 top-1/2 -translate-y-1/2 text-white bg-black/50 hover:bg-white/20 border-gray-700"
                 onClick={prevImage}
               >
-                <ArrowLeftIcon className="h-6 w-6" />
+                <ArrowLeftIcon className="h-4 w-4 mr-1" />
+                上一张
               </Button>
 
               <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                variant="outline"
+                size="sm"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-white bg-black/50 hover:bg-white/20 border-gray-700"
                 onClick={nextImage}
               >
-                <ArrowRight className="h-6 w-6" />
+                <ArrowRight className="h-4 w-4 mr-1" />
+                下一张
               </Button>
             </div>
 
-            <div className="p-4 border-t border-gray-800 flex justify-between items-center">
-              <div className="text-white text-sm">
-                {selectedImage?.timestamp}
-                <span className="ml-2 px-2 py-0.5 rounded bg-gray-700 text-xs">
-                  {selectedImage?.type === "image" ? "图片" : "截图"}
-                </span>
+            <div className="p-4 bg-gray-900 text-white text-sm flex justify-between items-center">
+              <div>
+                {selectedImage && (
+                  <span>
+                    {selectedImage.title}
+                    {selectedImage.description && <span className="ml-2">- {selectedImage.description}</span>}
+                  </span>
+                )}
               </div>
-              <div className="text-white text-sm">
-                缩放: 60% | 旋转: {rotation}°
+              <div>
+                {selectedImage && (
+                  <span>
+                    {(() => {
+                      const allImages = [...Object.values(testCaseImages).flat(), ...Object.values(testCaseScreenshots).flat()];
+                      const currentIndex = allImages.findIndex((img) => img.id === selectedImage.id);
+                      return `${currentIndex + 1} / ${allImages.length}`;
+                    })()}
+                  </span>
+                )}
               </div>
             </div>
           </div>

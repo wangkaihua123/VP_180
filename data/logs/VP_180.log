@@ -1,126 +1,40 @@
-2025-04-25 14:02:20 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-25 14:02:20 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-04-25 14:02:21 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-04-25 14:02:21 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，测试用例ID: 1
-2025-04-25 14:02:21 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
-2025-04-25 14:02:21 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
-2025-04-25 14:02:21 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
-2025-04-25 14:02:21 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-25 14:02:21 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504250909/A/091836101.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/091834799.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/091833223.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/091831940.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090926897.tiff']
-2025-04-25 14:02:21 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504250909/A/091836101.tiff
-2025-04-25 14:02:21 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-25 14:02:22 - DEBUG - utils.get_latest_image - 解码图像数据
-2025-04-25 14:02:22 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
-2025-04-25 14:02:22 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_1_091836101.png
-2025-04-25 14:02:22 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-25 14:02:22 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
-2025-04-25 14:02:22 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
-2025-04-25 14:02:22 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
-2025-04-25 14:02:22 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
-2025-04-25 14:02:22 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
-2025-04-25 14:02:22 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
-2025-04-25 14:02:22 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504250909/A/091834799.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/091833223.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/091831940.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090926897.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090925352.tiff']
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504250909/A/091834799.tiff
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 解码图像数据
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_1_091834799.png
-2025-04-25 14:02:23 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
-2025-04-25 14:02:23 - INFO - utils.image_comparator - SSIM 相似度: 0.9432
-2025-04-25 14:02:23 - INFO - utils.image_comparator - 图像的相似度较合理,测试 通过(SSIM 值: 0.9432, 阈值范围: 0.80 - 0.98)
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: True
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 验证步骤结果: True - 图像对比完成 (SSIM相似度): 结果: 通过
-2025-04-25 14:02:23 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 全部通过
-2025-04-25 14:02:24 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-25 14:02:24 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-04-25 14:02:25 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-04-25 14:02:25 - INFO - utils.test_case_executor - 当前执行测试用例名称: pip功能，测试用例ID: 2
-2025-04-25 14:02:25 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
-2025-04-25 14:02:25 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
-2025-04-25 14:02:25 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
-2025-04-25 14:02:25 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-25 14:02:25 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504250909/A/091833223.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/091831940.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090926897.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090925352.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090924085.tiff']
-2025-04-25 14:02:25 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504250909/A/091833223.tiff
-2025-04-25 14:02:25 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-25 14:02:26 - DEBUG - utils.get_latest_image - 解码图像数据
-2025-04-25 14:02:26 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
-2025-04-25 14:02:26 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_2_091833223.png
-2025-04-25 14:02:26 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-25 14:02:26 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
-2025-04-25 14:02:26 - DEBUG - utils.button_clicker - 点击画中画按钮 (5249, 7838)
-2025-04-25 14:02:26 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 5249 7838
-2025-04-25 14:02:26 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=5249, Y=7838
-2025-04-25 14:02:26 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
-2025-04-25 14:02:26 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
-2025-04-25 14:02:26 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504250909/A/091831940.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090926897.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090925352.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090924085.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090922521.tiff']
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504250909/A/091831940.tiff
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 解码图像数据
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_2_091831940.png
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
-2025-04-25 14:02:27 - INFO - utils.image_comparator - SSIM 相似度: 0.8888
-2025-04-25 14:02:27 - INFO - utils.image_comparator - 图像的相似度较合理,测试 通过(SSIM 值: 0.8888, 阈值范围: 0.80 - 0.98)
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: True
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 验证步骤结果: True - 图像对比完成 (SSIM相似度): 结果: 通过
-2025-04-25 14:02:27 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 全部通过
-2025-04-25 14:02:27 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-25 14:02:27 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-04-25 14:02:28 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-04-25 14:02:28 - INFO - utils.test_case_executor - 当前执行测试用例名称: 112，测试用例ID: 3
-2025-04-25 14:02:28 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
-2025-04-25 14:02:28 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
-2025-04-25 14:02:28 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
-2025-04-25 14:02:28 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-25 14:02:28 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504250909/A/090926897.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090925352.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090924085.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090922521.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090921241.tiff']
-2025-04-25 14:02:28 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504250909/A/090926897.tiff
-2025-04-25 14:02:28 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-25 14:02:29 - DEBUG - utils.get_latest_image - 解码图像数据
-2025-04-25 14:02:29 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
-2025-04-25 14:02:29 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_3_090926897.png
-2025-04-25 14:02:29 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-25 14:02:29 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
-2025-04-25 14:02:29 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-25 14:02:29 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
-2025-04-25 14:02:29 - ERROR - utils.test_case_executor - 无法获取用于对比的图像: img1=, img2=
-2025-04-25 14:02:29 - INFO - utils.test_case_executor - 验证步骤结果: False - 无法获取用于对比的图像: img1=, img2=
-2025-04-25 14:02:29 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-04-25 14:02:29 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-25 14:02:29 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-04-25 14:02:29 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-04-25 14:02:29 - INFO - utils.test_case_executor - 当前执行测试用例名称: 213123，测试用例ID: 4
-2025-04-25 14:02:29 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
-2025-04-25 14:02:29 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
-2025-04-25 14:02:30 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
-2025-04-25 14:02:30 - DEBUG - utils.get_latest_image - 检查远程目录结构
-2025-04-25 14:02:30 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504250909/A/090925352.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090924085.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090922521.tiff', '/ue/ue_harddisk/ue_data/2504250909/A/090921241.tiff', '/ue/ue_harddisk/ue_data/2504231056/A/105637376.tiff']
-2025-04-25 14:02:30 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504250909/A/090925352.tiff
-2025-04-25 14:02:30 - DEBUG - utils.get_latest_image - 开始下载图像文件
-2025-04-25 14:02:30 - DEBUG - utils.get_latest_image - 解码图像数据
-2025-04-25 14:02:30 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
-2025-04-25 14:02:31 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_4_090925352.png
-2025-04-25 14:02:31 - DEBUG - utils.get_latest_image - 图像获取成功
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像2
-2025-04-25 14:02:31 - INFO - utils.image_comparator - SSIM 相似度: 1.0000
-2025-04-25 14:02:31 - INFO - utils.image_comparator - 图像的相似度不合理,测试 不通过(SSIM 值: 1.0000, 阈值范围: 0.80 - 0.98)
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: False
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 验证步骤结果: False - 图像对比完成 (SSIM相似度): 结果: 不通过
-2025-04-25 14:02:31 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-04-25 14:19:51 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-25 14:19:51 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-04-25 14:19:51 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-04-25 14:19:51 - INFO - utils.test_case_executor - 当前执行测试用例名称: 电子放大，测试用例ID: 1
+2025-04-25 14:19:51 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
+2025-04-25 14:19:51 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
+2025-04-25 14:19:51 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151436/A/143641840.tiff', '/ue/ue_harddisk/ue_data/2504151436/A/143641573.tiff', '/ue/ue_harddisk/ue_data/2504151436/A/143641202.tiff', '/ue/ue_harddisk/ue_data/2504151436/143652951.tiff', '/ue/ue_harddisk/ue_data/2504151436/143652312.tiff']
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151436/A/143641840.tiff
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 解码图像数据
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_1_143641840.png
+2025-04-25 14:19:52 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-25 14:19:52 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-04-25 14:19:52 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-25 14:19:52 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-25 14:19:52 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-25 14:19:52 - DEBUG - utils.button_clicker - 点击保存图像按钮 (8718, 3359)
+2025-04-25 14:19:52 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 8718 3359
+2025-04-25 14:19:53 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=8718, Y=3359
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 检查远程目录结构
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 找到以下图像文件: ['/ue/ue_harddisk/ue_data/2504151436/A/143641573.tiff', '/ue/ue_harddisk/ue_data/2504151436/A/143641202.tiff', '/ue/ue_harddisk/ue_data/2504151436/143652951.tiff', '/ue/ue_harddisk/ue_data/2504151436/143652312.tiff', '/ue/ue_harddisk/ue_data/2504151436/143643908.tiff']
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 找到最新图像文件: /ue/ue_harddisk/ue_data/2504151436/A/143641573.tiff
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 开始下载图像文件
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 解码图像数据
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 将TIFF图像转换为PNG格式
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 已保存PNG图像到: E:\python\vp_180\frontend\public\img\id_1_143641573.png
+2025-04-25 14:19:53 - DEBUG - utils.get_latest_image - 图像获取成功
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 从操作步骤 1 获取到图像1
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 从操作步骤 3 获取到图像2
+2025-04-25 14:19:53 - INFO - utils.image_comparator - SSIM 相似度: 0.9271
+2025-04-25 14:19:53 - INFO - utils.image_comparator - 图像的相似度较合理,测试 通过(SSIM 值: 0.9271, 阈值范围: 0.80 - 0.98)
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: True
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 验证步骤结果: True - 图像对比完成 (SSIM相似度): 结果: 通过
+2025-04-25 14:19:53 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 全部通过
