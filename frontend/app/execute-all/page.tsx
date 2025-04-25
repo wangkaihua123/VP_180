@@ -104,6 +104,36 @@ const getRandomColor = (id: number): string => {
 }
 
 /**
+ * 转换图片路径为API路径
+ * @param url 原始URL
+ * @returns 转换后的URL
+ */
+const convertImageUrlToApiPath = (url: string): string => {
+  // 如果已经是API路径，则直接返回
+  if (url.startsWith('/api/files/')) {
+    return url;
+  }
+  
+  // 根据原始URL模式转换为API路径
+  if (url.includes('/data/img/')) {
+    const filename = url.split('/').pop() || '';
+    return `/api/files/images/${filename}`;
+  } else if (url.includes('/data/screenshots/')) {
+    const filename = url.split('/').pop() || '';
+    return `/api/files/screenshots/${filename}`;
+  } else if (url.includes('/img/')) {
+    const filename = url.split('/').pop() || '';
+    return `/api/files/images/${filename}`;
+  } else if (url.includes('/screenshot/')) {
+    const filename = url.split('/').pop() || '';
+    return `/api/files/screenshots/${filename}`;
+  }
+  
+  // 如果没有匹配的模式，则返回原始URL
+  return url;
+}
+
+/**
  * 测试用例执行页面组件
  */
 export default function ExecuteAllPage() {
@@ -260,7 +290,11 @@ export default function ExecuteAllPage() {
    * @param image 要查看的图片
    */
   const openImageViewer = (image: TestImage) => {
-    setSelectedImage(image)
+    // 转换图片路径，确保使用API路径而不是直接路径
+    const modifiedImage = { ...image };
+    modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
+    
+    setSelectedImage(modifiedImage)
     setImageDialogOpen(true)
     setZoomLevel(1)
     setRotation(0)
@@ -276,7 +310,13 @@ export default function ExecuteAllPage() {
 
     const currentIndex = allImages.findIndex((img) => img.id === selectedImage.id)
     if (currentIndex < allImages.length - 1) {
-      setSelectedImage(allImages[currentIndex + 1])
+      const nextImg = allImages[currentIndex + 1];
+      
+      // 转换图片路径，确保使用API路径
+      const modifiedImage = { ...nextImg };
+      modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
+      
+      setSelectedImage(modifiedImage)
       setZoomLevel(1)
       setRotation(0)
     }
@@ -292,7 +332,13 @@ export default function ExecuteAllPage() {
 
     const currentIndex = allImages.findIndex((img) => img.id === selectedImage.id)
     if (currentIndex > 0) {
-      setSelectedImage(allImages[currentIndex - 1])
+      const prevImg = allImages[currentIndex - 1];
+      
+      // 转换图片路径，确保使用API路径
+      const modifiedImage = { ...prevImg };
+      modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
+      
+      setSelectedImage(modifiedImage)
       setZoomLevel(1)
       setRotation(0)
     }
@@ -609,7 +655,7 @@ export default function ExecuteAllPage() {
                 timestamp: new Date().toISOString(),
                 title: `步骤 ${stepId} 图片`,
                 description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
-                url: `/img/${filename}`,
+                url: convertImageUrlToApiPath(`/api/files/images/${filename}`),
                 type: 'image'
               });
             }
@@ -644,7 +690,7 @@ export default function ExecuteAllPage() {
               timestamp: new Date().toISOString(),
               title: `步骤 ${stepId} 截图`,
               description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
-              url: `/screenshot/${filename}`,
+              url: convertImageUrlToApiPath(`/api/files/screenshots/${filename}`),
               type: 'screenshot'
             });
           }
@@ -1102,7 +1148,7 @@ export default function ExecuteAllPage() {
                                   >
                                     <div className="relative h-40">
                                       <img
-                                        src={image.url || "/placeholder.svg"}
+                                        src={convertImageUrlToApiPath(image.url) || "/placeholder.svg"}
                                         alt={image.title}
                                         className="object-cover w-full h-full"
                                       />
@@ -1131,7 +1177,7 @@ export default function ExecuteAllPage() {
                                   >
                                     <div className="relative h-40">
                                       <img
-                                        src={screenshot.url || "/placeholder.svg"}
+                                        src={convertImageUrlToApiPath(screenshot.url) || "/placeholder.svg"}
                                         alt={screenshot.title}
                                         className="object-cover w-full h-full"
                                       />
@@ -1267,8 +1313,8 @@ export default function ExecuteAllPage() {
                   }}
                 >
                   <img
-                    src={selectedImage.url || "/placeholder.svg"}
-                    alt={selectedImage.title}
+                    src={selectedImage ? convertImageUrlToApiPath(selectedImage.url) : "/placeholder.svg"}
+                    alt={selectedImage?.title}
                     className="max-w-none"
                   />
                 </div>
