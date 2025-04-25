@@ -171,7 +171,7 @@ export default function ExecuteAllPage() {
   const [testCaseScreenshots, setTestCaseScreenshots] = useState<{ [key: number]: TestImage[] }>({})
   const [selectedImage, setSelectedImage] = useState<TestImage | null>(null)
   const [imageDialogOpen, setImageDialogOpen] = useState(false)
-  const [zoomLevel, setZoomLevel] = useState(1)
+  const [zoomLevel, setZoomLevel] = useState(0.6)
   const [rotation, setRotation] = useState(0)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [loading, setLoading] = useState(true)
@@ -286,6 +286,16 @@ export default function ExecuteAllPage() {
   }
 
   /**
+   * 确保图片查看器始终从60%缩放开始
+   */
+  useEffect(() => {
+    if (imageDialogOpen) {
+      // 每次对话框打开时设置缩放级别为0.6（60%）
+      setZoomLevel(0.6);
+    }
+  }, [imageDialogOpen]);
+
+  /**
    * 打开图片查看器
    * @param image 要查看的图片
    */
@@ -294,9 +304,9 @@ export default function ExecuteAllPage() {
     const modifiedImage = { ...image };
     modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
     
+    // 不在这里设置缩放级别，让useEffect处理
     setSelectedImage(modifiedImage)
     setImageDialogOpen(true)
-    setZoomLevel(1)
     setRotation(0)
   }
 
@@ -316,8 +326,8 @@ export default function ExecuteAllPage() {
       const modifiedImage = { ...nextImg };
       modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
       
+      // 保持当前缩放级别，不重置为0.6
       setSelectedImage(modifiedImage)
-      setZoomLevel(1)
       setRotation(0)
     }
   }
@@ -338,8 +348,8 @@ export default function ExecuteAllPage() {
       const modifiedImage = { ...prevImg };
       modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
       
+      // 保持当前缩放级别，不重置为0.6
       setSelectedImage(modifiedImage)
-      setZoomLevel(1)
       setRotation(0)
     }
   }
@@ -1146,12 +1156,18 @@ export default function ExecuteAllPage() {
                                     className="border rounded-md overflow-hidden bg-white cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => openImageViewer(image)}
                                   >
-                                    <div className="relative h-40">
-                                      <img
-                                        src={convertImageUrlToApiPath(image.url) || "/placeholder.svg"}
-                                        alt={image.title}
-                                        className="object-cover w-full h-full"
-                                      />
+                                    <div className="relative h-40 flex items-center justify-center overflow-hidden bg-gray-50">
+                                      <div className="w-full h-full flex items-center justify-center">
+                                        <img
+                                          src={convertImageUrlToApiPath(image.url) || "/placeholder.svg"}
+                                          alt={image.title}
+                                          className="max-h-full max-w-full object-contain"
+                                          style={{
+                                            transform: 'scale(1)',
+                                            transformOrigin: 'center center'
+                                          }}
+                                        />
+                                      </div>
                                     </div>
                                     <div className="p-2">
                                       <h4 className="font-medium text-sm">{image.title}</h4>
@@ -1175,12 +1191,18 @@ export default function ExecuteAllPage() {
                                     className="border rounded-md overflow-hidden bg-white cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => openImageViewer(screenshot)}
                                   >
-                                    <div className="relative h-40">
-                                      <img
-                                        src={convertImageUrlToApiPath(screenshot.url) || "/placeholder.svg"}
-                                        alt={screenshot.title}
-                                        className="object-cover w-full h-full"
-                                      />
+                                    <div className="relative h-40 flex items-center justify-center overflow-hidden bg-gray-50">
+                                      <div className="w-full h-full flex items-center justify-center">
+                                        <img
+                                          src={convertImageUrlToApiPath(screenshot.url) || "/placeholder.svg"}
+                                          alt={screenshot.title}
+                                          className="max-h-full max-w-full object-contain"
+                                          style={{
+                                            transform: 'scale(0.6)',
+                                            transformOrigin: 'center center'
+                                          }}
+                                        />
+                                      </div>
                                     </div>
                                     <div className="p-2">
                                       <h4 className="font-medium text-sm">{screenshot.title}</h4>
@@ -1269,7 +1291,7 @@ export default function ExecuteAllPage() {
                   variant="ghost"
                   size="icon"
                   className="text-white hover:bg-white/20"
-                  onClick={() => setZoomLevel((prev) => Math.max(prev - 0.1, 0.5))}
+                  onClick={() => alert("由于缩放值已硬编码为60%，此按钮暂不可用")}
                 >
                   <ZoomOut className="h-5 w-5" />
                 </Button>
@@ -1277,7 +1299,7 @@ export default function ExecuteAllPage() {
                   variant="ghost"
                   size="icon"
                   className="text-white hover:bg-white/20"
-                  onClick={() => setZoomLevel((prev) => Math.min(prev + 0.1, 3))}
+                  onClick={() => alert("由于缩放值已硬编码为60%，此按钮暂不可用")}
                 >
                   <ZoomIn className="h-5 w-5" />
                 </Button>
@@ -1293,23 +1315,21 @@ export default function ExecuteAllPage() {
                   variant="ghost"
                   size="icon"
                   className="text-white hover:bg-white/20"
-                  onClick={() => {
-                    setZoomLevel(1)
-                    setRotation(0)
-                  }}
+                  onClick={() => setRotation(0)}
                 >
                   <Maximize className="h-5 w-5" />
                 </Button>
               </div>
             </div>
 
-            <div className="relative h-[70vh] flex items-center justify-center overflow-auto">
+            <div className="relative h-[70vh] flex items-center justify-center overflow-auto p-4">
               {selectedImage && (
                 <div
                   className="relative"
                   style={{
-                    transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
+                    transform: `scale(0.6) rotate(${rotation}deg)`, // 强制使用0.6缩放比例来测试
                     transition: "transform 0.2s ease",
+                    margin: "0 auto" // 居中显示
                   }}
                 >
                   <img
@@ -1347,7 +1367,7 @@ export default function ExecuteAllPage() {
                 </span>
               </div>
               <div className="text-white text-sm">
-                缩放: {Math.round(zoomLevel * 100)}% | 旋转: {rotation}°
+                缩放: 60% | 旋转: {rotation}°
               </div>
             </div>
           </div>
