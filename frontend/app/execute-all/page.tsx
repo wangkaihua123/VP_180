@@ -618,6 +618,44 @@ export default function ExecuteAllPage() {
             }
           }
           
+          // 检查验证步骤是否全部通过
+          let allVerificationsSuccess = true;
+          if (result.details && result.details.verification_results) {
+            allVerificationsSuccess = result.details.verification_results.every(v => v.success);
+          }
+          
+          if (allVerificationsSuccess) {
+            // 所有验证步骤通过，更新状态为通过
+            testCase.status = 'completed';
+            // 更新状态到后端
+            testCasesAPI.updateStatus(testCase.id, '通过')
+              .then(response => {
+                if (response.success) {
+                  console.log(`测试用例 #${testCase.id} 状态更新为"通过"成功`);
+                } else {
+                  console.error(`测试用例 #${testCase.id} 状态更新为"通过"失败:`, response.message);
+                }
+              })
+              .catch(error => {
+                console.error(`测试用例 #${testCase.id} 状态更新出错:`, error);
+              });
+          } else {
+            // 有验证步骤失败，更新状态为失败
+            testCase.status = 'failed';
+            // 更新状态到后端
+            testCasesAPI.updateStatus(testCase.id, '失败')
+              .then(response => {
+                if (response.success) {
+                  console.log(`测试用例 #${testCase.id} 状态更新为"失败"成功`);
+                } else {
+                  console.error(`测试用例 #${testCase.id} 状态更新为"失败"失败:`, response.message);
+                }
+              })
+              .catch(error => {
+                console.error(`测试用例 #${testCase.id} 状态更新出错:`, error);
+              });
+          }
+          
           setExecutionStats(prev => ({
             ...prev,
             completed: prev.completed + 1
@@ -648,6 +686,21 @@ export default function ExecuteAllPage() {
             }
           }
           
+          // 更新状态为失败
+          testCase.status = 'failed';
+          // 更新状态到后端
+          testCasesAPI.updateStatus(testCase.id, '失败')
+            .then(response => {
+              if (response.success) {
+                console.log(`测试用例 #${testCase.id} 状态更新为"失败"成功`);
+              } else {
+                console.error(`测试用例 #${testCase.id} 状态更新为"失败"失败:`, response.message);
+              }
+            })
+            .catch(error => {
+              console.error(`测试用例 #${testCase.id} 状态更新出错:`, error);
+            });
+          
           setExecutionStats(prev => ({
             ...prev,
             failed: prev.failed + 1
@@ -655,6 +708,22 @@ export default function ExecuteAllPage() {
         }
       } catch (error) {
         addLog(testCase.id, `测试用例执行出错: ${testCase.name} - ${error instanceof Error ? error.message : '未知错误'}`, 'error')
+        
+        // 更新状态为异常
+        testCase.status = 'error';
+        // 更新状态到后端
+        testCasesAPI.updateStatus(testCase.id, '异常')
+          .then(response => {
+            if (response.success) {
+              console.log(`测试用例 #${testCase.id} 状态更新为"异常"成功`);
+            } else {
+              console.error(`测试用例 #${testCase.id} 状态更新为"异常"失败:`, response.message);
+            }
+          })
+          .catch(error => {
+            console.error(`测试用例 #${testCase.id} 状态更新出错:`, error);
+          });
+        
         setExecutionStats(prev => ({
           ...prev,
           failed: prev.failed + 1
@@ -983,6 +1052,26 @@ export default function ExecuteAllPage() {
   }
   
   /**
+   * 将前端状态映射为后端状态
+   * @param frontendStatus 前端状态
+   * @returns 后端状态
+   */
+  const mapStatusToBackend = (frontendStatus: TestCaseStatus): string => {
+    switch (frontendStatus) {
+      case 'completed':
+        return '通过';
+      case 'failed':
+        return '失败';
+      case 'error':
+        return '异常';
+      case 'pending':
+        return '未运行';
+      default:
+        return '未运行';
+    }
+  };
+
+  /**
    * 根据系统日志更新测试用例状态
    * 检查日志中是否包含"结果: 测试通过"或"结果: 测试不通过"
    * @param logs 系统日志数组
@@ -998,6 +1087,9 @@ export default function ExecuteAllPage() {
     
     // 遍历所有测试用例
     updatedTestCases.forEach(testCase => {
+      // 保存原始状态用于比较
+      const originalStatus = testCase.status;
+      
       // 获取与此测试用例相关的日志
       const testCaseLogs = getTestCaseSystemLogsByRange(testCase.id);
       if (testCaseLogs.length === 0) return;
@@ -1026,6 +1118,25 @@ export default function ExecuteAllPage() {
       if (hasExecutionLogs && testCase.status !== 'completed' && testCase.status !== 'failed') {
         console.log(`测试用例 #${testCase.id} 没有明确的结果，设置为异常状态`);
         testCase.status = 'error';
+      }
+      
+      // 如果状态有变化，同步到后端
+      if (originalStatus !== testCase.status) {
+        const backendStatus = mapStatusToBackend(testCase.status);
+        console.log(`更新测试用例 #${testCase.id} 状态到后端: ${backendStatus}`);
+        
+        // 异步调用API更新后端状态
+        testCasesAPI.updateStatus(testCase.id, backendStatus)
+          .then(response => {
+            if (response.success) {
+              console.log(`测试用例 #${testCase.id} 状态更新成功`);
+            } else {
+              console.error(`测试用例 #${testCase.id} 状态更新失败:`, response.message);
+            }
+          })
+          .catch(error => {
+            console.error(`测试用例 #${testCase.id} 状态更新出错:`, error);
+          });
       }
     });
     
