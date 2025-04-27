@@ -56,7 +56,7 @@ import { Input } from "@/components/ui/input"
 /**
  * 测试用例状态类型
  */
-type TestCaseStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped'
+type TestCaseStatus = 'pending' | 'completed' | 'failed' | 'error'
 
 /**
  * 测试用例日志接口
@@ -279,7 +279,7 @@ export default function ExecuteAllPage() {
                 ...tc,
                 name: tc.title || `测试用例 #${tc.id}`,
                 color: getRandomColor(tc.id),
-                status: mapStatus(tc.status)
+                status: 'pending' as TestCaseStatus
               }));
             console.log("过滤后的测试用例:", filteredTestCases);
             setTestCases(filteredTestCases);
@@ -288,7 +288,7 @@ export default function ExecuteAllPage() {
               ...tc,
               name: tc.title || `测试用例 #${tc.id}`,
               color: getRandomColor(tc.id),
-              status: mapStatus(tc.status)
+              status: 'pending' as TestCaseStatus
             }));
             console.log("所有测试用例:", formattedTestCases);
             setTestCases(formattedTestCases);
@@ -486,14 +486,12 @@ export default function ExecuteAllPage() {
    */
   const mapStatus = (status: string): TestCaseStatus => {
     switch (status) {
-      case '进行中':
-        return 'running'
+      case '异常':
+        return 'error'
       case '通过':
         return 'completed'
       case '失败':
         return 'failed'
-      case '跳过':
-        return 'skipped'
       default:
         return 'pending'
     }
@@ -851,17 +849,16 @@ export default function ExecuteAllPage() {
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':
-        return <Badge variant="outline"><Clock className="w-4 h-4 mr-1" />等待中</Badge>
-      case 'running':
-        return <Badge variant="default"><Play className="w-4 h-4 mr-1" />执行中</Badge>
+        return <Badge variant="outline"><Clock className="w-4 h-4 mr-1" />未执行</Badge>
+      case 'error':
+      case '异常':
+        return <Badge variant="secondary"><Play className="w-4 h-4 mr-1" />异常</Badge>
       case 'completed':
       case '通过':
         return <Badge variant="success"><CheckCircle className="w-4 h-4 mr-1" />通过</Badge>
       case 'failed':
       case '失败':
         return <Badge variant="destructive"><XCircle className="w-4 h-4 mr-1" />失败</Badge>
-      case 'skipped':
-        return <Badge variant="secondary"><ArrowRight className="w-4 h-4 mr-1" />跳过</Badge>
       default:
         return <Badge variant="outline">{status}</Badge>
     }
@@ -996,26 +993,44 @@ export default function ExecuteAllPage() {
     
     console.log('根据系统日志更新测试用例状态...');
     
+    // 创建测试用例副本以进行状态更新
+    const updatedTestCases = [...testCases];
+    
     // 遍历所有测试用例
-    testCases.forEach(testCase => {
+    updatedTestCases.forEach(testCase => {
       // 获取与此测试用例相关的日志
       const testCaseLogs = getTestCaseSystemLogsByRange(testCase.id);
       if (testCaseLogs.length === 0) return;
       
+      // 默认为异常状态，如果有执行日志但没有明确的通过/不通过结果
+      let hasExecutionLogs = false;
+      
       // 查找包含结果信息的日志
       for (const log of testCaseLogs) {
         const logMessage = log.message || '';
+        hasExecutionLogs = true;
         
         // 检查日志中是否包含测试结果信息
         if (logMessage.includes('结果: 测试通过')) {
           console.log(`从日志中检测到测试用例 #${testCase.id} 通过`);
+          testCase.status = 'completed';
           break;
         } else if (logMessage.includes('结果: 测试不通过')) {
           console.log(`从日志中检测到测试用例 #${testCase.id} 不通过`);
+          testCase.status = 'failed';
           break;
         }
       }
+      
+      // 如果有执行日志但没有明确的通过/不通过结果，则设为异常状态
+      if (hasExecutionLogs && testCase.status !== 'completed' && testCase.status !== 'failed') {
+        console.log(`测试用例 #${testCase.id} 没有明确的结果，设置为异常状态`);
+        testCase.status = 'error';
+      }
     });
+    
+    // 更新测试用例状态
+    setTestCases(updatedTestCases);
   }
 
   // 系统日志级别样式
@@ -1111,7 +1126,7 @@ export default function ExecuteAllPage() {
       const timer = setInterval(() => {
         // 获取当前正在执行的测试用例ID
         testCases.forEach(tc => {
-          if (tc.status === 'running' || tc.status === 'completed') {
+          if (tc.status === 'completed' || tc.status === 'error' || tc.status === 'failed') {
             loadTestCaseMedia(tc.id);
           }
         });
@@ -1421,6 +1436,164 @@ export default function ExecuteAllPage() {
                   </div>
                 )}
               </ScrollArea>
+            </CardContent>
+          </Card>
+
+          {/* 测试执行结果统计卡片 */}
+          <Card className="mt-6">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center">
+                <CheckCircle className="mr-2 h-5 w-5" />
+                测试执行结果统计
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                {/* 总用例数 */}
+                <div className="bg-gray-100 rounded-lg p-6 text-center">
+                  <div className="text-6xl font-bold">{testCases.length}</div>
+                  <div className="text-gray-500 mt-2">总用例数</div>
+                </div>
+
+                {/* 通过数 */}
+                <div className="bg-green-100 rounded-lg p-6 text-center">
+                  <div className="text-6xl font-bold text-green-600">
+                    {testCases.filter(tc => tc.status === 'completed').length}
+                  </div>
+                  <div className="text-green-600 mt-2">通过</div>
+                </div>
+
+                {/* 不通过/异常数 */}
+                <div className="bg-red-100 rounded-lg p-6 text-center">
+                  <div className="text-6xl font-bold text-red-600">
+                    {testCases.filter(tc => tc.status === 'failed' || tc.status === 'error').length}
+                  </div>
+                  <div className="text-red-600 mt-2">不通过/异常</div>
+                </div>
+              </div>
+
+              {/* 执行结果图表 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* 左侧通过率图表 */}
+                <div className="border rounded-lg p-6">
+                  <h3 className="text-center font-medium mb-4">通过率: {testCases.length > 0 ? Math.round((testCases.filter(tc => tc.status === 'completed').length / testCases.length) * 100) : 0}%</h3>
+                  <div className="flex justify-center">
+                    <div className="relative w-48 h-48">
+                      {/* 实际图表可以用SVG或Canvas实现，这里使用简化的圆环表示 */}
+                      <div className="absolute inset-0 rounded-full border-8 border-gray-200"></div>
+                      <div 
+                        className="absolute inset-0 rounded-full border-8 border-green-500" 
+                        style={{ 
+                          clipPath: testCases.length > 0 
+                            ? `polygon(50% 50%, 50% 0, ${50 + 50 * Math.sin(2 * Math.PI * (testCases.filter(tc => tc.status === 'completed').length / testCases.length))}% ${50 - 50 * Math.cos(2 * Math.PI * (testCases.filter(tc => tc.status === 'completed').length / testCases.length))}%, 50% 50%)` 
+                            : 'none',
+                          transform: 'rotate(-90deg)' 
+                        }}
+                      ></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-3xl font-bold">{testCases.length > 0 ? Math.round((testCases.filter(tc => tc.status === 'completed').length / testCases.length) * 100) : 0}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 右侧测试用例状态分布 */}
+                <div className="border rounded-lg p-6">
+                  <h3 className="text-center font-medium mb-4">测试用例状态分布</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                        <span>通过</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="mr-2">{testCases.filter(tc => tc.status === 'completed').length}</span>
+                        <div className="w-32 bg-gray-200 rounded-full h-2.5">
+                          <div 
+                            className="bg-green-500 h-2.5 rounded-full" 
+                            style={{ width: `${testCases.length > 0 ? (testCases.filter(tc => tc.status === 'completed').length / testCases.length) * 100 : 0}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                        <span>失败</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="mr-2">{testCases.filter(tc => tc.status === 'failed').length}</span>
+                        <div className="w-32 bg-gray-200 rounded-full h-2.5">
+                          <div 
+                            className="bg-red-500 h-2.5 rounded-full" 
+                            style={{ width: `${testCases.length > 0 ? (testCases.filter(tc => tc.status === 'failed').length / testCases.length) * 100 : 0}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                        <span>异常</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="mr-2">{testCases.filter(tc => tc.status === 'error').length}</span>
+                        <div className="w-32 bg-gray-200 rounded-full h-2.5">
+                          <div 
+                            className="bg-yellow-500 h-2.5 rounded-full" 
+                            style={{ width: `${testCases.length > 0 ? (testCases.filter(tc => tc.status === 'error').length / testCases.length) * 100 : 0}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 测试用例详情表 */}
+              <div className="mt-6">
+                <h3 className="font-medium mb-4">测试用例详情</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">测试用例</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {testCases.map((testCase) => (
+                        <tr key={testCase.id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{testCase.id}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: testCase.color }}></div>
+                              <div className="ml-2">
+                                <div className="text-sm font-medium text-gray-900">{testCase.name}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {getStatusBadge(testCase.status)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-indigo-600 hover:text-indigo-900"
+                              onClick={() => toggleTestCase(testCase.id)}
+                            >
+                              查看详情
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
