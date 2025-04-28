@@ -237,4 +237,18 @@ class SSHManager:
             # 记录连接状态
             self.__class__._is_connected = False
             self.__class__._last_error = str(e)
-            return None 
+            return None
+
+    @classmethod
+    def disconnect_all(cls):
+        """全局断开SSH连接"""
+        if cls._ssh_client:
+            try:
+                logger.debug("正在全局断开SSH连接")
+                cls._ssh_client.close()
+                cls._ssh_client = None
+                cls._is_connected = False
+                logger.debug("全局SSH连接已断开")
+            except Exception as e:
+                logger.error(f"全局断开SSH连接时出错: {e}")
+        cls._instance = None 

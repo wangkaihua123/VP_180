@@ -10,6 +10,7 @@ from utils.serial_manager import SerialManager
 from backend.models.test_case import TestCase
 from backend.services.ssh_service import SSHService
 from backend.config import IMAGES_DIR, SCREENSHOTS_DIR
+from backend.models.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +58,8 @@ class TestCaseService:
         serial_connect = case.get('serial_connect', False)
         if serial_connect:
             logger.info(f"测试用例 {case_id} 需要串口连接")
-            serial_manager = SerialManager.get_instance()
+            serial_settings = Settings.get_serial_settings()
+            serial_manager = SerialManager.get_instance(serial_settings['serialPort'], serial_settings['serialBaudRate'])
             # 检查串口是否已连接
             if not SerialManager.is_connected():
                 logger.info(f"串口未连接，尝试连接串口...")
@@ -134,7 +136,8 @@ class TestCaseService:
                 serial_connect = case.get('serial_connect', False)
                 if serial_connect:
                     logger.info(f"测试用例 {case_id} 需要串口连接")
-                    serial_manager = SerialManager.get_instance()
+                    serial_settings = Settings.get_serial_settings()
+                    serial_manager = SerialManager.get_instance(serial_settings['serialPort'], serial_settings['serialBaudRate'])
                     # 检查串口是否已连接
                     if not SerialManager.is_connected():
                         logger.info(f"串口未连接，尝试连接串口...")

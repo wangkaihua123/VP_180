@@ -75,4 +75,20 @@ def test_connection():
         return jsonify({
             'success': False,
             'message': f"SSH连接测试失败: {str(e)}"
+        }), 500
+
+
+@ssh_bp.route('/disconnect', methods=['POST'])
+def disconnect_ssh():
+    """断开全局SSH连接"""
+    try:
+        SSHManager.disconnect_all()
+        return jsonify({
+            'success': True,
+            'message': 'SSH连接已断开'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'断开SSH连接失败: {str(e)}'
         }), 500 

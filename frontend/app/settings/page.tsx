@@ -45,11 +45,15 @@ export default function SettingsPage() {
   })
   const [serialPorts, setSerialPorts] = useState<SerialPort[]>([])
   const commonBaudRates = ["9600", "19200", "38400", "57600", "115200", "1500000"]
+  const [serialConnected, setSerialConnected] = useState(false)
+  const [sshConnected, setSshConnected] = useState(false)
 
   useEffect(() => {
     loadSettings()
     loadSerialSettings()
     loadSerialPorts()
+    checkSerialConnection()
+    checkSshConnection()
   }, [])
 
   const loadSettings = async () => {
@@ -158,6 +162,7 @@ export default function SettingsPage() {
         description: message,
         variant: success ? "default" : "destructive"
       })
+      setSshConnected(success)
     } catch (error) {
       console.error('测试SSH连接失败:', error)
       toast({
@@ -179,6 +184,7 @@ export default function SettingsPage() {
         description: message,
         variant: success ? "default" : "destructive"
       })
+      setSerialConnected(success)
     } catch (error) {
       console.error('测试串口连接失败:', error)
       toast({
@@ -252,6 +258,66 @@ export default function SettingsPage() {
         description: error instanceof Error ? error.message : "未知错误",
         variant: "destructive"
       })
+    }
+  }
+
+  const checkSerialConnection = async () => {
+    try {
+      const { success } = await serialSettingsAPI.testConnection(serialSettings)
+      setSerialConnected(success)
+    } catch {
+      setSerialConnected(false)
+    }
+  }
+
+  const handleDisconnectSerial = async () => {
+    setIsLoading(true)
+    try {
+      const { success, message } = await serialSettingsAPI.disconnect()
+      toast({
+        title: success ? "串口已断开" : "断开失败",
+        description: message,
+        variant: success ? "default" : "destructive"
+      })
+      setSerialConnected(false)
+    } catch (error) {
+      toast({
+        title: "断开失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const checkSshConnection = async () => {
+    try {
+      const { success } = await sshSettingsAPI.testConnection(settings)
+      setSshConnected(success)
+    } catch {
+      setSshConnected(false)
+    }
+  }
+
+  const handleDisconnectSsh = async () => {
+    setIsLoading(true)
+    try {
+      const { success, message } = await sshSettingsAPI.disconnect()
+      toast({
+        title: success ? "SSH已断开" : "断开失败",
+        description: message,
+        variant: success ? "default" : "destructive"
+      })
+      setSshConnected(false)
+    } catch (error) {
+      toast({
+        title: "断开失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -358,20 +424,29 @@ export default function SettingsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleTestConnection}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        测试中...
-                      </>
-                    ) : (
-                      "测试连接"
-                    )}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={handleTestConnection}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          测试中...
+                        </>
+                      ) : (
+                        "测试连接"
+                      )}
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={handleDisconnectSsh}
+                      disabled={!sshConnected || isLoading}
+                    >
+                      断开连接
+                    </Button>
+                  </div>
                   <Button 
                     className="bg-black text-white hover:bg-gray-800"
                     onClick={handleSaveClick}
@@ -486,20 +561,29 @@ export default function SettingsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleTestSerialConnection}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        测试中...
-                      </>
-                    ) : (
-                      "测试连接"
-                    )}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={handleTestSerialConnection}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          测试中...
+                        </>
+                      ) : (
+                        "测试连接"
+                      )}
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={handleDisconnectSerial}
+                      disabled={!serialConnected || isLoading}
+                    >
+                      断开连接
+                    </Button>
+                  </div>
                   <Button 
                     className="bg-black text-white hover:bg-gray-800"
                     onClick={handleSaveClick}

@@ -13,19 +13,22 @@ class SerialManager:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, port="COM1", baudrate=115200, timeout=1):
+    def __init__(self, serialPort=None, serialBaudRate=None, timeout=1):
+        logger.debug(f"SerialManager初始化参数: serialPort={serialPort}, serialBaudRate={serialBaudRate}, timeout={timeout}")
         # 只在第一次初始化
-        if not self._serial:
-            self.port = port
-            self.baudrate = baudrate
+        if not hasattr(self, 'initialized') or not self.initialized:
+            if serialPort is None or serialBaudRate is None:
+                raise ValueError("必须传递serialPort和serialBaudRate参数！")
+            self.port = serialPort
+            self.baudrate = int(serialBaudRate)
             self.timeout = timeout
-            logger.debug("串口管理器初始化完成")
+            self.initialized = True
+            logger.debug(f"串口管理器初始化完成: port={self.port}, baudrate={self.baudrate}")
 
     @classmethod
-    def get_instance(cls):
-        """获取SerialManager实例"""
+    def get_instance(cls, serialPort=None, serialBaudRate=None, timeout=1):
         if cls._instance is None:
-            cls._instance = SerialManager()
+            cls._instance = SerialManager(serialPort, serialBaudRate, timeout)
         return cls._instance
 
     @classmethod
@@ -57,7 +60,7 @@ class SerialManager:
             logger.debug("串口已连接")
             return self._serial
 
-        logger.debug("开始建立新的串口连接...")
+        logger.debug(f"开始建立新的串口连接... port={self.port}, baudrate={self.baudrate}, timeout={self.timeout}")
         try:
             self._serial = serial.Serial(
                 port=self.port,
@@ -125,4 +128,23 @@ class SerialManager:
             try:
                 self._serial.flush()
             except Exception as e:
-                logger.error(f"清空缓冲区时出错: {e}") 
+                logger.error(f"清空缓冲区时出错: {e}")
+
+    @classmethod
+    def reconnect(cls, serialPort, serialBaudRate, timeout=1):
+        """重连串口，使用新参数"""
+        if cls._instance:
+            cls._instance.disconnect()
+        cls._instance = SerialManager(serialPort, serialBaudRate, timeout)
+        return cls._instance.connect()
+
+    @classmethod
+    def disconnect_all(cls):
+        """全局断开串口连接"""
+        if cls._instance:
+            cls._instance.disconnect()
+            cls._instance = None
+            logger.debug("全局串口连接已断开")
+
+    def __del__(self):
+        self.disconnect() 

@@ -91,15 +91,14 @@ def test_connection():
     """测试串口连接"""
     try:
         data = request.json
+        print("收到串口测试请求参数：", data)  # 新增日志
         serial_manager = SerialManager(
-            port=data.get('serialPort', 'COM1'),
-            baudrate=int(data.get('serialBaudRate', 9600)),
+            serialPort=data.get('serialPort', 'COM1'),
+            serialBaudRate=data.get('serialBaudRate', 9600),
             timeout=1
         )
-        
         # 尝试连接
         connection = serial_manager.connect()
-        
         if connection:
             # 连接成功，断开连接
             serial_manager.disconnect()
@@ -116,4 +115,19 @@ def test_connection():
         return jsonify({
             'success': False,
             'message': f"串口连接测试失败: {str(e)}"
+        }), 500
+
+@serial_bp.route('/disconnect', methods=['POST'])
+def disconnect_serial():
+    """断开全局串口连接"""
+    try:
+        SerialManager.disconnect_all()
+        return jsonify({
+            'success': True,
+            'message': '串口连接已断开'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'断开串口连接失败: {str(e)}'
         }), 500 

@@ -8,6 +8,7 @@ from .button_clicker import ButtonClicker
 from .ssh_manager import SSHManager
 from .image_comparator import ImageComparator
 from .log_config import setup_logger
+from backend.models.settings import Settings
 
 logger = setup_logger(__name__)
 
@@ -305,7 +306,8 @@ class TestCaseExecutor:
                 
                 try:
                     # 获取SerialManager实例
-                    serial_manager = SerialManager.get_instance()
+                    serial_settings = Settings.get_serial_settings()
+                    serial_manager = SerialManager.get_instance(serial_settings['serialPort'], serial_settings['serialBaudRate'])
                     
                     # 检查串口是否已连接
                     if not SerialManager.is_connected():
@@ -351,7 +353,8 @@ class TestCaseExecutor:
                 
                 try:
                     # 获取SerialManager实例
-                    serial_manager = SerialManager.get_instance()
+                    serial_settings = Settings.get_serial_settings()
+                    serial_manager = SerialManager.get_instance(serial_settings['serialPort'], serial_settings['serialBaudRate'])
                     
                     # 检查串口是否已连接
                     if not SerialManager.is_connected():
@@ -398,7 +401,8 @@ class TestCaseExecutor:
                 
                 try:
                     # 获取SerialManager实例
-                    serial_manager = SerialManager.get_instance()
+                    serial_settings = Settings.get_serial_settings()
+                    serial_manager = SerialManager.get_instance(serial_settings['serialPort'], serial_settings['serialBaudRate'])
                     
                     # 检查串口是否已连接
                     if not SerialManager.is_connected():

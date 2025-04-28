@@ -96,6 +96,11 @@ export const sshSettingsAPI = {
       body: JSON.stringify(settings),
     });
   },
+  disconnect: async () => {
+    return fetchAPI('/api/ssh/disconnect', {
+      method: 'POST',
+    })
+  },
 }
 
 // 串口设置相关API
@@ -125,6 +130,11 @@ export const serialSettingsAPI = {
     return fetchAPI(API_ROUTES.SERIAL_SETTINGS.TEST_CONNECTION, {
       method: 'POST',
       body: JSON.stringify(settings),
+    })
+  },
+  disconnect: async () => {
+    return fetchAPI('/api/serial/disconnect', {
+      method: 'POST',
     })
   },
 }
