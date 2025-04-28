@@ -10,8 +10,28 @@ load_dotenv()
 # 基础配置
 SECRET_KEY = os.getenv('SECRET_KEY', 'youyi_medical_test_platform_secret_key')
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')
-HOST = os.getenv('HOST', '10.0.18.132')
-PORT = int(os.getenv('PORT', 5000))
+
+# IP配置
+USE_FIXED_IP = os.getenv('USE_FIXED_IP', 'False').lower() in ('true', '1', 't')
+FIXED_HOST = os.getenv('FIXED_HOST', '10.0.18.132')
+FIXED_PORT = int(os.getenv('FIXED_PORT', 5000))
+
+# 动态获取主机IP
+def get_host():
+    if USE_FIXED_IP:
+        return FIXED_HOST
+    try:
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        host = s.getsockname()[0]
+        s.close()
+        return host
+    except:
+        return '0.0.0.0'
+
+HOST = get_host()
+PORT = FIXED_PORT
 
 # 数据目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

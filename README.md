@@ -6,6 +6,18 @@
 将touch_click.py文件放进设备的app/jzj文件夹下面
 将ip设置成10.0.18.132
 
+要使用固定IP：
+设置 USE_FIXED_IP=true
+配置 FIXED_HOST 和 FIXED_PORT
+配置 NEXT_PUBLIC_USE_FIXED_IP=true
+配置 NEXT_PUBLIC_FIXED_API_URL
+要使用动态IP：
+设置 USE_FIXED_IP=false
+设置 NEXT_PUBLIC_USE_FIXED_IP=false
+系统会自动获取当前主机的IP地址
+环境变量优先级：
+环境变量 > 配置文件 > 默认值
+可以通过修改环境变量来覆盖配置文件中的设置
 
 
 ##  QS
