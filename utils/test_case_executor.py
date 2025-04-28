@@ -119,47 +119,76 @@ class TestCaseExecutor:
                 script_content = json.loads(test_case['script_content'])
             else:
                 script_content = test_case['script_content']
-            logger.info(f"当前执行测试用例名称: {test_case['title']}，测试用例ID: {test_case_id}")
+            
+            # 获取重复次数，默认为1
+            repeat_count = int(script_content.get('repeatCount', 1))
+            # 确保重复次数至少为1
+            repeat_count = max(1, repeat_count)
+            
+            logger.info(f"当前执行测试用例名称: {test_case['title']}，测试用例ID: {test_case_id}，重复次数: {repeat_count}")
+            
+            # 存储所有执行结果
+            all_operation_results = []
+            all_verification_results = []
+            overall_success = True
+            
+            # 根据重复次数执行测试用例
+            for run_index in range(repeat_count):
+                logger.info(f"执行第 {run_index + 1}/{repeat_count} 次测试")
+                
+                # 创建一个字典来存储操作步骤的结果，特别是图像数据
+                operation_data = {}
 
-            # 创建一个字典来存储操作步骤的结果，特别是图像数据
-            operation_data = {}
+                # 执行操作步骤
+                operation_results = []
+                if 'operationSteps' in script_content:
+                    for step in script_content['operationSteps']:
+                        result = self._execute_operation_step(step, test_case['title'], test_case_id)
+                        operation_results.append(result)
+                        
+                        # 存储关键操作的结果数据，特别是图像和截图
+                        step_id = step.get('id')
+                        if step_id and result.get('success') and 'data' in result:
+                            operation_data[str(step_id)] = result['data']
+                            logger.info(f"保存操作步骤 {step_id} 的结果数据")
 
-            # 执行操作步骤
-            operation_results = []
-            if 'operationSteps' in script_content:
-                for step in script_content['operationSteps']:
-                    result = self._execute_operation_step(step, test_case['title'], test_case_id)
-                    operation_results.append(result)
-                    
-                    # 存储关键操作的结果数据，特别是图像和截图
-                    step_id = step.get('id')
-                    if step_id and result.get('success') and 'data' in result:
-                        operation_data[str(step_id)] = result['data']
-                        logger.info(f"保存操作步骤 {step_id} 的结果数据")
+                # 执行验证步骤
+                verification_results = []
+                if 'verificationSteps' in script_content:
+                    logger.info(f"开始执行验证步骤，共 {len(script_content['verificationSteps'])} 个验证步骤")
+                    for step in script_content['verificationSteps']:
+                        logger.info(f"执行验证步骤: {step.get('verification_key', '未知类型')} (ID: {step.get('id', 'n/a')})")
+                        # 将操作步骤的结果数据传递给验证步骤
+                        result = self._execute_verification_step(step, operation_data)
+                        verification_results.append(result)
+                        logger.info(f"验证步骤结果: {result.get('success', False)} - {result.get('message', '无消息')}")
+                    logger.info(f"验证步骤执行完成，结果: {'测试通过' if all(r['success'] for r in verification_results) else '测试不通过'}")
+                else:
+                    logger.warning("测试用例中没有验证步骤")
 
-            # 执行验证步骤
-            verification_results = []
-            if 'verificationSteps' in script_content:
-                logger.info(f"开始执行验证步骤，共 {len(script_content['verificationSteps'])} 个验证步骤")
-                for step in script_content['verificationSteps']:
-                    logger.info(f"执行验证步骤: {step.get('verification_key', '未知类型')} (ID: {step.get('id', 'n/a')})")
-                    # 将操作步骤的结果数据传递给验证步骤
-                    result = self._execute_verification_step(step, operation_data)
-                    verification_results.append(result)
-                    logger.info(f"验证步骤结果: {result.get('success', False)} - {result.get('message', '无消息')}")
-                logger.info(f"验证步骤执行完成，结果: {'测试通过' if all(r['success'] for r in verification_results) else '测试不通过'}")
-            else:
-                logger.warning("测试用例中没有验证步骤")
-
-            # 判断测试结果
-            success = all(r['success'] for r in operation_results + verification_results)
-            status = '通过' if success else '失败'
+                # 判断当前执行的测试结果
+                current_success = all(r['success'] for r in operation_results + verification_results)
+                if not current_success:
+                    overall_success = False
+                
+                # 收集当前执行的结果
+                all_operation_results.extend(operation_results)
+                all_verification_results.extend(verification_results)
+                
+                # 如果当前测试失败并且不是最后一次执行，记录日志
+                if not current_success and run_index < repeat_count - 1:
+                    logger.warning(f"第 {run_index + 1} 次测试执行失败，继续执行剩余的测试")
+            
+            # 全部执行完成后的状态
+            status = '通过' if overall_success else '失败'
+            logger.info(f"测试用例 {test_case['title']} 执行完成，共执行 {repeat_count} 次，最终状态: {status}")
 
             return {
-                'success': success,
+                'success': overall_success,
                 'status': status,
-                'operation_results': operation_results,
-                'verification_results': verification_results
+                'operation_results': all_operation_results,
+                'verification_results': all_verification_results,
+                'repeat_count': repeat_count
             }
 
         except Exception as e:
@@ -266,6 +295,70 @@ class TestCaseExecutor:
                     'success': True,
                     'message': f'等待时间完成: {wait_time_ms} 毫秒'
                 }
+                
+            elif operation_key == '串口开机':
+                # 导入SerialManager
+                from .serial_manager import SerialManager
+                
+                # 记录日志
+                logger.info('准备发送串口开机命令')
+                
+                try:
+                    # 获取SerialManager实例
+                    serial_manager = SerialManager.get_instance()
+                    
+                    # 发送开机命令 fefe0501 (十六进制)
+                    # 将十六进制字符串转换为二进制数据
+                    command = bytes.fromhex('fefe0501')
+                    success = serial_manager.write(command)
+                    
+                    if success:
+                        logger.info('串口开机命令发送成功')
+                    else:
+                        logger.error('串口开机命令发送失败')
+                    
+                    return {
+                        'success': success,
+                        'message': '发送串口开机命令' + (' 成功' if success else ' 失败')
+                    }
+                except Exception as e:
+                    logger.error(f'发送串口开机命令时出错: {str(e)}')
+                    return {
+                        'success': False,
+                        'message': f'发送串口开机命令失败: {str(e)}'
+                    }
+                
+            elif operation_key == '串口关机':
+                # 导入SerialManager
+                from .serial_manager import SerialManager
+                
+                # 记录日志
+                logger.info('准备发送串口关机命令')
+                
+                try:
+                    # 获取SerialManager实例
+                    serial_manager = SerialManager.get_instance()
+                    
+                    # 发送关机命令 fefe0500 (十六进制)
+                    # 将十六进制字符串转换为二进制数据
+                    command = bytes.fromhex('fefe0500')
+                    success = serial_manager.write(command)
+                    
+                    if success:
+                        logger.info('串口关机命令发送成功')
+                    else:
+                        logger.error('串口关机命令发送失败')
+                    
+                    return {
+                        'success': success,
+                        'message': '发送串口关机命令' + (' 成功' if success else ' 失败')
+                    }
+                except Exception as e:
+                    logger.error(f'发送串口关机命令时出错: {str(e)}')
+                    return {
+                        'success': False,
+                        'message': f'发送串口关机命令失败: {str(e)}'
+                    }
                 
             else:
                 return {

@@ -4,5 +4,5 @@
   "sshUsername": "root",
   "sshPassword": "firefly",
   "serialPort": "COM4",
-  "serialBaudRate": "1500000"
+  "serialBaudRate": "115200"
 }

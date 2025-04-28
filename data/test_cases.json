@@ -78,5 +78,15 @@
     "last_execution_time": "2025-04-28 11:10:07",
     "description": "",
     "script_content": "{\"repeatCount\": 3, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}, {\"id\": 2, \"operation_key\": \"等待时间\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 3000}, {\"id\": 3, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}"
+  },
+  {
+    "id": 9,
+    "title": "串口开关机",
+    "type": "功能测试",
+    "status": "失败",
+    "create_time": "2025-04-28 11:18",
+    "last_execution_time": "2025-04-28 11:43:16",
+    "description": "",
+    "script_content": "{\"repeatCount\": 5, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口关机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}, {\"id\": 2, \"operation_key\": \"等待时间\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 8000}, {\"id\": 3, \"operation_key\": \"串口开机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}, {\"id\": 4, \"operation_key\": \"等待时间\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 25000}, {\"id\": 5, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}"
   }
 ]

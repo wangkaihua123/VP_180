@@ -36,6 +36,7 @@ import {
   ArrowRight,
   Minus,
   Plus,
+  Square, // 添加停止按钮图标
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -984,6 +985,51 @@ export default function ExecuteAllPage() {
     handleExecuteSelected();
   };
 
+  /**
+   * 停止执行测试用例
+   */
+  const handleStopExecution = () => {
+    // 添加日志记录测试执行被手动停止
+    addLog(0, "测试执行被手动停止", "warning");
+    console.log("测试执行被手动停止");
+    
+    // 将所有处于pending状态的测试用例更新为已终止状态
+    const updatedTestCases = testCases.map(tc => {
+      if (tc.status === 'pending') {
+        // 更新到后端
+        testCasesAPI.updateStatus(tc.id, '已终止')
+          .then(response => {
+            if (response.success) {
+              console.log(`测试用例 #${tc.id} 状态更新为"已终止"成功`);
+            } else {
+              console.error(`测试用例 #${tc.id} 状态更新为"已终止"失败:`, response.message);
+            }
+          })
+          .catch(error => {
+            console.error(`测试用例 #${tc.id} 状态更新出错:`, error);
+          });
+          
+        // 返回更新后的测试用例对象
+        return {
+          ...tc,
+          status: 'error' as TestCaseStatus // 将状态标记为error，以在UI中显示为已终止
+        };
+      }
+      return tc;
+    });
+    
+    // 更新状态
+    setTestCases(updatedTestCases);
+    setExecuting(false);
+    
+    // 显示toast通知
+    toast({
+      title: "测试停止",
+      description: "测试执行已手动停止",
+      variant: "default",
+    });
+  };
+
   // 添加获取系统日志的函数
   const fetchSystemLogs = async () => {
     try {
@@ -999,7 +1045,8 @@ export default function ExecuteAllPage() {
               level: log.level,
               source: log.source,
               message: log.message
-            })));
+            }))
+          );
         }
         
         // 获取当前日志数量
@@ -1325,6 +1372,17 @@ export default function ExecuteAllPage() {
                   测试执行进度
                 </CardTitle>
                 <div className="flex items-center gap-2">
+                  {/* 停止执行按钮 */}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleStopExecution}
+                    disabled={!executing}
+                    className="text-red-500 hover:bg-red-50 border-red-200"
+                  >
+                    <Square className="mr-2 h-4 w-4" />
+                    停止执行
+                  </Button>
                   {/* 重新执行按钮 */}
                   <Button
                     variant="outline"

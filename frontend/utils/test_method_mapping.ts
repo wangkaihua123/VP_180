@@ -60,6 +60,18 @@ const STEP_METHODS: StepMethods = {
       default_values: {
         waitTimeMs: 1000
       }
+    },
+    "串口开机": {
+      description: "发送开机命令到串口",
+      operation_key: "串口开机",
+      params: [],
+      default_values: {}
+    },
+    "串口关机": {
+      description: "发送关机命令到串口",
+      operation_key: "串口关机",
+      params: [],
+      default_values: {}
     }
   },
   "验证步骤": {

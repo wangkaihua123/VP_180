@@ -86,6 +86,20 @@ STEP_METHODS: StepMethods = {
             "default_values": {
                 "seconds": 0
             }
+        },
+        "串口开机": {
+            "operation_key": "串口开机",
+            "description": "发送开机命令到串口",
+            "operation_type": "串口命令",
+            "params": [],
+            "default_values": {}
+        },
+        "串口关机": {
+            "operation_key": "串口关机",
+            "description": "发送关机命令到串口",
+            "operation_type": "串口命令",
+            "params": [],
+            "default_values": {}
         }
     },
     "验证步骤": {
