@@ -1,44 +1,8 @@
-2025-04-28 19:49:35 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=COM4, baudrate=115200
-2025-04-28 19:49:35 - DEBUG - utils.serial_manager - 串口未连接
-2025-04-28 19:49:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 19:49:35 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-28 19:49:35 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-28 19:49:35 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-28 19:55:47 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-28 20:01:51 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-04-28 20:01:51 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:01:51 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:02:03 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-28 20:02:09 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:02:09 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:02:17 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:02:17 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:03:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:03:35 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:04:14 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:04:14 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:04:18 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:04:18 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:09:38 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:09:38 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:13:44 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-04-28 20:13:44 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:13:44 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:13:47 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 20:13:47 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-28 20:18:15 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-04-28 20:18:15 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=COM4, baudrate=115200
-2025-04-28 20:18:15 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-28 20:18:15 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-28 20:18:15 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-04-28 20:18:26 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-04-28 20:18:26 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-28 20:18:26 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-28 20:18:26 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-04-28 20:18:37 - DEBUG - utils.serial_manager - 全局串口连接已断开
-2025-04-28 20:18:41 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-04-28 20:18:41 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=COM4, baudrate=115200
-2025-04-28 20:18:41 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-28 20:18:41 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-28 20:18:41 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-04-28 20:18:55 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-28 23:21:14 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-28 23:21:14 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 23:21:24 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
+2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-28 23:21:36 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out

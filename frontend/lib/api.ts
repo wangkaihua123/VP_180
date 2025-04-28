@@ -10,16 +10,16 @@
  * 该模块是前端与后端通信的核心桥梁，封装了所有API调用的实现细节。
  */
 import { API_ROUTES, SSHSettings, SerialSettings, SerialPort, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
+import { API_BASE_URL } from './constants'
 
-// API请求基础配置
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.189:5000/'
+
 
 // 通用请求处理函数
 export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
-  console.log(`[API] Requesting: ${BASE_URL}${endpoint}`)
+  console.log(`[API] Requesting: ${API_BASE_URL}${endpoint}`)
   
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
   } catch (error) {
     console.error(`[API] Request failed:`, error)
     if (error instanceof TypeError && error.message === 'Failed to fetch') {
-      throw new Error(`无法连接到服务器 (${BASE_URL})。请确保服务器正在运行且可访问。`)
+      throw new Error(`无法连接到服务器 (${API_BASE_URL})。请确保服务器正在运行且可访问。`)
     }
     throw error
   }
