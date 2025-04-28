@@ -16,7 +16,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Plus, Play, Settings } from "lucide-react"
+import { Plus, Play, Settings, Trash2 } from "lucide-react"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import { useEffect, useState, useMemo } from "react"
@@ -39,6 +39,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog"
 
 export default function TestCasesPage() {
   const [testCases, setTestCases] = useState<TestCase[]>([])
@@ -60,6 +70,10 @@ export default function TestCasesPage() {
   useEffect(() => {
     setCurrentPage(1)
   }, [pageSize])
+
+  useEffect(() => {
+    console.log("selectedIds变更:", selectedIds);
+  }, [selectedIds]);
 
   const loadTestCases = async () => {
     try {
@@ -136,23 +150,31 @@ export default function TestCasesPage() {
 
   // 处理选中的测试用例ID
   const handleSelectionChange = (ids: number[]) => {
-    setSelectedIds(ids)
+    console.log("测试用例选择变更:", ids);
+    // 确保状态更新
+    setSelectedIds([...ids]);
   }
 
   // 处理全选当前页
   const handleSelectAllCurrentPage = (checked: boolean) => {
+    console.log("全选当前页:", checked);
     if (checked) {
       // 获取当前页的所有测试用例ID
-      const currentPageIds = currentPageTestCases.map(tc => tc.id)
+      const currentPageIds = currentPageTestCases.map(tc => tc.id);
+      console.log("当前页测试用例IDs:", currentPageIds);
       // 合并当前选中的ID（不在当前页面上的）和当前页面的所有ID
       const nonCurrentPageSelectedIds = selectedIds.filter(id => 
         !currentPageTestCases.some(tc => tc.id === id)
-      )
-      setSelectedIds([...nonCurrentPageSelectedIds, ...currentPageIds])
+      );
+      const newSelectedIds = [...nonCurrentPageSelectedIds, ...currentPageIds];
+      console.log("新的选中IDs:", newSelectedIds);
+      setSelectedIds(newSelectedIds);
     } else {
       // 取消选中当前页的所有测试用例ID
-      const currentPageIds = currentPageTestCases.map(tc => tc.id)
-      setSelectedIds(selectedIds.filter(id => !currentPageIds.includes(id)))
+      const currentPageIds = currentPageTestCases.map(tc => tc.id);
+      const newSelectedIds = selectedIds.filter(id => !currentPageIds.includes(id));
+      console.log("取消选中后的IDs:", newSelectedIds);
+      setSelectedIds(newSelectedIds);
     }
   }
 
@@ -234,6 +256,50 @@ export default function TestCasesPage() {
     return selectedIds.length
   }, [selectedIds])
 
+  // 处理执行选中的测试用例
+  const handleExecuteSelected = () => {
+    if (selectedIds.length > 0) {
+      router.push(`/execute-all?autoExecute=true&ids=${selectedIds.join(',')}`)
+    }
+  }
+
+  // 处理删除选中的测试用例
+  const handleDeleteSelected = async () => {
+    if (selectedIds.length === 0) return
+    
+    // 打开确认对话框，这里需要实现
+    setShowBatchDeleteDialog(true)
+  }
+  
+  const [showBatchDeleteDialog, setShowBatchDeleteDialog] = useState(false)
+  
+  const confirmDeleteSelected = async () => {
+    try {
+      // 一个个删除选中的测试用例
+      for (const id of selectedIds) {
+        await testCasesAPI.delete(id)
+      }
+      
+      toast({
+        title: "删除成功",
+        description: `已删除 ${selectedIds.length} 个测试用例`,
+      })
+      
+      // 清空选择
+      setSelectedIds([])
+      // 刷新列表
+      loadTestCases()
+    } catch (error) {
+      toast({
+        title: "删除失败",
+        description: error instanceof Error ? error.message : "删除测试用例失败",
+        variant: "destructive",
+      })
+    } finally {
+      setShowBatchDeleteDialog(false)
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 bg-black text-white shadow-md">
@@ -272,7 +338,7 @@ export default function TestCasesPage() {
 
       <main className="flex-1 container mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">测试用例</h2>
+          <h2 className="text-2xl font-bold">测试用例列表</h2>
           <div className="flex space-x-2">
             <Link href="/settings">
               <Button variant="outline" className="group">
@@ -298,18 +364,41 @@ export default function TestCasesPage() {
             <div className="text-center py-4">暂无测试用例</div>
           ) : (
             <>
-              {selectedCount > 0 && (
-                <div className="mb-4 pb-2 bg-gray-50 px-4 py-2 rounded-md">
-                  <span className="text-sm font-medium">
-                    已选择 {selectedCount} 个测试用例
-                    {selectedCount > currentPageTestCases.length && (
-                      <span className="text-blue-600 ml-1">
-                        (包括其他页面的测试用例)
-                      </span>
-                    )}
-                  </span>
+              <div className={`mb-4 pb-2 px-4 py-3 rounded-md flex justify-between items-center ${selectedCount > 0 ? 'bg-blue-50 border-l-4 border-blue-500' : 'bg-gray-50'}`}>
+                <span className={`text-sm font-medium ${selectedCount > 0 ? 'text-blue-700' : 'text-gray-500'}`}>
+                  {selectedCount > 0 ? (
+                    <>
+                      已选择 <strong>{selectedCount}</strong> 个测试用例
+                      {selectedCount > currentPageTestCases.length && (
+                        <span className="text-blue-600 ml-1">
+                          (包括其他页面的测试用例)
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    '请选择测试用例以执行批量操作'
+                  )}
+                </span>
+                <div className="flex items-center space-x-2">
+                  <Button 
+                    onClick={handleDeleteSelected}
+                    variant="outline"
+                    className="text-destructive border-destructive hover:bg-destructive/10"
+                    disabled={selectedCount === 0}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    删除选中
+                  </Button>
+                  <Button 
+                    onClick={handleExecuteSelected}
+                    className="bg-black text-white hover:bg-gray-800"
+                    disabled={selectedCount === 0}
+                  >
+                    <Play className="mr-2 h-4 w-4" />
+                    执行选中
+                  </Button>
                 </div>
-              )}
+              </div>
               
               <TestCaseList 
                 testCases={currentPageTestCases}
@@ -377,6 +466,23 @@ export default function TestCasesPage() {
           )}
         </div>
       </main>
+      
+      <AlertDialog open={showBatchDeleteDialog} onOpenChange={setShowBatchDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认批量删除</AlertDialogTitle>
+            <AlertDialogDescription>
+              确定要删除选中的 {selectedIds.length} 个测试用例吗？此操作无法撤销。
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowBatchDeleteDialog(false)}>取消</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteSelected}>
+              删除
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 } 

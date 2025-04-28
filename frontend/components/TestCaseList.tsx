@@ -171,11 +171,12 @@ export function TestCaseList({
   }
 
   const handleSelectOne = (id: number, checked: boolean) => {
-    onSelectionChange(
-      checked
-        ? [...selectedIds, id]
-        : selectedIds.filter(selectedId => selectedId !== id)
-    )
+    console.log(`测试用例 ${id} 选中状态变为: ${checked}`);
+    const newSelectedIds = checked
+      ? [...selectedIds, id]
+      : selectedIds.filter(selectedId => selectedId !== id);
+    console.log("新的选中IDs:", newSelectedIds);
+    onSelectionChange(newSelectedIds);
   }
 
   const handleExecuteSelected = () => {
@@ -201,6 +202,7 @@ export function TestCaseList({
               checked={isAllSelected !== undefined ? isAllSelected : selectedIds.length > 0 && selectedIds.length === testCases.length}
               onCheckedChange={handleSelectAllChange}
               aria-label="全选"
+              className="border-2 border-gray-300 hover:border-primary"
             />
             <span className="text-sm text-gray-500">
               已选择 {selectedIds.length} 个测试用例
@@ -238,6 +240,7 @@ export function TestCaseList({
                     checked={isAllSelected !== undefined ? isAllSelected : selectedIds.length > 0 && selectedIds.length === testCases.length}
                     onCheckedChange={handleSelectAllChange}
                     aria-label="全选"
+                    className="border-2 border-gray-300 hover:border-primary"
                   />
                 </TableHead>
               )}
@@ -259,6 +262,7 @@ export function TestCaseList({
                       checked={selectedIds.includes(testCase.id)}
                       onCheckedChange={(checked) => handleSelectOne(testCase.id, checked as boolean)}
                       aria-label={`选择测试用例 ${testCase.title}`}
+                      className="border-2 border-gray-300 hover:border-primary"
                     />
                   </TableCell>
                 )}

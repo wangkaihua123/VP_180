@@ -1,7 +1,77 @@
-2025-04-28 15:39:29 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-28 15:39:29 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-28 15:39:39 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 串口管理器初始化完成
-2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
-2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 串口连接成功
-2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 串口连接已关闭
+2025-04-28 16:42:26 - DEBUG - utils.serial_manager - 串口未连接
+2025-04-28 16:42:26 - DEBUG - utils.serial_manager - 串口已连接
+2025-04-28 16:42:26 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-28 16:42:27 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-04-28 16:42:27 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
+2025-04-28 16:42:27 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-04-28 16:42:27 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 当前执行测试用例名称: 串口开关机，测试用例ID: 9，重复次数: 5
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 执行第 1/5 次测试
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 准备发送串口关机命令
+2025-04-28 16:42:27 - DEBUG - utils.serial_manager - 串口未连接
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 串口未连接，尝试连接串口...
+2025-04-28 16:42:27 - DEBUG - utils.serial_manager - 串口已连接
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 串口连接成功，继续执行串口关机操作
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 串口关机命令发送成功
+2025-04-28 16:42:27 - INFO - utils.test_case_executor - 等待 8000 毫秒 (8.00 秒)
+2025-04-28 16:42:35 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-28 16:42:35 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:42:35 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:42:35 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:42:35 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:42:35 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:42:45 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:42:45 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:42:45 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:42:45 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:42:45 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:42:45 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:42:45 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:42:55 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:42:55 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:42:55 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:42:55 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:42:55 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:42:55 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:42:55 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:43:05 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:43:05 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:43:05 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-28 16:43:05 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-04-28 16:43:05 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-04-28 16:43:05 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-04-28 16:43:05 - WARNING - utils.test_case_executor - 第 1 次测试执行失败，继续执行剩余的测试
+2025-04-28 16:43:05 - INFO - utils.test_case_executor - 执行第 2/5 次测试
+2025-04-28 16:43:05 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:43:05 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:43:05 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:43:05 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:43:05 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:43:15 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:43:15 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:43:15 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:43:15 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:43:15 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:43:15 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:43:15 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:43:25 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:43:25 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:43:25 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:43:25 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:43:25 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:43:25 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:43:25 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:43:35 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:43:35 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:43:35 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:43:35 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:43:35 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:43:35 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:43:35 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 16:43:45 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-28 16:43:45 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-04-28 16:43:45 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-04-28 16:43:45 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-04-28 16:43:45 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-04-28 16:43:45 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-04-28 16:43:45 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
