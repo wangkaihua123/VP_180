@@ -107,6 +107,17 @@
     "last_execution_time": "",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口开机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
-    "serial_connect": false
+    "serial_connect": true
+  },
+  {
+    "id": 11,
+    "title": "串口开关机23",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-04-28 16:01",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口关机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
+    "serial_connect": true
   }
 ]

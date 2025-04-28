@@ -139,6 +139,28 @@ class TestCase:
         # 生成新ID
         new_id = max([case['id'] for case in test_cases]) + 1 if test_cases else 1
         
+        # 确定serial_connect值
+        serial_connect = test_case_data.get('serial_connect', False)
+        
+        # 如果script_content中包含串口操作，则自动设置serial_connect为True
+        if 'script_content' in test_case_data and test_case_data['script_content']:
+            try:
+                script = json.loads(test_case_data['script_content'])
+                
+                # 需要串口连接的操作关键字列表
+                serial_operations = ['串口开机', '串口关机']
+                
+                # 检查是否包含串口操作
+                if 'operationSteps' in script:
+                    for step in script['operationSteps']:
+                        if 'operation_key' in step and step['operation_key'] in serial_operations:
+                            serial_connect = True
+                            logger.info(f"检测到新测试用例包含串口操作，自动设置serial_connect为true")
+                            break
+            
+            except json.JSONDecodeError:
+                logger.warning("无法解析script_content")
+        
         # 创建新测试用例
         new_case = {
             'id': new_id,
@@ -149,7 +171,7 @@ class TestCase:
             'last_execution_time': '',  # 添加空的最新执行时间
             'description': test_case_data.get('description', ''),
             'script_content': test_case_data.get('script_content', ''),
-            'serial_connect': test_case_data.get('serial_connect', False)  # 添加serial_connect字段，默认为False
+            'serial_connect': serial_connect  # 使用自动检测的值
         }
         
         # 添加到列表并保存
