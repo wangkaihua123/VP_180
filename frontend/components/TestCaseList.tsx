@@ -35,6 +35,9 @@ interface TestCaseListProps {
   onSelectionChange: (ids: number[]) => void
   onRefresh: () => void
   enableSelection?: boolean
+  showSelectionInfo?: boolean
+  isAllSelected?: boolean
+  onSelectAll?: (checked: boolean) => void
 }
 
 interface TestCaseLog {
@@ -50,7 +53,10 @@ export function TestCaseList({
   selectedIds = [], 
   onSelectionChange = () => {}, 
   onRefresh,
-  enableSelection = true
+  enableSelection = true,
+  showSelectionInfo = true,
+  isAllSelected,
+  onSelectAll
 }: TestCaseListProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -60,6 +66,18 @@ export function TestCaseList({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null)
   const [showBatchDeleteDialog, setShowBatchDeleteDialog] = useState(false)
+
+  const handleSelectAll = (checked: boolean) => {
+    onSelectionChange(checked ? testCases.map(tc => tc.id) : [])
+  }
+
+  const handleSelectAllChange = (checked: boolean) => {
+    if (onSelectAll) {
+      onSelectAll(checked)
+    } else {
+      handleSelectAll(checked)
+    }
+  }
 
   const handleDelete = async (id: number) => {
     try {
@@ -152,10 +170,6 @@ export function TestCaseList({
     }
   }
 
-  const handleSelectAll = (checked: boolean) => {
-    onSelectionChange(checked ? testCases.map(tc => tc.id) : [])
-  }
-
   const handleSelectOne = (id: number, checked: boolean) => {
     onSelectionChange(
       checked
@@ -180,12 +194,12 @@ export function TestCaseList({
 
   return (
     <>
-      {enableSelection && (
+      {enableSelection && showSelectionInfo && (
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             <Checkbox 
-              checked={selectedIds.length > 0 && selectedIds.length === testCases.length}
-              onCheckedChange={handleSelectAll}
+              checked={isAllSelected !== undefined ? isAllSelected : selectedIds.length > 0 && selectedIds.length === testCases.length}
+              onCheckedChange={handleSelectAllChange}
               aria-label="全选"
             />
             <span className="text-sm text-gray-500">
@@ -221,8 +235,8 @@ export function TestCaseList({
               {enableSelection && (
                 <TableHead className="w-12">
                   <Checkbox
-                    checked={selectedIds.length > 0 && selectedIds.length === testCases.length}
-                    onCheckedChange={handleSelectAll}
+                    checked={isAllSelected !== undefined ? isAllSelected : selectedIds.length > 0 && selectedIds.length === testCases.length}
+                    onCheckedChange={handleSelectAllChange}
                     aria-label="全选"
                   />
                 </TableHead>

@@ -9,6 +9,7 @@
  * - 处理测试用例的加载状态和错误提示
  * - 支持选择和批量操作测试用例
  * - 展示最近一次测试用例执行结果
+ * - 支持分页显示测试用例和自定义每页显示数量
  */
 "use client"
 
@@ -18,9 +19,26 @@ import { Button } from "@/components/ui/button"
 import { Plus, Play, Settings } from "lucide-react"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI } from "@/lib/api/test-cases"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { TestCase } from "../api/routes"
 import { useToast } from "@/components/ui/use-toast"
+import { 
+  Select, 
+  SelectContent, 
+  SelectGroup, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 export default function TestCasesPage() {
   const [testCases, setTestCases] = useState<TestCase[]>([])
@@ -28,10 +46,20 @@ export default function TestCasesPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const { toast } = useToast()
   const router = useRouter()
+  
+  // 分页状态
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const pageSizeOptions = [10, 20, 50, 100]
 
   useEffect(() => {
     loadTestCases()
   }, [])
+
+  // 当页面大小改变时，重置当前页码为1
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [pageSize])
 
   const loadTestCases = async () => {
     try {
@@ -93,6 +121,118 @@ export default function TestCasesPage() {
       });
     }
   }
+
+  // 计算总页数
+  const totalPages = useMemo(() => {
+    return Math.ceil(testCases.length / pageSize)
+  }, [testCases, pageSize])
+
+  // 获取当前页的测试用例
+  const currentPageTestCases = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize
+    const endIndex = startIndex + pageSize
+    return testCases.slice(startIndex, endIndex)
+  }, [testCases, currentPage, pageSize])
+
+  // 处理选中的测试用例ID
+  const handleSelectionChange = (ids: number[]) => {
+    setSelectedIds(ids)
+  }
+
+  // 处理全选当前页
+  const handleSelectAllCurrentPage = (checked: boolean) => {
+    if (checked) {
+      // 获取当前页的所有测试用例ID
+      const currentPageIds = currentPageTestCases.map(tc => tc.id)
+      // 合并当前选中的ID（不在当前页面上的）和当前页面的所有ID
+      const nonCurrentPageSelectedIds = selectedIds.filter(id => 
+        !currentPageTestCases.some(tc => tc.id === id)
+      )
+      setSelectedIds([...nonCurrentPageSelectedIds, ...currentPageIds])
+    } else {
+      // 取消选中当前页的所有测试用例ID
+      const currentPageIds = currentPageTestCases.map(tc => tc.id)
+      setSelectedIds(selectedIds.filter(id => !currentPageIds.includes(id)))
+    }
+  }
+
+  // 检查当前页是否全选
+  const isCurrentPageAllSelected = useMemo(() => {
+    return currentPageTestCases.every(tc => selectedIds.includes(tc.id))
+  }, [currentPageTestCases, selectedIds])
+
+  // 生成分页号码
+  const generatePaginationItems = () => {
+    const items = []
+    const maxPagesToShow = 5 // 最多显示的页码数量
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2))
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1)
+    
+    // 调整起始页，确保末尾页不超出范围
+    if (endPage - startPage + 1 < maxPagesToShow && startPage > 1) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1)
+    }
+    
+    // 添加第一页
+    if (startPage > 1) {
+      items.push(
+        <PaginationItem key="first">
+          <PaginationLink onClick={() => setCurrentPage(1)}>1</PaginationLink>
+        </PaginationItem>
+      )
+      
+      // 添加省略号
+      if (startPage > 2) {
+        items.push(
+          <PaginationItem key="ellipsis-1">
+            <PaginationEllipsis />
+          </PaginationItem>
+        )
+      }
+    }
+    
+    // 添加中间页码
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(
+        <PaginationItem key={i}>
+          <PaginationLink 
+            isActive={i === currentPage}
+            onClick={() => setCurrentPage(i)}
+          >
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      )
+    }
+    
+    // 添加最后一页
+    if (endPage < totalPages) {
+      // 添加省略号
+      if (endPage < totalPages - 1) {
+        items.push(
+          <PaginationItem key="ellipsis-2">
+            <PaginationEllipsis />
+          </PaginationItem>
+        )
+      }
+      
+      items.push(
+        <PaginationItem key="last">
+          <PaginationLink onClick={() => setCurrentPage(totalPages)}>
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      )
+    }
+    
+    return items
+  }
+
+  // 统计已选中的测试用例数量
+  const selectedCount = useMemo(() => {
+    return selectedIds.length
+  }, [selectedIds])
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -157,14 +297,83 @@ export default function TestCasesPage() {
           {!loading && (!testCases || testCases.length === 0) ? (
             <div className="text-center py-4">暂无测试用例</div>
           ) : (
-            <TestCaseList 
-              testCases={testCases || []}
-              loading={loading}
-              onRefresh={loadTestCases}
-              selectedIds={selectedIds || []}
-              onSelectionChange={setSelectedIds}
-              enableSelection={true}
-            />
+            <>
+              {selectedCount > 0 && (
+                <div className="mb-4 pb-2 bg-gray-50 px-4 py-2 rounded-md">
+                  <span className="text-sm font-medium">
+                    已选择 {selectedCount} 个测试用例
+                    {selectedCount > currentPageTestCases.length && (
+                      <span className="text-blue-600 ml-1">
+                        (包括其他页面的测试用例)
+                      </span>
+                    )}
+                  </span>
+                </div>
+              )}
+              
+              <TestCaseList 
+                testCases={currentPageTestCases}
+                loading={loading}
+                onRefresh={loadTestCases}
+                selectedIds={selectedIds}
+                onSelectionChange={handleSelectionChange}
+                enableSelection={true}
+                isAllSelected={isCurrentPageAllSelected}
+                onSelectAll={handleSelectAllCurrentPage}
+                showSelectionInfo={false}
+              />
+              
+              {/* 分页控件 */}
+              {testCases.length > 0 && (
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-4 pt-4 border-t gap-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm text-gray-600">每页显示:</span>
+                    <Select 
+                      value={pageSize.toString()} 
+                      onValueChange={(value) => setPageSize(Number(value))}
+                    >
+                      <SelectTrigger className="w-[80px] h-8">
+                        <SelectValue placeholder="10" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {pageSizeOptions.map(option => (
+                            <SelectItem key={option} value={option.toString()}>
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <span className="text-sm text-gray-600 whitespace-nowrap">
+                      显示 {testCases.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}-
+                      {Math.min(currentPage * pageSize, testCases.length)} 
+                      共 {testCases.length} 条
+                    </span>
+                  </div>
+                  
+                  <Pagination className="self-center md:self-end">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                          className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                        />
+                      </PaginationItem>
+                      
+                      {generatePaginationItems()}
+                      
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                          className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>
