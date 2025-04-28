@@ -102,11 +102,16 @@ export const sshSettingsAPI = {
 export const serialSettingsAPI = {
   getPorts: async () => {
     const response = await fetchAPI(API_ROUTES.SERIAL_SETTINGS.GET_PORTS)
-    return response.ports as SerialPort[]
+    console.log('[API] Ports response:', response)
+    if (response && response.ports && Array.isArray(response.ports)) {
+      return response.ports as SerialPort[]
+    }
+    return []
   },
   
   get: async () => {
-    return await fetchAPI(API_ROUTES.SERIAL_SETTINGS.GET) as SerialSettings
+    const response = await fetchAPI(API_ROUTES.SERIAL_SETTINGS.GET)
+    return response.settings as SerialSettings
   },
   
   update: (settings: SerialSettings) => {

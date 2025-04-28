@@ -38,8 +38,8 @@ class SerialService:
     @staticmethod
     def test_connection(serial_settings):
         """测试串口连接"""
-        port = serial_settings.get('port')
-        baud_rate = int(serial_settings.get('baudRate', 9600))
+        port = serial_settings.get('serialPort')
+        baud_rate = int(serial_settings.get('serialBaudRate', 9600))
         
         logger.info(f"尝试连接串口: {port} with baud rate {baud_rate}")
         

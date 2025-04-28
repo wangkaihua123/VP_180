@@ -83,8 +83,8 @@ class Settings:
         """获取串口设置"""
         settings = Settings.load()
         serial_settings = {
-            "port": settings.get("serialPort", DEFAULT_SERIAL_CONFIG["serialPort"]),
-            "baudRate": settings.get("serialBaudRate", DEFAULT_SERIAL_CONFIG["serialBaudRate"])
+            "serialPort": settings.get("serialPort", DEFAULT_SERIAL_CONFIG["serialPort"]),
+            "serialBaudRate": settings.get("serialBaudRate", DEFAULT_SERIAL_CONFIG["serialBaudRate"])
         }
         return serial_settings
     
@@ -92,13 +92,8 @@ class Settings:
     def update_serial_settings(serial_data):
         """更新串口设置"""
         settings = Settings.load()
-        
         # 更新设置
-        for key, db_key in {
-            "port": "serialPort", 
-            "baudRate": "serialBaudRate"
-        }.items():
+        for key in ["serialPort", "serialBaudRate"]:
             if key in serial_data:
-                settings[db_key] = serial_data[key]
-        
+                settings[key] = serial_data[key]
         return Settings.save(settings) 

@@ -388,6 +388,70 @@ class TestCaseExecutor:
                         'message': f'发送串口关机命令失败: {str(e)}'
                     }
                 
+            elif operation_key == '串口关-开机':
+                # 导入SerialManager
+                from .serial_manager import SerialManager
+                import time
+                
+                # 记录日志
+                logger.info('准备执行串口关-开机操作')
+                
+                try:
+                    # 获取SerialManager实例
+                    serial_manager = SerialManager.get_instance()
+                    
+                    # 检查串口是否已连接
+                    if not SerialManager.is_connected():
+                        logger.info('串口未连接，尝试连接串口...')
+                        serial_client = serial_manager.connect()
+                        if not serial_client:
+                            logger.error('串口连接失败，无法执行串口关-开机操作')
+                            return {
+                                'success': False,
+                                'message': '串口连接失败，无法执行串口关-开机操作'
+                            }
+                        logger.info('串口连接成功，继续执行串口关-开机操作')
+                    else:
+                        logger.info('串口已连接，继续执行串口关-开机操作')
+                    
+                    # 1. 发送关机命令
+                    logger.info('发送关机命令...')
+                    command = bytes.fromhex('fefe0500')
+                    success = serial_manager.write(command)
+                    
+                    if not success:
+                        logger.error('串口关机命令发送失败')
+                        return {
+                            'success': False,
+                            'message': '串口关机命令发送失败'
+                        }
+                    
+                    # 2. 等待指定时间
+                    wait_time = step.get('waitTime', 1000) / 1000.0  # 转换为秒
+                    logger.info(f'等待 {wait_time} 秒...')
+                    time.sleep(wait_time)
+                    
+                    # 3. 发送开机命令
+                    logger.info('发送开机命令...')
+                    command = bytes.fromhex('fefe0501')
+                    success = serial_manager.write(command)
+                    
+                    if success:
+                        logger.info('串口关-开机操作执行成功')
+                    else:
+                        logger.error('串口开机命令发送失败')
+                    
+                    return {
+                        'success': success,
+                        'message': '串口关-开机操作' + (' 成功' if success else ' 失败')
+                    }
+                except Exception as e:
+                    logger.error(f'执行串口关-开机操作时出错: {str(e)}')
+                    return {
+                        'success': False,
+                        'message': f'串口关-开机操作失败: {str(e)}'
+                    }
+                
             else:
                 return {
                     'success': False,

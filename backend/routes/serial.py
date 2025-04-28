@@ -92,8 +92,8 @@ def test_connection():
     try:
         data = request.json
         serial_manager = SerialManager(
-            port=data.get('port', 'COM1'),
-            baudrate=int(data.get('baudRate', 9600)),
+            port=data.get('serialPort', 'COM1'),
+            baudrate=int(data.get('serialBaudRate', 9600)),
             timeout=1
         )
         

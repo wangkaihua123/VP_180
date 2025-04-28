@@ -72,6 +72,14 @@ const STEP_METHODS: StepMethods = {
       operation_key: "串口关机",
       params: [],
       default_values: {}
+    },
+    "串口关-开机": {
+      description: "发送关机命令后等待指定时间再发送开机命令",
+      operation_key: "串口关-开机",
+      params: ["waitTimeMs"],
+      default_values: {
+        waitTimeMs: 1000
+      }
     }
   },
   "验证步骤": {

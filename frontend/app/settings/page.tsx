@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
 import { sshSettingsAPI, serialSettingsAPI } from "@/lib/api"
-import type { SSHSettings, SerialPort } from "@/app/api/routes"
+import type { SSHSettings, SerialPort, SerialSettings } from "@/app/api/routes"
 import { Toaster } from "@/components/ui/toaster"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -39,9 +39,9 @@ export default function SettingsPage() {
     username: "",
     password: ""
   })
-  const [serialSettings, setSerialSettings] = useState({
-    port: "",
-    baudRate: "9600"
+  const [serialSettings, setSerialSettings] = useState<SerialSettings>({
+    serialPort: "",
+    serialBaudRate: "9600"
   })
   const [serialPorts, setSerialPorts] = useState<SerialPort[]>([])
   const commonBaudRates = ["9600", "19200", "38400", "57600", "115200", "1500000"]
@@ -74,10 +74,16 @@ export default function SettingsPage() {
   const loadSerialSettings = async () => {
     try {
       const data = await serialSettingsAPI.get()
-      setSerialSettings(data)
+      console.log('[Settings] Serial settings loaded:', data)
+      
+      // 更新串口设置状态
+      setSerialSettings({
+        serialPort: data.serialPort || "",
+        serialBaudRate: data.serialBaudRate || "9600"
+      })
       
       // 检查是否是自定义波特率
-      if (data.baudRate && !commonBaudRates.includes(data.baudRate)) {
+      if (data.serialBaudRate && !commonBaudRates.includes(data.serialBaudRate)) {
         setIsCustomBaudRate(true)
       }
     } catch (error) {
@@ -93,14 +99,25 @@ export default function SettingsPage() {
   const loadSerialPorts = async () => {
     try {
       const ports = await serialSettingsAPI.getPorts()
+      console.log('[Settings] Available serial ports:', ports)
+      
       setSerialPorts(ports)
+      
+      // 如果当前没有选择串口，并且有可用串口，自动选择第一个
+      if (!serialSettings.serialPort && ports.length > 0) {
+        setSerialSettings(prev => ({
+          ...prev,
+          serialPort: ports[0].device
+        }))
+      }
     } catch (error) {
-      console.error('加载串口设备失败:', error)
+      console.error('加载串口列表失败:', error)
       toast({
-        title: "加载串口设备失败",
+        title: "加载串口列表失败",
         description: error instanceof Error ? error.message : "未知错误",
         variant: "destructive"
       })
+      setSerialPorts([])
     }
   }
 
@@ -111,8 +128,8 @@ export default function SettingsPage() {
     }))
   }
 
-  const handleSerialInputChange = (field: string, value: string) => {
-    if (field === "baudRate" && value === "custom") {
+  const handleSerialInputChange = (field: keyof SerialSettings, value: string) => {
+    if (field === "serialBaudRate" && value === "custom") {
       setIsCustomBaudRate(true)
       // 保留当前波特率值
       return
@@ -128,7 +145,7 @@ export default function SettingsPage() {
     const value = e.target.value
     setSerialSettings(prev => ({
       ...prev,
-      baudRate: value
+      serialBaudRate: value
     }))
   }
 
@@ -186,8 +203,12 @@ export default function SettingsPage() {
       // 保存SSH设置
       await sshSettingsAPI.update(settings)
       
-      // 保存串口设置
-      await serialSettingsAPI.update(serialSettings)
+      // 保存串口设置，转换为正确的格式
+      const serialData = {
+        serialPort: serialSettings.serialPort,
+        serialBaudRate: serialSettings.serialBaudRate
+      }
+      await serialSettingsAPI.update(serialData)
       
       toast({
         title: "保存成功",
@@ -207,6 +228,31 @@ export default function SettingsPage() {
 
   const handleCancelSave = () => {
     setShowConfirmDialog(false)
+  }
+
+  const handleSave = async () => {
+    try {
+      console.log('[Settings] Saving serial settings:', serialSettings)
+      
+      await serialSettingsAPI.update({
+        serialPort: serialSettings.serialPort,
+        serialBaudRate: isCustomBaudRate ? Number(serialSettings.serialBaudRate).toString() : serialSettings.serialBaudRate
+      })
+      
+      toast({
+        title: "保存成功",
+        description: "串口设置已更新"
+      })
+      
+      console.log('[Settings] Serial settings saved successfully')
+    } catch (error) {
+      console.error('保存串口设置失败:', error)
+      toast({
+        title: "保存失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    }
   }
 
   if (isInitialLoading) {
@@ -361,8 +407,8 @@ export default function SettingsPage() {
                     <div className="space-y-2">
                       <Label htmlFor="serial-port">串口设备</Label>
                       <Select 
-                        value={serialSettings.port} 
-                        onValueChange={(value) => handleSerialInputChange("port", value)}
+                        value={serialSettings.serialPort} 
+                        onValueChange={(value) => handleSerialInputChange("serialPort", value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="选择串口设备" />
@@ -386,8 +432,8 @@ export default function SettingsPage() {
                       <div className="flex space-x-2">
                         {!isCustomBaudRate ? (
                           <Select 
-                            value={serialSettings.baudRate} 
-                            onValueChange={(value) => handleSerialInputChange("baudRate", value)}
+                            value={serialSettings.serialBaudRate} 
+                            onValueChange={(value) => handleSerialInputChange("serialBaudRate", value)}
                           >
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="选择波特率" />
@@ -404,8 +450,8 @@ export default function SettingsPage() {
                             <Input
                               type="number"
                               placeholder="输入自定义波特率"
-                              value={serialSettings.baudRate}
-                              onChange={handleCustomBaudRateChange}
+                              value={serialSettings.serialBaudRate}
+                              onChange={(e) => handleSerialInputChange("serialBaudRate", e.target.value)}
                               className="flex-1"
                             />
                             <Button 
@@ -415,7 +461,7 @@ export default function SettingsPage() {
                                 setIsCustomBaudRate(false);
                                 setSerialSettings(prev => ({
                                   ...prev,
-                                  baudRate: "9600"
+                                  serialBaudRate: "9600"
                                 }));
                               }}
                             >

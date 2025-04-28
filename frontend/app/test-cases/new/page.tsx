@@ -88,6 +88,7 @@ interface OperationStep {
   y1: number;
   x2: number;
   y2: number;
+  waitTime?: number;
 }
 
 const getButtonOptions = () => {
@@ -106,6 +107,20 @@ interface NewTestCasePageProps {
   initialData?: any;
   mode?: 'new' | 'edit';
 }
+
+// 定义操作类型
+const OPERATION_TYPES = {
+  CLICK: "click",
+  INPUT: "input",
+  SELECT: "select",
+  WAIT: "wait",
+  NAVIGATE: "navigate",
+  SCREENSHOT: "screenshot",
+  SCROLL: "scroll",
+  HOVER: "hover",
+  UPLOAD: "upload",
+  SERIAL_POWER_CYCLE: "serial_power_cycle", // 新增串口关-开机选项
+} as const
 
 export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps) {
   const router = useRouter()
@@ -243,9 +258,11 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         verificationSteps
       })
       
-      // 检查操作步骤中是否包含串口开机或串口关机操作
+      // 检查操作步骤中是否包含串口操作
       const hasSerialOperation = operationSteps.some(
-        step => step.operation_key === "串口开机" || step.operation_key === "串口关机"
+        step => step.operation_key === "串口开机" || 
+               step.operation_key === "串口关机" || 
+               step.operation_key === "串口关-开机"
       );
       
       const testCaseData: any = {
@@ -491,6 +508,16 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 />
                               </div>
                             </div>
+                          </div>
+                        )}
+                        {(step.operation_key === "串口开机" || step.operation_key === "串口关机" || step.operation_key === "串口关-开机") && (
+                          <div className="space-y-2">
+                            <Label>等待时间 (毫秒)</Label>
+                            <Input
+                              type="number"
+                              value={step.waitTime || 1000}
+                              onChange={(e) => updateOperationStep(step.id, "waitTime", parseInt(e.target.value) || 1000)}
+                            />
                           </div>
                         )}
                       </div>

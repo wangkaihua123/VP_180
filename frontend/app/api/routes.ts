@@ -48,8 +48,8 @@ export interface SerialPort {
 }
 
 export interface SerialSettings {
-  port: string
-  baudRate: string
+  serialPort: string;
+  serialBaudRate: string;
 }
 
 export interface TestCase {
