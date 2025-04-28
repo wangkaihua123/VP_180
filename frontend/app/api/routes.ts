@@ -61,6 +61,7 @@ export interface TestCase {
   description: string;
   script_content: string;
   last_execution_time?: string;
+  serial_connect?: boolean;
 }
 
 export interface TestLog {
