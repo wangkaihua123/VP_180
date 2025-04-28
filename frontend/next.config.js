@@ -16,24 +16,6 @@ const nextConfig = {
       },
       {
         protocol: 'http',
-        hostname: '10.0.18.132',
-        port: '3000',
-        pathname: '/api/images/**',
-      },
-      {
-        protocol: 'http',
-        hostname: '10.0.18.132',
-        port: '3000',
-        pathname: '/api/files/images/**',
-      },
-      {
-        protocol: 'http',
-        hostname: '10.0.18.132',
-        port: '3000',
-        pathname: '/api/files/screenshots/**',
-      },
-      {
-        protocol: 'http',
         hostname: 'localhost',
         port: '3000',
         pathname: '/api/files/images/**',
@@ -46,21 +28,9 @@ const nextConfig = {
       },
       {
         protocol: 'http',
-        hostname: '10.0.18.132',
-        port: '3000',
-        pathname: '/data/img/**',
-      },
-      {
-        protocol: 'http',
         hostname: 'localhost',
         port: '3000',
         pathname: '/data/img/**',
-      },
-      {
-        protocol: 'http',
-        hostname: '10.0.18.132',
-        port: '3000',
-        pathname: '/data/screenshots/**',
       },
       {
         protocol: 'http',
@@ -69,7 +39,7 @@ const nextConfig = {
         pathname: '/data/screenshots/**',
       },
     ],
-    domains: ['localhost', '10.0.18.132'],
+    domains: ['localhost'],
     unoptimized: true,
   },
   async rewrites() {
@@ -85,11 +55,11 @@ const nextConfig = {
     ];
   },
   env: {
-    // API地址配置
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.132:5000/',
-    // 前端服务器配置
-    FRONTEND_HOST: process.env.FRONTEND_HOST || '10.0.18.132',
-    FRONTEND_PORT: process.env.FRONTEND_PORT || '3000',
+    // 只用环境变量，不要写死默认值
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL,
+    FRONTEND_HOST: process.env.FRONTEND_HOST,
+    FRONTEND_PORT: process.env.FRONTEND_PORT,
   },
 }
 
