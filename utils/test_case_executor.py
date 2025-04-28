@@ -251,6 +251,22 @@ class TestCaseExecutor:
                     'message': f'执行滑动: ({x1},{y1}) -> ({x2},{y2})'
                 }
                 
+            elif operation_key == '等待时间':
+                # 获取等待时间，单位为毫秒
+                wait_time_ms = step.get('waitTimeMs', 1000)
+                # 转换为秒
+                wait_time_sec = wait_time_ms / 1000.0
+                
+                import time
+                logger.info(f'等待 {wait_time_ms} 毫秒 ({wait_time_sec:.2f} 秒)')
+                # 执行等待
+                time.sleep(wait_time_sec)
+                
+                return {
+                    'success': True,
+                    'message': f'等待时间完成: {wait_time_ms} 毫秒'
+                }
+                
             else:
                 return {
                     'success': False,

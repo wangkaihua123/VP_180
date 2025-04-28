@@ -52,6 +52,14 @@ const STEP_METHODS: StepMethods = {
         x2: 0,
         y2: 0
       }
+    },
+    "等待时间": {
+      description: "等待指定时间",
+      operation_key: "等待时间",
+      params: ["waitTimeMs"],
+      default_values: {
+        waitTimeMs: 1000
+      }
     }
   },
   "验证步骤": {

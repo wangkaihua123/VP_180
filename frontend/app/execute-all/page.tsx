@@ -594,11 +594,20 @@ export default function ExecuteAllPage() {
               addLog(testCase.id, '操作步骤结果:', 'info')
               result.details.operation_results.forEach((opResult, idx) => {
                 const status = opResult.success ? '成功' : '失败'
-                addLog(
-                  testCase.id, 
-                  `步骤 ${idx + 1}: ${status} - ${opResult.message || '无消息'}`, 
-                  opResult.success ? 'success' : 'error'
-                )
+                // 特殊处理等待时间操作的显示
+                if (opResult.message && opResult.message.includes('等待时间完成')) {
+                  addLog(
+                    testCase.id, 
+                    `步骤 ${idx + 1}: ${status} - ${opResult.message}`, 
+                    'info'
+                  )
+                } else {
+                  addLog(
+                    testCase.id, 
+                    `步骤 ${idx + 1}: ${status} - ${opResult.message || '无消息'}`, 
+                    opResult.success ? 'success' : 'error'
+                  )
+                }
               })
             }
             
