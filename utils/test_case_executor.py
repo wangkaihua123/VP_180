@@ -307,6 +307,20 @@ class TestCaseExecutor:
                     # 获取SerialManager实例
                     serial_manager = SerialManager.get_instance()
                     
+                    # 检查串口是否已连接
+                    if not SerialManager.is_connected():
+                        logger.info('串口未连接，尝试连接串口...')
+                        serial_client = serial_manager.connect()
+                        if not serial_client:
+                            logger.error('串口连接失败，无法执行串口开机操作')
+                            return {
+                                'success': False,
+                                'message': '串口连接失败，无法执行串口开机操作'
+                            }
+                        logger.info('串口连接成功，继续执行串口开机操作')
+                    else:
+                        logger.info('串口已连接，继续执行串口开机操作')
+                    
                     # 发送开机命令 fefe0501 (十六进制)
                     # 将十六进制字符串转换为二进制数据
                     command = bytes.fromhex('fefe0501')
@@ -338,6 +352,20 @@ class TestCaseExecutor:
                 try:
                     # 获取SerialManager实例
                     serial_manager = SerialManager.get_instance()
+                    
+                    # 检查串口是否已连接
+                    if not SerialManager.is_connected():
+                        logger.info('串口未连接，尝试连接串口...')
+                        serial_client = serial_manager.connect()
+                        if not serial_client:
+                            logger.error('串口连接失败，无法执行串口关机操作')
+                            return {
+                                'success': False,
+                                'message': '串口连接失败，无法执行串口关机操作'
+                            }
+                        logger.info('串口连接成功，继续执行串口关机操作')
+                    else:
+                        logger.info('串口已连接，继续执行串口关机操作')
                     
                     # 发送关机命令 fefe0500 (十六进制)
                     # 将十六进制字符串转换为二进制数据

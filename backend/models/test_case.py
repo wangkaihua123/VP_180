@@ -27,6 +27,8 @@ class TestCase:
                         converted_data = []
                         for test_case in data:
                             converted_case = cls._convert_keys(test_case)
+                            # 确保所有必需的字段都存在
+                            converted_case = cls._ensure_fields(converted_case)
                             converted_data.append(converted_case)
                         logger.info(f"成功从文件加载测试用例: {TEST_CASES_FILE}")
                         cls._test_cases = converted_data
@@ -53,8 +55,11 @@ class TestCase:
             # 确保目录存在
             os.makedirs(os.path.dirname(TEST_CASES_FILE), exist_ok=True)
             
-            # 转换字段名
-            converted_test_cases = [cls._convert_keys(test_case) for test_case in test_cases]
+            # 转换字段名并确保所有字段都存在
+            converted_test_cases = [
+                cls._ensure_fields(cls._convert_keys(test_case)) 
+                for test_case in test_cases
+            ]
             
             # 保存数据
             with open(TEST_CASES_FILE, 'w', encoding='utf-8') as f:
@@ -105,6 +110,15 @@ class TestCase:
                 pass
         return converted_case
     
+    @staticmethod
+    def _ensure_fields(test_case):
+        """确保测试用例包含所有必需字段"""
+        # 添加缺失的字段
+        if 'serial_connect' not in test_case:
+            test_case['serial_connect'] = False
+            logger.info(f"为测试用例 {test_case.get('id', 'unknown')} 添加缺失的serial_connect字段")
+        return test_case
+    
     @classmethod
     def get_all(cls):
         """获取所有测试用例"""
@@ -134,7 +148,8 @@ class TestCase:
             'create_time': datetime.now().strftime('%Y-%m-%d %H:%M'),
             'last_execution_time': '',  # 添加空的最新执行时间
             'description': test_case_data.get('description', ''),
-            'script_content': test_case_data.get('script_content', '')
+            'script_content': test_case_data.get('script_content', ''),
+            'serial_connect': test_case_data.get('serial_connect', False)  # 添加serial_connect字段，默认为False
         }
         
         # 添加到列表并保存

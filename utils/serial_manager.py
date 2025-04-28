@@ -38,6 +38,19 @@ class SerialManager:
         instance = cls.get_instance()
         return instance.connect()
 
+    @classmethod
+    def is_connected(cls):
+        """检查串口是否已连接
+        
+        Returns:
+            bool: 如果串口已连接返回True，否则返回False
+        """
+        if cls._serial and cls._serial.is_open:
+            logger.debug("串口已连接")
+            return True
+        logger.debug("串口未连接")
+        return False
+
     def connect(self):
         """建立串口连接"""
         if self._serial and self._serial.is_open:

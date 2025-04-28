@@ -1,0 +1,7 @@
+2025-04-28 15:39:29 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-04-28 15:39:29 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-28 15:39:39 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 串口管理器初始化完成
+2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 开始建立新的串口连接...
+2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 串口连接成功
+2025-04-28 15:43:41 - DEBUG - utils.serial_manager - 串口连接已关闭

@@ -243,13 +243,19 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         verificationSteps
       })
       
+      // 检查操作步骤中是否包含串口开机或串口关机操作
+      const hasSerialOperation = operationSteps.some(
+        step => step.operation_key === "串口开机" || step.operation_key === "串口关机"
+      );
+      
       const testCaseData: any = {
         title: title.trim(),
         type: testType,
         description: description.trim(),
         script_content: serializedContent,
         status: "未执行",
-        create_time: new Date().toISOString().split('T')[0]
+        create_time: new Date().toISOString().split('T')[0],
+        serial_connect: hasSerialOperation
       }
 
       if (mode === 'edit' && initialData?.id) {

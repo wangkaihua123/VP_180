@@ -3,8 +3,10 @@
 """
 import logging
 import os
+import json
 from datetime import datetime
 from utils.test_case_executor import TestCaseExecutor
+from utils.serial_manager import SerialManager
 from backend.models.test_case import TestCase
 from backend.services.ssh_service import SSHService
 from backend.config import IMAGES_DIR, SCREENSHOTS_DIR
@@ -50,6 +52,25 @@ class TestCaseService:
                 'success': False,
                 'message': '测试用例不存在'
             }
+        
+        # 检查测试用例是否需要串口连接
+        serial_connect = case.get('serial_connect', False)
+        if serial_connect:
+            logger.info(f"测试用例 {case_id} 需要串口连接")
+            serial_manager = SerialManager.get_instance()
+            # 检查串口是否已连接
+            if not SerialManager.is_connected():
+                logger.info(f"串口未连接，尝试连接串口...")
+                serial_client = serial_manager.connect()
+                if not serial_client:
+                    logger.error("串口连接失败，无法执行需要串口连接的测试用例")
+                    return {
+                        'success': False,
+                        'message': '串口连接失败，无法执行测试用例'
+                    }
+                logger.info("串口连接成功，准备执行测试用例")
+            else:
+                logger.info("串口已连接，准备执行测试用例")
         
         # 获取SSH连接
         ssh = SSHService.get_client()
@@ -108,6 +129,31 @@ class TestCaseService:
                 case = TestCase.get_by_id(case_id)
                 if not case:
                     continue
+                
+                # 检查测试用例是否需要串口连接
+                serial_connect = case.get('serial_connect', False)
+                if serial_connect:
+                    logger.info(f"测试用例 {case_id} 需要串口连接")
+                    serial_manager = SerialManager.get_instance()
+                    # 检查串口是否已连接
+                    if not SerialManager.is_connected():
+                        logger.info(f"串口未连接，尝试连接串口...")
+                        serial_client = serial_manager.connect()
+                        if not serial_client:
+                            logger.error("串口连接失败，跳过该测试用例")
+                            results.append({
+                                'id': case['id'],
+                                'title': case['title'],
+                                'status': '失败',
+                                'details': {
+                                    'success': False,
+                                    'message': '串口连接失败，无法执行测试用例'
+                                }
+                            })
+                            continue
+                        logger.info("串口连接成功，准备执行测试用例")
+                    else:
+                        logger.info("串口已连接，准备执行测试用例")
                     
                 result = executor.execute_test_case(case)
                 TestCase.update_status(case_id, result['status'])
