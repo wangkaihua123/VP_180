@@ -1,74 +1,18 @@
-2025-04-28 11:42:15 - DEBUG - utils.ssh_manager - 返回现有SSH连接
-2025-04-28 11:42:15 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-04-28 11:42:15 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
-2025-04-28 11:42:15 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-04-28 11:42:15 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
-2025-04-28 11:42:15 - INFO - utils.test_case_executor - 当前执行测试用例名称: 串口开关机，测试用例ID: 9
-2025-04-28 11:42:15 - INFO - utils.test_case_executor - 准备发送串口关机命令
-2025-04-28 11:42:15 - ERROR - utils.serial_manager - 串口连接未建立，无法发送数据
-2025-04-28 11:42:15 - ERROR - utils.test_case_executor - 串口关机命令发送失败
-2025-04-28 11:42:15 - INFO - utils.test_case_executor - 等待 8000 毫秒 (8.00 秒)
-2025-04-28 11:42:23 - INFO - utils.test_case_executor - 准备发送串口开机命令
-2025-04-28 11:42:23 - ERROR - utils.serial_manager - 串口连接未建立，无法发送数据
-2025-04-28 11:42:23 - ERROR - utils.test_case_executor - 串口开机命令发送失败
-2025-04-28 11:42:23 - INFO - utils.test_case_executor - 等待 25000 毫秒 (25.00 秒)
-2025-04-28 11:42:26 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
-2025-04-28 11:42:26 - DEBUG - utils.button_clicker - 点击保存截图按钮 (7499, 6078)
-2025-04-28 11:42:26 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 7499 6078
-2025-04-28 11:42:26 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=7499, Y=6078
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2504281040/114224838.tiff
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 解码截图数据
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_0cde5ca03ccb4ab79aab5b148e2e3323_114224838.tiff
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_9_20250428114227.png
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_0cde5ca03ccb4ab79aab5b148e2e3323_114224838.tiff
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 已删除远程TIFF文件: /ue/ue_harddisk/ue_data/2504281040/114224838.tiff
-2025-04-28 11:42:27 - DEBUG - utils.get_latest_screenshot - 截图获取成功
-2025-04-28 11:42:27 - INFO - utils.test_case_executor - 保存操作步骤 5 的结果数据
-2025-04-28 11:42:27 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-28 11:42:27 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-04-28 11:42:27 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-04-28 11:42:27 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-04-28 11:42:29 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
-2025-04-28 11:42:29 - DEBUG - utils.button_clicker - 点击保存截图按钮 (7499, 6078)
-2025-04-28 11:42:29 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 7499 6078
-2025-04-28 11:42:30 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=7499, Y=6078
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2504281040/114228288.tiff
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 解码截图数据
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_a841921a9b264b1a83cd14f9ba347737_114228288.tiff
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_9_20250428114230.png
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_a841921a9b264b1a83cd14f9ba347737_114228288.tiff
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 已删除远程TIFF文件: /ue/ue_harddisk/ue_data/2504281040/114228288.tiff
-2025-04-28 11:42:30 - DEBUG - utils.get_latest_screenshot - 截图获取成功
-2025-04-28 11:42:30 - INFO - utils.test_case_executor - 保存操作步骤 5 的结果数据
-2025-04-28 11:42:30 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-28 11:42:30 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-04-28 11:42:30 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-04-28 11:42:30 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-04-28 11:42:48 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
-2025-04-28 11:42:48 - DEBUG - utils.button_clicker - 点击保存截图按钮 (7499, 6078)
-2025-04-28 11:42:48 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 7499 6078
-2025-04-28 11:42:49 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=7499, Y=6078
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2504281040/114247295.tiff
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 解码截图数据
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_d782701eed57400d94224b96cffefbbf_114247295.tiff
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_9_20250428114249.png
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_d782701eed57400d94224b96cffefbbf_114247295.tiff
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 已删除远程TIFF文件: /ue/ue_harddisk/ue_data/2504281040/114247295.tiff
-2025-04-28 11:42:49 - DEBUG - utils.get_latest_screenshot - 截图获取成功
-2025-04-28 11:42:49 - INFO - utils.test_case_executor - 保存操作步骤 5 的结果数据
-2025-04-28 11:42:49 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-04-28 11:42:49 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-04-28 11:42:49 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-04-28 11:42:49 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-04-28 11:10:03 - DEBUG - utils.ssh_manager - 返回现有SSH连接
+2025-04-28 11:10:03 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-04-28 11:10:03 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
+2025-04-28 11:10:03 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-04-28 11:10:03 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
+2025-04-28 11:10:03 - INFO - utils.test_case_executor - 当前执行测试用例名称: 等待时间，测试用例ID: 8
+2025-04-28 11:10:04 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-28 11:10:04 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-28 11:10:04 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-28 11:10:04 - INFO - utils.test_case_executor - 等待 3000 毫秒 (3.00 秒)
+2025-04-28 11:10:07 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-04-28 11:10:07 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-04-28 11:10:07 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-04-28 11:10:07 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-04-28 11:10:07 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-04-28 11:10:07 - ERROR - utils.test_case_executor - 无法获取用于对比的图像: img1=, img2=
+2025-04-28 11:10:07 - INFO - utils.test_case_executor - 验证步骤结果: False - 无法获取用于对比的图像: img1=, img2=
+2025-04-28 11:10:07 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过

@@ -88,7 +88,6 @@ interface OperationStep {
   y1: number;
   x2: number;
   y2: number;
-  waitTimeMs?: number;
 }
 
 const getButtonOptions = () => {
@@ -118,13 +117,13 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     if (initialData?.script_content) {
       try {
         const content = JSON.parse(initialData.script_content);
-        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, waitTimeMs: 1000 }];
+        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
       } catch (e) {
         console.error('Error parsing script_content:', e);
-        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, waitTimeMs: 1000 }];
+        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
       }
     }
-    return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, waitTimeMs: 1000 }];
+    return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
   })
   const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>(() => {
     if (initialData?.script_content) {
@@ -154,7 +153,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
   const addOperationStep = () => {
     const newId = operationSteps.length > 0 ? Math.max(...operationSteps.map((step) => step.id)) + 1 : 1
-    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, waitTimeMs: 1000 }])
+    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }])
   }
 
   const addVerificationStep = () => {
@@ -486,22 +485,6 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 />
                               </div>
                             </div>
-                          </div>
-                        )}
-                        {step.operation_key === "等待时间" && (
-                          <div className="space-y-2">
-                            <Label>等待时间（毫秒）</Label>
-                            <Input
-                              type="number"
-                              min="0"
-                              value={step.waitTimeMs || 1000}
-                              onChange={(e) => {
-                                const value = parseInt(e.target.value);
-                                if (!isNaN(value) && value >= 0) {
-                                  updateOperationStep(step.id, "waitTimeMs", value);
-                                }
-                              }}
-                            />
                           </div>
                         )}
                       </div>
