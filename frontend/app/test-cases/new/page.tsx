@@ -19,6 +19,7 @@ import { FUNCTIONS } from "@/utils/Config"
 
 interface StepMethod {
   description: string;
+  short_description?: string;
   operation_key?: string;
   verification_key?: string;
   params: string[];
@@ -60,7 +61,7 @@ const getVerificationSteps = () => {
       label: key,
       verification_key: value.verification_key,
       description: value.description,
-      short_description: value.short_description
+      short_description: value.short_description || ""
     }));
   } catch (error) {
     console.error('Error loading verification steps:', error);
@@ -566,7 +567,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                           <div className="space-y-2">
                             <Label htmlFor={`verification-${step.id}`} className="text-sm font-medium">
                               验证类型
@@ -593,17 +594,17 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                             )}
                           </div>
 
-                          {verificationOptions.find(opt => opt.value === step.verification_key)?.verification_key === "图像验证" ? (
-                            <div>
+                          {verificationOptions.find(opt => opt.value === step.verification_key)?.verification_key === "图像验证" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">图像选择</Label>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                  <Label className="text-xs text-gray-500 mb-1">图像1</Label>
                                   <Select
                                     value={step.img1}
                                     onValueChange={(value) => updateVerificationStep(step.id, "img1", value)}
                                   >
                                     <SelectTrigger className="w-full">
-                                      <SelectValue placeholder="选择图像" />
+                                      <SelectValue placeholder="选择图像1" />
                                     </SelectTrigger>
                                     <SelectContent>
                                       {operationSteps
@@ -622,13 +623,12 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                   </Select>
                                 </div>
                                 <div>
-                                  <Label className="text-xs text-gray-500 mb-1">图像2</Label>
                                   <Select
                                     value={step.img2}
                                     onValueChange={(value) => updateVerificationStep(step.id, "img2", value)}
                                   >
                                     <SelectTrigger className="w-full">
-                                      <SelectValue placeholder="选择图像" />
+                                      <SelectValue placeholder="选择图像2" />
                                     </SelectTrigger>
                                     <SelectContent>
                                       {operationSteps
@@ -648,8 +648,10 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 </div>
                               </div>
                             </div>
-                          ) : step.verification_key === "检查数值范围" ? (
-                            <div>
+                          )}
+                          {step.verification_key === "检查数值范围" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">数值设置</Label>
                               <div className="grid grid-cols-3 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">数值</Label>
@@ -677,8 +679,10 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 </div>
                               </div>
                             </div>
-                          ) : step.verification_key === "检查文本内容" ? (
-                            <div>
+                          )}
+                          {step.verification_key === "检查文本内容" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">文本设置</Label>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">文本内容</Label>
@@ -696,8 +700,10 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 </div>
                               </div>
                             </div>
-                          ) : step.verification_key === "检查元素状态" ? (
-                          <div>
+                          )}
+                          {step.verification_key === "检查元素状态" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">元素设置</Label>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">元素名称</Label>
@@ -714,8 +720,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                   />
                                 </div>
                               </div>
-                          </div>
-                          ) : null}
+                            </div>
+                          )}
                         </div>
                       </CardContent>
                     </Card>

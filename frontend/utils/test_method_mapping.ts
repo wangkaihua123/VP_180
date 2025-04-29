@@ -1,5 +1,6 @@
 export interface StepMethod {
   description: string;
+  short_description?: string;
   operation_key?: string;
   verification_key?: string;
   params: string[];
