@@ -141,5 +141,29 @@
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": false
+  },
+  {
+    "id": 14,
+    "title": "微软",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-04-29 23:53",
+    "last_execution_time": "",
+    "description": "微软",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
+    "serial_connect": false
+  },
+  {
+    "id": 15,
+    "title": "假",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-04-30 00:00",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}",
+    "serial_connect": false,
+    "project_name": "VP-180项目",
+    "project_id": "4855856862"
   }
 ]

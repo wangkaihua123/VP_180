@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import STEP_METHODS from "@/utils/test_method_mapping"
 import { FUNCTIONS } from "@/utils/Config"
+import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
 
 interface StepMethod {
   description: string;
@@ -131,6 +132,9 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [isLoading, setIsLoading] = useState(false)
   const [title, setTitle] = useState(initialData?.title || "")
   const [description, setDescription] = useState(initialData?.description || "")
+  const [projects, setProjects] = useState<Project[]>([])
+  const [projectName, setProjectName] = useState("")
+  const [projectId, setProjectId] = useState("")
   const [operationSteps, setOperationSteps] = useState<OperationStep[]>(() => {
     if (initialData?.script_content) {
       try {
@@ -168,6 +172,48 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const operationOptions = useMemo(() => getOperationSteps(), []);
   const verificationOptions = useMemo(() => getVerificationSteps(), []);
   const buttonOptions = useMemo(() => getButtonOptions(), []);
+
+  // 加载项目列表
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const projectList = await projectSettingsAPI.getProjects()
+        setProjects(projectList)
+        
+        // 设置默认项目为最早创建的项目
+        if (projectList.length > 0) {
+          // 按创建时间排序（升序）
+          const sortedProjects = [...projectList].sort((a, b) => 
+            new Date(a.createTime).getTime() - new Date(b.createTime).getTime()
+          )
+          
+          // 如果是编辑模式且已有项目名称
+          if (mode === 'edit' && initialData?.project_name) {
+            setProjectName(initialData.project_name)
+            // 找到对应的项目ID
+            const foundProject = projectList.find(p => p.name === initialData.project_name)
+            if (foundProject) {
+              setProjectId(foundProject.id)
+            }
+          } else {
+            // 使用最早创建的项目
+            const firstProject = sortedProjects[0]
+            setProjectName(firstProject.name)
+            setProjectId(firstProject.id)
+          }
+        }
+      } catch (error) {
+        console.error('加载项目列表失败:', error)
+        toast({
+          title: "加载项目列表失败",
+          description: error instanceof Error ? error.message : "未知错误",
+          variant: "destructive"
+        })
+      }
+    }
+    
+    loadProjects()
+  }, [])
 
   const addOperationStep = () => {
     const newId = operationSteps.length > 0 ? Math.max(...operationSteps.map((step) => step.id)) + 1 : 1
@@ -242,6 +288,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     )
   }
 
+  const handleProjectChange = (name: string) => {
+    setProjectName(name)
+    const project = projects.find(p => p.name === name)
+    if (project) {
+      setProjectId(project.id)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!title.trim()) {
@@ -253,10 +307,19 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       return
     }
 
+    if (!projectName || !projectId) {
+      toast({
+        title: "错误",
+        description: "请选择项目",
+        variant: "destructive"
+      })
+      return
+    }
+
     setIsLoading(true)
     try {
       const serializedContent = JSON.stringify({
-        repeatCount: parseInt(repeatCount) || 1,
+        repeatCount: parseInt(repeatCount.toString()) || 1,
         operationSteps,
         verificationSteps
       })
@@ -275,7 +338,9 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         script_content: serializedContent,
         status: "未执行",
         create_time: new Date().toISOString().split('T')[0],
-        serial_connect: hasSerialOperation
+        serial_connect: hasSerialOperation,
+        project_name: projectName,
+        project_id: projectId
       }
 
       if (mode === 'edit' && initialData?.id) {
@@ -307,6 +372,10 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">新增测试用例</h2>
+        </div>
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -328,7 +397,23 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                 />
               </div>
 
-              
+              <div className="space-y-2">
+                <Label htmlFor="project" className="text-sm font-medium">
+                  所属项目 <span className="text-red-500">*</span>
+                </Label>
+                <Select value={projectName} onValueChange={handleProjectChange} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="选择项目" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projects.map((project) => (
+                      <SelectItem key={project.id} value={project.name}>
+                        {project.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="type" className="text-sm font-medium">

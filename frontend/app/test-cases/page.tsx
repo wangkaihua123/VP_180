@@ -479,8 +479,11 @@ export default function TestCasesPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowBatchDeleteDialog(false)}>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDeleteSelected}>
-              删除
+            <AlertDialogAction 
+              onClick={confirmDeleteSelected}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              确认删除
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

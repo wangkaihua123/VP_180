@@ -1458,6 +1458,10 @@ export default function ExecuteAllPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">执行测试用例</h2>
+        </div>
+        
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           {/* 测试执行进度卡片 */}
           <Card className="mb-6">

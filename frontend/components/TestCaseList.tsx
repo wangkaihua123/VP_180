@@ -158,19 +158,19 @@ export function TestCaseList({
     }
   }
 
-  const handleViewLog = async (id: number) => {
-    try {
-      const response = await testCasesAPI.getLatestLog(parseInt(id.toString()))
-      setSelectedLog(response.data || null)
-      setIsLogDialogOpen(true)
-    } catch (error) {
-      toast({
-        title: "获取日志失败",
-        description: error instanceof Error ? error.message : "获取测试用例日志失败",
-        variant: "destructive",
-      })
-    }
-  }
+  // const handleViewLog = async (id: number) => {
+  //   try {
+  //     const response = await testCasesAPI.getLatestLog(parseInt(id.toString()))
+  //     setSelectedLog(response.data || null)
+  //     setIsLogDialogOpen(true)
+  //   } catch (error) {
+  //     toast({
+  //       title: "获取日志失败",
+  //       description: error instanceof Error ? error.message : "获取测试用例日志失败",
+  //       variant: "destructive",
+  //     })
+  //   }
+  // }
 
   const handleSelectOne = (id: number, checked: boolean) => {
     console.log(`测试用例 ${id} 选中状态变为: ${checked}`);
@@ -213,7 +213,8 @@ export function TestCaseList({
                 </TableHead>
               )}
               <TableHead className="w-20">ID</TableHead>
-              <TableHead>名称</TableHead>
+              <TableHead>用例名称</TableHead>
+              <TableHead className="w-32">项目名称</TableHead>
               <TableHead>类型</TableHead>
               <TableHead>状态</TableHead>
               <TableHead>最后执行时间</TableHead>
@@ -235,9 +236,12 @@ export function TestCaseList({
                 )}
                 <TableCell className="text-center">{testCase.id}</TableCell>
                 <TableCell className="font-medium">
-                  <Link href={`/test-cases/${testCase.id}`} className="hover:underline">
+                  <Link href={`/test-cases/${testCase.id}/edit`} className="hover:underline">
                     {testCase.title}
                   </Link>
+                </TableCell>
+                <TableCell className="text-sm text-gray-600">
+                  {testCase.project_name || '无'}
                 </TableCell>
                 <TableCell>{testCase.type}</TableCell>
                 <TableCell>
@@ -266,15 +270,6 @@ export function TestCaseList({
                     >
                       <Play className="h-4 w-4 [&:hover]:text-inherit" />
                       <span className="sr-only">运行</span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-blue-500"
-                      onClick={() => handleViewLog(testCase.id)}
-                    >
-                      <FileText className="h-4 w-4 [&:hover]:text-inherit" />
-                      <span className="sr-only">查看日志</span>
                     </Button>
                     <Button
                       variant="ghost"
@@ -315,8 +310,11 @@ export function TestCaseList({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowDeleteDialog(false)}>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deleteTargetId && handleDelete(deleteTargetId)}>
-              删除
+            <AlertDialogAction 
+              onClick={() => deleteTargetId && handleDelete(deleteTargetId)}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              确认删除
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -332,13 +330,16 @@ export function TestCaseList({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowBatchDeleteDialog(false)}>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDeleteSelected}>
-              删除
+            <AlertDialogAction 
+              onClick={confirmDeleteSelected}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              确认删除
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
+{/* 
       <Dialog open={isLogDialogOpen} onOpenChange={setIsLogDialogOpen}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
@@ -383,7 +384,7 @@ export function TestCaseList({
             </TabsContent>
           </Tabs>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </>
   )
 } 

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe, Plus, Edit, Trash2, FolderPlus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -32,6 +32,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
+import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
 
 export default function SettingsPage() {
   const { toast } = useToast()
@@ -40,6 +41,15 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("ssh")
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [isCustomBaudRate, setIsCustomBaudRate] = useState(false)
+  
+  const [projects, setProjects] = useState<Project[]>([])
+  const [currentProject, setCurrentProject] = useState<Project | null>(null)
+  const [editingProject, setEditingProject] = useState(false)
+  const [showDeleteProjectDialog, setShowDeleteProjectDialog] = useState(false)
+  const [newProject, setNewProject] = useState({
+    name: '',
+    description: ''
+  })
   
   const [settings, setSettings] = useState<SSHSettings>({
     host: "",
@@ -61,11 +71,14 @@ export default function SettingsPage() {
     fixedPort: 5000
   })
 
+  const [showCreateForm, setShowCreateForm] = useState(false)
+
   useEffect(() => {
     loadSettings()
     loadSerialSettings()
     loadSerialPorts()
     loadIpSettings()
+    loadProjects()
     checkSerialConnection()
     checkSshConnection()
   }, [])
@@ -150,6 +163,23 @@ export default function SettingsPage() {
         description: error instanceof Error ? error.message : "未知错误",
         variant: "destructive"
       })
+    }
+  }
+
+  const loadProjects = async () => {
+    try {
+      setIsLoading(true)
+      const projectList = await projectSettingsAPI.getProjects()
+      setProjects(projectList)
+    } catch (error) {
+      console.error('加载项目列表失败:', error)
+      toast({
+        title: "加载项目列表失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -377,6 +407,169 @@ export default function SettingsPage() {
     }
   }
 
+  // 处理创建项目
+  const handleCreateProject = async () => {
+    if (!newProject.name.trim()) {
+      toast({
+        title: "项目名称不能为空",
+        variant: "destructive"
+      })
+      return
+    }
+    
+    // 检查项目名称是否已存在
+    const nameExists = projects.some(p => p.name === newProject.name && (!currentProject || p.id !== currentProject.id))
+    if (nameExists) {
+      toast({
+        title: "项目名称已存在",
+        description: "请使用其他名称",
+        variant: "destructive"
+      })
+      return
+    }
+    
+    setIsLoading(true)
+    
+    try {
+      const createdProject = await projectSettingsAPI.createProject({
+        name: newProject.name,
+        description: newProject.description
+      })
+      
+      setProjects(prev => [...prev, createdProject])
+      setNewProject({ name: '', description: '' })
+      
+      toast({
+        title: "创建成功",
+        description: `项目 "${createdProject.name}" 已成功创建`
+      })
+      
+      // 创建成功后隐藏表单
+      setShowCreateForm(false)
+    } catch (error) {
+      toast({
+        title: "创建失败",
+        description: error instanceof Error ? error.message : "创建项目时发生未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // 处理编辑项目
+  const handleEditProject = (project: Project) => {
+    setCurrentProject(project)
+    setNewProject({
+      name: project.name,
+      description: project.description
+    })
+    setEditingProject(true)
+  }
+
+  // 处理取消编辑
+  const cancelEdit = () => {
+    setEditingProject(false)
+    setCurrentProject(null)
+    setNewProject({ name: '', description: '' })
+    setShowCreateForm(false) // 也隐藏表单
+  }
+
+  // 处理保存编辑
+  const handleSaveEdit = async () => {
+    if (!currentProject) return
+    
+    if (!newProject.name.trim()) {
+      toast({
+        title: "项目名称不能为空",
+        variant: "destructive"
+      })
+      return
+    }
+    
+    // 检查修改后的名称是否与其他项目重名
+    const nameExists = projects.some(p => p.name === newProject.name && p.id !== currentProject.id)
+    if (nameExists) {
+      toast({
+        title: "项目名称已存在",
+        description: "请使用其他名称",
+        variant: "destructive"
+      })
+      return
+    }
+    
+    setIsLoading(true)
+    
+    try {
+      const updatedProject = await projectSettingsAPI.updateProject({
+        id: currentProject.id,
+        name: newProject.name,
+        description: newProject.description
+      })
+      
+      setProjects(prev => 
+        prev.map(p => p.id === currentProject.id ? updatedProject : p)
+      )
+      
+      toast({
+        title: "更新成功",
+        description: `项目 "${updatedProject.name}" 已成功更新`
+      })
+      
+      setEditingProject(false)
+      setCurrentProject(null)
+      setNewProject({ name: '', description: '' })
+      setShowCreateForm(false) // 更新成功后隐藏表单
+    } catch (error) {
+      toast({
+        title: "更新失败",
+        description: error instanceof Error ? error.message : "更新项目时发生未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // 处理删除项目
+  const handleDeleteProject = (project: Project) => {
+    setCurrentProject(project)
+    setShowDeleteProjectDialog(true)
+  }
+
+  // 确认删除项目
+  const confirmDeleteProject = async () => {
+    if (!currentProject) return
+    
+    setIsLoading(true)
+    
+    try {
+      const result = await projectSettingsAPI.deleteProject(currentProject.id)
+      
+      if (result.success) {
+        setProjects(prev => prev.filter(p => p.id !== currentProject.id))
+        
+        toast({
+          title: "删除成功",
+          description: `项目 "${currentProject.name}" 已成功删除`
+        })
+      } else {
+        throw new Error(result.message)
+      }
+      
+      setShowDeleteProjectDialog(false)
+      setCurrentProject(null)
+    } catch (error) {
+      toast({
+        title: "删除失败",
+        description: error instanceof Error ? error.message : "删除项目时发生未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   if (isInitialLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -393,10 +586,11 @@ export default function SettingsPage() {
       <main className="flex-1 container mx-auto px-4 py-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsList className="grid w-full grid-cols-4 mb-6">
               <TabsTrigger value="ssh">SSH 设置</TabsTrigger>
               <TabsTrigger value="serial">串口设置</TabsTrigger>
-              <TabsTrigger value="ip">API 设置</TabsTrigger>
+              <TabsTrigger value="project">项目设置</TabsTrigger>
+              <TabsTrigger value="ip">IP 设置</TabsTrigger>
             </TabsList>
 
             <TabsContent value="ssh">
@@ -645,14 +839,168 @@ export default function SettingsPage() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="project">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <FolderPlus className="h-5 w-5 text-black" />
+                        项目设置
+                      </CardTitle>
+                      <CardDescription>管理测试项目，创建、编辑或删除项目</CardDescription>
+                    </div>
+                    <Button 
+                      onClick={() => {
+                        if (editingProject) {
+                          cancelEdit();
+                        }
+                        setShowCreateForm(!showCreateForm);
+                      }}
+                      className={showCreateForm ? "bg-gray-200 hover:bg-gray-300 text-black" : ""}
+                    >
+                      {showCreateForm ? (
+                        <>
+                          <X className="mr-2 h-4 w-4" />
+                          取消
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="mr-2 h-4 w-4" />
+                          新增项目
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {isLoading && !showCreateForm && !editingProject ? (
+                    <div className="flex items-center justify-center h-24">
+                      <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                      <span>加载项目...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-4">
+                        {projects.length > 0 ? (
+                          <div className="grid gap-4">
+                            {projects.map((project) => (
+                              <div key={project.id} className="flex items-center justify-between p-4 rounded-md border hover:bg-gray-50">
+                                <div>
+                                  <div className="font-medium">{project.name}</div>
+                                  <div className="text-sm text-gray-500">{project.description}</div>
+                                  <div className="text-xs text-gray-400 mt-1 space-y-1">
+                                    <span>创建时间: {new Date(project.createTime).toLocaleString('zh-CN')}</span>
+                                    {project.updateTime && project.updateTime !== project.createTime && (
+                                      <span>更新时间: {new Date(project.updateTime).toLocaleString('zh-CN')}</span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="flex space-x-2">
+                                  <Button 
+                                    variant="outline" 
+                                    size="icon"
+                                    onClick={() => {
+                                      handleEditProject(project);
+                                      setShowCreateForm(true);
+                                    }}
+                                  >
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    size="icon"
+                                    className="text-red-500 hover:bg-red-50 hover:text-red-600"
+                                    onClick={() => handleDeleteProject(project)}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center h-24 border rounded-md bg-gray-50">
+                            <p className="text-muted-foreground">暂无项目，请创建新项目</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 创建/编辑项目表单 - 使用动画 */}
+                      <AnimatePresence>
+                        {showCreateForm && (
+                          <motion.div 
+                            className="mt-6 border p-4 rounded-md bg-gray-50"
+                            initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                            animate={{ opacity: 1, height: 'auto', overflow: 'visible' }}
+                            exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                          >
+                            <h3 className="text-lg font-medium mb-4">
+                              {editingProject ? '编辑项目' : '创建新项目'}
+                            </h3>
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="project-name">项目名称</Label>
+                                <Input 
+                                  id="project-name" 
+                                  placeholder="输入项目名称" 
+                                  value={newProject.name}
+                                  onChange={(e) => setNewProject(prev => ({ ...prev, name: e.target.value }))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="project-description">项目描述</Label>
+                                <Input 
+                                  id="project-description" 
+                                  placeholder="输入项目描述（可选）" 
+                                  value={newProject.description}
+                                  onChange={(e) => setNewProject(prev => ({ ...prev, description: e.target.value }))}
+                                />
+                              </div>
+                              <div className="flex justify-end space-x-2 pt-2">
+                                <Button 
+                                  variant="outline" 
+                                  onClick={cancelEdit}
+                                  disabled={isLoading}
+                                >
+                                  取消
+                                </Button>
+                                <Button 
+                                  onClick={editingProject ? handleSaveEdit : handleCreateProject}
+                                  disabled={isLoading}
+                                >
+                                  {isLoading ? (
+                                    <>
+                                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                      {editingProject ? '保存中...' : '创建中...'}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Save className="mr-2 h-4 w-4" />
+                                      {editingProject ? '保存修改' : '保存项目'}
+                                    </>
+                                  )}
+                                </Button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="ip">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Globe className="h-5 w-5 text-black" />
-                    API 连接设置
+                    IP连接设置
                   </CardTitle>
-                  <CardDescription>配置后端API连接方式</CardDescription>
+                  <CardDescription>配置后端IP地址</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
@@ -689,7 +1037,7 @@ export default function SettingsPage() {
                       </div>
                     ) : (
                       <div className="mt-4 pl-6 text-gray-600">
-                        <p>系统将自动获取当前主机的IP地址，API地址将设置为：</p>
+                        <p>系统将自动获取当前主机的IP地址，IP地址将设置为：</p>
                         <p className="font-mono bg-gray-100 p-2 rounded mt-2">
                           http://{typeof window !== 'undefined' ? window.location.hostname : 'localhost'}:5000
                         </p>
@@ -701,7 +1049,7 @@ export default function SettingsPage() {
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>重要提示</AlertTitle>
                     <AlertDescription>
-                      修改API设置后需要刷新页面才能生效。请确保后端服务在指定的地址和端口上运行。
+                      修改IP设置后需要刷新页面才能生效。请确保后端服务在指定的地址和端口上运行。
                     </AlertDescription>
                   </Alert>
                   
@@ -741,6 +1089,26 @@ export default function SettingsPage() {
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCancelSave}>取消</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmSave}>确认</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      
+      <AlertDialog open={showDeleteProjectDialog} onOpenChange={setShowDeleteProjectDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认删除项目</AlertDialogTitle>
+            <AlertDialogDescription>
+              确定要删除项目 "{currentProject?.name}" 吗？此操作无法撤销。
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowDeleteProjectDialog(false)}>取消</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDeleteProject}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              确认删除
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

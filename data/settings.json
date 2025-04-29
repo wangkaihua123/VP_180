@@ -4,5 +4,28 @@
   "sshUsername": "root",
   "sshPassword": "firefly",
   "serialPort": "COM4",
-  "serialBaudRate": "115200"
+  "serialBaudRate": "115200",
+  "projects": [
+    {
+      "id": "4855856862",
+      "name": "VP-180项目",
+      "description": "镜中镜图像处理器",
+      "createTime": "2025-04-29T15:03:40.120Z",
+      "updateTime": "2025-04-29T15:10:23.736Z"
+    },
+    {
+      "id": "4855856861",
+      "name": "VP-180项目2",
+      "description": "243432",
+      "createTime": "2025-04-29T15:44:45.585Z",
+      "updateTime": "2025-04-29T15:48:03.191Z"
+    },
+    {
+      "id": "7451980237",
+      "name": "VP-180项目我",
+      "description": "我我完全",
+      "createTime": "2025-04-29T15:49:05.198Z",
+      "updateTime": "2025-04-29T15:49:05.198Z"
+    }
+  ]
 }

@@ -171,7 +171,9 @@ class TestCase:
             'last_execution_time': '',  # 添加空的最新执行时间
             'description': test_case_data.get('description', ''),
             'script_content': test_case_data.get('script_content', ''),
-            'serial_connect': serial_connect  # 使用自动检测的值
+            'serial_connect': serial_connect,  # 使用自动检测的值
+            'project_name': test_case_data.get('project_name', ''),
+            'project_id': test_case_data.get('project_id', '')
         }
         
         # 添加到列表并保存
@@ -194,6 +196,9 @@ class TestCase:
         case['type'] = test_case_data.get('type', case['type'])
         case['description'] = test_case_data.get('description', case['description'])
         case['script_content'] = test_case_data.get('script_content', case['script_content'])
+        case['serial_connect'] = test_case_data.get('serial_connect', case['serial_connect'])
+        case['project_name'] = test_case_data.get('project_name', case['project_name'])
+        case['project_id'] = test_case_data.get('project_id', case['project_id'])
         
         # 保存更新
         if cls.save(test_cases):
