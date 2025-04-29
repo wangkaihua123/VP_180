@@ -2,13 +2,21 @@ import { NextResponse } from 'next/server';
 
 // 使用与前端constants一致的后端URL获取机制
 const getBackendUrl = () => {
-  // 尝试从环境变量获取
-  if (process.env.NEXT_PUBLIC_BACKEND_URL) {
-    return process.env.NEXT_PUBLIC_BACKEND_URL;
+  // 优先使用固定API环境变量
+  if (process.env.NEXT_PUBLIC_FIXED_API_URL) {
+    return process.env.NEXT_PUBLIC_FIXED_API_URL;
   }
   
-  // 备选方案：使用已知后端地址
-  return 'http://10.0.18.132:5000';
+  // 注意：这是服务器端代码，不应该引用window对象
+  // Route Handlers总是在服务器端运行
+  
+  // 服务器端环境中，尝试从环境变量获取主机名
+  if (process.env.FRONTEND_HOST) {
+    return `http://${process.env.FRONTEND_HOST}:5000`;
+  }
+  
+  // 兜底方案：使用本地主机
+  return 'http://localhost:5000';
 };
 
 // 使用动态后端URL

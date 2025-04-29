@@ -303,23 +303,6 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 bg-black text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex items-center">
-          <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/20" asChild>
-            <Link href="/test-cases">
-              <ArrowLeft className="h-5 w-5" />
-              <span className="sr-only">返回</span>
-            </Link>
-          </Button>
-          <h1 className="text-xl">
-            <span className="font-bold text-white">优亿医疗</span>
-            <span className="font-normal text-white text-sm ml-1">自动化测试平台</span>
-            <span className="mx-2">-</span>
-            <span>{mode === 'edit' ? '编辑测试用例' : '新建测试用例'}</span>
-          </h1>
-        </div>
-      </header>
-
       <main className="flex-1 container mx-auto px-4 py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

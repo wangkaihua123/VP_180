@@ -1,4 +1,61 @@
-2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
-2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
+2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:07:21 - ERROR - utils.ssh_manager - 第3次ssh连接失败: timed out
+2025-04-29 20:07:21 - ERROR - utils.ssh_manager - SSH连接尝试3次后失败，重置计数器
+2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:07:31 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:07:31 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
+2025-04-29 20:07:31 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:07:31 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-29 20:07:31 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
+2025-04-29 20:07:31 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-29 20:07:31 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
+2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:07:42 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out
+2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
+2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:07:52 - ERROR - utils.ssh_manager - 第3次ssh连接失败: timed out
+2025-04-29 20:07:52 - ERROR - utils.ssh_manager - SSH连接尝试3次后失败，重置计数器
+2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:08:02 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
+2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:08:13 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out
+2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
+2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:08:23 - ERROR - utils.ssh_manager - 第3次ssh连接失败: timed out
+2025-04-29 20:08:23 - ERROR - utils.ssh_manager - SSH连接尝试3次后失败，重置计数器
+2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-04-29 20:08:33 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-04-29 20:08:33 - DEBUG - utils.serial_manager - 串口未连接
+2025-04-29 20:08:33 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
+2025-04-29 20:08:33 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 串口未连接
+2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
+2025-04-29 20:08:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 串口未连接
+2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
+2025-04-29 20:08:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 串口未连接
+2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
+2025-04-29 20:08:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)

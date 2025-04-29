@@ -53,12 +53,6 @@ export function MainNav() {
       description: "查看测试报告",
     },
     {
-      title: "设备监控",
-      href: "/monitoring",
-      icon: <BarChart2 className="h-5 w-5" />,
-      description: "监控设备状态",
-    },
-    {
       title: "设置",
       href: "/settings",
       icon: <Settings className="h-5 w-5" />,
