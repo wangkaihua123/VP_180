@@ -24,9 +24,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
+import { motion, AnimatePresence } from "framer-motion"
 
-// 导入BASE_URL用于图像URL
-import { BASE_URL } from "@/lib/api"
+// 导入API_BASE_URL用于图像URL
+import { API_BASE_URL } from "@/lib/constants"
 
 interface TestCaseListProps {
   testCases: TestCase[]
@@ -195,41 +197,7 @@ export function TestCaseList({
 
   return (
     <>
-      {enableSelection && showSelectionInfo && (
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            <Checkbox 
-              checked={isAllSelected !== undefined ? isAllSelected : selectedIds.length > 0 && selectedIds.length === testCases.length}
-              onCheckedChange={handleSelectAllChange}
-              aria-label="全选"
-              className="border-2 border-gray-300 hover:border-primary"
-            />
-            <span className="text-sm text-gray-500">
-              已选择 {selectedIds.length} 个测试用例
-            </span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button 
-              onClick={handleDeleteSelected}
-              disabled={selectedIds.length === 0}
-              variant="outline"
-              className="text-destructive border-destructive hover:bg-destructive/10"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              删除选中
-            </Button>
-            <Button 
-              onClick={handleExecuteSelected}
-              disabled={selectedIds.length === 0}
-              className="bg-black text-white hover:bg-gray-800"
-            >
-              <Play className="mr-2 h-4 w-4" />
-              执行选中
-            </Button>
-          </div>
-        </div>
-      )}
-
+      {/* 列表正文内容 */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -247,9 +215,7 @@ export function TestCaseList({
               <TableHead>名称</TableHead>
               <TableHead>类型</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>重复次数</TableHead>
-              <TableHead>创建时间</TableHead>
-              <TableHead>最后执行时间</TableHead>
+              <TableHead>最后执行</TableHead>
               <TableHead className="text-right">操作</TableHead>
             </TableRow>
           </TableHeader>
@@ -287,8 +253,6 @@ export function TestCaseList({
                     {testCase.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{JSON.parse(testCase.script_content).repeatCount || 1}</TableCell>
-                <TableCell>{testCase.create_time}</TableCell>
                 <TableCell>{testCase.last_execution_time || '未执行'}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
@@ -394,7 +358,7 @@ export function TestCaseList({
                 {selectedLog?.images?.map((image, index) => (
                   <div key={index} className="relative aspect-video">
                     <img
-                      src={`${BASE_URL}${image}`}
+                      src={`${API_BASE_URL}${image}`}
                       alt={`测试图像 ${index + 1}`}
                       className="object-contain w-full h-full"
                     />
@@ -407,7 +371,7 @@ export function TestCaseList({
                 {selectedLog?.screenshots?.map((screenshot, index) => (
                   <div key={index} className="relative aspect-video">
                     <img
-                      src={`${BASE_URL}${screenshot}`}
+                      src={`${API_BASE_URL}${screenshot}`}
                       alt={`测试截图 ${index + 1}`}
                       className="object-contain w-full h-full"
                     />

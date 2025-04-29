@@ -37,7 +37,6 @@ def setup_logger(name):
         def emit(self, record):
             if record.levelno >= logging.INFO:  # 只记录INFO及以上级别的日志到Allure
                 msg = self.format(record)
-                allure.attach(msg, name=record.name, attachment_type=allure.attachment_type.TEXT)
 
     allure_handler = AllureHandler()
     allure_handler.setLevel(logging.INFO)  # Allure处理器只接收INFO及以上级别的日志

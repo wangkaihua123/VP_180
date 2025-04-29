@@ -1,8 +1,4 @@
-2025-04-28 23:21:14 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-28 23:21:14 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-28 23:21:24 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
-2025-04-28 23:21:26 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-28 23:21:36 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out
+2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
+2025-04-29 18:54:47 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接

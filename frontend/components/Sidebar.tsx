@@ -1,52 +1,69 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { FileText, LayoutDashboard, PlayCircle, BarChart2, Settings, LogOut } from 'lucide-react';
+import { Home, Plus, Play, FileText, Settings } from 'lucide-react';
 
-alert('Sidebar loaded!');
-console.log('Sidebar component loaded!');
-
-const menu = [
-  { label: '概览', icon: <LayoutDashboard size={20} />, path: '/' },
-  { label: '测试用例', icon: <FileText size={20} />, path: '/test-cases' },
-  { label: '测试执行', icon: <PlayCircle size={20} />, path: '/test-execution' },
-  { label: '测试报告', icon: <BarChart2 size={20} />, path: '/test-report' },
-  { label: '设置', icon: <Settings size={20} />, path: '/settings' },
-];
-
+/**
+ * 侧边栏组件
+ * 
+ * 用于页面导航的侧边栏组件，包含以下功能：
+ * - 显示系统标志和标题
+ * - 提供主要功能的导航链接
+ */
 export default function Sidebar() {
-  const router = useRouter();
   return (
-    <aside style={{
-      width: 220,
-      background: '#ff0', // 明显的黄色
-      borderRight: '3px solid #f00', // 红色边框
-      height: '100vh',
-      position: 'fixed',
-      left: 0,
-      top: 0,
-      zIndex: 9999, // 极高z-index
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      <div style={{ fontWeight: 600, fontSize: 18, padding: '32px 0 24px 32px', letterSpacing: 1 }}>测试专业</div>
-      <nav style={{ flex: 1 }}>
-        {menu.map(item => (
-          <Link href={item.path} key={item.label} legacyBehavior>
-            <a style={{
-              display: 'flex', alignItems: 'center', padding: '12px 32px', color: router.pathname === item.path ? '#1677ff' : '#222', background: router.pathname === item.path ? '#f0f6ff' : 'transparent', fontWeight: router.pathname === item.path ? 600 : 400, textDecoration: 'none', fontSize: 16
-            }}>
-              {item.icon}
-              <span style={{ marginLeft: 12 }}>{item.label}</span>
-            </a>
-          </Link>
-        ))}
-      </nav>
-      <div style={{ padding: '24px 32px' }}>
-        <a href="/logout" style={{ display: 'flex', alignItems: 'center', color: '#222', fontSize: 16, textDecoration: 'none' }}>
-          <LogOut size={20} />
-          <span style={{ marginLeft: 12 }}>退出登录</span>
-        </a>
+    <div className="w-64 bg-gray-900 text-white min-h-screen px-4 py-6 flex flex-col">
+      <div className="flex items-center mb-8">
+        <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
+          <span className="text-gray-900 font-bold text-lg">优</span>
+        </div>
+        <div className="ml-3">
+          <h1 className="font-bold text-lg">优亿医疗</h1>
+          <p className="text-xs text-gray-400">自动化测试平台</p>
+        </div>
       </div>
-    </aside>
+
+      <nav className="flex-1">
+        <ul className="space-y-2">
+          <li>
+            <Link href="/" className="flex items-center py-2 px-4 rounded hover:bg-gray-800 transition-colors">
+              <Home className="mr-3 h-5 w-5" />
+              <span>首页</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/test-cases/new" className="flex items-center py-2 px-4 rounded hover:bg-gray-800 transition-colors">
+              <Plus className="mr-3 h-5 w-5" />
+              <span>新建用例</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/execute-all" className="flex items-center py-2 px-4 rounded hover:bg-gray-800 transition-colors">
+              <Play className="mr-3 h-5 w-5" />
+              <span>执行测试</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/test-cases/reports" className="flex items-center py-2 px-4 rounded hover:bg-gray-800 transition-colors">
+              <FileText className="mr-3 h-5 w-5" />
+              <span>测试报告</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/settings" className="flex items-center py-2 px-4 rounded hover:bg-gray-800 transition-colors">
+              <Settings className="mr-3 h-5 w-5" />
+              <span>系统设置</span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+
+      <div className="mt-auto pt-4 border-t border-gray-800">
+        <button className="w-full flex items-center py-2 px-4 rounded hover:bg-gray-800 transition-colors">
+          <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>退出登录</span>
+        </button>
+      </div>
+    </div>
   );
-}
+} 

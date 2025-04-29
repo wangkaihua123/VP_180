@@ -5,7 +5,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-23 10:42",
-    "last_execution_time": "2025-04-28 23:21:24",
+    "last_execution_time": "2025-04-29 18:54:57",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"3\"}]}",
     "serial_connect": false
@@ -16,7 +16,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-24 20:46",
-    "last_execution_time": "2025-04-28 16:34:47",
+    "last_execution_time": "2025-04-29 18:55:09",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"点击按钮\", \"button_name\": \"画中画\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"3\"}]}",
     "serial_connect": false
@@ -27,7 +27,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-24 21:49",
-    "last_execution_time": "2025-04-28 16:34:48",
+    "last_execution_time": "2025-04-29 18:55:19",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}",
     "serial_connect": false
@@ -38,7 +38,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-25 13:09",
-    "last_execution_time": "2025-04-28 16:34:50",
+    "last_execution_time": "2025-04-29 18:55:29",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"1\"}]}",
     "serial_connect": false
@@ -47,9 +47,9 @@
     "id": 5,
     "title": "2",
     "type": "功能测试",
-    "status": "失败",
+    "status": "异常",
     "create_time": "2025-04-25 14:35",
-    "last_execution_time": "2025-04-28 16:35:33",
+    "last_execution_time": "2025-04-29 18:55:39",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}",
     "serial_connect": false
@@ -60,7 +60,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-25 15:18",
-    "last_execution_time": "2025-04-28 16:34:54",
+    "last_execution_time": "2025-04-29 18:55:49",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}",
     "serial_connect": false
@@ -69,9 +69,9 @@
     "id": 7,
     "title": "乱点",
     "type": "功能测试",
-    "status": "失败",
+    "status": "异常",
     "create_time": "2025-04-25 15:30",
-    "last_execution_time": "2025-04-28 16:35:33",
+    "last_execution_time": "2025-04-29 18:55:59",
     "description": "",
     "script_content": "{\"repeatCount\": 3, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 2, \"operation_key\": \"长按按钮\", \"button_name\": \"白平衡\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 3, \"operation_key\": \"点击按钮\", \"button_name\": \"录制\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}, {\"id\": 4, \"operation_key\": \"点击按钮\", \"button_name\": \"图像冻结\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": false
@@ -80,9 +80,9 @@
     "id": 8,
     "title": "等待时间",
     "type": "功能测试",
-    "status": "失败",
+    "status": "异常",
     "create_time": "2025-04-28 11:09",
-    "last_execution_time": "2025-04-28 16:35:13",
+    "last_execution_time": "2025-04-29 18:56:09",
     "description": "",
     "script_content": "{\"repeatCount\": 3, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}, {\"id\": 2, \"operation_key\": \"等待时间\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 3000}, {\"id\": 3, \"operation_key\": \"点击按钮\", \"button_name\": \"电子放大\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}",
     "serial_connect": false
@@ -93,7 +93,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-28 11:18",
-    "last_execution_time": "2025-04-28 16:35:13",
+    "last_execution_time": "2025-04-29 18:56:09",
     "description": "",
     "script_content": "{\"repeatCount\": 5, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口关机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}, {\"id\": 2, \"operation_key\": \"等待时间\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 8000}, {\"id\": 3, \"operation_key\": \"串口开机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}, {\"id\": 4, \"operation_key\": \"等待时间\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 25000}, {\"id\": 5, \"operation_key\": \"获取截图\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTimeMs\": 1000}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": true
@@ -102,9 +102,9 @@
     "id": 10,
     "title": "串口开关机2",
     "type": "功能测试",
-    "status": "失败",
+    "status": "异常",
     "create_time": "2025-04-28 15:42",
-    "last_execution_time": "2025-04-28 16:41:45",
+    "last_execution_time": "2025-04-29 18:56:09",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口开机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": true
@@ -113,9 +113,9 @@
     "id": 11,
     "title": "串口开关机23",
     "type": "功能测试",
-    "status": "未运行",
+    "status": "异常",
     "create_time": "2025-04-28 16:01",
-    "last_execution_time": "",
+    "last_execution_time": "2025-04-29 18:56:09",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口关机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": true
@@ -126,7 +126,7 @@
     "type": "功能测试",
     "status": "异常",
     "create_time": "2025-04-28 18:03",
-    "last_execution_time": "2025-04-28 19:49:38",
+    "last_execution_time": "2025-04-29 18:56:09",
     "description": "",
     "script_content": "{\"repeatCount\": 5, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口关-开机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTime\": 10000}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": true

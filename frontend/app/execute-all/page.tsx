@@ -208,13 +208,27 @@ export default function ExecuteAllPage() {
   
   useEffect(() => {
     // 从 URL 参数中获取选中的测试用例 ID
-    const ids = searchParams.get('ids')
-    if (ids) {
-      setSelectedIds(ids.split(',').map(id => parseInt(id)))
+    if (searchParams) {
+      const ids = searchParams.get('ids')
+      const autoExecute = searchParams.get('autoExecute')
+      
+      if (ids) {
+        setSelectedIds(ids.split(',').map(id => parseInt(id)))
+      }
+      
+      // 只有在autoExecute=true时才自动执行
+      if (autoExecute === 'true') {
+        // 启用自动执行
+        autoExecuteAttemptedRef.current = false;
+      } else {
+        // 不自动执行，仅显示结果
+        autoExecuteAttemptedRef.current = true;
+      }
+    } else {
+      // searchParams为null时，加载所有测试用例，不自动执行
+      setSelectedIds([])
+      autoExecuteAttemptedRef.current = true;
     }
-    
-    // 重置自动执行标记，确保页面每次加载时都能尝试自动执行
-    autoExecuteAttemptedRef.current = false
   }, [searchParams])
 
   // 测试用例加载完成后的处理
@@ -1300,6 +1314,13 @@ export default function ExecuteAllPage() {
 
   // 定期刷新系统日志
   useEffect(() => {
+    // 不执行测试时不启动轮询
+    if (!executing) {
+      return;
+    }
+    
+    console.log('启动系统日志轮询...');
+    
     // 首次加载时获取日志
     fetchSystemLogs();
     
@@ -1308,6 +1329,25 @@ export default function ExecuteAllPage() {
       // 清除现有定时器
       if (timerRef.current) {
         clearTimeout(timerRef.current);
+      }
+      
+      // 检查是否所有测试用例都已完成
+      const allTestCasesCompleted = testCases.every(tc => 
+        tc.status === 'completed' || tc.status === 'failed' || tc.status === 'error'
+      );
+      
+      // 如果所有测试用例都已完成，且测试用例数量不为0，则停止轮询
+      if (allTestCasesCompleted && testCases.length > 0) {
+        console.log('所有测试用例已完成，停止日志轮询');
+        // 最后再获取一次日志确保获取到所有内容
+        fetchSystemLogs();
+        return;
+      }
+      
+      // 如果测试执行被停止，也停止轮询
+      if (!executing) {
+        console.log('测试执行已停止，停止日志轮询');
+        return;
       }
       
       // 设置新的定时器
@@ -1324,34 +1364,16 @@ export default function ExecuteAllPage() {
     
     // 组件卸载时清除定时器
     return () => {
+      console.log('组件卸载或依赖变化，清除日志轮询定时器');
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pollInterval]); // 仅当轮询间隔变化时重新设置定时器
+  }, [executing, pollInterval, testCases.length]); // 当executing状态变化或测试用例数量变化时重新设置轮询
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* 页面头部 */}
-      <header className="sticky top-0 z-50 bg-black text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex items-center">
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-2" asChild>
-            <Link href="/test-cases">
-              <ArrowLeft className="h-5 w-5" />
-              <span className="sr-only">返回</span>
-            </Link>
-          </Button>
-          <h1 className="text-xl">
-            <span className="font-bold text-white">优亿医疗</span>
-            <span className="font-normal text-white text-sm ml-1">自动化测试平台</span>
-            <span className="mx-2">-</span>
-            <span>执行测试</span>
-          </h1>
-        </div>
-      </header>
-
-      {/* 主要内容区域 */}
       <main className="flex-1 container mx-auto px-4 py-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           {/* 测试执行进度卡片 */}

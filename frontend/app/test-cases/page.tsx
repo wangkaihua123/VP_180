@@ -4,7 +4,7 @@
  * 该页面是应用的主要功能页面，用于展示和管理所有测试用例：
  * - 显示所有测试用例的列表
  * - 提供新建测试用例、执行所有测试用例的功能
- * - 支持通过顶部导航访问设置页面
+ * - 通过顶部导航访问其他功能页面
  * - 使用TestCaseList组件展示测试用例详情
  * - 处理测试用例的加载状态和错误提示
  * - 支持选择和批量操作测试用例
@@ -14,9 +14,9 @@
 "use client"
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Plus, Play, Settings, Trash2 } from "lucide-react"
+import { Plus, Play, Home, FilePlus, FileBarChart2, LayoutGrid, Trash2 } from "lucide-react"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import { useEffect, useState, useMemo } from "react"
@@ -49,6 +49,9 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
+import { Checkbox } from "@/components/ui/checkbox"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export default function TestCasesPage() {
   const [testCases, setTestCases] = useState<TestCase[]>([])
@@ -56,6 +59,7 @@ export default function TestCasesPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const { toast } = useToast()
   const router = useRouter()
+  const pathname = usePathname()
   
   // 分页状态
   const [currentPage, setCurrentPage] = useState(1)
@@ -300,52 +304,15 @@ export default function TestCasesPage() {
     }
   }
 
+  // 批量操作工具栏的显示控制
+  const hasSelectedItems = selectedIds.length > 0;
+
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 bg-black text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <h1 className="text-xl">
-              <span className="font-bold text-white">优亿医疗</span>
-              <span className="font-normal text-white text-sm ml-1">自动化测试平台</span>
-            </h1>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" asChild>
-              <Link href="/login">
-                <span className="sr-only">退出登录</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
-
       <main className="flex-1 container mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">测试用例列表</h2>
           <div className="flex space-x-2">
-            <Link href="/settings">
-              <Button variant="outline" className="group">
-                <Settings className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
-                设置
-              </Button>
-            </Link>
             <Button variant="outline" className="group" onClick={handleRunAll}>
               <Play className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
               全部执行
@@ -364,40 +331,61 @@ export default function TestCasesPage() {
             <div className="text-center py-4">暂无测试用例</div>
           ) : (
             <>
-              <div className={`mb-4 pb-2 px-4 py-3 rounded-md flex justify-between items-center ${selectedCount > 0 ? 'bg-blue-50 border-l-4 border-blue-500' : 'bg-gray-50'}`}>
-                <span className={`text-sm font-medium ${selectedCount > 0 ? 'text-blue-700' : 'text-gray-500'}`}>
-                  {selectedCount > 0 ? (
-                    <>
-                      已选择 <strong>{selectedCount}</strong> 个测试用例
-                      {selectedCount > currentPageTestCases.length && (
-                        <span className="text-blue-600 ml-1">
-                          (包括其他页面的测试用例)
-                        </span>
-                      )}
-                    </>
+              {/* 批量操作工具栏 - 放在测试用例列表上方 */}
+              <div className="mb-4 bg-gray-50 rounded-md">
+                <AnimatePresence>
+                  {hasSelectedItems ? (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex justify-between items-center px-4 py-3"
+                    >
+                      <div className="flex items-center">
+                        <Checkbox 
+                          id="select-all"
+                          checked={isCurrentPageAllSelected}
+                          onCheckedChange={handleSelectAllCurrentPage}
+                          aria-label="全选"
+                          className="mr-2 border-gray-300"
+                        />
+                        <span className="text-sm">已选择 {selectedIds.length} 项</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Button 
+                          onClick={handleExecuteSelected}
+                          disabled={selectedIds.length === 0}
+                          className="bg-black text-white hover:bg-gray-800 h-8 px-2 ml-2 rounded flex items-center"
+                          size="sm"
+                        >
+                          <Play className="mr-1 h-4 w-4" />
+                          批量执行
+                        </Button>
+                        <Button 
+                          onClick={handleDeleteSelected}
+                          disabled={selectedIds.length === 0}
+                          variant="outline"
+                          className="h-8 px-2 ml-2 rounded flex items-center"
+                          size="sm"
+                        >
+                          <Trash2 className="mr-1 h-4 w-4" />
+                          批量删除
+                        </Button>
+                      </div>
+                    </motion.div>
                   ) : (
-                    '请选择测试用例以执行批量操作'
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-sm text-gray-500 px-4 py-3"
+                    >
+                      请选择测试用例以执行批量操作
+                    </motion.div>
                   )}
-                </span>
-                <div className="flex items-center space-x-2">
-                  <Button 
-                    onClick={handleDeleteSelected}
-                    variant="outline"
-                    className="text-destructive border-destructive hover:bg-destructive/10"
-                    disabled={selectedCount === 0}
-                  >
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    删除选中
-                  </Button>
-                  <Button 
-                    onClick={handleExecuteSelected}
-                    className="bg-black text-white hover:bg-gray-800"
-                    disabled={selectedCount === 0}
-                  >
-                    <Play className="mr-2 h-4 w-4" />
-                    执行选中
-                  </Button>
-                </div>
+                </AnimatePresence>
               </div>
               
               <TestCaseList 
