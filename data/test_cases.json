@@ -22,28 +22,6 @@
     "serial_connect": false
   },
   {
-    "id": 3,
-    "title": "112",
-    "type": "功能测试",
-    "status": "异常",
-    "create_time": "2025-04-24 21:49",
-    "last_execution_time": "2025-04-29 20:07:42",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\"}]}",
-    "serial_connect": false
-  },
-  {
-    "id": 4,
-    "title": "213123",
-    "type": "功能测试",
-    "status": "异常",
-    "create_time": "2025-04-25 13:09",
-    "last_execution_time": "2025-04-29 20:07:52",
-    "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"对比图像相似度\", \"img1\": \"1\", \"img2\": \"1\"}]}",
-    "serial_connect": false
-  },
-  {
     "id": 5,
     "title": "2",
     "type": "功能测试",

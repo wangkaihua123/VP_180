@@ -82,6 +82,14 @@ const SelectContent = React.forwardRef<
       )}
       position={position}
       {...props}
+      sideOffset={5}
+      avoidCollisions={true}
+      onCloseAutoFocus={(event) => {
+        event.preventDefault();
+        if (props.onCloseAutoFocus) {
+          props.onCloseAutoFocus(event);
+        }
+      }}
     >
       <SelectScrollUpButton />
       <SelectPrimitive.Viewport
