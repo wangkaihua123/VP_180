@@ -65,3 +65,38 @@
 2025-04-29 20:10:09 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
 2025-04-29 20:10:09 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
 2025-04-29 20:10:09 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-04-29 20:45:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:45:59 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
+2025-04-29 20:45:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:45:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:45:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:45:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:45:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:49:37 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:49:37 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:49:37 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:49:54 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:49:54 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:49:54 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:49:55 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:49:55 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:49:55 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:50:12 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:50:12 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:50:12 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:50:34 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:50:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:50:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:51:23 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:51:23 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:51:23 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:53:52 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:53:52 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
+2025-04-29 20:53:52 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:53:52 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:55:29 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:55:29 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:55:29 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-04-29 20:55:29 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-04-29 20:55:29 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-04-29 20:55:29 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)

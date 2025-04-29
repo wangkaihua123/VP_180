@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X } from "lucide-react"
+import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,6 +14,7 @@ import { sshSettingsAPI, serialSettingsAPI } from "@/lib/api"
 import type { SSHSettings, SerialPort, SerialSettings } from "@/app/api/routes"
 import { Toaster } from "@/components/ui/toaster"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +25,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { systemSettingsAPI, IpSettings } from "@/lib/api/system-settings"
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 export default function SettingsPage() {
   const { toast } = useToast()
@@ -47,11 +55,17 @@ export default function SettingsPage() {
   const commonBaudRates = ["9600", "19200", "38400", "57600", "115200", "1500000"]
   const [serialConnected, setSerialConnected] = useState(false)
   const [sshConnected, setSshConnected] = useState(false)
+  const [ipSettings, setIpSettings] = useState<IpSettings>({
+    useFixedIp: false,
+    fixedHost: 'localhost',
+    fixedPort: 5000
+  })
 
   useEffect(() => {
     loadSettings()
     loadSerialSettings()
     loadSerialPorts()
+    loadIpSettings()
     checkSerialConnection()
     checkSshConnection()
   }, [])
@@ -122,6 +136,20 @@ export default function SettingsPage() {
         variant: "destructive"
       })
       setSerialPorts([])
+    }
+  }
+
+  const loadIpSettings = async () => {
+    try {
+      const data = await systemSettingsAPI.getIpSettings()
+      setIpSettings(data)
+    } catch (error) {
+      console.error('加载IP设置失败:', error)
+      toast({
+        title: "加载IP设置失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
     }
   }
 
@@ -321,6 +349,34 @@ export default function SettingsPage() {
     }
   }
 
+  const handleIpSettingChange = (field: keyof IpSettings, value: string | boolean | number) => {
+    setIpSettings(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleSaveIpSettings = async () => {
+    setIsLoading(true)
+    try {
+      const result = await systemSettingsAPI.updateIpSettings(ipSettings)
+      toast({
+        title: result.success ? "保存成功" : "保存失败",
+        description: result.message,
+        variant: result.success ? "default" : "destructive"
+      })
+    } catch (error) {
+      console.error('保存IP设置失败:', error)
+      toast({
+        title: "保存失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   if (isInitialLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -337,9 +393,10 @@ export default function SettingsPage() {
       <main className="flex-1 container mx-auto px-4 py-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
               <TabsTrigger value="ssh">SSH 设置</TabsTrigger>
               <TabsTrigger value="serial">串口设置</TabsTrigger>
+              <TabsTrigger value="ip">API 设置</TabsTrigger>
             </TabsList>
 
             <TabsContent value="ssh">
@@ -585,6 +642,88 @@ export default function SettingsPage() {
                     )}
                   </Button>
                 </CardFooter>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="ip">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Globe className="h-5 w-5 text-black" />
+                    API 连接设置
+                  </CardTitle>
+                  <CardDescription>配置后端API连接方式</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Switch 
+                        id="use-fixed-ip" 
+                        checked={ipSettings.useFixedIp}
+                        onCheckedChange={(checked) => handleIpSettingChange("useFixedIp", checked)}
+                      />
+                      <Label htmlFor="use-fixed-ip">使用固定IP</Label>
+                    </div>
+                    
+                    {ipSettings.useFixedIp ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pl-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="fixed-host">主机地址</Label>
+                          <Input 
+                            id="fixed-host" 
+                            placeholder="localhost 或 192.168.1.1" 
+                            value={ipSettings.fixedHost}
+                            onChange={(e) => handleIpSettingChange("fixedHost", e.target.value)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="fixed-port">端口</Label>
+                          <Input 
+                            id="fixed-port" 
+                            type="number" 
+                            placeholder="5000" 
+                            value={ipSettings.fixedPort}
+                            onChange={(e) => handleIpSettingChange("fixedPort", parseInt(e.target.value))}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mt-4 pl-6 text-gray-600">
+                        <p>系统将自动获取当前主机的IP地址，API地址将设置为：</p>
+                        <p className="font-mono bg-gray-100 p-2 rounded mt-2">
+                          http://{typeof window !== 'undefined' ? window.location.hostname : 'localhost'}:5000
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <Alert className="mt-4 bg-amber-50 text-amber-800 border border-amber-200">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>重要提示</AlertTitle>
+                    <AlertDescription>
+                      修改API设置后需要刷新页面才能生效。请确保后端服务在指定的地址和端口上运行。
+                    </AlertDescription>
+                  </Alert>
+                  
+                  <div className="flex justify-end mt-6">
+                    <Button 
+                      onClick={handleSaveIpSettings}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          保存中...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4" />
+                          保存设置
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardContent>
               </Card>
             </TabsContent>
           </Tabs>

@@ -212,10 +212,11 @@ export function TestCaseList({
                   />
                 </TableHead>
               )}
+              <TableHead className="w-20">ID</TableHead>
               <TableHead>名称</TableHead>
               <TableHead>类型</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>最后执行</TableHead>
+              <TableHead>最后执行时间</TableHead>
               <TableHead className="text-right">操作</TableHead>
             </TableRow>
           </TableHeader>
@@ -232,6 +233,7 @@ export function TestCaseList({
                     />
                   </TableCell>
                 )}
+                <TableCell className="text-center">{testCase.id}</TableCell>
                 <TableCell className="font-medium">
                   <Link href={`/test-cases/${testCase.id}`} className="hover:underline">
                     {testCase.title}

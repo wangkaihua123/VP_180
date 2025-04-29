@@ -412,52 +412,56 @@ export default function TestCasesPage() {
               
               {/* 分页控件 */}
               {testCases.length > 0 && (
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-4 pt-4 border-t gap-4">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-gray-600">每页显示:</span>
-                    <Select 
-                      value={pageSize.toString()} 
-                      onValueChange={(value) => setPageSize(Number(value))}
-                    >
-                      <SelectTrigger className="w-[80px] h-8">
-                        <SelectValue placeholder="10" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {pageSizeOptions.map(option => (
-                            <SelectItem key={option} value={option.toString()}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <span className="text-sm text-gray-600 whitespace-nowrap">
+                <div className="mt-4 pt-4 border-t">
+                  <div className="flex items-center">
+                    <span className="text-sm text-gray-500 mr-2">每页显示:</span>
+                    <div className="inline-block">
+                      <Select 
+                        value={pageSize.toString()} 
+                        onValueChange={(value) => setPageSize(Number(value))}
+                      >
+                        <SelectTrigger className="w-[80px] h-8 min-h-0">
+                          <SelectValue placeholder="10" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {pageSizeOptions.map(option => (
+                              <SelectItem key={option} value={option.toString()}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <span className="text-sm text-gray-500 ml-2">
                       显示 {testCases.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}-
                       {Math.min(currentPage * pageSize, testCases.length)} 
-                      共 {testCases.length} 条
+                      条，共 {testCases.length} 条
                     </span>
                   </div>
                   
-                  <Pagination className="self-center md:self-end">
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious 
-                          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                          className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                        />
-                      </PaginationItem>
-                      
-                      {generatePaginationItems()}
-                      
-                      <PaginationItem>
-                        <PaginationNext 
-                          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                          className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
+                  <div className="flex justify-center mt-4">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious 
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                        
+                        {generatePaginationItems()}
+                        
+                        <PaginationItem>
+                          <PaginationNext 
+                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
                 </div>
               )}
             </>
