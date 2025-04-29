@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import logging
 import os
-from skimage.metrics import structural_similarity as ssim
+# from skimage.metrics import structural_similarity as ssim
 from .log_config import setup_logger
 
 # 获取日志记录器

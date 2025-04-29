@@ -1,6 +1,5 @@
 import logging
 import os
-import allure
 
 # 添加TRACE日志级别 - 比DEBUG更详细
 TRACE = 5  # 自定义级别，数值低于DEBUG(10)
