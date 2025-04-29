@@ -130,5 +130,16 @@
     "description": "",
     "script_content": "{\"repeatCount\": 5, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"串口关-开机\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"waitTime\": 10000}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": true
+  },
+  {
+    "id": 13,
+    "title": "企鹅企鹅",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-04-29 20:10",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取图像\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
+    "serial_connect": false
   }
 ]

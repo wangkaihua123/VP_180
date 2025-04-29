@@ -87,9 +87,19 @@ export default function TestCasesPage() {
       if (response.success) {
         const testCasesData = response.test_cases || [];
         
-        // 直接使用API返回的测试用例数据，包括status字段
-        console.log("测试用例数据:", testCasesData);
-        setTestCases(testCasesData);
+        // 对测试用例按创建时间或ID进行排序，最新的放在前面
+        const sortedTestCases = [...testCasesData].sort((a, b) => {
+          // 首先尝试按创建时间降序排序
+          if (a.create_time && b.create_time) {
+            return new Date(b.create_time).getTime() - new Date(a.create_time).getTime();
+          }
+          // 如果没有创建时间，则按ID降序排序（通常更大的ID表示更新的记录）
+          return b.id - a.id;
+        });
+        
+        // 直接使用排序后的测试用例数据
+        console.log("测试用例数据（已排序）:", sortedTestCases);
+        setTestCases(sortedTestCases);
       } else {
         toast({
           title: "加载失败",

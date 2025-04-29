@@ -57,8 +57,9 @@ const getVerificationSteps = () => {
   try {
     return Object.entries((STEP_METHODS as StepMethods)?.验证步骤 || {}).map(([key, value]) => ({
       value: key,
-      label: `${key} (${value.description})`,
-      verification_key: value.verification_key
+      label: key,
+      verification_key: value.verification_key,
+      description: value.description
     }));
   } catch (error) {
     console.error('Error loading verification steps:', error);
@@ -577,13 +578,18 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 <SelectValue placeholder="选择验证类型" />
                               </SelectTrigger>
                               <SelectContent>
-                                {verificationOptions.map((step) => (
-                                  <SelectItem key={step.value} value={step.value}>
-                                    {step.label}
+                                {verificationOptions.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
+                            {step.verification_key && (
+                              <div className="mt-2 text-sm text-gray-500">
+                                {verificationOptions.find(opt => opt.value === step.verification_key)?.description}
+                              </div>
+                            )}
                           </div>
 
                           {verificationOptions.find(opt => opt.value === step.verification_key)?.verification_key === "图像验证" ? (

@@ -84,33 +84,78 @@ const STEP_METHODS: StepMethods = {
   },
   "验证步骤": {
     "对比图像相似度": {
-      description: "检查两张图片是否相似",
+      description: "使用SSIM结构相似性指数比较两张图片，检测图像结构变化。SSIM考虑亮度、对比度和结构三个方面，对光照变化较为鲁棒，适合检测界面布局变化。",
       verification_key: "图像验证",
       params: ["img1", "img2"],
       expected_result: true
     },
     "对比图像关键点": {
-      description: "检查图像是否存在关键点",
+      description: "使用ORB特征点检测算法提取并匹配两张图像的关键点。通过比较匹配的特征点数量判断图像变化，适合检测物体是否存在、界面是否缩放等场景。",
       verification_key: "图像验证",
       params: ["img1", "img2"],
       expected_result: true
     },
-    "检查数值范围": {
-      description: "检查数值是否在指定范围内",
-      verification_key: "数值验证",
-      params: ["value", "min_value", "max_value"],
+    "直方图比较": {
+      description: "将图像转换为HSV色彩空间，计算H通道的颜色直方图并比较相似度。使用cv2.compareHist函数计算相关系数，对光照和视角变化有较好的容忍度，适合比较图像整体颜色分布是否相似。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 0.90
+      },
       expected_result: true
     },
-    "检查文本内容": {
-      description: "检查文本是否包含指定内容",
-      verification_key: "文本验证",
-      params: ["text", "expected_text"],
+    "颜色差异分析": {
+      description: "逐像素计算两张图像的RGB颜色差异，并取平均值。使用numpy直接计算像素差的绝对值并求均值，对细微变化非常敏感，适合精确检测图像细节变化，如界面色调、亮度调整等。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 30.0
+      },
       expected_result: true
     },
-    "检查元素状态": {
-      description: "检查界面元素的状态",
-      verification_key: "界面验证",
-      params: ["element_name", "expected_state"],
+    "模板匹配": {
+      description: "使用OpenCV的matchTemplate函数，在大图中查找小图(模板)的位置。采用归一化互相关系数方法(TM_CCOEFF_NORMED)，对模板在图像中的匹配程度进行打分。适合检测特定UI元素、图标或按钮是否出现在界面中。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 0.8
+      },
+      expected_result: true
+    },
+    "边缘检测比较": {
+      description: "使用Canny边缘检测算法提取图像的边缘特征，然后比较两张图像的边缘相似度。该方法着重比较图像的结构和轮廓，对光照变化不敏感，适合检测UI界面布局、按钮形状等结构性变化。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 0.60
+      },
+      expected_result: true
+    },
+    "亮度差异比较": {
+      description: "计算两张图像的平均亮度差异。该方法专注于检测画面整体亮度变化，适用于检测夜间模式切换、背光调节、亮度设置等功能的测试场景。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 20.0
+      },
+      expected_result: true
+    },
+    "对比度比较": {
+      description: "通过计算灰度图像的标准差来衡量图像对比度，并比较两张图像的对比度相似性。适用于检测对比度调节、图像增强等功能，以及评估显示质量的变化。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 0.70
+      },
+      expected_result: true
+    },
+    "纹理特征比较": {
+      description: "使用简化的纹理特征分析方法，比较两张图像的纹理相似度。该方法适用于检测表面质感、图案细节等微观变化，对于材质渲染、滤镜效果等功能测试特别有效。",
+      verification_key: "图像验证",
+      params: ["img1", "img2", "threshold"],
+      default_values: {
+        threshold: 0.65
+      },
       expected_result: true
     }
   }
