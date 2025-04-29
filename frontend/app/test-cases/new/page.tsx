@@ -59,7 +59,8 @@ const getVerificationSteps = () => {
       value: key,
       label: key,
       verification_key: value.verification_key,
-      description: value.description
+      description: value.description,
+      short_description: value.short_description
     }));
   } catch (error) {
     console.error('Error loading verification steps:', error);
@@ -580,7 +581,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               <SelectContent>
                                 {verificationOptions.map((option) => (
                                   <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
+                                    {option.label} - {option.short_description}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
