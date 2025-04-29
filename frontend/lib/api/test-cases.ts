@@ -172,5 +172,30 @@ export const testCasesAPI = {
         message: error instanceof Error ? error.message : "清空图片和截图目录失败"
       };
     }
+  },
+
+  /**
+   * 保存测试报告数据到JSON文件
+   * @param reportData 要保存的测试报告数据
+   * @returns 操作结果
+   */
+  async saveReport(reportData: any) {
+    try {
+      const response = await fetch('/api/reports/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("保存测试报告失败:", error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "保存测试报告失败"
+      };
+    }
   }
 } 

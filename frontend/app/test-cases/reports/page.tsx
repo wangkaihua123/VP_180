@@ -1,18 +1,18 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { FileDown, Share2 } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import Link from 'next/link'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { useToast } from "@/components/ui/use-toast"
 
-// 模拟测试报告数据
-const testReportData = {
+// 默认测试报告数据结构
+const defaultReportData = {
   project: 'VP-180项目',
   date: '2025年4月15日',
   passRate: 92,
@@ -50,7 +50,7 @@ const testReportData = {
 }
 
 // 环境信息组件
-function EnvironmentInfo({ info }: { info: typeof testReportData.environment }) {
+function EnvironmentInfo({ info }: { info: typeof defaultReportData.environment }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
       <Card>
@@ -103,6 +103,75 @@ function EnvironmentInfo({ info }: { info: typeof testReportData.environment }) 
 
 // 测试报告组件
 export default function TestReportsPage() {
+  const { toast } = useToast()
+  const [reportData, setReportData] = useState(defaultReportData)
+  const [loading, setLoading] = useState(true)
+
+  // 加载报告数据函数
+  const loadReportData = async () => {
+    try {
+      setLoading(true)
+      // 尝试从 /api/reports/latest 获取最新报告数据
+      const response = await fetch('/api/reports/latest')
+      if (!response.ok) {
+        throw new Error(`获取报告数据失败: ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      if (data.success && data.data) {
+        console.log('成功加载报告数据:', data.data)
+        
+        // 使用加载的数据更新状态
+        setReportData({
+          ...defaultReportData, // 保留默认值作为后备
+          ...data.data, // 使用加载的数据覆盖默认值
+          // 确保必要的字段都存在，如果API返回的数据缺少某些字段，使用默认值
+          modulesPerformance: data.data.modulesPerformance || defaultReportData.modulesPerformance,
+          failedTestCases: data.data.failedTestCases || defaultReportData.failedTestCases,
+          environment: data.data.environment || defaultReportData.environment,
+        })
+        
+        toast({
+          title: "报告已更新",
+          description: "已加载最新的测试报告数据",
+        })
+      } else {
+        console.warn('加载报告数据时出现问题:', data.message || '未返回有效数据')
+        // 如果加载失败，使用默认数据
+        toast({
+          title: "使用默认报告数据",
+          description: data.message || "未能加载最新报告数据",
+        })
+      }
+    } catch (error) {
+      console.error('加载报告数据出错:', error)
+      toast({
+        title: "加载报告失败",
+        description: error instanceof Error ? error.message : "加载报告数据时发生未知错误",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // 初始加载报告数据
+  useEffect(() => {
+    loadReportData()
+  }, [])  // 注意这里移除了toast依赖，因为已经把loadReportData提取为组件方法
+
+  // 如果正在加载，显示加载状态
+  if (loading) {
+    return (
+      <div className="container mx-auto py-8 px-4 flex items-center justify-center min-h-[50vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <div className="text-lg">加载测试报告数据...</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto py-8 px-4">
       {/* 通过率提示 */}
@@ -110,7 +179,7 @@ export default function TestReportsPage() {
         <div className="rounded-full bg-green-50 px-3 py-1 text-sm font-medium flex items-center">
           <span className="mr-2">通过率</span> 
           <svg className="h-4 w-4 text-amber-500 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17l-5.878 3.59 1.598-6.7-5.23-4.48 6.865-.55L12 2.5l2.645 6.36 6.866.55-5.231 4.48 1.598 6.7z"/></svg>
-          <span className="text-green-600">{testReportData.passRate}%</span>
+          <span className="text-green-600">{reportData.passRate}%</span>
         </div>
       </div>
       
@@ -118,12 +187,16 @@ export default function TestReportsPage() {
         <div>
           <h1 className="text-2xl font-bold mb-1">测试报告 2.0</h1>
           <div className="text-sm text-muted-foreground">
-            <span>项目: {testReportData.project}</span>
+            <span>项目: {reportData.project}</span>
             <span className="mx-2">•</span>
-            <span>日期: {testReportData.date}</span>
+            <span>日期: {reportData.date}</span>
           </div>
         </div>
         <div className="flex mt-4 md:mt-0 space-x-2">
+          <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => loadReportData()}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+            <span>刷新报告</span>
+          </Button>
           <Button variant="outline" size="sm" className="flex items-center gap-1">
             <FileDown className="h-4 w-4" />
             <span>导出数据</span>
@@ -142,8 +215,8 @@ export default function TestReportsPage() {
             <CardTitle className="text-base font-medium">测试用例总量</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{testReportData.totalCases}</div>
-            <div className="text-sm text-green-500">较上次 {testReportData.compareLastTime.total}</div>
+            <div className="text-3xl font-bold">{reportData.totalCases}</div>
+            <div className="text-sm text-green-500">较上次 {reportData.compareLastTime.total}</div>
           </CardContent>
         </Card>
         <Card>
@@ -151,8 +224,8 @@ export default function TestReportsPage() {
             <CardTitle className="text-base font-medium">成功用例</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">{testReportData.passedCases}</div>
-            <div className="text-sm">通过率 {testReportData.passRate}%</div>
+            <div className="text-3xl font-bold text-green-600">{reportData.passedCases}</div>
+            <div className="text-sm">通过率 {reportData.passRate}%</div>
           </CardContent>
         </Card>
         <Card>
@@ -160,8 +233,8 @@ export default function TestReportsPage() {
             <CardTitle className="text-base font-medium">失败用例</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-red-600">{testReportData.failedCases}</div>
-            <div className="text-sm text-red-500">较上次 {testReportData.compareLastTime.failed}</div>
+            <div className="text-3xl font-bold text-red-600">{reportData.failedCases}</div>
+            <div className="text-sm text-red-500">较上次 {reportData.compareLastTime.failed}</div>
           </CardContent>
         </Card>
       </div>
@@ -187,7 +260,7 @@ export default function TestReportsPage() {
       {/* 最近测试报告表现 */}
       <h2 className="text-xl font-bold mb-6">最近测试报告表现</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {testReportData.modulesPerformance.map((module, index) => (
+        {reportData.modulesPerformance.map((module, index) => (
           <Card key={index}>
             <CardHeader className="pb-2">
               <div className="flex justify-between items-center">
@@ -223,7 +296,7 @@ export default function TestReportsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {testReportData.failedTestCases.map((testCase) => (
+              {reportData.failedTestCases.map((testCase) => (
                 <TableRow key={testCase.id}>
                   <TableCell className="font-medium">{testCase.id}</TableCell>
                   <TableCell>{testCase.type}</TableCell>
@@ -264,12 +337,12 @@ export default function TestReportsPage() {
 
       {/* 测试环境信息 */}
       <h2 className="text-xl font-bold mb-4">测试环境信息</h2>
-      <EnvironmentInfo info={testReportData.environment} />
+      <EnvironmentInfo info={reportData.environment} />
 
       {/* 生成时间和团队信息 */}
       <div className="text-sm text-muted-foreground mt-8 pb-4 flex flex-col md:flex-row md:justify-between">
-        <div>生成时间: {testReportData.generatedTime}</div>
-        <div>测试团队: {testReportData.team}</div>
+        <div>生成时间: {reportData.generatedTime}</div>
+        <div>测试团队: {reportData.team}</div>
       </div>
 
       {/* 分享和打印按钮 */}
