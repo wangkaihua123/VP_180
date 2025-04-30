@@ -1,31 +1,20 @@
 {
-  "sshHost": "10.0.18.1",
-  "sshPort": 22,
-  "sshUsername": "root",
-  "sshPassword": "firefly",
   "serialPort": "COM4",
   "serialBaudRate": "115200",
   "projects": [
     {
-      "id": "4855856862",
-      "name": "VP-180项目",
-      "description": "镜中镜图像处理器",
-      "createTime": "2025-04-29T15:03:40.120Z",
-      "updateTime": "2025-04-29T15:10:23.736Z"
-    },
-    {
-      "id": "4855856861",
-      "name": "VP-180项目2",
-      "description": "243432",
-      "createTime": "2025-04-29T15:44:45.585Z",
-      "updateTime": "2025-04-29T15:48:03.191Z"
-    },
-    {
-      "id": "7451980237",
+      "id": "1863307800",
       "name": "VP-180项目我",
       "description": "我我完全",
-      "createTime": "2025-04-29T15:49:05.198Z",
-      "updateTime": "2025-04-29T15:49:05.198Z"
+      "createTime": "2025-04-30T06:56:26.330Z",
+      "updateTime": "2025-04-30T06:56:26.330Z"
+    },
+    {
+      "id": "8805870056",
+      "name": "VP-180项目我2",
+      "description": "243432",
+      "createTime": "2025-04-30T07:08:00.587Z",
+      "updateTime": "2025-04-30T07:08:00.587Z"
     }
   ]
 }
