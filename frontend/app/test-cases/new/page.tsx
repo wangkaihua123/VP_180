@@ -45,28 +45,93 @@ interface Functions {
 
 const getOperationSteps = () => {
   try {
-    return Object.entries((STEP_METHODS as StepMethods)?.操作步骤 || {}).map(([key]) => ({
+    // 定义操作类别
+    const categories = {
+      "基本操作": ["点击按钮", "长按按钮", "滑动操作"],
+      "随机操作": ["随机点击", "单点随机点击", "双点随机点击", "三点随机点击"],
+      "图像操作": ["获取图像", "获取截图"],
+      "设备控制": ["串口开机", "串口关机", "串口关-开机", "SSH重启设备", "串口重启设备"],
+      "其他操作": ["等待时间"]
+    };
+    
+    // 获取所有步骤
+    const allSteps = Object.entries((STEP_METHODS as StepMethods)?.操作步骤 || {}).map(([key]) => ({
       value: key,
-      label: key
+      label: key,
+      category: Object.entries(categories).find(([_, steps]) => steps.includes(key))?.[0] || "其他操作"
     }));
+    
+    // 按类别组织步骤
+    const stepsByCategory: Record<string, {value: string, label: string}[]> = {};
+    
+    // 初始化类别
+    Object.keys(categories).forEach(category => {
+      stepsByCategory[category] = [];
+    });
+    
+    // 将步骤分组到对应类别
+    allSteps.forEach(step => {
+      if (stepsByCategory[step.category]) {
+        stepsByCategory[step.category].push({
+          value: step.value,
+          label: step.label
+        });
+      }
+    });
+    
+    return { stepsByCategory, allSteps };
   } catch (error) {
     console.error('Error loading operation steps:', error);
-    return [];
+    return { stepsByCategory: {}, allSteps: [] };
   }
 };
 
 const getVerificationSteps = () => {
   try {
-    return Object.entries((STEP_METHODS as StepMethods)?.验证步骤 || {}).map(([key, value]) => ({
+    // 定义验证类别
+    const categories = {
+      "图像验证": ["对比图像相似度", "对比图像关键点", "直方图比较", "颜色差异分析", "模板匹配", "边缘检测比较"],
+      "亮度对比验证": ["亮度差异比较", "对比度比较"],
+      "纹理验证": ["纹理特征比较"],
+      "数值验证": ["检查数值范围"],
+      "其他验证": []
+    };
+    
+    // 获取所有验证步骤
+    const allSteps = Object.entries((STEP_METHODS as StepMethods)?.验证步骤 || {}).map(([key, value]) => ({
       value: key,
       label: key,
       verification_key: value.verification_key,
       description: value.description,
-      short_description: value.short_description || ""
+      short_description: value.short_description || "",
+      category: Object.entries(categories).find(([_, steps]) => steps.includes(key))?.[0] || "其他验证"
     }));
+    
+    // 按类别组织验证步骤
+    const stepsByCategory: Record<string, {value: string, label: string, verification_key?: string, description: string, short_description: string}[]> = {};
+    
+    // 初始化类别
+    Object.keys(categories).forEach(category => {
+      stepsByCategory[category] = [];
+    });
+    
+    // 将验证步骤分组到对应类别
+    allSteps.forEach(step => {
+      if (stepsByCategory[step.category]) {
+        stepsByCategory[step.category].push({
+          value: step.value,
+          label: step.label,
+          verification_key: step.verification_key,
+          description: step.description,
+          short_description: step.short_description
+        });
+      }
+    });
+    
+    return { stepsByCategory, allSteps };
   } catch (error) {
     console.error('Error loading verification steps:', error);
-    return [];
+    return { stepsByCategory: {}, allSteps: [] };
   }
 };
 
@@ -124,6 +189,10 @@ const OPERATION_TYPES = {
   HOVER: "hover",
   UPLOAD: "upload",
   SERIAL_POWER_CYCLE: "serial_power_cycle", // 新增串口关-开机选项
+  RANDOM_CLICK: "random_click", // 随机点击
+  SINGLE_RANDOM_CLICK: "single_random_click", // 单点随机点击
+  DOUBLE_RANDOM_CLICK: "double_random_click", // 双点随机点击
+  TRIPLE_RANDOM_CLICK: "triple_random_click", // 三点随机点击
 } as const
 
 export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps) {
@@ -169,8 +238,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   })
 
   // 在组件内部获取步骤选项
-  const operationOptions = useMemo(() => getOperationSteps(), []);
-  const verificationOptions = useMemo(() => getVerificationSteps(), []);
+  const { stepsByCategory: operationStepsByCategory, allSteps: allOperationSteps } = useMemo(() => getOperationSteps(), []);
+  const { stepsByCategory: verificationStepsByCategory, allSteps: allVerificationSteps } = useMemo(() => getVerificationSteps(), []);
   const buttonOptions = useMemo(() => getButtonOptions(), []);
 
   // 加载项目列表
@@ -514,10 +583,17 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               <SelectValue placeholder="选择操作类型" />
                             </SelectTrigger>
                             <SelectContent>
-                              {operationOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
+                              {Object.entries(operationStepsByCategory).map(([category, options]) => (
+                                <div key={category}>
+                                  <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 bg-gray-50">
+                                    {category}
+                                  </div>
+                                  {options.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </div>
                               ))}
                             </SelectContent>
                           </Select>
@@ -665,21 +741,28 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 <SelectValue placeholder="选择验证类型" />
                               </SelectTrigger>
                               <SelectContent>
-                                {verificationOptions.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
-                                    {option.label} - {option.short_description}
-                                  </SelectItem>
+                                {Object.entries(verificationStepsByCategory).map(([category, options]) => (
+                                  <div key={category}>
+                                    <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 bg-gray-50">
+                                      {category}
+                                    </div>
+                                    {options.map((option) => (
+                                      <SelectItem key={option.value} value={option.value}>
+                                        {option.label} - {option.short_description}
+                                      </SelectItem>
+                                    ))}
+                                  </div>
                                 ))}
                               </SelectContent>
                             </Select>
                             {step.verification_key && (
                               <div className="mt-2 text-sm text-gray-500">
-                                {verificationOptions.find(opt => opt.value === step.verification_key)?.description}
+                                {allVerificationSteps.find(opt => opt.value === step.verification_key)?.description}
                               </div>
                             )}
                           </div>
 
-                          {verificationOptions.find(opt => opt.value === step.verification_key)?.verification_key === "图像验证" && (
+                          {allVerificationSteps.find(opt => opt.value === step.verification_key)?.verification_key === "图像验证" && (
                             <div className="space-y-2">
                               <Label className="text-sm font-medium">图像选择</Label>
                               <div className="grid grid-cols-2 gap-4">

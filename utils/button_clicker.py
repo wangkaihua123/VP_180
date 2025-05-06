@@ -2,6 +2,7 @@
 import os
 import time
 import logging
+import random
 from .log_config import setup_logger
 try:
     from .Config import FUNCTIONS
@@ -22,6 +23,21 @@ class ButtonClicker:
         self.ssh = ssh_connection
         if not FUNCTIONS:
             logger.warning("FUNCTIONS配置为空，按钮名称查找功能可能无法使用")
+        
+        # 屏幕分辨率 - 根据实际情况调整
+        self.screen_width = 1920  # 默认宽度，实际应从设备获取
+        self.screen_height = 1080  # 默认高度，实际应从设备获取
+        
+        # 随机点击的区域划分
+        self.grid_cols = 8  # 水平划分为8列
+        self.grid_rows = 10  # 垂直划分为10行
+        
+        # 随机点击类型概率分布
+        self.click_type_probabilities = {
+            'single': 0.7,  # 单点点击概率为70%
+            'double': 0.2,  # 双点点击概率为20%
+            'triple': 0.1   # 三点点击概率为10%
+        }
     
     def click_button(self, x=None, y=None, button_name=None, description="按钮"):
         """
@@ -150,3 +166,104 @@ class ButtonClicker:
         except Exception as e:
             logger.error(f"滑动操作异常: {str(e)}")
             return False
+            
+    def _get_random_grid_point(self):
+        """获取一个随机网格点的坐标"""
+        # 随机选择一个网格单元
+        col = random.randint(0, self.grid_cols - 1)
+        row = random.randint(0, self.grid_rows - 1)
+        
+        # 计算网格单元的中心点坐标
+        cell_width = self.screen_width / self.grid_cols
+        cell_height = self.screen_height / self.grid_rows
+        
+        x = int(col * cell_width + cell_width / 2)
+        y = int(row * cell_height + cell_height / 2)
+        
+        return x, y
+    
+    def random_click(self, click_type=None):
+        """
+        执行随机点击操作
+        :param click_type: 点击类型，可以是 'single', 'double', 'triple' 或 None (随机选择)
+        :return: 是否点击成功
+        """
+        # 如果未指定点击类型，则根据概率分布随机选择
+        if click_type is None:
+            rand = random.random()
+            if rand < self.click_type_probabilities['single']:
+                click_type = 'single'
+            elif rand < self.click_type_probabilities['single'] + self.click_type_probabilities['double']:
+                click_type = 'double'
+            else:
+                click_type = 'triple'
+        
+        logger.info(f"执行{click_type}点随机点击")
+        
+        # 检查SSH连接是否有效
+        if not self.ssh or not hasattr(self.ssh, 'exec_command'):
+            logger.error("SSH连接无效，无法执行随机点击")
+            return False
+        
+        try:
+            if click_type == 'single':
+                # 单点点击
+                x, y = self._get_random_grid_point()
+                command = f"python3 /app/jzj/touch_click.py {x} {y}"
+                logger.debug(f"执行单点随机点击: ({x}, {y})")
+                
+            elif click_type == 'double':
+                # 双点点击（同时点击两个点）
+                x1, y1 = self._get_random_grid_point()
+                x2, y2 = self._get_random_grid_point()
+                # 确保两个点不重叠
+                while abs(x1 - x2) < 50 and abs(y1 - y2) < 50:
+                    x2, y2 = self._get_random_grid_point()
+                
+                command = f"python3 /app/jzj/touch_click.py {x1} {y1} --multi-touch {x2} {y2}"
+                logger.debug(f"执行双点随机点击: ({x1}, {y1}), ({x2}, {y2})")
+                
+            else:  # triple
+                # 三点点击（同时点击三个点）
+                x1, y1 = self._get_random_grid_point()
+                x2, y2 = self._get_random_grid_point()
+                x3, y3 = self._get_random_grid_point()
+                
+                # 确保三个点都不重叠
+                while abs(x1 - x2) < 50 and abs(y1 - y2) < 50:
+                    x2, y2 = self._get_random_grid_point()
+                while (abs(x1 - x3) < 50 and abs(y1 - y3) < 50) or (abs(x2 - x3) < 50 and abs(y2 - y3) < 50):
+                    x3, y3 = self._get_random_grid_point()
+                
+                command = f"python3 /app/jzj/touch_click.py {x1} {y1} --multi-touch {x2} {y2} {x3} {y3}"
+                logger.debug(f"执行三点随机点击: ({x1}, {y1}), ({x2}, {y2}), ({x3}, {y3})")
+            
+            # 执行命令
+            stdin, stdout, stderr = self.ssh.exec_command(command)
+            
+            # 获取命令输出
+            output = stdout.read().decode().strip()
+            error = stderr.read().decode().strip()
+            
+            if error:
+                logger.error(f"随机点击出错: {error}")
+                return False
+                
+            logger.debug(f"随机点击成功: {output}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"随机点击异常: {str(e)}")
+            return False
+            
+    def single_random_click(self):
+        """执行单点随机点击"""
+        return self.random_click('single')
+        
+    def double_random_click(self):
+        """执行双点随机点击"""
+        return self.random_click('double')
+        
+    def triple_random_click(self):
+        """执行三点随机点击"""
+        return self.random_click('triple')

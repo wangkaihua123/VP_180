@@ -148,7 +148,7 @@ class TestCase:
                 script = json.loads(test_case_data['script_content'])
                 
                 # 需要串口连接的操作关键字列表
-                serial_operations = ['串口开机', '串口关机']
+                serial_operations = ['串口开机', '串口关机', '串口关-开机']
                 
                 # 检查是否包含串口操作
                 if 'operationSteps' in script:

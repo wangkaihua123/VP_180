@@ -281,6 +281,38 @@ class TestCaseExecutor:
                     'message': f'执行滑动: ({x1},{y1}) -> ({x2},{y2})'
                 }
                 
+            elif operation_key == '随机点击':
+                # 使用 ButtonClicker 的 random_click 方法
+                success = self.button_clicker.random_click()
+                return {
+                    'success': success,
+                    'message': f'执行随机点击'
+                }
+                
+            elif operation_key == '单点随机点击':
+                # 使用 ButtonClicker 的 single_random_click 方法
+                success = self.button_clicker.single_random_click()
+                return {
+                    'success': success,
+                    'message': f'执行单点随机点击'
+                }
+                
+            elif operation_key == '双点随机点击':
+                # 使用 ButtonClicker 的 double_random_click 方法
+                success = self.button_clicker.double_random_click()
+                return {
+                    'success': success,
+                    'message': f'执行双点随机点击'
+                }
+                
+            elif operation_key == '三点随机点击':
+                # 使用 ButtonClicker 的 triple_random_click 方法
+                success = self.button_clicker.triple_random_click()
+                return {
+                    'success': success,
+                    'message': f'执行三点随机点击'
+                }
+                
             elif operation_key == '等待时间':
                 # 获取等待时间，单位为毫秒
                 wait_time_ms = step.get('waitTimeMs', 1000)
