@@ -26,7 +26,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" className="overflow-y-scroll">
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: `
+          :root {
+            --removed-body-scroll-bar-size: 0px;
+          }
+          body {
+            overflow-x: hidden;
+          }
+        `}} />
+      </head>
       <body className={inter.className}>
         <MainNav />
         <div className="pt-16">

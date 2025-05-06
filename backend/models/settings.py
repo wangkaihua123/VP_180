@@ -92,8 +92,16 @@ class Settings:
     def update_serial_settings(serial_data):
         """更新串口设置"""
         settings = Settings.load()
-        # 更新设置
-        for key in ["serialPort", "serialBaudRate"]:
+        # 更新设置，只处理串口相关字段，避免覆盖其他设置
+        if "serialPort" in serial_data:
+            settings["serialPort"] = serial_data["serialPort"]
+        if "serialBaudRate" in serial_data:
+            settings["serialBaudRate"] = serial_data["serialBaudRate"]
+        
+        # 确保不会因为前端传入的空数据覆盖SSH设置
+        # 移除传入的SSH相关字段，防止它们覆盖已有设置
+        for key in ["sshHost", "sshPort", "sshUsername", "sshPassword"]:
             if key in serial_data:
-                settings[key] = serial_data[key]
+                del serial_data[key]
+        
         return Settings.save(settings) 

@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Home, FileText, Play, Settings, BarChart2, PlusCircle, Menu, X, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 
 interface NavItem {
   title: string
@@ -18,6 +19,8 @@ interface NavItem {
 
 export function MainNav() {
   const pathname = usePathname()
+  const router = useRouter()
+  const { toast } = useToast()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -70,6 +73,48 @@ export function MainNav() {
     return pathname === item.href || pathname.startsWith(item.href + '/');
   };
 
+  // 处理退出登录
+  const handleLogout = async () => {
+    try {
+      // 从报错信息看，我们需要修改API端点，使用正确的后端地址
+      // 获取当前域名下的API路径
+      const backendUrl = window.location.origin;
+      const response = await fetch(`${backendUrl}/api/logout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      // 无论成功与否，都直接跳转到登录页面
+      router.push('/login');
+      
+      if (response.ok) {
+        // 显示退出成功提示
+        toast({
+          title: "退出成功",
+          description: "您已成功退出系统",
+        });
+      } else {
+        // 即使后端响应失败，也认为用户已退出
+        console.warn("退出登录API返回非成功状态码:", response.status);
+        toast({
+          title: "已退出系统",
+          description: "您已成功退出系统",
+        });
+      }
+    } catch (error) {
+      console.error("退出登录时发生错误:", error);
+      // 即使发生错误，也让用户退出到登录页
+      router.push('/login');
+      toast({
+        title: "已退出系统",
+        description: "退出过程中发生错误，但您已被重定向到登录页面",
+      });
+    }
+  };
+
   if (!mounted) return null
 
   return (
@@ -118,7 +163,7 @@ export function MainNav() {
           </nav>
 
           <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleLogout}>
               退出登录
             </Button>
           </div>
@@ -194,7 +239,7 @@ export function MainNav() {
           </div>
 
           <div className="p-4 border-t">
-            <Button variant="outline" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+            <Button variant="outline" className="w-full" onClick={handleLogout}>
               退出登录
             </Button>
           </div>

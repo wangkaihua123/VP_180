@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
-import { sshSettingsAPI, serialSettingsAPI } from "@/lib/api"
+import { sshSettingsAPI, serialSettingsAPI, unifiedSettingsAPI } from "@/lib/api"
 import type { SSHSettings, SerialPort, SerialSettings } from "@/app/api/routes"
 import { Toaster } from "@/components/ui/toaster"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -264,19 +264,21 @@ export default function SettingsPage() {
     setIsLoading(true)
     
     try {
-      // 保存SSH设置
-      await sshSettingsAPI.update(settings)
-      
-      // 保存串口设置，转换为正确的格式
-      const serialData = {
-        serialPort: serialSettings.serialPort,
-        serialBaudRate: serialSettings.serialBaudRate
-      }
-      await serialSettingsAPI.update(serialData)
+      // 使用统一的API保存所有设置
+      const result = await unifiedSettingsAPI.saveAllSettings(
+        settings,
+        {
+          serialPort: serialSettings.serialPort,
+          serialBaudRate: isCustomBaudRate 
+            ? Number(serialSettings.serialBaudRate).toString() 
+            : serialSettings.serialBaudRate
+        },
+        ipSettings
+      )
       
       toast({
         title: "保存成功",
-        description: "SSH和串口设置已更新"
+        description: "所有设置已更新"
       })
     } catch (error) {
       console.error('保存设置失败:', error)
@@ -1055,7 +1057,7 @@ export default function SettingsPage() {
                   
                   <div className="flex justify-end mt-6">
                     <Button 
-                      onClick={handleSaveIpSettings}
+                      onClick={handleSaveClick}
                       disabled={isLoading}
                     >
                       {isLoading ? (
@@ -1083,7 +1085,8 @@ export default function SettingsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>确认保存设置</AlertDialogTitle>
             <AlertDialogDescription>
-              请注意：自动化测试用例需要同时连接SSH和串口才能正常运行。确认保存这些设置吗？
+              请确认是否保存所有设置？这将更新SSH连接、串口连接和IP设置.
+              <p className="mt-2 text-amber-600">注意：项目设置需要在项目设置页面单独保存。</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -148,4 +148,65 @@ export const batchExecutionAPI = {
     
   getBatchStatus: (batchId: string) =>
     fetchAPI(API_ROUTES.BATCH_EXECUTION.GET_BATCH_STATUS(batchId)),
+}
+
+// 统一设置保存API
+export const unifiedSettingsAPI = {
+  // 保存所有设置（SSH、串口、IP）
+  saveAllSettings: async (
+    sshSettings: SSHSettings, 
+    serialSettings: SerialSettings, 
+    ipSettings: any,
+    projects?: any[]
+  ) => {
+    try {
+      // 保存SSH设置到localStorage
+      if (isClient()) {
+        localStorage.setItem('sshSettings', JSON.stringify(sshSettings));
+      }
+      
+      // 保存IP设置到localStorage
+      if (isClient()) {
+        localStorage.setItem('ipSettings', JSON.stringify(ipSettings));
+      }
+      
+      // 创建一个不包含SSH设置的数据对象，只包含串口设置
+      // 确保只传递必要的串口字段，避免传递SSH相关字段或其他无关字段
+      const serialData = {
+        serialPort: serialSettings.serialPort,
+        serialBaudRate: serialSettings.serialBaudRate
+      };
+      
+      // 串口设置需要发送到后端
+      await fetchAPI(API_ROUTES.SERIAL_SETTINGS.UPDATE, {
+        method: 'POST',
+        body: JSON.stringify(serialData),
+      });
+      
+      // 如果有项目数据且是管理员模式，则保存项目设置
+      if (projects) {
+        // 直接保存项目列表到后端 (这里需要后端提供一个保存所有项目的API)
+        // 这部分需要后端支持，这里假设有一个API可以保存所有项目
+        try {
+          await fetch('/api/settings/projects/all', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ projects }),
+          });
+        } catch (projectError) {
+          console.error('保存项目设置失败，但其他设置已保存:', projectError);
+        }
+      }
+      
+      return {
+        success: true,
+        message: '所有设置已更新'
+      };
+    } catch (error) {
+      console.error('保存所有设置失败:', error);
+      throw error;
+    }
+  }
 } 

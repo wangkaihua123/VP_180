@@ -64,6 +64,34 @@ STEP_METHODS: StepMethods = {
                 "y2": 0
             }
         },
+        "随机点击": {
+            "operation_key": "随机点击",
+            "description": "随机点击屏幕上的点，根据设置的概率分配单点、双点或三点",
+            "operation_type": "点击",
+            "params": [],
+            "default_values": {}
+        },
+        "单点随机点击": {
+            "operation_key": "单点随机点击",
+            "description": "随机点击屏幕上的单个点",
+            "operation_type": "点击",
+            "params": [],
+            "default_values": {}
+        },
+        "双点随机点击": {
+            "operation_key": "双点随机点击",
+            "description": "同时随机点击屏幕上的两个点",
+            "operation_type": "点击",
+            "params": [],
+            "default_values": {}
+        },
+        "三点随机点击": {
+            "operation_key": "三点随机点击",
+            "description": "同时随机点击屏幕上的三个点",
+            "operation_type": "点击",
+            "params": [],
+            "default_values": {}
+        },
         "SSH重启设备": {
             "operation_key": "SSH重启设备",
             "description": "SSH重启设备",
