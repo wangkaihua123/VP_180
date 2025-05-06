@@ -221,3 +221,30 @@
 2025-04-30 00:25:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
 2025-04-30 00:25:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
 2025-04-30 00:25:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-05-06 21:09:07 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-06 21:09:07 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
+2025-05-06 21:09:07 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-05-06 21:09:07 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-05-06 21:09:49 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-06 21:09:51 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
+2025-05-06 21:09:51 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-05-06 21:09:51 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-05-06 21:10:00 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
+2025-05-06 21:10:00 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
+2025-05-06 21:10:00 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
+2025-05-06 21:14:42 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
+2025-05-06 21:14:42 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
+2025-05-06 21:14:42 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
+2025-05-06 21:14:42 - INFO - utils.serial_manager - 串口连接成功: COM4
+2025-05-06 21:14:42 - DEBUG - utils.serial_manager - 串口连接已关闭
+2025-05-06 21:14:57 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-06 21:14:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
+2025-05-06 21:14:59 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
+2025-05-06 21:14:59 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
+2025-05-06 21:14:59 - INFO - utils.serial_manager - 串口连接成功: COM4
+2025-05-06 21:14:59 - DEBUG - utils.serial_manager - 串口连接已关闭
+2025-05-06 21:19:24 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
+2025-05-06 21:19:24 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
+2025-05-06 21:19:24 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
+2025-05-06 21:19:24 - INFO - utils.serial_manager - 串口连接成功: COM4
+2025-05-06 21:19:24 - DEBUG - utils.serial_manager - 串口连接已关闭

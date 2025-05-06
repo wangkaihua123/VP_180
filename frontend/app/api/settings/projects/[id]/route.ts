@@ -2,20 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// 使用绝对路径保存设置文件，确保只操作一个地方
-const settingsFilePath = 'I:/VP-180/data/settings.json';
+// 使用相对路径和process.cwd()
+const settingsFilePath = path.join(process.cwd(), 'data', 'settings.json');
 
 // 读取设置文件
 function readSettings() {
   try {
     if (!fs.existsSync(settingsFilePath)) {
-      return {};
+      // 如果文件不存在，创建一个空的设置文件
+      const defaultSettings = { projects: [] };
+      writeSettings(defaultSettings);
+      return defaultSettings;
     }
     const fileContent = fs.readFileSync(settingsFilePath, 'utf-8');
     return JSON.parse(fileContent);
   } catch (error) {
     console.error('读取设置文件失败:', error);
-    return {};
+    return { projects: [] };
   }
 }
 

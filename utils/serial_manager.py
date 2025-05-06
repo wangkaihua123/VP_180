@@ -15,31 +15,52 @@ class SerialManager:
 
     def __init__(self, serialPort=None, serialBaudRate=None, timeout=1):
         logger.debug(f"SerialManager初始化参数: serialPort={serialPort}, serialBaudRate={serialBaudRate}, timeout={timeout}")
-        # 只在第一次初始化
-        if not hasattr(self, 'initialized') or not self.initialized:
-            if serialPort is None or serialBaudRate is None:
-                raise ValueError("必须传递serialPort和serialBaudRate参数！")
-            self.port = serialPort
+        
+        # 验证参数
+        if not serialPort:
+            logger.error("serialPort参数为空")
+            raise ValueError("serialPort不能为空！")
+        if not serialBaudRate:
+            logger.error("serialBaudRate参数为空")
+            raise ValueError("serialBaudRate不能为空！")
+            
+        # 确保参数类型正确
+        try:
+            self.port = str(serialPort).strip()
             self.baudrate = int(serialBaudRate)
-            self.timeout = timeout
-            self.initialized = True
-            logger.debug(f"串口管理器初始化完成: port={self.port}, baudrate={self.baudrate}")
+            self.timeout = int(timeout) if timeout else 1
+        except (ValueError, TypeError) as e:
+            logger.error(f"参数类型转换失败: {e}")
+            raise ValueError(f"参数类型错误: {e}")
+            
+        # 记录初始化状态
+        logger.info(f"串口管理器初始化: port={self.port}, baudrate={self.baudrate}, timeout={self.timeout}")
+        self.initialized = True
 
     @classmethod
     def get_instance(cls, serialPort=None, serialBaudRate=None, timeout=1):
         if cls._instance is None:
+            logger.debug("创建新的SerialManager实例")
             cls._instance = SerialManager(serialPort, serialBaudRate, timeout)
+        elif serialPort is not None and serialBaudRate is not None:
+            logger.debug("更新现有SerialManager实例参数")
+            cls._instance.port = str(serialPort).strip()
+            cls._instance.baudrate = int(serialBaudRate)
+            cls._instance.timeout = int(timeout) if timeout else 1
         return cls._instance
 
     @classmethod
     def get_client(cls):
         """获取已存在的串口连接或创建新的"""
         if cls._serial and cls._serial.is_open:
-            logger.debug("返回现有串口连接")
+            logger.debug(f"返回现有串口连接: port={cls._instance.port}")
             return cls._serial
         
-        instance = cls.get_instance()
-        return instance.connect()
+        if cls._instance is None:
+            logger.error("未初始化SerialManager实例")
+            raise RuntimeError("请先初始化SerialManager实例")
+            
+        return cls._instance.connect()
 
     @classmethod
     def is_connected(cls):
@@ -57,20 +78,27 @@ class SerialManager:
     def connect(self):
         """建立串口连接"""
         if self._serial and self._serial.is_open:
-            logger.debug("串口已连接")
+            logger.debug(f"串口已连接: port={self.port}")
             return self._serial
 
-        logger.debug(f"开始建立新的串口连接... port={self.port}, baudrate={self.baudrate}, timeout={self.timeout}")
+        logger.info(f"开始建立新的串口连接: port={self.port}, baudrate={self.baudrate}, timeout={self.timeout}")
         try:
+            # 验证端口是否为空
+            if not self.port:
+                raise ValueError("串口名称不能为空")
+                
             self._serial = serial.Serial(
                 port=self.port,
                 baudrate=self.baudrate,
                 timeout=self.timeout
             )
-            logger.debug("串口连接成功")
+            logger.info(f"串口连接成功: {self.port}")
             return self._serial
+        except serial.SerialException as e:
+            logger.error(f"串口连接失败(SerialException): port={self.port}, error={str(e)}")
+            return None
         except Exception as e:
-            logger.error(f"串口连接失败: {e}")
+            logger.error(f"串口连接失败(未知错误): port={self.port}, error={str(e)}")
             return None
 
     def disconnect(self):
