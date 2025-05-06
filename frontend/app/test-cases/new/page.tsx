@@ -89,7 +89,7 @@ const getOperationSteps = () => {
 const getVerificationSteps = () => {
   try {
     // 定义验证类别
-    const categories = {
+    const categories: Record<string, string[]> = {
       "图像验证": ["对比图像相似度", "对比图像关键点", "直方图比较", "颜色差异分析", "模板匹配", "边缘检测比较"],
       "亮度对比验证": ["亮度差异比较", "对比度比较"],
       "纹理验证": ["纹理特征比较"],
@@ -98,14 +98,27 @@ const getVerificationSteps = () => {
     };
     
     // 获取所有验证步骤
-    const allSteps = Object.entries((STEP_METHODS as StepMethods)?.验证步骤 || {}).map(([key, value]) => ({
-      value: key,
-      label: key,
-      verification_key: value.verification_key,
-      description: value.description,
-      short_description: value.short_description || "",
-      category: Object.entries(categories).find(([_, steps]) => steps.includes(key))?.[0] || "其他验证"
-    }));
+    const allSteps = Object.entries((STEP_METHODS as StepMethods)?.验证步骤 || {}).map(([key, value]) => {
+      // 查找步骤所属的类别
+      let category = "其他验证";
+      
+      // 遍历类别，查找包含当前步骤的类别
+      for (const [catName, steps] of Object.entries(categories)) {
+        if (Array.isArray(steps) && steps.includes(key)) {
+          category = catName;
+          break;
+        }
+      }
+      
+      return {
+        value: key,
+        label: key,
+        verification_key: value.verification_key,
+        description: value.description,
+        short_description: value.short_description || "",
+        category
+      };
+    });
     
     // 按类别组织验证步骤
     const stepsByCategory: Record<string, {value: string, label: string, verification_key?: string, description: string, short_description: string}[]> = {};
