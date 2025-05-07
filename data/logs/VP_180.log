@@ -1,250 +1,92 @@
-2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
-2025-04-29 20:07:11 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:07:21 - ERROR - utils.ssh_manager - 第3次ssh连接失败: timed out
-2025-04-29 20:07:21 - ERROR - utils.ssh_manager - SSH连接尝试3次后失败，重置计数器
-2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-29 20:07:21 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:07:31 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:07:31 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:07:31 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:07:31 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:07:31 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:07:31 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:07:31 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
-2025-04-29 20:07:32 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:07:42 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out
-2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
-2025-04-29 20:07:42 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:07:52 - ERROR - utils.ssh_manager - 第3次ssh连接失败: timed out
-2025-04-29 20:07:52 - ERROR - utils.ssh_manager - SSH连接尝试3次后失败，重置计数器
-2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-29 20:07:52 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:08:02 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
-2025-04-29 20:08:03 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:08:13 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out
-2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
-2025-04-29 20:08:13 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:08:23 - ERROR - utils.ssh_manager - 第3次ssh连接失败: timed out
-2025-04-29 20:08:23 - ERROR - utils.ssh_manager - SSH连接尝试3次后失败，重置计数器
-2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-29 20:08:23 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-29 20:08:33 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-04-29 20:08:33 - DEBUG - utils.serial_manager - 串口未连接
-2025-04-29 20:08:33 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:08:33 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 串口未连接
-2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:08:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 串口未连接
-2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:08:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 串口未连接
-2025-04-29 20:08:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:08:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:10:09 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:10:09 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:10:09 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:10:09 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:10:09 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=COM4, baudrate=115200, timeout=1
-2025-04-29 20:10:09 - ERROR - utils.serial_manager - 串口连接失败: could not open port 'COM4': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
-2025-04-29 20:45:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:45:59 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-04-29 20:45:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:45:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:45:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:45:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:45:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:49:37 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:49:37 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:49:37 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:49:54 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:49:54 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:49:54 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:49:55 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:49:55 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:49:55 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:50:12 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:50:12 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:50:12 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:50:34 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:50:34 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:50:34 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:51:23 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:51:23 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:51:23 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:53:52 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:53:52 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-04-29 20:53:52 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:53:52 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:55:29 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:55:29 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:55:29 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 20:55:29 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 20:55:29 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 20:55:29 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:27:15 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:27:15 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:27:15 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:27:15 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:27:15 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:27:15 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:28:13 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:28:13 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:28:13 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:51:36 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:51:36 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:51:36 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:51:36 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:51:36 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:51:36 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:53:05 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:53:05 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:53:05 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 21:58:20 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 21:58:20 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 21:58:20 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 22:03:42 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 22:03:42 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 22:03:42 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:03:05 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:03:05 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-04-29 23:03:05 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:03:05 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:03:05 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:03:05 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:03:05 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:07:35 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:07:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:07:35 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:07:35 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:07:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:07:35 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:09:37 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:09:37 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:09:37 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:09:37 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:09:37 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:09:37 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:14:51 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:14:51 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:14:51 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:15:53 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:15:53 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:15:53 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:24:49 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:24:49 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:24:49 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:24:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:24:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:24:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:34:51 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:34:51 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:34:51 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:41:22 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:41:22 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:41:22 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:44:00 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:44:00 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:44:00 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:44:30 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:44:30 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:44:30 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:47:52 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:47:52 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:47:52 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:49:21 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:49:21 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:49:21 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:49:21 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:49:21 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:49:21 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:51:35 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:51:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:51:35 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-29 23:51:35 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-29 23:51:35 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-29 23:51:35 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:20:00 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-04-30 00:20:00 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-04-30 00:20:09 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-30 00:20:09 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-04-30 00:20:09 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
-2025-04-30 00:20:09 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-04-30 00:20:10 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-04-30 00:20:19 - ERROR - utils.ssh_manager - 第2次ssh连接失败: timed out
-2025-04-30 00:21:37 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:21:37 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-04-30 00:21:37 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:21:37 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:21:37 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:21:37 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:21:37 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:21:43 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:21:43 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:21:43 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:21:43 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:21:43 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:21:43 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:21:56 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:21:56 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:21:56 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:21:56 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:21:56 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:21:56 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:25:55 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:25:55 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:25:55 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:25:55 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:25:55 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:25:55 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:25:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:25:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:25:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-04-30 00:25:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-04-30 00:25:59 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-04-30 00:25:59 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-05-06 21:09:07 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-05-06 21:09:07 - DEBUG - utils.serial_manager - 串口管理器初始化完成: port=, baudrate=9600
-2025-05-06 21:09:07 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-05-06 21:09:07 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-05-06 21:09:49 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-06 21:09:51 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-05-06 21:09:51 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-05-06 21:09:51 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-05-06 21:10:00 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-05-06 21:10:00 - DEBUG - utils.serial_manager - 开始建立新的串口连接... port=, baudrate=9600, timeout=1
-2025-05-06 21:10:00 - ERROR - utils.serial_manager - 串口连接失败: could not open port '': FileNotFoundError(2, '系统找不到指定的路径。', None, 3)
-2025-05-06 21:14:42 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-05-06 21:14:42 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
-2025-05-06 21:14:42 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
-2025-05-06 21:14:42 - INFO - utils.serial_manager - 串口连接成功: COM4
-2025-05-06 21:14:42 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-05-06 21:14:57 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-06 21:14:59 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-05-06 21:14:59 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
-2025-05-06 21:14:59 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
-2025-05-06 21:14:59 - INFO - utils.serial_manager - 串口连接成功: COM4
-2025-05-06 21:14:59 - DEBUG - utils.serial_manager - 串口连接已关闭
-2025-05-06 21:19:24 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-05-06 21:19:24 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
-2025-05-06 21:19:24 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
-2025-05-06 21:19:24 - INFO - utils.serial_manager - 串口连接成功: COM4
-2025-05-06 21:19:24 - DEBUG - utils.serial_manager - 串口连接已关闭
+2025-05-07 09:55:28 - DEBUG - utils.serial_manager - 创建新的SerialManager实例
+2025-05-07 09:55:28 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
+2025-05-07 09:55:28 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
+2025-05-07 09:55:28 - DEBUG - utils.serial_manager - 串口未连接
+2025-05-07 09:55:28 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
+2025-05-07 09:55:28 - INFO - utils.serial_manager - 串口连接成功: COM4
+2025-05-07 09:55:28 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-07 09:55:28 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-07 09:55:38 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-07 09:55:38 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-05-07 09:55:38 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
+2025-05-07 09:55:38 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-05-07 09:55:38 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 当前执行测试用例名称: 关开机，测试用例ID: 12，重复次数: 5
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 执行第 1/5 次测试
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 准备执行串口关-开机操作
+2025-05-07 09:55:39 - DEBUG - utils.serial_manager - 更新现有SerialManager实例参数
+2025-05-07 09:55:39 - DEBUG - utils.serial_manager - 串口未连接
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 串口未连接，尝试连接串口...
+2025-05-07 09:55:39 - DEBUG - utils.serial_manager - 串口已连接: port=COM4
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 串口连接成功，继续执行串口关-开机操作
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 发送关机命令...
+2025-05-07 09:55:39 - INFO - utils.test_case_executor - 等待 10.0 秒...
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 发送开机命令...
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 串口关-开机操作执行成功
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-05-07 09:55:49 - WARNING - utils.test_case_executor - 第 1 次测试执行失败，继续执行剩余的测试
+2025-05-07 09:55:49 - INFO - utils.test_case_executor - 执行第 2/5 次测试
+2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
+2025-05-07 09:55:49 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-07 09:55:59 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-05-07 09:55:59 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-05-07 09:55:59 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-07 09:55:59 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-05-07 09:55:59 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-05-07 09:55:59 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-05-07 09:55:59 - WARNING - utils.test_case_executor - 第 2 次测试执行失败，继续执行剩余的测试
+2025-05-07 09:55:59 - INFO - utils.test_case_executor - 执行第 3/5 次测试
+2025-05-07 09:55:59 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-07 09:56:09 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-05-07 09:56:09 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-05-07 09:56:09 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-07 09:56:09 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-05-07 09:56:09 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-05-07 09:56:09 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-05-07 09:56:09 - WARNING - utils.test_case_executor - 第 3 次测试执行失败，继续执行剩余的测试
+2025-05-07 09:56:09 - INFO - utils.test_case_executor - 执行第 4/5 次测试
+2025-05-07 09:56:09 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-07 09:56:19 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
+2025-05-07 09:56:19 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
+2025-05-07 09:56:19 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-07 09:56:19 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-05-07 09:56:19 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-05-07 09:56:19 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-05-07 09:56:19 - WARNING - utils.test_case_executor - 第 4 次测试执行失败，继续执行剩余的测试
+2025-05-07 09:56:19 - INFO - utils.test_case_executor - 执行第 5/5 次测试
+2025-05-07 09:56:19 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
+2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - 强制重新连接SSH
+2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
+2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - SSH连接已关闭
+2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-07 09:56:29 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-07 09:56:29 - INFO - utils.test_case_executor - 准备执行串口关-开机操作
+2025-05-07 09:56:29 - DEBUG - utils.serial_manager - 更新现有SerialManager实例参数
+2025-05-07 09:56:29 - DEBUG - utils.serial_manager - 串口未连接
+2025-05-07 09:56:29 - INFO - utils.test_case_executor - 串口未连接，尝试连接串口...
+2025-05-07 09:56:29 - DEBUG - utils.serial_manager - 串口已连接: port=COM4
+2025-05-07 09:56:29 - INFO - utils.test_case_executor - 串口连接成功，继续执行串口关-开机操作
+2025-05-07 09:56:29 - INFO - utils.test_case_executor - 发送关机命令...
+2025-05-07 09:56:29 - INFO - utils.test_case_executor - 等待 10.0 秒...
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 发送开机命令...
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 串口关-开机操作执行成功
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-05-07 09:56:39 - INFO - utils.test_case_executor - 测试用例 关开机 执行完成，共执行 5 次，最终状态: 失败

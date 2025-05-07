@@ -55,11 +55,11 @@ const nextConfig = {
     ];
   },
   env: {
-    // 只用环境变量，不要写死默认值
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL,
-    FRONTEND_HOST: process.env.FRONTEND_HOST,
-    FRONTEND_PORT: process.env.FRONTEND_PORT,
+    // 使用环境变量，不要写死默认值
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.132:5000',
+    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL || 'http://10.0.18.132:5000',
+    FRONTEND_HOST: process.env.FRONTEND_HOST || '10.0.18.132',
+    FRONTEND_PORT: process.env.FRONTEND_PORT || '3000',
   },
 }
 

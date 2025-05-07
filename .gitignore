@@ -121,3 +121,11 @@ backend/services/__pycache__*
 backend/utils/__pycache__*
 py_venv/Lib/site-packages/serial/tools/__pycache__*
 py_venv/Lib/site-packages/serial/serial/tools/__pycache__*
+utils/__pycache__*
+__pycache__*
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pywz

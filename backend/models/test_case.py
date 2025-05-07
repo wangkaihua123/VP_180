@@ -114,9 +114,18 @@ class TestCase:
     def _ensure_fields(test_case):
         """确保测试用例包含所有必需字段"""
         # 添加缺失的字段
-        if 'serial_connect' not in test_case:
-            test_case['serial_connect'] = False
-            logger.info(f"为测试用例 {test_case.get('id', 'unknown')} 添加缺失的serial_connect字段")
+        required_fields = {
+            'serial_connect': False,
+            'project_name': '',
+            'project_id': '',
+            'last_execution_time': ''
+        }
+        
+        for field, default_value in required_fields.items():
+            if field not in test_case:
+                test_case[field] = default_value
+                logger.info(f"为测试用例 {test_case.get('id', 'unknown')} 添加缺失的{field}字段")
+        
         return test_case
     
     @classmethod
