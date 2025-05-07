@@ -90,3 +90,19 @@
 2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
 2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
 2025-05-07 09:56:39 - INFO - utils.test_case_executor - 测试用例 关开机 执行完成，共执行 5 次，最终状态: 失败
+2025-05-07 19:23:03 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 19:23:03 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 19:23:03 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 19:23:03 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 19:41:17 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 19:41:17 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 19:41:17 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 19:41:17 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 19:53:49 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 19:53:49 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 19:53:49 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 19:53:49 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 20:07:38 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 20:07:38 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-07 20:11:10 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-07 20:11:10 - ERROR - utils.serial_manager - serialPort参数为空

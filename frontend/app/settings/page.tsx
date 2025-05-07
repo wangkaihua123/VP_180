@@ -66,9 +66,16 @@ export default function SettingsPage() {
   const [serialConnected, setSerialConnected] = useState(false)
   const [sshConnected, setSshConnected] = useState(false)
   const [ipSettings, setIpSettings] = useState<IpSettings>({
-    useFixedIp: false,
-    fixedHost: 'localhost',
-    fixedPort: 5000
+    backend: {
+      useFixedIp: false,
+      fixedHost: 'localhost',
+      fixedPort: 5000,
+      customInput: false
+    },
+    frontend: {
+      host: 'localhost',
+      port: 3000
+    }
   })
 
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -381,11 +388,27 @@ export default function SettingsPage() {
     }
   }
 
-  const handleIpSettingChange = (field: keyof IpSettings, value: string | boolean | number) => {
-    setIpSettings(prev => ({
-      ...prev,
-      [field]: value
-    }))
+  const handleIpSettingChange = (field: string, value: string | boolean | number) => {
+    setIpSettings(prev => {
+      // 根据字段名确定要更新的对象
+      if (field.startsWith('fixed') || field === 'useFixedIp' || field === 'customInput') {
+        return {
+          ...prev,
+          backend: {
+            ...prev.backend,
+            [field]: value
+          }
+        };
+      } else {
+        return {
+          ...prev,
+          frontend: {
+            ...prev.frontend,
+            [field]: value
+          }
+        };
+      }
+    });
   }
 
   const handleSaveIpSettings = async () => {
@@ -1009,20 +1032,20 @@ export default function SettingsPage() {
                     <div className="flex items-center space-x-2">
                       <Switch 
                         id="use-fixed-ip" 
-                        checked={ipSettings.useFixedIp}
+                        checked={ipSettings.backend.useFixedIp}
                         onCheckedChange={(checked) => handleIpSettingChange("useFixedIp", checked)}
                       />
                       <Label htmlFor="use-fixed-ip">使用固定IP</Label>
                     </div>
                     
-                    {ipSettings.useFixedIp ? (
+                    {ipSettings.backend.useFixedIp ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pl-6">
                         <div className="space-y-2">
                           <Label htmlFor="fixed-host">主机地址</Label>
                           <Input 
                             id="fixed-host" 
                             placeholder="localhost 或 192.168.1.1" 
-                            value={ipSettings.fixedHost}
+                            value={ipSettings.backend.fixedHost}
                             onChange={(e) => handleIpSettingChange("fixedHost", e.target.value)}
                           />
                         </div>
@@ -1032,7 +1055,7 @@ export default function SettingsPage() {
                             id="fixed-port" 
                             type="number" 
                             placeholder="5000" 
-                            value={ipSettings.fixedPort}
+                            value={ipSettings.backend.fixedPort}
                             onChange={(e) => handleIpSettingChange("fixedPort", parseInt(e.target.value))}
                           />
                         </div>
@@ -1041,7 +1064,7 @@ export default function SettingsPage() {
                       <div className="mt-4 pl-6 text-gray-600">
                         <p>系统将自动获取当前主机的IP地址，IP地址将设置为：</p>
                         <p className="font-mono bg-gray-100 p-2 rounded mt-2">
-                          http://{typeof window !== 'undefined' ? window.location.hostname : 'localhost'}:5000
+                          http://{ipSettings.backend.localIp || (typeof window !== 'undefined' ? window.location.hostname : 'localhost')}:{ipSettings.backend.fixedPort || 5000}
                         </p>
                       </div>
                     )}
