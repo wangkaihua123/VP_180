@@ -129,3 +129,5 @@ __pycache__*
 *.pyw
 *.pyz
 *.pywz
+__pycache__/
+data/logs/*.log
