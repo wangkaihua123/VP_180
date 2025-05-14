@@ -17,7 +17,7 @@ import { testCasesAPI } from "@/lib/api/test-cases"
 import STEP_METHODS from "@/utils/test_method_mapping"
 import { FUNCTIONS } from "@/utils/Config"
 import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
@@ -468,45 +468,100 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     setRecordingDialogOpen(true)
 
     // 创建WebSocket连接
-    const ws = new WebSocket('ws://localhost:8765')
+    const wsUrl = `ws://${window.location.hostname}:5000/ws/touch-monitor`
+    console.log('正在连接到WebSocket服务器:', wsUrl)
+    
+    const ws = new WebSocket(wsUrl)
     
     ws.onopen = () => {
-      ws.send(JSON.stringify({ action: 'start' }))
+      console.log('WebSocket连接已建立')
+      toast({
+        title: "连接成功",
+        description: "已连接到触摸屏监控服务",
+      })
+      // 延迟发送start命令，确保服务器准备就绪
+      setTimeout(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          const startCommand = JSON.stringify({ action: 'start' })
+          console.log('发送start命令:', startCommand)
+          ws.send(startCommand)
+        } else {
+          console.error('WebSocket连接已关闭，无法发送start命令')
+          toast({
+            title: "连接错误",
+            description: "WebSocket连接已关闭，请重试",
+            variant: "destructive"
+          })
+        }
+      }, 1000)
     }
     
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      setDeviceEvents(prev => [...prev, {
-        ...data,
-        timestamp: new Date().toISOString()
-      }])
-      
-      // 根据事件类型自动生成测试步骤
-      if (data.type === 'touch_end') {
-        const newId = Math.max(...operationSteps.map((step) => step.id), 0) + 1
-        const newStep: OperationStep = {
-          id: newId,
-          operation_key: "点击按钮",
-          button_name: `坐标 (${data.x.toFixed(1)}, ${data.y.toFixed(1)})`,
-          x1: data.x,
-          y1: data.y,
-          x2: data.x,
-          y2: data.y
+      console.log('收到WebSocket消息:', event.data)
+      try {
+        const data = JSON.parse(event.data)
+        
+        // 检查错误消息
+        if (data.type === 'error') {
+          console.error('收到错误消息:', data.message)
+          toast({
+            title: "触摸监控错误",
+            description: data.message,
+            variant: "destructive"
+          })
+          return
         }
         
-        setOperationSteps(prev => [...prev, newStep])
+        // 更新事件列表
+        setDeviceEvents(prev => [...prev, {
+          ...data,
+          timestamp: new Date().toISOString()
+        }])
+        
+        // 根据事件类型自动生成测试步骤
+        if (data.type === 'touch_end') {
+          console.log('处理touch_end事件:', data)
+          const newId = Math.max(...operationSteps.map((step) => step.id), 0) + 1
+          const newStep: OperationStep = {
+            id: newId,
+            operation_key: "点击按钮",
+            button_name: `坐标 (${data.x.toFixed(1)}, ${data.y.toFixed(1)})`,
+            x1: data.x,
+            y1: data.y,
+            x2: data.x,
+            y2: data.y
+          }
+          console.log('添加新的操作步骤:', newStep)
+          setOperationSteps(prev => [...prev, newStep])
+        }
+      } catch (error: any) {
+        console.error('处理WebSocket消息时出错:', error)
+        toast({
+          title: "数据处理错误",
+          description: `处理触摸事件数据时出错: ${error.message}`,
+          variant: "destructive"
+        })
       }
     }
     
-    ws.onclose = () => {
+    ws.onclose = (event) => {
+      console.log('WebSocket连接已关闭:', event.code, event.reason)
       setWsConnection(null)
+      setIsRecording(false)
+      if (!event.wasClean) {
+        toast({
+          title: "连接异常断开",
+          description: "与触摸屏监控服务的连接意外断开，请重试",
+          variant: "destructive"
+        })
+      }
     }
     
     ws.onerror = (error) => {
-      console.error('WebSocket error:', error)
+      console.error('WebSocket错误:', error)
       toast({
         title: "连接错误",
-        description: "无法连接到触摸屏监控服务",
+        description: "无法连接到触摸屏监控服务，请确保后端服务正在运行",
         variant: "destructive"
       })
     }
@@ -517,8 +572,13 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   // 停止录制
   const stopRecording = () => {
     if (wsConnection) {
-      wsConnection.send(JSON.stringify({ action: 'stop' }))
-      wsConnection.close()
+      console.log('正在停止录制')
+      try {
+        wsConnection.send(JSON.stringify({ action: 'stop' }))
+        wsConnection.close()
+      } catch (error) {
+        console.error('停止录制时出错:', error)
+      }
     }
     setIsRecording(false)
     setRecordingDialogOpen(false)
@@ -1054,6 +1114,9 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                 </Badge>
               )}
             </DialogTitle>
+            <DialogDescription>
+              实时监控并记录触摸屏操作，自动生成测试步骤。
+            </DialogDescription>
           </DialogHeader>
           <div className="py-4">
             <div className="mb-4 p-4 bg-black/5 rounded-md">

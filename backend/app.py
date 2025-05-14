@@ -4,12 +4,13 @@
 import os
 import logging
 import sys
+import json
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from flask_sock import Sock
 
 # 添加项目根目录到Python路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 
 # 导入配置
 from backend.config import SECRET_KEY, DEBUG, HOST, PORT
@@ -17,8 +18,8 @@ from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 # 导入路由蓝图
 from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp
 
-# 导入触摸屏监控服务
-from backend.services.touch_monitor_service import TouchMonitorService
+# 导入触摸屏监控
+from utils.touch_monitor_ssh import TouchMonitor
 
 # 设置日志文件路径
 LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
@@ -37,14 +38,9 @@ logger = logging.getLogger(__name__)
 def create_app(config=None):
     """
     创建Flask应用实例
-    
-    Args:
-        config: 配置对象
-    
-    Returns:
-        Flask应用实例
     """
     app = Flask(__name__)
+    sock = Sock(app)
     
     # 设置默认配置
     app.config.from_mapping(
@@ -54,7 +50,6 @@ def create_app(config=None):
     )
     
     if config:
-        # 加载传入的配置
         app.config.from_mapping(config)
     
     # 配置CORS，允许前端访问
@@ -68,61 +63,51 @@ def create_app(config=None):
     app.register_blueprint(files_bp)
     app.register_blueprint(logs_bp)
     
+    # 创建TouchMonitor实例
+    touch_monitor = TouchMonitor()
+    
+    @sock.route('/ws/touch-monitor')
+    def touch_monitor_socket(ws):
+        """WebSocket路由处理触摸屏监控"""
+        logger.info("新的WebSocket连接已建立")
+        try:
+            while True:
+                data = ws.receive()
+                logger.debug(f"收到WebSocket消息: {data}")
+                command = json.loads(data)
+                if command['action'] == 'start':
+                    logger.info("开始监控触摸事件")
+                    touch_monitor.start_monitoring(ws)
+                elif command['action'] == 'stop':
+                    logger.info("停止监控触摸事件")
+                    touch_monitor.stop_monitoring()
+        except Exception as e:
+            logger.error(f"WebSocket处理错误: {str(e)}")
+            try:
+                ws.send(json.dumps({
+                    "type": "error",
+                    "message": f"WebSocket处理错误: {str(e)}"
+                }))
+            except:
+                pass
+        finally:
+            logger.info("WebSocket连接已关闭")
+            touch_monitor.stop_monitoring()
+    
     @app.route('/')
     def index():
         return {"message": "Visual Protocol 180 API"}
-    
-    # 添加服务器信息API端点
-    @app.route('/api/server/info', methods=['GET'])
-    def server_info():
-        """返回服务器运行信息，便于前端验证连接"""
-        return jsonify({
-            "success": True,
-            "message": "服务器信息",
-            "data": {
-                "host": HOST,
-                "port": PORT,
-                "debug": DEBUG,
-                "version": "1.0.0",
-                "server_time": os.popen("date").read().strip()
-            }
-        })
     
     return app
 
 # 创建应用实例
 app = create_app()
 
-# 启动触摸屏监控服务
-touch_monitor_service = None
-
-def start_touch_monitor():
-    """启动触摸屏监控服务"""
-    global touch_monitor_service
-    try:
-        touch_monitor_service = TouchMonitorService()
-        touch_monitor_service.start()
-        logger.info("触摸屏监控服务已启动")
-    except Exception as e:
-        logger.error(f"启动触摸屏监控服务失败: {str(e)}")
-
-def cleanup():
-    """清理资源"""
-    global touch_monitor_service
-    if touch_monitor_service:
-        try:
-            touch_monitor_service.stop()
-            logger.info("触摸屏监控服务已停止")
-        except Exception as e:
-            logger.error(f"停止触摸屏监控服务失败: {str(e)}")
-
 if __name__ == '__main__':
     try:
-        # 启动触摸屏监控服务
-        start_touch_monitor()
-        
         # 启动应用
         app.run(host=HOST, debug=DEBUG, port=PORT)
+    except Exception as e:
+        logger.error(f"应用启动失败: {str(e)}")
     finally:
-        # 清理资源
-        cleanup() 
+        logger.info("应用已停止") 
