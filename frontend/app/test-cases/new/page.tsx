@@ -17,6 +17,9 @@ import { testCasesAPI } from "@/lib/api/test-cases"
 import STEP_METHODS from "@/utils/test_method_mapping"
 import { FUNCTIONS } from "@/utils/Config"
 import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface StepMethod {
   description: string;
@@ -451,6 +454,77 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     }
   }
 
+  const [isRecording, setIsRecording] = useState(false)
+  const [recordingType, setRecordingType] = useState<"operation" | "verification">("operation")
+  const [recordingDialogOpen, setRecordingDialogOpen] = useState(false)
+  const [deviceEvents, setDeviceEvents] = useState<any[]>([])
+  const [wsConnection, setWsConnection] = useState<WebSocket | null>(null)
+
+  // 开始可视化操作录制
+  const startVisualRecording = () => {
+    setRecordingType("operation")
+    setDeviceEvents([])
+    setIsRecording(true)
+    setRecordingDialogOpen(true)
+
+    // 创建WebSocket连接
+    const ws = new WebSocket('ws://localhost:8765')
+    
+    ws.onopen = () => {
+      ws.send(JSON.stringify({ action: 'start' }))
+    }
+    
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data)
+      setDeviceEvents(prev => [...prev, {
+        ...data,
+        timestamp: new Date().toISOString()
+      }])
+      
+      // 根据事件类型自动生成测试步骤
+      if (data.type === 'touch_end') {
+        const newId = Math.max(...operationSteps.map((step) => step.id), 0) + 1
+        const newStep: OperationStep = {
+          id: newId,
+          operation_key: "点击按钮",
+          button_name: `坐标 (${data.x.toFixed(1)}, ${data.y.toFixed(1)})`,
+          x1: data.x,
+          y1: data.y,
+          x2: data.x,
+          y2: data.y
+        }
+        
+        setOperationSteps(prev => [...prev, newStep])
+      }
+    }
+    
+    ws.onclose = () => {
+      setWsConnection(null)
+    }
+    
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error)
+      toast({
+        title: "连接错误",
+        description: "无法连接到触摸屏监控服务",
+        variant: "destructive"
+      })
+    }
+    
+    setWsConnection(ws)
+  }
+
+  // 停止录制
+  const stopRecording = () => {
+    if (wsConnection) {
+      wsConnection.send(JSON.stringify({ action: 'stop' }))
+      wsConnection.close()
+    }
+    setIsRecording(false)
+    setRecordingDialogOpen(false)
+    setWsConnection(null)
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 container mx-auto px-4 py-6">
@@ -547,6 +621,30 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               </TabsList>
 
               <TabsContent value="steps" className="space-y-4 pt-4">
+                <div className="flex justify-end mb-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex items-center"
+                    onClick={startVisualRecording}
+                    disabled={isRecording}
+                  >
+                    <svg
+                      className="mr-2 h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="3" className={isRecording ? "fill-red-500" : ""} />
+                    </svg>
+                    {isRecording ? "录制中..." : "开始可视化录制"}
+                  </Button>
+                </div>
+
                 {operationSteps.map((step, index) => (
                   <Card key={step.id}>
                     <CardHeader className="pb-2">
@@ -943,6 +1041,61 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           </form>
         </motion.div>
       </main>
+
+      {/* 可视化录制对话框 */}
+      <Dialog open={recordingDialogOpen} onOpenChange={setRecordingDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>
+              可视化操作录制
+              {isRecording && (
+                <Badge variant="outline" className="ml-2 bg-red-50 text-red-600 animate-pulse">
+                  录制中
+                </Badge>
+              )}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="mb-4 p-4 bg-black/5 rounded-md">
+              <h4 className="text-sm font-medium mb-2">触摸事件流</h4>
+              <ScrollArea className="h-[200px] rounded-md border p-2">
+                {deviceEvents.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">等待触摸事件...</div>
+                ) : (
+                  <div className="space-y-2">
+                    {deviceEvents.map((event, index) => (
+                      <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
+                        <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
+                        <span className="font-medium">{event.type}</span>
+                        {event.x !== undefined && (
+                          <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                        )}
+                        {event.y !== undefined && (
+                          <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
+                        )}
+                        {event.duration !== undefined && (
+                          <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+            <div className="text-sm text-muted-foreground mb-4">
+              正在监听触摸屏事件，每次触摸将自动生成对应的测试步骤。
+            </div>
+            <div className="text-sm">
+              已自动生成 <span className="font-medium">{operationSteps.length}</span> 个步骤
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={stopRecording}>
+              停止录制
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

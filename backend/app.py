@@ -17,11 +17,13 @@ from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 # 导入路由蓝图
 from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp
 
-# 设置日志文件路径 - 直接使用data目录，不创建logs子目录
-LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
-# 不再创建logs子目录
+# 导入触摸屏监控服务
+from backend.services.touch_monitor_service import TouchMonitorService
 
-# 配置日志 - 只输出到控制台，不生成app.log文件
+# 设置日志文件路径
+LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+
+# 配置日志
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -29,6 +31,8 @@ logging.basicConfig(
         logging.StreamHandler(),
     ]
 )
+
+logger = logging.getLogger(__name__)
 
 def create_app(config=None):
     """
@@ -46,7 +50,7 @@ def create_app(config=None):
     app.config.from_mapping(
         SECRET_KEY=os.environ.get('SECRET_KEY', 'dev_key'),
         DATABASE=os.path.join(app.instance_path, 'database.sqlite'),
-        DATA_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data'),  # 添加DATA_DIR配置
+        DATA_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data'),
     )
     
     if config:
@@ -89,6 +93,36 @@ def create_app(config=None):
 # 创建应用实例
 app = create_app()
 
+# 启动触摸屏监控服务
+touch_monitor_service = None
+
+def start_touch_monitor():
+    """启动触摸屏监控服务"""
+    global touch_monitor_service
+    try:
+        touch_monitor_service = TouchMonitorService()
+        touch_monitor_service.start()
+        logger.info("触摸屏监控服务已启动")
+    except Exception as e:
+        logger.error(f"启动触摸屏监控服务失败: {str(e)}")
+
+def cleanup():
+    """清理资源"""
+    global touch_monitor_service
+    if touch_monitor_service:
+        try:
+            touch_monitor_service.stop()
+            logger.info("触摸屏监控服务已停止")
+        except Exception as e:
+            logger.error(f"停止触摸屏监控服务失败: {str(e)}")
+
 if __name__ == '__main__':
-    # 启动应用
-    app.run(host=HOST, debug=DEBUG, port=PORT) 
+    try:
+        # 启动触摸屏监控服务
+        start_touch_monitor()
+        
+        # 启动应用
+        app.run(host=HOST, debug=DEBUG, port=PORT)
+    finally:
+        # 清理资源
+        cleanup() 
