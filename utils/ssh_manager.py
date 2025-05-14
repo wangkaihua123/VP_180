@@ -2,6 +2,8 @@ import paramiko
 import json
 import os
 from .log_config import setup_logger
+import time
+import threading
 
 # 获取日志记录器
 logger = setup_logger(__name__)
@@ -29,11 +31,20 @@ class SSHManager:
     
     # 连接重试状态跟踪
     _connection_attempts = 0
-    _max_retries = 2  # 最多尝试3次 (初始尝试 + 2次重试)
+    _max_retries = 3  # 最多尝试4次 (初始尝试 + 3次重试)
+    _retry_interval = 2  # 重试间隔（秒）
+    
+    # 心跳检测配置
+    _heartbeat_interval = 5  # 心跳检测间隔（秒）
+    _heartbeat_timeout = 3  # 心跳超时时间（秒）
+    _heartbeat_thread = None
+    _stop_heartbeat = False
     
     # 添加连接状态变量
     _is_connected = False
     _last_error = None
+    _last_connection_time = None
+    _connection_lock = threading.Lock()
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -51,7 +62,59 @@ class SSHManager:
             self.port = settings.get("sshPort", 22)
             self.initialized = True
             logger.debug(f"SSH管理器初始化完成，使用设置: host={self.hostname}, port={self.port}, username={self.username}")
+            
+            # 启动心跳检测线程
+            self._start_heartbeat()
     
+    def _start_heartbeat(self):
+        """启动心跳检测线程"""
+        if self._heartbeat_thread is None or not self._heartbeat_thread.is_alive():
+            self._stop_heartbeat = False
+            self._heartbeat_thread = threading.Thread(target=self._heartbeat_check, daemon=True)
+            self._heartbeat_thread.start()
+            logger.debug("心跳检测线程已启动")
+
+    def _stop_heartbeat(self):
+        """停止心跳检测线程"""
+        self._stop_heartbeat = True
+        if self._heartbeat_thread and self._heartbeat_thread.is_alive():
+            self._heartbeat_thread.join(timeout=1)
+            logger.debug("心跳检测线程已停止")
+
+    def _heartbeat_check(self):
+        """心跳检测主循环"""
+        while not self._stop_heartbeat:
+            if self._ssh_client and self._is_connected:
+                try:
+                    # 使用exec_command执行简单命令来检查连接
+                    transport = self._ssh_client.get_transport()
+                    transport.set_keepalive(60)  # 设置TCP keepalive
+                    stdin, stdout, stderr = self._ssh_client.exec_command(
+                        "echo ping",
+                        timeout=self._heartbeat_timeout
+                    )
+                    response = stdout.read().decode().strip()
+                    
+                    if response != "ping":
+                        logger.warning(f"心跳检测响应异常: {response}")
+                        self._handle_connection_failure()
+                except Exception as e:
+                    logger.warning(f"心跳检测失败: {e}")
+                    self._handle_connection_failure()
+            
+            # 等待下一次心跳检测
+            time.sleep(self._heartbeat_interval)
+
+    def _handle_connection_failure(self):
+        """处理连接失败情况"""
+        with self._connection_lock:
+            self._is_connected = False
+            if self._connection_attempts < self._max_retries:
+                logger.info("检测到连接断开，尝试重新连接...")
+                self.reconnect()
+            else:
+                logger.error("重连次数超过最大限制，停止重试")
+
     @classmethod
     def get_instance(cls):
         """获取SSHManager实例"""
@@ -62,20 +125,15 @@ class SSHManager:
     @classmethod
     def get_client(cls):
         """获取已存在的SSH客户端或创建新的"""
-        # 检查现有连接是否有效
-        if cls.is_connected():
-            logger.debug("返回现有SSH连接")
-            return cls._ssh_client
-        
-        # 获取或创建实例
         instance = cls.get_instance()
         
-        # 重置连接尝试计数
-        if cls._connection_attempts > cls._max_retries:
-            cls._connection_attempts = 0
-            
-        # 尝试连接
-        return instance.connect()
+        with cls._instance._connection_lock:
+            # 检查现有连接是否有效
+            if not cls.is_connected():
+                # 如果连接无效，尝试重新连接
+                return instance.reconnect()
+                
+            return cls._ssh_client
     
     @classmethod
     def is_connected(cls):
@@ -98,7 +156,6 @@ class SSHManager:
             stdin, stdout, stderr = cls._ssh_client.exec_command("echo ping", timeout=3)
             response = stdout.read().decode().strip()
             if response == "ping":
-                # logger.debug("SSH连接有效并活动")
                 cls._is_connected = True
                 return True
             else:
@@ -111,8 +168,30 @@ class SSHManager:
             cls._last_error = str(e)
             return False
 
+    def reconnect(self):
+        """重新连接SSH"""
+        # 如果最后一次连接失败后时间太短，等待一段时间
+        if self.__class__._last_connection_time:
+            elapsed = time.time() - self.__class__._last_connection_time
+            if elapsed < self.__class__._retry_interval:
+                time.sleep(self.__class__._retry_interval - elapsed)
+        
+        # 关闭现有连接
+        self.disconnect()
+        
+        # 重置连接尝试计数（如果超过最大重试次数）
+        if self.__class__._connection_attempts >= self.__class__._max_retries:
+            self.__class__._connection_attempts = 0
+            time.sleep(self.__class__._retry_interval)  # 额外等待
+            
+        # 尝试连接
+        return self.connect()
+
     def connect(self):
         """建立SSH连接，根据设置的最大重试次数尝试"""
+        # 记录连接时间
+        self.__class__._last_connection_time = time.time()
+        
         # 重新检查连接，避免不必要的重连
         if self.__class__.is_connected():
             logger.debug("SSH已连接且活动")
@@ -148,7 +227,9 @@ class SSHManager:
                 username=self.username,
                 password=self.password,
                 port=self.port,
-                timeout=10  # 设置10秒超时
+                timeout=10,  # 设置10秒超时
+                banner_timeout=10,  # 设置banner超时
+                auth_timeout=10  # 设置认证超时
             )
             
             # 连接成功，重置计数器和状态
@@ -169,22 +250,19 @@ class SSHManager:
             self.__class__._is_connected = False
             self.__class__._last_error = str(e)
             
-            # 如果已尝试次数达到或超过最大重试次数，重置计数器
-            if attempt_number > self.__class__._max_retries:
+            # 如果还有重试机会，等待后重试
+            if attempt_number < self.__class__._max_retries:
+                time.sleep(self.__class__._retry_interval)
+                return self.connect()
+            else:
                 logger.error(f"SSH连接尝试{attempt_number}次后失败，重置计数器")
                 self.__class__._connection_attempts = 0
-                
-            return None
-    
+                return None
+
     def force_reconnect(self):
         """强制重新连接SSH"""
         logger.debug("强制重新连接SSH")
-        # 关闭现有连接
-        self.disconnect()
-        # 重置连接尝试计数
-        self.__class__._connection_attempts = 0
-        # 重新连接
-        return self.connect()
+        return self.reconnect()
     
     def disconnect(self):
         """关闭SSH连接"""
