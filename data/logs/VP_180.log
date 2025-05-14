@@ -90,3 +90,102 @@
 2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
 2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
 2025-05-07 09:56:39 - INFO - utils.test_case_executor - 测试用例 关开机 执行完成，共执行 5 次，最终状态: 失败
+2025-05-14 13:42:40 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-14 13:42:40 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-14 13:43:04 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-14 13:43:04 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
+2025-05-14 13:43:04 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-14 13:43:04 - ERROR - utils.serial_manager - serialPort参数为空
+2025-05-14 13:43:16 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:45:09 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:45:09 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 13:45:20 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 13:45:20 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 13:47:38 - INFO - __main__ - 
+停止监听
+2025-05-14 13:47:42 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:47:42 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 13:47:52 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 13:47:52 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
+2025-05-14 13:50:30 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:50:30 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 13:50:40 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 13:50:40 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 13:51:58 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:51:58 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 13:52:08 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 13:52:08 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 120 字节
+2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 72 字节
+2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 72 字节
+2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 72 字节
+2025-05-14 13:54:03 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:54:03 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 13:54:13 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 13:54:13 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 13:58:17 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 13:58:17 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 13:58:28 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 13:58:28 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 14:20:56 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 14:20:56 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 14:21:06 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-05-14 14:21:06 - ERROR - __main__ - 无法建立SSH连接
+2025-05-14 14:21:22 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 14:21:22 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 14:21:24 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 14:21:24 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 14:22:05 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 14:22:12 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 14:22:12 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 14:22:22 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-14 14:22:22 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
+2025-05-14 14:27:45 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-14 14:27:45 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-14 14:27:55 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-05-14 14:27:55 - ERROR - __main__ - 无法建立SSH连接
