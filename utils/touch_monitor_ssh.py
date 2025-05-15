@@ -79,7 +79,7 @@ class TouchMonitor:
             event_pattern = re.compile(r'Event: time (\d+)\.(\d+), type (\d+) \([^)]+\), code (\d+) \([^)]+\), value (-?\d+)')
             
             # 发送开始监控消息
-            self._send_event({"type": "monitoring_started"})
+            self._send_event({"type": "请点击设备触摸屏进行录制！"})
             
             # 创建接收缓冲区
             recv_buffer = ""
@@ -123,38 +123,24 @@ class TouchMonitor:
                                 if event_type == 3:  # EV_ABS
                                     if event_code == 53:  # ABS_MT_POSITION_X
                                         current_x = event_value * 1240 / 9600
-                                        logger.debug(f"触摸X坐标: {current_x} (原始值: {event_value})")
-                                        self._send_event({
-                                            "type": "coordinate",
-                                            "x": current_x,
-                                            "timestamp": event_time
-                                        })
+                                        logger.debug(f"更新X坐标: {current_x}")
                                     elif event_code == 54:  # ABS_MT_POSITION_Y
                                         current_y = event_value * 600 / 9600
-                                        logger.debug(f"触摸Y坐标: {current_y} (原始值: {event_value})")
-                                        self._send_event({
-                                            "type": "coordinate",
-                                            "y": current_y,
-                                            "timestamp": event_time
-                                        })
+                                        logger.debug(f"更新Y坐标: {current_y}")
                                 
                                 elif event_type == 1 and event_code == 330:  # EV_KEY and BTN_TOUCH
                                     if event_value == 1:  # Press
                                         touch_start_time = event_time
-                                        logger.debug("触摸开始事件")
-                                        self._send_event({
-                                            "type": "touch_start",
-                                            "timestamp": event_time
-                                        })
+                                        logger.debug("触摸开始")
                                     elif event_value == 0:  # Release
                                         if touch_start_time is not None and current_x is not None and current_y is not None:
                                             duration = event_time - touch_start_time
-                                            logger.debug(f"触摸结束事件: 坐标({current_x}, {current_y}), 持续时间={duration}秒")
+                                            logger.debug(f"触摸结束: X: {current_x:.1f} Y: {current_y:.1f} 持续: {duration:.3f}秒")
                                             self._send_event({
-                                                "type": "touch_end",
-                                                "x": current_x,
-                                                "y": current_y,
-                                                "duration": duration,
+                                                "type": "触摸坐标",
+                                                "x": round(current_x, 1),
+                                                "y": round(current_y, 1),
+                                                "duration": round(duration, 3),
                                                 "timestamp": event_time
                                             })
                                         current_x = None
