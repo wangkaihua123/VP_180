@@ -174,6 +174,9 @@ interface OperationStep {
   x2: number;
   y2: number;
   waitTime?: number;
+  step_type: "normal" | "visual";
+  recorded_steps?: any[];
+  operation_name?: string;
 }
 
 const getButtonOptions = () => {
@@ -220,17 +223,19 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [projects, setProjects] = useState<Project[]>([])
   const [projectName, setProjectName] = useState("")
   const [projectId, setProjectId] = useState("")
+  const [selectedStepId, setSelectedStepId] = useState<number | null>(null)
+  const [isStepDetailsOpen, setIsStepDetailsOpen] = useState(false)
   const [operationSteps, setOperationSteps] = useState<OperationStep[]>(() => {
     if (initialData?.script_content) {
       try {
         const content = JSON.parse(initialData.script_content);
-        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
+        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
       } catch (e) {
         console.error('Error parsing script_content:', e);
-        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
+        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
       }
     }
-    return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }];
+    return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
   })
   const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>(() => {
     if (initialData?.script_content) {
@@ -302,7 +307,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
   const addOperationStep = () => {
     const newId = operationSteps.length > 0 ? Math.max(...operationSteps.map((step) => step.id)) + 1 : 1
-    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0 }])
+    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }])
   }
 
   const addVerificationStep = () => {
@@ -351,7 +356,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       steps.map((step) => {
         if (step.id === id) {
           const updatedStep = { ...step, [field]: value }
-          if (field === 'button_name' && value) {
+          if (field === 'button_name' && value && step.step_type === "normal") {
             const buttonConfig = (FUNCTIONS as Functions)[value]
             if (buttonConfig) {
               updatedStep.x1 = buttonConfig.touch[0]
@@ -459,6 +464,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [recordingDialogOpen, setRecordingDialogOpen] = useState(false)
   const [deviceEvents, setDeviceEvents] = useState<any[]>([])
   const [wsConnection, setWsConnection] = useState<WebSocket | null>(null)
+  const [recordingName, setRecordingName] = useState("")
 
   // 开始可视化操作录制
   const startVisualRecording = () => {
@@ -529,7 +535,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
             x1: data.x,
             y1: data.y,
             x2: data.x,
-            y2: data.y
+            y2: data.y,
+            step_type: "visual"
           }
           console.log('添加新的操作步骤:', newStep)
           setOperationSteps(prev => [...prev, newStep])
@@ -584,6 +591,34 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     setRecordingDialogOpen(false)
     setWsConnection(null)
   }
+
+  const saveRecording = () => {
+    if (!recordingName.trim()) {
+      toast({
+        title: "错误",
+        description: "请输入操作名称",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const newId = Math.max(...operationSteps.map((step) => step.id)) + 1;
+    const newStep: OperationStep = {
+      id: newId,
+      operation_key: "可视化录制",
+      button_name: `录制步骤 ${deviceEvents.length} 个操作`,
+      x1: 0,
+      y1: 0,
+      x2: 0,
+      y2: 0,
+      step_type: "visual",
+      recorded_steps: deviceEvents,
+      operation_name: recordingName.trim()
+    };
+    setOperationSteps([...operationSteps, newStep]);
+    setRecordingName("");
+    stopRecording();
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -709,8 +744,43 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                   <Card key={step.id}>
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">步骤 {index + 1}</CardTitle>
+                        <div>
+                          <CardTitle className="text-base">
+                            步骤 {index + 1}
+                            {step.step_type === "visual" && (
+                              <Badge variant="outline" className="ml-2">
+                                可视化录制
+                              </Badge>
+                            )}
+                          </CardTitle>
+                        </div>
                         <div className="flex items-center gap-2">
+                          {step.step_type === "visual" && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              type="button"
+                              onClick={() => {
+                                setSelectedStepId(step.id);
+                                setIsStepDetailsOpen(true);
+                              }}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                              </svg>
+                            </Button>
+                          )}
                           <Button
                             variant="ghost"
                             size="icon"
@@ -743,102 +813,118 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label>操作类型</Label>
-                          <Select
-                            value={step.operation_key}
-                            onValueChange={(value) => updateOperationStep(step.id, "operation_key", value)}
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="选择操作类型" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.entries(operationStepsByCategory).map(([category, options]) => (
-                                <div key={category}>
-                                  <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 bg-gray-50">
-                                    {category}
-                                  </div>
-                                  {options.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                      {option.label}
-                                    </SelectItem>
-                                  ))}
-                                </div>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        {(step.operation_key === "点击按钮" || step.operation_key === "长按按钮") && (
+                      {step.step_type === "visual" ? (
+                        <div className="space-y-4">
                           <div className="space-y-2">
-                            <Label>按钮</Label>
+                            <Label>操作名称</Label>
+                            <Input
+                              value={step.operation_name || ""}
+                              onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
+                              placeholder="输入操作名称"
+                            />
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            包含 {step.recorded_steps?.length || 0} 个触摸事件
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>操作类型</Label>
                             <Select
-                              value={step.button_name}
-                              onValueChange={(value) => updateOperationStep(step.id, "button_name", value)}
+                              value={step.operation_key}
+                              onValueChange={(value) => updateOperationStep(step.id, "operation_key", value)}
                             >
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder="选择按钮" />
+                                <SelectValue placeholder="选择操作类型" />
                               </SelectTrigger>
                               <SelectContent>
-                                {buttonOptions.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                  </SelectItem>
+                                {Object.entries(operationStepsByCategory).map(([category, options]) => (
+                                  <div key={category}>
+                                    <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 bg-gray-50">
+                                      {category}
+                                    </div>
+                                    {options.map((option) => (
+                                      <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                      </SelectItem>
+                                    ))}
+                                  </div>
                                 ))}
                               </SelectContent>
                             </Select>
                           </div>
-                        )}
-                        {step.operation_key === "滑动操作" && (
-                          <div className="space-y-2">
-                            <Label>滑动坐标</Label>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <Label className="text-xs text-gray-500 mb-1">起始点X (x1)</Label>
-                                <Input
-                                  type="number"
-                                  value={step.x1}
-                                  onChange={(e) => updateOperationStep(step.id, "x1", parseInt(e.target.value) || 0)}
-                                />
-                              </div>
-                              <div>
-                                <Label className="text-xs text-gray-500 mb-1">起始点Y (y1)</Label>
-                                <Input
-                                  type="number"
-                                  value={step.y1}
-                                  onChange={(e) => updateOperationStep(step.id, "y1", parseInt(e.target.value) || 0)}
-                                />
-                              </div>
-                              <div>
-                                <Label className="text-xs text-gray-500 mb-1">终点X (x2)</Label>
-                                <Input
-                                  type="number"
-                                  value={step.x2}
-                                  onChange={(e) => updateOperationStep(step.id, "x2", parseInt(e.target.value) || 0)}
-                                />
-                              </div>
-                              <div>
-                                <Label className="text-xs text-gray-500 mb-1">终点Y (y2)</Label>
-                                <Input
-                                  type="number"
-                                  value={step.y2}
-                                  onChange={(e) => updateOperationStep(step.id, "y2", parseInt(e.target.value) || 0)}
-                                />
+                          {(step.operation_key === "点击按钮" || step.operation_key === "长按按钮") && (
+                            <div className="space-y-2">
+                              <Label>按钮</Label>
+                              <Select
+                                value={step.button_name}
+                                onValueChange={(value) => updateOperationStep(step.id, "button_name", value)}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="选择按钮" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {buttonOptions.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
+                          {step.operation_key === "滑动操作" && (
+                            <div className="space-y-2">
+                              <Label>滑动坐标</Label>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">起始点X (x1)</Label>
+                                  <Input
+                                    type="number"
+                                    value={step.x1}
+                                    onChange={(e) => updateOperationStep(step.id, "x1", parseInt(e.target.value) || 0)}
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">起始点Y (y1)</Label>
+                                  <Input
+                                    type="number"
+                                    value={step.y1}
+                                    onChange={(e) => updateOperationStep(step.id, "y1", parseInt(e.target.value) || 0)}
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">终点X (x2)</Label>
+                                  <Input
+                                    type="number"
+                                    value={step.x2}
+                                    onChange={(e) => updateOperationStep(step.id, "x2", parseInt(e.target.value) || 0)}
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">终点Y (y2)</Label>
+                                  <Input
+                                    type="number"
+                                    value={step.y2}
+                                    onChange={(e) => updateOperationStep(step.id, "y2", parseInt(e.target.value) || 0)}
+                                  />
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )}
-                        {(step.operation_key === "串口开机" || step.operation_key === "串口关机" || step.operation_key === "串口关-开机") && (
-                          <div className="space-y-2">
-                            <Label>等待时间 (毫秒)</Label>
-                            <Input
-                              type="number"
-                              value={step.waitTime || 1000}
-                              onChange={(e) => updateOperationStep(step.id, "waitTime", parseInt(e.target.value) || 1000)}
-                            />
-                          </div>
-                        )}
-                      </div>
+                          )}
+                          {(step.operation_key === "串口开机" || step.operation_key === "串口关机" || step.operation_key === "串口关-开机") && (
+                            <div className="space-y-2">
+                              <Label>等待时间 (毫秒)</Label>
+                              <Input
+                                type="number"
+                                value={step.waitTime || 1000}
+                                onChange={(e) => updateOperationStep(step.id, "waitTime", parseInt(e.target.value) || 1000)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
@@ -1119,11 +1205,25 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
+            <div className="mb-4">
+              <Label htmlFor="recording-name" className="text-sm font-medium">
+                操作名称 <span className="text-red-500">*</span>
+              </Label>
+              <div className="w-1/2">
+                <Input
+                  id="recording-name"
+                  value={recordingName}
+                  onChange={(e) => setRecordingName(e.target.value)}
+                  placeholder="请输入操作名称"
+                  className="mt-1"
+                />
+              </div>
+            </div>
             <div className="mb-4 p-4 bg-black/5 rounded-md">
               <h4 className="text-sm font-medium mb-2">触摸事件流</h4>
               <ScrollArea className="h-[200px] rounded-md border p-2">
                 {deviceEvents.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">等待触摸事件...</div>
+                  <div className="text-center py-8 text-muted-foreground">环境配置中...</div>
                 ) : (
                   <div className="space-y-2">
                     {deviceEvents.map((event, index) => (
@@ -1148,13 +1248,67 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
             <div className="text-sm text-muted-foreground mb-4">
               正在监听触摸屏事件，每次触摸将自动生成对应的测试步骤。
             </div>
-            <div className="text-sm">
-              已自动生成 <span className="font-medium">{operationSteps.length}</span> 个步骤
-            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={stopRecording}>
               停止录制
+            </Button>
+            <Button 
+              variant="default" 
+              onClick={saveRecording} 
+              disabled={deviceEvents.length === 0 || !recordingName.trim()}
+            >
+              保存录制
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* 步骤详情对话框 */}
+      <Dialog open={isStepDetailsOpen} onOpenChange={setIsStepDetailsOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>步骤详情</DialogTitle>
+            <DialogDescription>
+              {selectedStepId && (
+                <div className="space-y-4 mt-2">
+                  <div className="space-y-2">
+                    <Label>操作名称</Label>
+                    <Input
+                      value={operationSteps.find(step => step.id === selectedStepId)?.operation_name || ""}
+                      onChange={(e) => updateOperationStep(selectedStepId, "operation_name", e.target.value)}
+                      placeholder="输入操作名称"
+                    />
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    录制的触摸事件详情：
+                  </div>
+                </div>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <ScrollArea className="h-[300px] rounded-md border p-2">
+              {selectedStepId && operationSteps.find(step => step.id === selectedStepId)?.recorded_steps?.map((event, index) => (
+                <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
+                  <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
+                  <span className="font-medium">{event.type}</span>
+                  {event.x !== undefined && (
+                    <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                  )}
+                  {event.y !== undefined && (
+                    <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
+                  )}
+                  {event.duration !== undefined && (
+                    <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
+                  )}
+                </div>
+              ))}
+            </ScrollArea>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsStepDetailsOpen(false)}>
+              关闭
             </Button>
           </DialogFooter>
         </DialogContent>
