@@ -488,6 +488,29 @@ class TestCaseExecutor:
                         'message': f'串口关-开机操作失败: {str(e)}'
                     }
                 
+            elif operation_key == '可视化录制':
+                # 导入RunMonitor
+                from .run_monitor import RunMonitor
+                
+                # 获取录制的步骤
+                recorded_steps = step.get('recorded_steps', [])
+                if not recorded_steps:
+                    logger.warning("可视化录制步骤为空")
+                    return {
+                        'success': False,
+                        'message': '可视化录制步骤为空'
+                    }
+                
+                # 创建RunMonitor实例并执行录制的步骤
+                run_monitor = RunMonitor(self.ssh)
+                result = run_monitor.execute_recorded_steps(recorded_steps)
+                
+                return {
+                    'success': result['success'],
+                    'message': result['message'],
+                    'details': result.get('details', [])
+                }
+                
             else:
                 return {
                     'success': False,

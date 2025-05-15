@@ -61,19 +61,47 @@ def get_test_case(case_id):
 @test_cases_bp.route('/<int:case_id>', methods=['PUT'])
 def update_test_case(case_id):
     """更新测试用例"""
-    data = request.get_json()
-    updated_case = TestCaseService.update(case_id, data)
-    
-    if updated_case:
-        return jsonify({
-            'success': True,
-            'test_case': updated_case,
-            'message': '测试用例更新成功'
-        })
-    else:
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({
+                'success': False,
+                'message': '请求数据为空'
+            }), 400
+            
+        logging.info(f"更新测试用例 {case_id} - 接收到的数据: {data}")
+        
+        # 验证必要字段
+        required_fields = ['title', 'type']
+        missing_fields = [field for field in required_fields if not data.get(field)]
+        if missing_fields:
+            return jsonify({
+                'success': False,
+                'message': f'缺少必要字段: {", ".join(missing_fields)}'
+            }), 400
+        
+        # 更新测试用例
+        updated_case = TestCaseService.update(case_id, data)
+        
+        if updated_case:
+            logging.info(f"测试用例 {case_id} 更新成功")
+            return jsonify({
+                'success': True,
+                'test_case': updated_case,
+                'message': '测试用例更新成功'
+            })
+        else:
+            logging.error(f"测试用例 {case_id} 更新失败")
+            return jsonify({
+                'success': False,
+                'message': '更新测试用例失败'
+            }), 500
+            
+    except Exception as e:
+        logging.error(f"更新测试用例时出错: {str(e)}")
         return jsonify({
             'success': False,
-            'message': '更新测试用例失败'
+            'message': f'更新测试用例时出错: {str(e)}'
         }), 500
 
 @test_cases_bp.route('/<int:case_id>', methods=['DELETE'])

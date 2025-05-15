@@ -167,5 +167,18 @@
     "serial_connect": false,
     "project_name": "VP-180项目",
     "project_id": "4855856862"
+  },
+  {
+    "id": 16,
+    "title": "213",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-05-15 14:49",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 2, \"operation_key\": \"可视化录制\", \"button_name\": \"录制步骤 6 个操作\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"visual\", \"recorded_steps\": [{\"type\": \"请点击设备触摸屏进行录制！\", \"timestamp\": \"2025-05-15T06:48:26.872Z\"}, {\"type\": \"触摸坐标\", \"x\": 969.7, \"y\": 210.9, \"duration\": 0.537, \"timestamp\": \"2025-05-15T06:48:34.681Z\"}, {\"type\": \"触摸坐标\", \"x\": 1161.3, \"y\": 157.2, \"duration\": 0.073, \"timestamp\": \"2025-05-15T06:48:35.440Z\"}, {\"type\": \"触摸坐标\", \"x\": 967.5, \"y\": 387.9, \"duration\": 0.475, \"timestamp\": \"2025-05-15T06:48:36.725Z\"}, {\"type\": \"触摸坐标\", \"x\": 1133, \"y\": 388.5, \"duration\": 0.09, \"timestamp\": \"2025-05-15T06:48:37.386Z\"}, {\"type\": \"触摸坐标\", \"x\": 1093.9, \"y\": 346.6, \"duration\": 0.112, \"timestamp\": \"2025-05-15T06:48:38.258Z\"}], \"operation_name\": \"操作事实上\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
+    "serial_connect": false,
+    "project_name": "VP-180",
+    "project_id": "5604442429"
   }
 ]

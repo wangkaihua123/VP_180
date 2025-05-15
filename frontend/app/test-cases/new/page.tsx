@@ -228,7 +228,11 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [operationSteps, setOperationSteps] = useState<OperationStep[]>(() => {
     if (initialData?.script_content) {
       try {
-        const content = JSON.parse(initialData.script_content);
+        // 检查script_content的类型
+        const content = typeof initialData.script_content === 'string' 
+          ? JSON.parse(initialData.script_content)
+          : initialData.script_content;
+          
         return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
       } catch (e) {
         console.error('Error parsing script_content:', e);
@@ -240,7 +244,11 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>(() => {
     if (initialData?.script_content) {
       try {
-        const content = JSON.parse(initialData.script_content);
+        // 检查script_content的类型
+        const content = typeof initialData.script_content === 'string'
+          ? JSON.parse(initialData.script_content)
+          : initialData.script_content;
+          
         return content.verificationSteps || [{ id: 1, verification_key: "" }];
       } catch (e) {
         console.error('Error parsing script_content:', e);
@@ -252,8 +260,17 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [testType, setTestType] = useState(initialData?.type || "功能测试")
   const [repeatCount, setRepeatCount] = useState(() => {
     if (initialData?.script_content) {
-      const content = JSON.parse(initialData.script_content);
-      return content.repeatCount || 1;
+      try {
+        // 检查script_content的类型
+        const content = typeof initialData.script_content === 'string'
+          ? JSON.parse(initialData.script_content)
+          : initialData.script_content;
+          
+        return content.repeatCount || 1;
+      } catch (e) {
+        console.error('Error parsing script_content:', e);
+        return 1;
+      }
     }
     return 1;
   })

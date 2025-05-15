@@ -78,7 +78,18 @@ class TestCase:
         converted_case = test_case.copy()
         if 'script_content' in test_case:
             try:
-                content = json.loads(test_case['script_content'])
+                # 如果script_content是字符串，尝试解析为JSON
+                content = test_case['script_content']
+                if isinstance(content, str):
+                    content = json.loads(content)
+                elif isinstance(content, dict):
+                    # 如果已经是字典，直接使用
+                    pass
+                else:
+                    logger.warning(f"Unexpected script_content type: {type(content)}")
+                    return converted_case
+
+                # 处理操作步骤
                 if 'operationSteps' in content:
                     content['operationSteps'] = [
                         {
@@ -92,6 +103,8 @@ class TestCase:
                         {k: v for k, v in step.items() if v is not None}
                         for step in content['operationSteps']
                     ]
+
+                # 处理验证步骤
                 if 'verificationSteps' in content:
                     content['verificationSteps'] = [
                         {
@@ -105,9 +118,13 @@ class TestCase:
                         {k: v for k, v in step.items() if v is not None}
                         for step in content['verificationSteps']
                     ]
+
+                # 将处理后的内容转换回字符串
                 converted_case['script_content'] = json.dumps(content, ensure_ascii=False)
-            except json.JSONDecodeError:
-                pass
+            except json.JSONDecodeError as e:
+                logger.error(f"Error parsing script_content: {e}")
+            except Exception as e:
+                logger.error(f"Error converting keys: {e}")
         return converted_case
     
     @staticmethod
@@ -194,25 +211,62 @@ class TestCase:
     @classmethod
     def update(cls, case_id, test_case_data):
         """更新测试用例"""
-        test_cases = cls.get_all()
-        case = cls.get_by_id(case_id)
-        
-        if not case:
+        try:
+            test_cases = cls.get_all()
+            case = cls.get_by_id(case_id)
+            
+            if not case:
+                logger.error(f"未找到要更新的测试用例: {case_id}")
+                return None
+            
+            # 记录更新前的数据
+            logger.info(f"更新测试用例 {case_id} - 原数据: {case}")
+            logger.info(f"更新数据: {test_case_data}")
+            
+            # 更新字段
+            case['title'] = test_case_data.get('title', case['title'])
+            case['type'] = test_case_data.get('type', case['type'])
+            case['description'] = test_case_data.get('description', case['description'])
+            
+            # 处理script_content
+            if 'script_content' in test_case_data:
+                try:
+                    # 如果是字符串，尝试解析为JSON
+                    if isinstance(test_case_data['script_content'], str):
+                        content = json.loads(test_case_data['script_content'])
+                    else:
+                        content = test_case_data['script_content']
+                    
+                    # 确保content是字符串格式
+                    case['script_content'] = json.dumps(content, ensure_ascii=False)
+                except json.JSONDecodeError as e:
+                    logger.error(f"script_content JSON解析失败: {e}")
+                    case['script_content'] = test_case_data['script_content']
+            
+            case['serial_connect'] = test_case_data.get('serial_connect', case['serial_connect'])
+            case['project_name'] = test_case_data.get('project_name', case['project_name'])
+            case['project_id'] = test_case_data.get('project_id', case['project_id'])
+            
+            # 记录更新后的数据
+            logger.info(f"更新后的数据: {case}")
+            
+            # 在列表中更新测试用例
+            for i, tc in enumerate(test_cases):
+                if tc['id'] == case_id:
+                    test_cases[i] = case
+                    break
+            
+            # 保存更新
+            if cls.save(test_cases):
+                logger.info(f"测试用例 {case_id} 更新成功")
+                return case
+            else:
+                logger.error(f"测试用例 {case_id} 保存失败")
+                return None
+                
+        except Exception as e:
+            logger.error(f"更新测试用例时出错: {str(e)}")
             return None
-        
-        # 更新字段
-        case['title'] = test_case_data.get('title', case['title'])
-        case['type'] = test_case_data.get('type', case['type'])
-        case['description'] = test_case_data.get('description', case['description'])
-        case['script_content'] = test_case_data.get('script_content', case['script_content'])
-        case['serial_connect'] = test_case_data.get('serial_connect', case['serial_connect'])
-        case['project_name'] = test_case_data.get('project_name', case['project_name'])
-        case['project_id'] = test_case_data.get('project_id', case['project_id'])
-        
-        # 保存更新
-        if cls.save(test_cases):
-            return case
-        return None
     
     @classmethod
     def delete(cls, case_id):
