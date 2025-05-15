@@ -75,8 +75,15 @@ def slide(x1, y1, x2, y2):
         print(f"❌ 滑动事件失败: {str(e)}")
         return False
 
-def click(x, y, long_press=False):
-    """模拟触控，支持短按和长按(1.2秒)"""
+def click(x, y, long_press=False, touch_duration=None):
+    """模拟触控，支持短按、长按和自定义时长
+    
+    Args:
+        x: X坐标
+        y: Y坐标
+        long_press: 是否长按（1.2秒）
+        touch_duration: 自定义触摸时长（秒），优先级高于long_press
+    """
     try:
         with open(INPUT_DEVICE, "wb") as fd:
             # 1. 按下事件序列（完全匹配实际事件）
@@ -88,8 +95,11 @@ def click(x, y, long_press=False):
             send_event(fd, 3, 48, 128)             # ABS_MT_TOUCH_MAJOR 128
             send_event(fd, 0, 0, 0)                # SYN_REPORT
 
-            # 2. 延迟时间(短按0.1秒，长按1.2秒)
-            if long_press:
+            # 2. 延迟时间
+            if touch_duration is not None:
+                time.sleep(float(touch_duration))  # 使用自定义触摸时长
+                press_type = f"触摸{touch_duration}秒"
+            elif long_press:
                 time.sleep(1.2)  # 长按1.2秒
                 press_type = "长按"
             else:
@@ -121,14 +131,19 @@ if __name__ == "__main__":
         except ValueError as ve:
             print(f"❌ 参数错误: {str(ve)}")
             sys.exit(1)
-    elif len(sys.argv) == 4 and sys.argv[3] == "--long-press":
-        # 长按模式
+    elif len(sys.argv) == 4:
+        # 长按或自定义时长模式
         try:
             x = int(sys.argv[1])
             y = int(sys.argv[2])
             if not (0 <= x <= 9599 and 0 <= y <= 9599):
                 raise ValueError("坐标超出范围 (0-9599)")
-            click(x, y, long_press=True)
+            if sys.argv[3] == "--long-press":
+                click(x, y, long_press=True)
+            else:
+                # 尝试解析为自定义时长
+                duration = float(sys.argv[3])
+                click(x, y, touch_duration=duration)
         except ValueError as ve:
             print(f"❌ 参数错误: {str(ve)}")
             sys.exit(1)
@@ -149,5 +164,6 @@ if __name__ == "__main__":
         print("用法:")
         print("  点击: python3 touch_click.py <x> <y>")
         print("  长按: python3 touch_click.py <x> <y> --long-press")
+        print("  自定义时长: python3 touch_click.py <x> <y> <duration>")
         print("  滑动: python3 touch_click.py <x1> <y1> --slide-to <x2> <y2>")
         sys.exit(1)

@@ -266,7 +266,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           ? JSON.parse(initialData.script_content)
           : initialData.script_content;
           
-        return content.repeatCount || 1;
+      return content.repeatCount || 1;
       } catch (e) {
         console.error('Error parsing script_content:', e);
         return 1;

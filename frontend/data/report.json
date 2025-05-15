@@ -58,8 +58,8 @@
     "database": "MySQL 8.0.28",
     "apiVersion": "v2.3.5"
   },
-  "generatedTime": "2025/5/15 15:32:34",
-  "team": "优亿测试开发部",
+  "generatedTime": "2025/5/15 16:06:12",
+  "team": "优雅优化小组",
   "testCases": [
     {
       "id": 16,
@@ -71,5 +71,5 @@
     }
   ],
   "logs": [],
-  "generatedAt": "2025-05-15T07:32:34.826Z"
+  "generatedAt": "2025-05-15T08:06:12.901Z"
 }

@@ -39,16 +39,17 @@ class ButtonClicker:
             'triple': 0.1   # 三点点击概率为10%
         }
     
-    def click_button(self, x=None, y=None, button_name=None, description="按钮"):
+    def click_button(self, x=None, y=None, button_name=None, description="按钮", touch_duration=None):
         """
         点击指定坐标或指定名称的按钮
         :param x: 屏幕X坐标（可选）
         :param y: 屏幕Y坐标（可选）
         :param button_name: 按钮名称，对应Config.py中FUNCTIONS的chinese_name（可选）
         :param description: 按钮描述
+        :param touch_duration: 触摸时长（秒），如果不指定则使用默认点击时长
         """
-        # 如果提供了按钮名称，则查找对应的坐标
-        if button_name is not None:
+        # 如果提供了按钮名称且不为空，则查找对应的坐标
+        if button_name and button_name.strip():
             if not FUNCTIONS:
                 logger.error("FUNCTIONS配置未正确加载，无法通过按钮名称查找")
                 return False
@@ -59,19 +60,19 @@ class ButtonClicker:
                     x, y = value['touch']
                     description = button_name
                     found = True
-                    # logger.debug(f"找到按钮 {button_name} 的坐标: ({x}, {y})")
                     break
             
             if not found:
                 logger.error(f"未找到名称为 {button_name} 的按钮")
                 return False
         
-        # 如果没有提供坐标也没有提供按钮名称，则返回错误
+        # 如果没有提供坐标，则返回错误
         if x is None or y is None:
-            logger.error("未提供按钮坐标或按钮名称")
+            logger.error("未提供按钮坐标")
             return False
             
-        logger.debug(f"点击{description}按钮 ({x}, {y})")
+        duration_desc = f" (触摸时长: {touch_duration}秒)" if touch_duration is not None else ""
+        logger.debug(f"点击{description}按钮 ({x}, {y}){duration_desc}")
         
         # 检查SSH连接是否有效
         if not self.ssh or not hasattr(self.ssh, 'exec_command'):
@@ -81,6 +82,8 @@ class ButtonClicker:
         try:
             # 构建触摸点击命令
             command = f"python3 /app/jzj/touch_click.py {x} {y}"
+            if touch_duration is not None:
+                command += f" {touch_duration}"
             logger.debug(f"执行命令: {command}")
             
             stdin, stdout, stderr = self.ssh.exec_command(command)
