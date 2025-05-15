@@ -170,13 +170,13 @@
   },
   {
     "id": 16,
-    "title": "213",
+    "title": "用户配置",
     "type": "功能测试",
-    "status": "未运行",
+    "status": "失败",
     "create_time": "2025-05-15 14:49",
-    "last_execution_time": "",
+    "last_execution_time": "2025-05-15 15:32:32",
     "description": "",
-    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 2, \"operation_key\": \"可视化录制\", \"button_name\": \"录制步骤 6 个操作\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"visual\", \"recorded_steps\": [{\"type\": \"请点击设备触摸屏进行录制！\", \"timestamp\": \"2025-05-15T06:48:26.872Z\"}, {\"type\": \"触摸坐标\", \"x\": 969.7, \"y\": 210.9, \"duration\": 0.537, \"timestamp\": \"2025-05-15T06:48:34.681Z\"}, {\"type\": \"触摸坐标\", \"x\": 1161.3, \"y\": 157.2, \"duration\": 0.073, \"timestamp\": \"2025-05-15T06:48:35.440Z\"}, {\"type\": \"触摸坐标\", \"x\": 967.5, \"y\": 387.9, \"duration\": 0.475, \"timestamp\": \"2025-05-15T06:48:36.725Z\"}, {\"type\": \"触摸坐标\", \"x\": 1133, \"y\": 388.5, \"duration\": 0.09, \"timestamp\": \"2025-05-15T06:48:37.386Z\"}, {\"type\": \"触摸坐标\", \"x\": 1093.9, \"y\": 346.6, \"duration\": 0.112, \"timestamp\": \"2025-05-15T06:48:38.258Z\"}], \"operation_name\": \"操作事实上\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 3, \"operation_key\": \"可视化录制\", \"button_name\": \"录制步骤 10 个操作\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"visual\", \"recorded_steps\": [{\"type\": \"请点击设备触摸屏进行录制！\", \"timestamp\": \"2025-05-15T07:24:45.545Z\"}, {\"type\": \"触摸坐标\", \"x\": 1128.1, \"y\": 199.8, \"duration\": 0.069, \"timestamp\": \"2025-05-15T07:24:51.542Z\"}, {\"type\": \"触摸坐标\", \"x\": 645.8, \"y\": 312, \"duration\": 0.116, \"timestamp\": \"2025-05-15T07:24:52.424Z\"}, {\"type\": \"触摸坐标\", \"x\": 643.6, \"y\": 344.8, \"duration\": 0.064, \"timestamp\": \"2025-05-15T07:24:53.722Z\"}, {\"type\": \"触摸坐标\", \"x\": 702.1, \"y\": 313.3, \"duration\": 0.086, \"timestamp\": \"2025-05-15T07:24:54.589Z\"}, {\"type\": \"触摸坐标\", \"x\": 698.8, \"y\": 313.3, \"duration\": -0.579, \"timestamp\": \"2025-05-15T07:24:54.926Z\"}, {\"type\": \"触摸坐标\", \"x\": 918.6, \"y\": 333.6, \"duration\": 0.078, \"timestamp\": \"2025-05-15T07:24:55.248Z\"}, {\"type\": \"触摸坐标\", \"x\": 953.9, \"y\": 332, \"duration\": 0.073, \"timestamp\": \"2025-05-15T07:24:55.478Z\"}, {\"type\": \"触摸坐标\", \"x\": 1193.1, \"y\": 46.5, \"duration\": 0.073, \"timestamp\": \"2025-05-15T07:24:56.131Z\"}, {\"type\": \"触摸坐标\", \"x\": 920.4, \"y\": 425.9, \"duration\": 0.09, \"timestamp\": \"2025-05-15T07:24:57.002Z\"}], \"operation_name\": \"用户配置\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"\"}]}",
     "serial_connect": false,
     "project_name": "VP-180",
     "project_id": "5604442429"

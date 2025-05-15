@@ -1,6 +1,6 @@
 {
   "project": "VP-180项目",
-  "date": "2025年5月6日",
+  "date": "2025年5月15日",
   "passRate": 0,
   "totalCases": 1,
   "passedCases": 0,
@@ -45,9 +45,9 @@
   ],
   "failedTestCases": [
     {
-      "id": "TC-012",
+      "id": "TC-016",
       "type": "功能测试",
-      "name": "关开机",
+      "name": "用户配置",
       "errorMsg": "测试验证失败",
       "status": "失败"
     }
@@ -58,18 +58,18 @@
     "database": "MySQL 8.0.28",
     "apiVersion": "v2.3.5"
   },
-  "generatedTime": "2025/5/6 21:26:54",
-  "team": "优雅优化小组",
+  "generatedTime": "2025/5/15 15:32:34",
+  "team": "优亿测试开发部",
   "testCases": [
     {
-      "id": 12,
-      "title": "关开机",
-      "name": "关开机",
+      "id": 16,
+      "title": "用户配置",
+      "name": "用户配置",
       "type": "功能测试",
-      "status": "error",
-      "color": "purple"
+      "status": "failed",
+      "color": "indigo"
     }
   ],
   "logs": [],
-  "generatedAt": "2025-05-06T13:26:55.687Z"
+  "generatedAt": "2025-05-15T07:32:34.826Z"
 }
