@@ -32,11 +32,11 @@ class SSHManager:
     # 连接重试状态跟踪
     _connection_attempts = 0
     _max_retries = 3  # 最多尝试4次 (初始尝试 + 3次重试)
-    _retry_interval = 2  # 重试间隔（秒）
+    _retry_interval = 4  # 重试间隔（秒）
     
     # 心跳检测配置
     _heartbeat_interval = 5  # 心跳检测间隔（秒）
-    _heartbeat_timeout = 3  # 心跳超时时间（秒）
+    _heartbeat_timeout = 5  # 心跳超时时间（秒）
     _heartbeat_thread = None
     _stop_heartbeat = False
     
@@ -231,6 +231,10 @@ class SSHManager:
                 banner_timeout=10,  # 设置banner超时
                 auth_timeout=10  # 设置认证超时
             )
+            
+            # 设置 TCP keepalive
+            transport = self.__class__._ssh_client.get_transport()
+            transport.set_keepalive(60)  # 每60秒发送一个心跳包
             
             # 连接成功，重置计数器和状态
             logger.info("SSH连接成功")

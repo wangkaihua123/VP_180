@@ -223,14 +223,19 @@ export default function ExecuteAllPage() {
     if (searchParams) {
       const ids = searchParams.get('ids')
       const autoExecute = searchParams.get('autoExecute')
+      const timestamp = searchParams.get('t')
       
       if (ids) {
         setSelectedIds(ids.split(',').map(id => parseInt(id)))
       }
       
-      // 只有在autoExecute=true时才自动执行
-      if (autoExecute === 'true') {
+      // 如果有时间戳参数但没有autoExecute参数，说明是从其他页面跳转来的
+      // 此时也应该自动执行测试用例
+      if (timestamp && !autoExecute) {
         // 启用自动执行
+        autoExecuteAttemptedRef.current = false;
+      } else if (autoExecute === 'true') {
+        // 原有的autoExecute逻辑
         autoExecuteAttemptedRef.current = false;
       } else {
         // 不自动执行，仅显示结果
@@ -814,7 +819,7 @@ export default function ExecuteAllPage() {
           apiVersion: 'v2.3.5'
         },
         generatedTime: new Date().toLocaleString('zh-CN'),
-        team: '优雅优化小组',
+        team: '优亿测试开发部',
         testCases: casesToExecute.map(tc => ({
           id: tc.id,
           title: tc.title,
@@ -1067,27 +1072,20 @@ export default function ExecuteAllPage() {
    * 重新执行测试用例
    */
   const handleReExecute = () => {
-    // 重置执行状态
-    setProgress(0);
-    setCompletedTestCases(0);
-    setLogs([]);
-    setIsPaused(false);
-    setExecutionStats({
-      total: 0,
-      completed: 0,
-      failed: 0,
-      skipped: 0
-    });
+    // 构建新的URL，添加autoExecute=true参数
+    const timestamp = new Date().getTime();
+    let newUrl = '/execute-all';
     
-    // 重置所有测试用例状态为待执行
-    const updatedTestCases = testCases.map(tc => ({
-      ...tc,
-      status: 'pending' as TestCaseStatus
-    }));
-    setTestCases(updatedTestCases);
+    // 如果有选中的测试用例ID，添加到URL中
+    if (selectedIds.length > 0) {
+      newUrl += `?ids=${selectedIds.join(',')}`;
+    }
     
-    // 重新执行测试用例
-    handleExecuteSelected();
+    // 添加autoExecute=true参数
+    newUrl += `${selectedIds.length > 0 ? '&' : '?'}autoExecute=true&t=${timestamp}`;
+    
+    // 使用window.location.href强制浏览器完全刷新页面
+    window.location.href = newUrl;
   };
 
   /**

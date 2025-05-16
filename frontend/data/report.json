@@ -45,9 +45,9 @@
   ],
   "failedTestCases": [
     {
-      "id": "TC-017",
+      "id": "TC-015",
       "type": "功能测试",
-      "name": "点击电子放大",
+      "name": "假",
       "errorMsg": "测试验证失败",
       "status": "失败"
     }
@@ -58,18 +58,18 @@
     "database": "MySQL 8.0.28",
     "apiVersion": "v2.3.5"
   },
-  "generatedTime": "2025/5/16 14:22:19",
-  "team": "优雅优化小组",
+  "generatedTime": "2025/5/16 15:36:26",
+  "team": "优亿测试开发部",
   "testCases": [
     {
-      "id": 17,
-      "title": "点击电子放大",
-      "name": "点击电子放大",
+      "id": 15,
+      "title": "假",
+      "name": "假",
       "type": "功能测试",
-      "status": "failed",
-      "color": "pink"
+      "status": "error",
+      "color": "red"
     }
   ],
   "logs": [],
-  "generatedAt": "2025-05-16T06:22:19.914Z"
+  "generatedAt": "2025-05-16T07:36:26.461Z"
 }

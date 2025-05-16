@@ -38,6 +38,9 @@ class SSHService:
                 ssh._transport = transport
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
+                # 设置 TCP keepalive
+                transport.set_keepalive(60)  # 每60秒发送一个心跳包
+
                 logger.debug("执行测试命令...")
                 # 测试执行简单命令
                 stdin, stdout, stderr = ssh.exec_command('echo "Test connection successful"', timeout=5)

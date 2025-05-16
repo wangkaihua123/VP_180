@@ -1,33 +1,47 @@
-2025-05-16 14:21:10 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-16 14:21:20 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-16 14:21:22 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-05-16 14:21:22 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
-2025-05-16 14:21:22 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-05-16 14:21:32 - ERROR - utils.ssh_manager - 第2次ssh连接失败: No existing session
-2025-05-16 14:21:34 - DEBUG - utils.ssh_manager - SSH连接检查失败: 
-2025-05-16 14:21:34 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
-2025-05-16 14:21:34 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-05-16 14:21:45 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-16 14:21:45 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-05-16 14:21:45 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
-2025-05-16 14:21:45 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-05-16 14:21:45 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
-2025-05-16 14:21:45 - INFO - utils.test_case_executor - 当前执行测试用例名称: 点击电子放大，测试用例ID: 17，重复次数: 1
-2025-05-16 14:21:45 - INFO - utils.test_case_executor - 执行第 1/1 次测试
-2025-05-16 14:21:51 - DEBUG - utils.button_clicker - 点击点击坐标(946.0,231.6)按钮 (946, 231) (触摸时长: 3.571秒)
-2025-05-16 14:21:51 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 946 231 3.571
-2025-05-16 14:21:55 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸3.571秒触摸事件已发送: X=946, Y=231
-2025-05-16 14:22:01 - DEBUG - utils.button_clicker - 点击点击坐标(997.8,258.1)按钮 (997, 258) (触摸时长: 3.287秒)
-2025-05-16 14:22:01 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 997 258 3.287
-2025-05-16 14:22:04 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸3.287秒触摸事件已发送: X=997, Y=258
-2025-05-16 14:22:09 - DEBUG - utils.button_clicker - 点击点击坐标(1131.2,397.7)按钮 (1131, 397) (触摸时长: 2.779秒)
-2025-05-16 14:22:09 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 1131 397 2.779
-2025-05-16 14:22:12 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸2.779秒触摸事件已发送: X=1131, Y=397
-2025-05-16 14:22:16 - DEBUG - utils.button_clicker - 点击点击坐标(1103.7,413.2)按钮 (1103, 413) (触摸时长: 2.288秒)
-2025-05-16 14:22:16 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 1103 413 2.288
-2025-05-16 14:22:18 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸2.288秒触摸事件已发送: X=1103, Y=413
-2025-05-16 14:22:18 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-16 14:22:18 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-16 14:22:18 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-16 14:22:18 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-16 14:22:18 - INFO - utils.test_case_executor - 测试用例 点击电子放大 执行完成，共执行 1 次，最终状态: 失败
+2025-05-16 15:36:23 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-05-16 15:36:23 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-05-16 15:36:23 - INFO - utils.test_case_executor - 当前执行测试用例名称: 假，测试用例ID: 15，重复次数: 1
+2025-05-16 15:36:23 - INFO - utils.test_case_executor - 执行第 1/1 次测试
+2025-05-16 15:36:23 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
+2025-05-16 15:36:23 - DEBUG - utils.button_clicker - 点击保存截图按钮 (799, 379)
+2025-05-16 15:36:23 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 799 379
+2025-05-16 15:36:23 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=799, Y=379
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2505161334/153623892.tiff
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 解码截图数据
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_6fdcf9d46eda4d51bf101fd43245321e_153623892.tiff
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_15_20250516153624.png
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_6fdcf9d46eda4d51bf101fd43245321e_153623892.tiff
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 截图获取成功
+2025-05-16 15:36:24 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-05-16 15:36:24 - DEBUG - utils.button_clicker - 点击电子放大按钮 (399, 249)
+2025-05-16 15:36:24 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 399 249
+2025-05-16 15:36:24 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=399, Y=249
+2025-05-16 15:36:24 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
+2025-05-16 15:36:24 - DEBUG - utils.button_clicker - 点击保存截图按钮 (799, 379)
+2025-05-16 15:36:24 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 799 379
+2025-05-16 15:36:24 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=799, Y=379
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2505161334/153625171.tiff
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 解码截图数据
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_4ae50a811900498d9afa4100abdcb976_153625171.tiff
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_15_20250516153625.png
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_4ae50a811900498d9afa4100abdcb976_153625171.tiff
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
+2025-05-16 15:36:25 - DEBUG - utils.get_latest_screenshot - 截图获取成功
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 从操作步骤 1 获取到截图1
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 从操作步骤 3 获取到截图2
+2025-05-16 15:36:25 - INFO - utils.image_comparator - SSIM 相似度: 0.9002
+2025-05-16 15:36:25 - INFO - utils.image_comparator - 图像的相似度较合理,测试 通过(SSIM 值: 0.9002, 阈值范围: 0.80 - 0.98)
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: True
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 验证步骤结果: True - 图像对比完成 (SSIM相似度): 结果: 通过
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试通过
+2025-05-16 15:36:25 - INFO - utils.test_case_executor - 测试用例 假 执行完成，共执行 1 次，最终状态: 通过

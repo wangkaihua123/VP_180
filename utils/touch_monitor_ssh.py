@@ -10,6 +10,18 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+# 屏幕配置
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 600
+MAX_X = 9599
+MAX_Y = 9599
+
+def convert_touch_to_screen(touch_x, touch_y):
+    """将触摸屏坐标转换为屏幕坐标"""
+    screen_x = round(touch_x / MAX_X * SCREEN_WIDTH, 1)
+    screen_y = round(touch_y / MAX_Y * SCREEN_HEIGHT, 1)
+    return screen_x, screen_y
+
 class TouchMonitor:
     def __init__(self):
         self.ssh_manager = SSHManager.get_instance()
@@ -107,9 +119,9 @@ class TouchMonitor:
                             
                             if event_type == 3:  # EV_ABS
                                 if event_code == 53:  # ABS_MT_POSITION_X
-                                    current_x = event_value / 9600 * 1920  # 转换为屏幕坐标
+                                    current_x = event_value
                                 elif event_code == 54:  # ABS_MT_POSITION_Y
-                                    current_y = event_value / 9600 * 1080  # 转换为屏幕坐标
+                                    current_y = event_value
                                 
                             elif event_type == 1 and event_code == 330:  # EV_KEY and BTN_TOUCH
                                 if event_value == 1:  # Press
@@ -118,11 +130,13 @@ class TouchMonitor:
                                 elif event_value == 0:  # Release
                                     if touch_start_time is not None and current_x is not None and current_y is not None:
                                         duration = event_time - touch_start_time
-                                        logger.debug(f"触摸结束: X: {current_x:.1f} Y: {current_y:.1f} 持续: {duration:.3f}秒")
+                                        # 转换坐标
+                                        screen_x, screen_y = convert_touch_to_screen(current_x, current_y)
+                                        logger.debug(f"触摸结束: X: {screen_x:.1f} Y: {screen_y:.1f} 持续: {duration:.3f}秒")
                                         self._send_event({
                                             "type": "触摸坐标",
-                                            "x": round(current_x, 1),
-                                            "y": round(current_y, 1),
+                                            "x": screen_x,
+                                            "y": screen_y,
                                             "duration": round(duration, 3),
                                             "timestamp": event_time
                                         })

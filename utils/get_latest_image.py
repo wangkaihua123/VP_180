@@ -35,7 +35,6 @@ class GetLatestImage:
         # 创建临时目录用于保存TIFF文件
         self.temp_dir = os.path.join(self.local_dir, "temp")
         os.makedirs(self.temp_dir, exist_ok=True)
-        logger.debug(f"临时文件将保存到目录: {self.temp_dir}")
         
         # 创建ButtonClicker实例
         self.button_clicker = ButtonClicker(ssh_connection)

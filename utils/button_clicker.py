@@ -84,8 +84,8 @@ class ButtonClicker:
     def click_button(self, x=None, y=None, button_name=None, description="按钮", touch_duration=None):
         """
         点击指定坐标或指定名称的按钮
-        :param x: 屏幕X坐标（可选）
-        :param y: 屏幕Y坐标（可选）
+        :param x: 触摸屏X坐标（可选）
+        :param y: 触摸屏Y坐标（可选）
         :param button_name: 按钮名称，对应Config.py中FUNCTIONS的chinese_name（可选）
         :param description: 按钮描述
         :param touch_duration: 触摸时长（秒），如果不指定则使用默认点击时长
@@ -112,9 +112,11 @@ class ButtonClicker:
         if x is None or y is None:
             logger.error("未提供按钮坐标")
             return False
-            
+        # 将触摸屏坐标转换为屏幕坐标
+        screen_x = int((x / 9599) * 1024)
+        screen_y = int((y / 9599) * 600)
         duration_desc = f" (触摸时长: {touch_duration}秒)" if touch_duration is not None else ""
-        logger.debug(f"点击{description}按钮 ({x}, {y}){duration_desc}")
+        logger.debug(f"点击{description}按钮 ({screen_x}, {screen_y}){duration_desc}")
         
         # 重试机制
         for attempt in range(self.max_retries):
@@ -127,10 +129,21 @@ class ButtonClicker:
                 continue
             
             try:
+                
+                
                 # 构建触摸点击命令
-                command = f"python3 /app/jzj/touch_click.py {x} {y}"
+                command = f"python3 /app/jzj/touch_click.py {screen_x} {screen_y}"
                 if touch_duration is not None:
-                    command += f" {touch_duration}"
+                    try:
+                        duration = float(touch_duration)
+                        if duration <= 0:
+                            raise ValueError("触摸时长必须大于0秒")
+                        command += f" {duration}"
+                    except ValueError as ve:
+                        logger.error(f"触摸时长参数错误: {str(ve)}")
+                        if attempt < self.max_retries - 1:
+                            time.sleep(self.retry_interval)
+                        continue
                 logger.debug(f"执行命令: {command}")
                 
                 stdin, stdout, stderr = ssh.exec_command(command)
@@ -141,6 +154,12 @@ class ButtonClicker:
                 
                 if error:
                     logger.error(f"点击按钮出错: {error}")
+                    if attempt < self.max_retries - 1:
+                        time.sleep(self.retry_interval)
+                    continue
+                    
+                if "❌" in output:  # 检查是否有错误标记
+                    logger.error(f"点击按钮失败: {output}")
                     if attempt < self.max_retries - 1:
                         time.sleep(self.retry_interval)
                     continue
