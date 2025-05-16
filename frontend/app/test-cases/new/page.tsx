@@ -1206,7 +1206,12 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       </main>
 
       {/* 可视化录制对话框 */}
-      <Dialog open={recordingDialogOpen} onOpenChange={setRecordingDialogOpen}>
+      <Dialog open={recordingDialogOpen} onOpenChange={(open) => {
+        if (!open) {
+          stopRecording();
+        }
+        setRecordingDialogOpen(open);
+      }}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>
