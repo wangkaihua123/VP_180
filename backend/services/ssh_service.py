@@ -149,12 +149,29 @@ class SSHService:
     
     @staticmethod
     def get_client():
-        """获取SSH客户端"""
-        # 获取SSHManager单例
-        ssh_manager = SSHManager.get_instance()
+        """获取SSH客户端
         
-        # 使用改进的get_client方法获取连接
-        client = ssh_manager.get_client()
-        
-        # 不再需要额外的日志记录，SSHManager内部已经处理
-        return client 
+        Returns:
+            paramiko.SSHClient: 有效的SSH客户端连接
+            None: 如果无法获取有效连接
+        """
+        try:
+            # 获取SSHManager单例
+            ssh_manager = SSHManager.get_instance()
+            
+            # 检查现有连接状态
+            if not SSHManager.is_connected():
+                logger.info("SSH未连接或连接已断开，尝试重新连接")
+                client = ssh_manager.reconnect()
+            else:
+                client = SSHManager.get_client()
+                
+            if not client:
+                logger.error("无法获取有效的SSH连接")
+                return None
+                
+            return client
+            
+        except Exception as e:
+            logger.error(f"获取SSH客户端时出错: {str(e)}")
+            return None 
