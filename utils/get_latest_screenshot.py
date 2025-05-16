@@ -208,10 +208,8 @@ class GetLatestScreenshot:
                 except Exception as e:
                     logger.warning(f"删除临时TIFF文件失败: {str(e)}")
                 
-                # 删除远程TIFF文件
-                self.ssh.exec_command(f"rm -f {latest_file}")
-                logger.debug(f"已删除远程TIFF文件: {latest_file}")
-                
+                logger.debug("截图获取成功")
+                return image
             except Exception as e:
                 logger.error(f"截图转换失败: {str(e)}")
                 # 尝试删除临时文件（如果存在）
@@ -222,9 +220,6 @@ class GetLatestScreenshot:
                     except:
                         pass
                 raise Exception(f"截图转换失败: {str(e)}")
-                
-            logger.debug("截图获取成功")
-            return image
         except Exception as e:
             logger.error(f"获取截图失败: {str(e)}")
             return None 

@@ -1,10 +1,10 @@
 {
   "project": "VP-180项目",
-  "date": "2025年5月15日",
-  "passRate": 0,
+  "date": "2025年5月16日",
+  "passRate": 100,
   "totalCases": 1,
-  "passedCases": 0,
-  "failedCases": 1,
+  "passedCases": 1,
+  "failedCases": 0,
   "modulesPerformance": [
     {
       "name": "用户体验",
@@ -43,33 +43,25 @@
       "failed": 0
     }
   ],
-  "failedTestCases": [
-    {
-      "id": "TC-016",
-      "type": "功能测试",
-      "name": "用户配置",
-      "errorMsg": "测试验证失败",
-      "status": "失败"
-    }
-  ],
+  "failedTestCases": [],
   "environment": {
     "testEnv": "UAT 环境",
     "server": "16 CPU, 64GB RAM",
     "database": "MySQL 8.0.28",
     "apiVersion": "v2.3.5"
   },
-  "generatedTime": "2025/5/15 16:06:12",
+  "generatedTime": "2025/5/16 14:00:49",
   "team": "优雅优化小组",
   "testCases": [
     {
-      "id": 16,
-      "title": "用户配置",
-      "name": "用户配置",
+      "id": 15,
+      "title": "假",
+      "name": "假",
       "type": "功能测试",
-      "status": "failed",
-      "color": "indigo"
+      "status": "completed",
+      "color": "red"
     }
   ],
   "logs": [],
-  "generatedAt": "2025-05-15T08:06:12.901Z"
+  "generatedAt": "2025-05-16T06:00:49.538Z"
 }

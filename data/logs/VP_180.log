@@ -1,48 +1,55 @@
-2025-05-15 16:05:25 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-15 16:05:35 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-15 16:05:37 - DEBUG - utils.ssh_manager - SSH连接检查失败: 
-2025-05-15 16:05:37 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
-2025-05-15 16:05:37 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-05-15 16:05:47 - ERROR - utils.ssh_manager - 第2次ssh连接失败: No existing session
-2025-05-15 16:05:49 - DEBUG - utils.ssh_manager - SSH连接检查失败: 
-2025-05-15 16:05:49 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第3次)
-2025-05-15 16:05:49 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
-2025-05-15 16:05:59 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-15 16:05:59 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-05-15 16:05:59 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
-2025-05-15 16:05:59 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-05-15 16:05:59 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
-2025-05-15 16:05:59 - INFO - utils.test_case_executor - 当前执行测试用例名称: 用户配置，测试用例ID: 16，重复次数: 1
-2025-05-15 16:05:59 - INFO - utils.test_case_executor - 执行第 1/1 次测试
-2025-05-15 16:06:05 - DEBUG - utils.button_clicker - 点击点击坐标(1128.1,199.8)按钮 (1128, 199) (触摸时长: 0.069秒)
-2025-05-15 16:06:05 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 1128 199 0.069
-2025-05-15 16:06:05 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:06 - DEBUG - utils.button_clicker - 点击点击坐标(645.8,312.0)按钮 (645, 312) (触摸时长: 0.116秒)
-2025-05-15 16:06:06 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 645 312 0.116
-2025-05-15 16:06:07 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:08 - DEBUG - utils.button_clicker - 点击点击坐标(643.6,344.8)按钮 (643, 344) (触摸时长: 0.064秒)
-2025-05-15 16:06:08 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 643 344 0.064
-2025-05-15 16:06:08 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:09 - DEBUG - utils.button_clicker - 点击点击坐标(702.1,313.3)按钮 (702, 313) (触摸时长: 0.086秒)
-2025-05-15 16:06:09 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 702 313 0.086
-2025-05-15 16:06:09 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:09 - DEBUG - utils.button_clicker - 点击点击坐标(698.8,313.3)按钮 (698, 313) (触摸时长: -0.579秒)
-2025-05-15 16:06:09 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 698 313 -0.579
-2025-05-15 16:06:09 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:10 - DEBUG - utils.button_clicker - 点击点击坐标(918.6,333.6)按钮 (918, 333) (触摸时长: 0.078秒)
-2025-05-15 16:06:10 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 918 333 0.078
-2025-05-15 16:06:10 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:10 - DEBUG - utils.button_clicker - 点击点击坐标(953.9,332.0)按钮 (953, 332) (触摸时长: 0.073秒)
-2025-05-15 16:06:10 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 953 332 0.073
-2025-05-15 16:06:10 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:11 - DEBUG - utils.button_clicker - 点击点击坐标(1193.1,46.5)按钮 (1193, 46) (触摸时长: 0.073秒)
-2025-05-15 16:06:11 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 1193 46 0.073
-2025-05-15 16:06:11 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:12 - DEBUG - utils.button_clicker - 点击点击坐标(920.4,425.9)按钮 (920, 425) (触摸时长: 0.09秒)
-2025-05-15 16:06:12 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 920 425 0.09
-2025-05-15 16:06:12 - ERROR - utils.button_clicker - 点击按钮出错: python3: can't open file '/app/jzj/touch_click.py': [Errno 2] No such file or directory
-2025-05-15 16:06:12 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-15 16:06:12 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-15 16:06:12 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-15 16:06:12 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-15 16:06:12 - INFO - utils.test_case_executor - 测试用例 用户配置 执行完成，共执行 1 次，最终状态: 失败
+2025-05-16 14:00:23 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-16 14:00:33 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-05-16 14:00:35 - DEBUG - utils.ssh_manager - SSH连接检查失败: 
+2025-05-16 14:00:35 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
+2025-05-16 14:00:35 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-05-16 14:00:46 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-16 14:00:46 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-05-16 14:00:46 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
+2025-05-16 14:00:46 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-05-16 14:00:46 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
+2025-05-16 14:00:46 - INFO - utils.test_case_executor - 当前执行测试用例名称: 假，测试用例ID: 15，重复次数: 1
+2025-05-16 14:00:46 - INFO - utils.test_case_executor - 执行第 1/1 次测试
+2025-05-16 14:00:46 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
+2025-05-16 14:00:46 - DEBUG - utils.button_clicker - 点击保存截图按钮 (7499, 6078)
+2025-05-16 14:00:46 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 7499 6078
+2025-05-16 14:00:46 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=7499, Y=6078
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2505161334/140046906.tiff
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 解码截图数据
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_0b88160bf7ca480188daea5ba42601aa_140046906.tiff
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_15_20250516140047.png
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_0b88160bf7ca480188daea5ba42601aa_140046906.tiff
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 截图获取成功
+2025-05-16 14:00:47 - INFO - utils.test_case_executor - 保存操作步骤 1 的结果数据
+2025-05-16 14:00:47 - DEBUG - utils.button_clicker - 点击电子放大按钮 (3749, 3999)
+2025-05-16 14:00:47 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 3749 3999
+2025-05-16 14:00:47 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=3749, Y=3999
+2025-05-16 14:00:47 - DEBUG - utils.get_latest_screenshot - 点击保存截图按钮
+2025-05-16 14:00:47 - DEBUG - utils.button_clicker - 点击保存截图按钮 (7499, 6078)
+2025-05-16 14:00:47 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 7499 6078
+2025-05-16 14:00:47 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=7499, Y=6078
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 检查远程目录结构
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 找到最新截图文件: /ue/ue_harddisk/ue_data/2505161334/140048233.tiff
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 开始下载截图文件
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 解码截图数据
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 保存临时TIFF文件到: E:\python\vp_180\frontend\public\screenshot\temp\temp_8caa79e2f834408a97aff4e50e79db4a_140048233.tiff
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 临时TIFF文件保存成功，开始转换为PNG格式
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 已保存PNG图像到: E:\python\vp_180\frontend\public\screenshot\id_15_20250516140048.png
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 删除临时TIFF文件: E:\python\vp_180\frontend\public\screenshot\temp\temp_8caa79e2f834408a97aff4e50e79db4a_140048233.tiff
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 已删除临时TIFF文件
+2025-05-16 14:00:48 - DEBUG - utils.get_latest_screenshot - 截图获取成功
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 保存操作步骤 3 的结果数据
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 执行验证步骤: 对比图像相似度 (ID: 1)
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 从操作步骤 1 获取到截图1
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 从操作步骤 3 获取到截图2
+2025-05-16 14:00:48 - INFO - utils.image_comparator - SSIM 相似度: 0.9085
+2025-05-16 14:00:48 - INFO - utils.image_comparator - 图像的相似度较合理,测试 通过(SSIM 值: 0.9085, 阈值范围: 0.80 - 0.98)
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 图像对比完成 (SSIM相似度): 结果: True
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 验证步骤结果: True - 图像对比完成 (SSIM相似度): 结果: 通过
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试通过
+2025-05-16 14:00:48 - INFO - utils.test_case_executor - 测试用例 假 执行完成，共执行 1 次，最终状态: 通过
