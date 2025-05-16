@@ -43,9 +43,7 @@ class GetLatestScreenshot:
                 stdin, stdout, stderr = self.ssh.exec_command(f"ls -la {self.base_dir} 2>/dev/null || echo 'NOT_FOUND'")
                 result = stdout.read().decode().strip()
                 if "NOT_FOUND" in result:
-                    logger.warning(f"基础目录 {self.base_dir} 不存在，尝试创建")
-                    self.ssh.exec_command(f"mkdir -p {self.base_dir}")
-                    logger.debug(f"已创建目录: {self.base_dir}")
+                    logger.warning(f"基础目录 {self.base_dir} 不存在")
             except Exception as e:
                 logger.error(f"检查远程目录时出错: {str(e)}")
 
@@ -95,47 +93,35 @@ class GetLatestScreenshot:
             # 等待截图保存完成
             time.sleep(0.5)  # 等待0.5秒，确保截图保存完成
             
-            # 检查远程目录结构，查找最新的截图文件
-            logger.debug("检查远程目录结构")
-            stdin, stdout, stderr = self.ssh.exec_command("find /ue -name '*.tiff' -o -name '*.tif' | sort -r | head -5")
-            all_images = stdout.read().decode().strip().split('\n')
+            # 首先找到BASE_IMG_DIR目录下最新的文件夹
+            logger.debug(f"在 {self.base_dir} 中查找最新的文件夹")
+            find_latest_dir_cmd = f"ls -td {self.base_dir}/*/ 2>/dev/null | head -1"
+            stdin, stdout, stderr = self.ssh.exec_command(find_latest_dir_cmd)
+            latest_dir = stdout.read().decode().strip()
+            error = stderr.read().decode().strip()
+            
+            if error:
+                logger.warning(f"查找最新文件夹时出现警告: {error}")
+            
+            if not latest_dir:
+                logger.error(f"在 {self.base_dir} 中未找到任何文件夹")
+                raise Exception(f"在 {self.base_dir} 中未找到任何文件夹")
+            
+            logger.debug(f"找到最新文件夹: {latest_dir}")
+            
+            # 然后在最新文件夹中查找最新的截图文件
+            logger.debug(f"在 {latest_dir} 中查找最新的截图文件")
+            find_cmd = f"ls -t {latest_dir}/*.tiff 2>/dev/null | head -1 || ls -t {latest_dir}/*.tif 2>/dev/null | head -1"
+            stdin, stdout, stderr = self.ssh.exec_command(find_cmd)
+            latest_file = stdout.read().decode().strip()
             error = stderr.read().decode().strip()
             
             if error:
                 logger.warning(f"查找截图文件时出现警告: {error}")
             
-            latest_file = None
-            if all_images and all_images[0]:
-                latest_file = all_images[0]
-            else:
-                # 尝试其他可能的目录
-                logger.debug("在其他可能的目录中查找截图文件")
-                possible_dirs = [
-                    "/ue/ue_harddisk/ue_data",
-                    "/ue/ue_harddisk",
-                    "/ue/data",
-                    "/data",
-                    "/tmp"
-                ]
-                
-                for dir_path in possible_dirs:
-                    stdin, stdout, stderr = self.ssh.exec_command(f"ls -t {dir_path}/*.tiff 2>/dev/null | head -1 || ls -t {dir_path}/*.tif 2>/dev/null | head -1")
-                    result = stdout.read().decode().strip()
-                    if result:
-                        latest_file = result
-                        logger.debug(f"在目录 {dir_path} 中找到截图文件: {latest_file}")
-                        break
-                
-                if not latest_file:
-                    # 尝试查找所有截图文件
-                    stdin, stdout, stderr = self.ssh.exec_command("find / -name '*.tiff' -o -name '*.tif' 2>/dev/null | sort -r | head -1")
-                    latest_file = stdout.read().decode().strip()
-                    if latest_file:
-                        logger.debug(f"通过全局搜索找到截图文件: {latest_file}")
-            
             if not latest_file:
-                logger.error("未找到截图文件")
-                raise Exception("未找到截图文件")
+                logger.error(f"在最新文件夹 {latest_dir} 中未找到截图文件")
+                raise Exception(f"在最新文件夹 {latest_dir} 中未找到截图文件")
             
             logger.debug(f"找到最新截图文件: {latest_file}")
             
@@ -147,9 +133,9 @@ class GetLatestScreenshot:
             # 构建新文件名，包含id和时间戳
             timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
             if id:
-                filename = f"id_{id}_{timestamp}.png"
+                filename = f"id_{id}_{png_filename}"
             else:
-                filename = f"{timestamp}.png"
+                filename = png_filename
                 
             # 为临时TIFF文件生成唯一文件名
             temp_tiff_filename = f"temp_{uuid.uuid4().hex}_{original_filename}"

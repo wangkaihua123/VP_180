@@ -13,6 +13,9 @@ from backend.models.settings import Settings
 logger = setup_logger(__name__)
 
 class TestCaseExecutor:
+    # 默认操作步骤间隔时间（秒）
+    DEFAULT_OPERATION_INTERVAL = 1
+    
     def __init__(self, ssh_connection=None):
         """
         初始化测试用例执行器
@@ -20,6 +23,9 @@ class TestCaseExecutor:
         Args:
             ssh_connection: 可选的SSH连接实例，如果为None则自动获取或创建
         """
+        # 操作步骤间隔时间（秒）
+        self.operation_interval = self.DEFAULT_OPERATION_INTERVAL
+        
         # 获取SSH管理器实例
         self.ssh_manager = SSHManager.get_instance()
         
@@ -152,6 +158,12 @@ class TestCaseExecutor:
                         if step_id and result.get('success') and 'data' in result:
                             operation_data[str(step_id)] = result['data']
                             logger.info(f"保存操作步骤 {step_id} 的结果数据")
+                        
+                        # 在操作步骤之间添加等待时间
+                        if self.operation_interval > 0:
+                            import time
+                            logger.debug(f"等待操作步骤间隔时间: {self.operation_interval}秒")
+                            time.sleep(self.operation_interval)
 
                 # 执行验证步骤
                 verification_results = []
@@ -634,4 +646,17 @@ class TestCaseExecutor:
             return {
                 'success': False,
                 'message': f"验证执行出错: {str(e)}"
-            } 
+            }
+
+    def set_operation_interval(self, interval_seconds):
+        """
+        设置操作步骤之间的间隔时间
+        
+        Args:
+            interval_seconds (float): 间隔时间，单位为秒
+        """
+        if interval_seconds >= 0:
+            self.operation_interval = interval_seconds
+        else:
+            logger.warning(f"无效的间隔时间 {interval_seconds}，使用默认值 {self.DEFAULT_OPERATION_INTERVAL}")
+            self.operation_interval = self.DEFAULT_OPERATION_INTERVAL 
