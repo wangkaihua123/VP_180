@@ -1,10 +1,10 @@
 {
   "project": "VP-180项目",
   "date": "2025年5月16日",
-  "passRate": 100,
+  "passRate": 0,
   "totalCases": 1,
-  "passedCases": 1,
-  "failedCases": 0,
+  "passedCases": 0,
+  "failedCases": 1,
   "modulesPerformance": [
     {
       "name": "用户体验",
@@ -43,25 +43,33 @@
       "failed": 0
     }
   ],
-  "failedTestCases": [],
+  "failedTestCases": [
+    {
+      "id": "TC-017",
+      "type": "功能测试",
+      "name": "点击电子放大",
+      "errorMsg": "测试验证失败",
+      "status": "失败"
+    }
+  ],
   "environment": {
     "testEnv": "UAT 环境",
     "server": "16 CPU, 64GB RAM",
     "database": "MySQL 8.0.28",
     "apiVersion": "v2.3.5"
   },
-  "generatedTime": "2025/5/16 17:14:50",
+  "generatedTime": "2025/5/16 17:29:03",
   "team": "优亿测试开发部",
   "testCases": [
     {
-      "id": 15,
-      "title": "假",
-      "name": "假",
+      "id": 17,
+      "title": "点击电子放大",
+      "name": "点击电子放大",
       "type": "功能测试",
-      "status": "completed",
-      "color": "red"
+      "status": "failed",
+      "color": "pink"
     }
   ],
   "logs": [],
-  "generatedAt": "2025-05-16T09:14:50.711Z"
+  "generatedAt": "2025-05-16T09:29:03.370Z"
 }
