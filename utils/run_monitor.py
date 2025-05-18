@@ -1,3 +1,16 @@
+"""
+运行监视器模块
+
+该模块用于执行和管理录制的触摸操作步骤。主要功能包括：
+1. 执行预先录制的触摸操作序列
+2. 控制操作之间的时间间隔
+3. 支持点击和长按操作
+4. 提供操作执行结果的反馈
+
+主要类：
+- RunMonitor: 负责执行录制的触摸操作步骤，管理操作时序和结果反馈
+"""
+
 import logging
 import time
 from .button_clicker import ButtonClicker
@@ -62,7 +75,7 @@ class RunMonitor:
                     duration = step.get('duration', 0)
                     
                     # 根据duration决定是点击还是长按
-                    if duration > 0.3:  # 大于0.3秒视为长按
+                    if duration > 1:  # 大于1秒视为长按
                         success = self.button_clicker.long_click(
                             x=x,
                             y=y,

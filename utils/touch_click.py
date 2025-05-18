@@ -1,5 +1,18 @@
 #!/usr/bin/python3
 
+"""
+触摸点击操作模块
+
+该模块提供基础的触摸点击操作功能。主要功能包括：
+1. 执行触摸点击
+2. 支持坐标点击
+3. 提供点击反馈
+4. 错误处理
+
+主要类：
+- TouchClick: 负责执行触摸点击操作
+"""
+
 import struct
 import time
 import sys

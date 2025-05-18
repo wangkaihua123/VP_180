@@ -1,3 +1,16 @@
+"""
+最新截图获取模块
+
+该模块负责获取设备的最新屏幕截图。主要功能包括：
+1. 获取设备屏幕截图
+2. 截图文件管理
+3. 截图格式处理
+4. 错误处理
+
+主要类：
+- ScreenshotGetter: 负责获取和管理设备截图
+"""
+
 import cv2
 import numpy as np
 import paramiko

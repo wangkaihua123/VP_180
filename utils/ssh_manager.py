@@ -1,3 +1,16 @@
+"""
+SSH连接管理模块
+
+该模块负责管理与设备的SSH连接。主要功能包括：
+1. 建立和维护SSH连接
+2. 执行远程命令
+3. 处理连接异常和重连
+4. 提供连接状态管理
+
+主要类：
+- SSHManager: 负责SSH连接的创建、管理和维护
+"""
+
 import paramiko
 import json
 import os

@@ -1,3 +1,16 @@
+"""
+测试方法映射模块
+
+该模块提供测试用例和测试方法的映射关系管理。主要功能包括：
+1. 定义测试方法映射关系
+2. 管理测试用例配置
+3. 提供测试方法查找接口
+4. 支持测试用例参数配置
+
+主要类：
+- TestMethodMapping: 负责管理测试方法和用例的映射关系
+"""
+
 from .image_comparator import ImageComparator
 from .button_clicker import ButtonClicker
 from .ssh_manager import SSHManager

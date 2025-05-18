@@ -1,3 +1,16 @@
+"""
+触摸事件监控模块
+
+该模块通过SSH连接监控设备的触摸事件。主要功能包括：
+1. 实时捕获设备的触摸操作
+2. 解析触摸事件的坐标和时间信息
+3. 通过WebSocket实时推送触摸事件数据
+4. 支持触摸事件的录制和回放
+
+主要类：
+- TouchMonitor: 负责建立SSH连接，监控触摸事件，并通过WebSocket发送事件数据
+"""
+
 import sys
 import time
 from .ssh_manager import SSHManager

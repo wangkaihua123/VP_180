@@ -1,3 +1,16 @@
+"""
+串口通信管理模块
+
+该模块负责管理与设备的串口通信。主要功能包括：
+1. 建立和维护串口连接
+2. 发送和接收串口数据
+3. 处理串口通信异常
+4. 提供串口状态监控
+
+主要类：
+- SerialManager: 负责串口连接的创建、管理和数据收发
+"""
+
 import serial
 import time
 from .log_config import setup_logger

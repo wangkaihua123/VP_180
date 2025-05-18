@@ -1,3 +1,16 @@
+"""
+图像比较模块
+
+该模块提供图像比较和分析功能。主要功能包括：
+1. 图像相似度比较
+2. 图像特征提取
+3. 图像差异分析
+4. 支持多种图像格式
+
+主要类：
+- ImageComparator: 负责图像比较和分析操作
+"""
+
 import cv2
 import numpy as np
 import logging
