@@ -13,6 +13,9 @@ from backend.models.settings import Settings
 logger = setup_logger(__name__)
 
 class TestCaseExecutor:
+    # 默认操作步骤间隔时间（秒）
+    DEFAULT_OPERATION_INTERVAL = 1
+    
     def __init__(self, ssh_connection=None):
         """
         初始化测试用例执行器
@@ -20,6 +23,9 @@ class TestCaseExecutor:
         Args:
             ssh_connection: 可选的SSH连接实例，如果为None则自动获取或创建
         """
+        # 操作步骤间隔时间（秒）
+        self.operation_interval = self.DEFAULT_OPERATION_INTERVAL
+        
         # 获取SSH管理器实例
         self.ssh_manager = SSHManager.get_instance()
         
@@ -152,6 +158,12 @@ class TestCaseExecutor:
                         if step_id and result.get('success') and 'data' in result:
                             operation_data[str(step_id)] = result['data']
                             logger.info(f"保存操作步骤 {step_id} 的结果数据")
+                        
+                        # 在操作步骤之间添加等待时间
+                        if self.operation_interval > 0:
+                            import time
+                            logger.debug(f"等待操作步骤间隔时间: {self.operation_interval}秒")
+                            time.sleep(self.operation_interval)
 
                 # 执行验证步骤
                 verification_results = []
@@ -541,25 +553,47 @@ class TestCaseExecutor:
                 if img1_ref in operation_data and 'image' in operation_data[img1_ref]:
                     img1 = operation_data[img1_ref]['image']
                     logger.info(f"从操作步骤 {img1_ref} 获取到图像1")
+                elif img1_ref in operation_data and 'screenshot' in operation_data[img1_ref]:
+                    img1 = operation_data[img1_ref]['screenshot']
+                    logger.info(f"从操作步骤 {img1_ref} 获取到截图1")
                 
                 if img2_ref in operation_data and 'image' in operation_data[img2_ref]:
                     img2 = operation_data[img2_ref]['image']
                     logger.info(f"从操作步骤 {img2_ref} 获取到图像2")
+                elif img2_ref in operation_data and 'screenshot' in operation_data[img2_ref]:
+                    img2 = operation_data[img2_ref]['screenshot']
+                    logger.info(f"从操作步骤 {img2_ref} 获取到截图2")
                 
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
-                if img1 is None and isinstance(img1_ref, str) and os.path.exists(img1_ref):
-                    try:
-                        img1 = cv2.imread(img1_ref)
-                        logger.info(f"从文件路径 {img1_ref} 读取图像1")
-                    except Exception as e:
-                        logger.warning(f"无法从文件 {img1_ref} 读取图像1: {str(e)}")
+                if img1 is None:
+                    # 尝试在screenshot目录中查找对应的截图
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{img1_ref}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                img1 = cv2.imread(img_path)
+                                logger.info(f"从截图目录读取图像1: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取图像1: {str(e)}")
                 
-                if img2 is None and isinstance(img2_ref, str) and os.path.exists(img2_ref):
-                    try:
-                        img2 = cv2.imread(img2_ref)
-                        logger.info(f"从文件路径 {img2_ref} 读取图像2")
-                    except Exception as e:
-                        logger.warning(f"无法从文件 {img2_ref} 读取图像2: {str(e)}")
+                if img2 is None:
+                    # 尝试在screenshot目录中查找对应的截图
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{img2_ref}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                img2 = cv2.imread(img_path)
+                                logger.info(f"从截图目录读取图像2: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取图像2: {str(e)}")
                 
                 # 如果仍然无法获取图像，返回失败
                 if img1 is None or img2 is None:
@@ -612,4 +646,17 @@ class TestCaseExecutor:
             return {
                 'success': False,
                 'message': f"验证执行出错: {str(e)}"
-            } 
+            }
+
+    def set_operation_interval(self, interval_seconds):
+        """
+        设置操作步骤之间的间隔时间
+        
+        Args:
+            interval_seconds (float): 间隔时间，单位为秒
+        """
+        if interval_seconds >= 0:
+            self.operation_interval = interval_seconds
+        else:
+            logger.warning(f"无效的间隔时间 {interval_seconds}，使用默认值 {self.DEFAULT_OPERATION_INTERVAL}")
+            self.operation_interval = self.DEFAULT_OPERATION_INTERVAL 

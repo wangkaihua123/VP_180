@@ -266,7 +266,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           ? JSON.parse(initialData.script_content)
           : initialData.script_content;
           
-        return content.repeatCount || 1;
+      return content.repeatCount || 1;
       } catch (e) {
         console.error('Error parsing script_content:', e);
         return 1;
@@ -1206,7 +1206,12 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       </main>
 
       {/* 可视化录制对话框 */}
-      <Dialog open={recordingDialogOpen} onOpenChange={setRecordingDialogOpen}>
+      <Dialog open={recordingDialogOpen} onOpenChange={(open) => {
+        if (!open) {
+          stopRecording();
+        }
+        setRecordingDialogOpen(open);
+      }}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>

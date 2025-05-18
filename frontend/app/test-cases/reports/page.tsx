@@ -45,8 +45,8 @@ const defaultReportData = {
     database: 'MySQL 8.0.28',
     apiVersion: 'v2.3.5'
   },
-  generatedTime: '2023-12-15 18:30:45',
-  team: '优雅优化小组'
+  generatedTime: '2025-05-16 18:30:45',
+  team: '优亿测试开发部'
 }
 
 // 环境信息组件

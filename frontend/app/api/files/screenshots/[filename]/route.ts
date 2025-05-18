@@ -71,8 +71,11 @@ export async function GET(
     
     console.log(`返回截图文件: ${filename}, Content-Type: ${contentType}`);
     
-    // 添加CORS头
-    return new NextResponse(fileBuffer, {
+    // 将 Buffer 转换为 ArrayBuffer
+    const arrayBuffer = Buffer.from(fileBuffer).buffer;
+    
+    // 使用标准 Response 处理二进制数据
+    return new Response(arrayBuffer, {
       status: 200,
       headers: {
         'Content-Type': contentType,

@@ -70,24 +70,18 @@ class RunMonitor:
                 
                 # 执行步骤
                 if step_type == '触摸坐标':
-                    x = step.get('x', 0)
-                    y = step.get('y', 0)
-                    duration = step.get('duration', 0)
+                    x = float(step.get('x', 0))
+                    y = float(step.get('y', 0))
+                    duration = float(step.get('duration', 0))
                     
-                    # 根据duration决定是点击还是长按
-                    if duration > 1:  # 大于1秒视为长按
-                        success = self.button_clicker.long_click(
-                            x=x,
-                            y=y,
-                            description=f'长按坐标({x},{y})'
-                        )
-                    else:
-                        success = self.button_clicker.click_button(
-                            x=x,
-                            y=y,
-                            button_name='',
-                            description=f'点击坐标({x},{y})'
-                        )
+                    # 使用button_clicker的click_button方法，传入touch_duration参数
+                    success = self.button_clicker.click_button(
+                        x=int(x),
+                        y=int(y),
+                        button_name='',
+                        description=f'点击坐标({x},{y})',
+                        touch_duration=duration
+                    )
                     
                     results.append({
                         'success': success,

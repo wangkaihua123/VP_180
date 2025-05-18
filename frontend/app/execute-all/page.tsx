@@ -93,6 +93,18 @@ interface TestImage {
 }
 
 /**
+ * 系统日志接口
+ */
+interface SystemLog {
+  timestamp: string
+  level: string
+  source: string
+  message: string
+  content?: string
+  msg?: string
+}
+
+/**
  * 根据ID生成一致的颜色
  * @param id 测试用例ID
  * @returns 颜色字符串
@@ -168,7 +180,7 @@ export default function ExecuteAllPage() {
   const router = useRouter()
   const { toast } = useToast()
   const [logs, setLogs] = useState<TestCaseLog[]>([])
-  const [systemLogs, setSystemLogs] = useState<any[]>([])
+  const [systemLogs, setSystemLogs] = useState<SystemLog[]>([])
   const [systemLogLoading, setSystemLogLoading] = useState(false)
   const systemLogScrollAreaRef = useRef<HTMLDivElement>(null)
   const [pollInterval, setPollInterval] = useState(2000) // 初始轮询间隔为2秒
@@ -211,14 +223,19 @@ export default function ExecuteAllPage() {
     if (searchParams) {
       const ids = searchParams.get('ids')
       const autoExecute = searchParams.get('autoExecute')
+      const timestamp = searchParams.get('t')
       
       if (ids) {
         setSelectedIds(ids.split(',').map(id => parseInt(id)))
       }
       
-      // 只有在autoExecute=true时才自动执行
-      if (autoExecute === 'true') {
+      // 如果有时间戳参数但没有autoExecute参数，说明是从其他页面跳转来的
+      // 此时也应该自动执行测试用例
+      if (timestamp && !autoExecute) {
         // 启用自动执行
+        autoExecuteAttemptedRef.current = false;
+      } else if (autoExecute === 'true') {
+        // 原有的autoExecute逻辑
         autoExecuteAttemptedRef.current = false;
       } else {
         // 不自动执行，仅显示结果
@@ -802,7 +819,7 @@ export default function ExecuteAllPage() {
           apiVersion: 'v2.3.5'
         },
         generatedTime: new Date().toLocaleString('zh-CN'),
-        team: '优雅优化小组',
+        team: '优亿测试开发部',
         testCases: casesToExecute.map(tc => ({
           id: tc.id,
           title: tc.title,
@@ -1055,27 +1072,20 @@ export default function ExecuteAllPage() {
    * 重新执行测试用例
    */
   const handleReExecute = () => {
-    // 重置执行状态
-    setProgress(0);
-    setCompletedTestCases(0);
-    setLogs([]);
-    setIsPaused(false);
-    setExecutionStats({
-      total: 0,
-      completed: 0,
-      failed: 0,
-      skipped: 0
-    });
+    // 构建新的URL，添加autoExecute=true参数
+    const timestamp = new Date().getTime();
+    let newUrl = '/execute-all';
     
-    // 重置所有测试用例状态为待执行
-    const updatedTestCases = testCases.map(tc => ({
-      ...tc,
-      status: 'pending' as TestCaseStatus
-    }));
-    setTestCases(updatedTestCases);
+    // 如果有选中的测试用例ID，添加到URL中
+    if (selectedIds.length > 0) {
+      newUrl += `?ids=${selectedIds.join(',')}`;
+    }
     
-    // 重新执行测试用例
-    handleExecuteSelected();
+    // 添加autoExecute=true参数
+    newUrl += `${selectedIds.length > 0 ? '&' : '?'}autoExecute=true&t=${timestamp}`;
+    
+    // 使用window.location.href强制浏览器完全刷新页面
+    window.location.href = newUrl;
   };
 
   /**
@@ -1130,11 +1140,39 @@ export default function ExecuteAllPage() {
       const response = await testCasesAPI.getSystemLog()
       
       if (response.success && response.data) {
-        // 添加调试代码，记录一些日志内容以便开发调试
-        if (response.data.length > 0 && response.data.length !== lastLogCountRef.current) {
-          // 打印前3条日志的示例，以便观察格式
+        // 打印原始日志数据以进行调试
+        console.log('原始日志数据示例:', response.data.slice(-1));
+        
+        // 处理日志数据，确保包含所有必要字段
+        const processedLogs: SystemLog[] = response.data.map((rawLog: any) => {
+          // 打印单条日志的所有字段
+          console.log('原始日志字段:', Object.keys(rawLog));
+          
+          // 获取日志消息，尝试所有可能的字段名
+          const logMessage = 
+            rawLog.message || 
+            rawLog.content || 
+            rawLog.msg || 
+            rawLog.text || 
+            rawLog.log_message || 
+            rawLog.description || 
+            '';
+          
+          return {
+            timestamp: rawLog.timestamp || new Date().toISOString(),
+            level: rawLog.level || rawLog.severity || 'INFO',
+            source: rawLog.source || rawLog.logger || rawLog.module || '',
+            message: logMessage
+          };
+        });
+        
+        // 打印处理后的日志示例
+        console.log('处理后的日志示例:', processedLogs.slice(-1));
+        
+        // 如果有新日志，打印示例以便调试
+        if (processedLogs.length > 0 && processedLogs.length !== lastLogCountRef.current) {
           console.log('系统日志格式示例 (新增日志):', 
-            response.data.slice(-3).map((log: {level: string, source: string, message: string}) => ({
+            processedLogs.slice(-3).map((log: SystemLog) => ({
               level: log.level,
               source: log.source,
               message: log.message
@@ -1143,7 +1181,7 @@ export default function ExecuteAllPage() {
         }
         
         // 获取当前日志数量
-        const currentLogCount = response.data.length;
+        const currentLogCount = processedLogs.length;
         
         // 比较与上次日志数量
         if (currentLogCount > lastLogCountRef.current) {
@@ -1173,32 +1211,32 @@ export default function ExecuteAllPage() {
         // 更新上次日志数量
         lastLogCountRef.current = currentLogCount;
         
-        // 设置日志数据
-        setSystemLogs(response.data)
+        // 设置处理后的日志数据
+        setSystemLogs(processedLogs);
         
         // 根据日志更新测试用例状态
-        updateTestCaseStatusFromLogs(response.data)
+        updateTestCaseStatusFromLogs(processedLogs);
         
         // 滚动到底部
         setTimeout(() => {
           if (systemLogScrollAreaRef.current) {
-            systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight
+            systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight;
           }
-        }, 100)
+        }, 100);
       } else {
-        console.error("获取系统日志失败:", response.message)
+        console.error("获取系统日志失败:", response.message);
         toast({
           title: "获取系统日志失败",
           description: response.message || "无法获取系统日志",
           variant: "destructive",
-        })
+        });
       }
     } catch (error) {
-      console.error("获取系统日志出错:", error)
+      console.error("获取系统日志出错:", error);
     } finally {
-      setSystemLogLoading(false)
+      setSystemLogLoading(false);
     }
-  }
+  };
   
   /**
    * 将前端状态映射为后端状态
@@ -1698,8 +1736,8 @@ export default function ExecuteAllPage() {
                 ref={systemLogScrollAreaRef}
               >
                 {systemLogs.length > 0 ? (
-                  systemLogs.map((log, index) => (
-                    <div key={index} className="mb-1">
+                  systemLogs.map((log: SystemLog, index: number) => (
+                    <div key={index} className="mb-1 whitespace-pre-wrap break-all">
                       <span className="text-gray-400">[{log.timestamp}]</span>{" "}
                       <span className={getSystemLogLevelStyle(log.level)}>
                         [{log.level}]

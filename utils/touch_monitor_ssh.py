@@ -23,9 +23,21 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+# 屏幕配置
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 600
+MAX_X = 9599
+MAX_Y = 9599
+
+def convert_touch_to_screen(touch_x, touch_y):
+    """将触摸屏坐标转换为屏幕坐标"""
+    screen_x = round(touch_x / MAX_X * SCREEN_WIDTH, 1)
+    screen_y = round(touch_y / MAX_Y * SCREEN_HEIGHT, 1)
+    return screen_x, screen_y
+
 class TouchMonitor:
     def __init__(self):
-        self.ssh_manager = SSHManager()
+        self.ssh_manager = SSHManager.get_instance()
         self.is_monitoring = False
         self.websocket = None
         self.channel = None
@@ -42,9 +54,7 @@ class TouchMonitor:
         
         try:
             logger.info("正在建立SSH连接...")
-            # 强制重新连接以确保连接是新的
-            self.ssh_manager.force_reconnect()
-            
+            # 获取现有连接或创建新连接
             ssh_client = self.ssh_manager.get_client()
             if not ssh_client:
                 logger.error("无法创建SSH连接")
@@ -74,13 +84,11 @@ class TouchMonitor:
             transport = ssh_client.get_transport()
             self.channel = transport.open_session()
             self.channel.get_pty()
+            self.channel.settimeout(None)  # 设置为阻塞模式
             
             command = f'{evtest_path} /dev/input/event1'
             logger.debug(f"执行命令: {command}")
             self.channel.exec_command(command)
-            
-            # 设置channel为非阻塞模式
-            self.channel.setblocking(0)
             
             # 等待命令启动
             time.sleep(1)
@@ -97,50 +105,47 @@ class TouchMonitor:
             # 创建接收缓冲区
             recv_buffer = ""
             
-            while self.is_monitoring and not self.channel.exit_status_ready():
-                # 尝试从channel读取数据
+            # 标记是否已经跳过了设备信息
+            device_info_skipped = False
+            
+            while self.is_monitoring:
                 try:
+                    # 读取数据
                     if self.channel.recv_ready():
-                        data = self.channel.recv(1024).decode('utf-8')
+                        data = self.channel.recv(1024)
                         if not data:
-                            logger.debug("Channel接收到空数据")
+                            logger.warning("Channel连接已关闭")
                             break
-                        
-                        recv_buffer += data
-                        
-                        # 处理接收到的数据
-                        while '\n' in recv_buffer:
-                            line, recv_buffer = recv_buffer.split('\n', 1)
-                            line = line.strip()
-                            logger.debug(f"收到原始数据: {line}")
                             
-                            if "Testing ... (interrupt to exit)" in line:
-                                logger.debug("跳过测试提示信息")
-                                continue
-                            if "SYN_REPORT" in line:
-                                logger.debug("跳过同步报告")
+                        # 将数据添加到缓冲区
+                        recv_buffer += data.decode('utf-8', errors='ignore')
+                        
+                        # 处理缓冲区中的完整行
+                        lines = recv_buffer.split('\n')
+                        recv_buffer = lines[-1]  # 保留最后一个不完整的行
+                        
+                        for line in lines[:-1]:  # 处理所有完整的行
+                            # 跳过设备信息，直到看到"Testing ... (interrupt to exit)"
+                            if not device_info_skipped:
+                                if "Testing ... (interrupt to exit)" in line:
+                                    device_info_skipped = True
+                                    logger.debug("设备信息已跳过，开始监控触摸事件")
                                 continue
                                 
+                            # 只处理事件行
                             match = event_pattern.search(line)
                             if match:
-                                seconds = int(match.group(1))
-                                microseconds = int(match.group(2))
-                                event_time = float(f"{seconds}.{microseconds}")
-                                
+                                event_time = float(f"{match.group(1)}.{match.group(2)}")
                                 event_type = int(match.group(3))
                                 event_code = int(match.group(4))
                                 event_value = int(match.group(5))
                                 
-                                logger.debug(f"解析事件详情: time={event_time}, type={event_type}, code={event_code}, value={event_value}")
-                                
                                 if event_type == 3:  # EV_ABS
                                     if event_code == 53:  # ABS_MT_POSITION_X
-                                        current_x = event_value * 1240 / 9600
-                                        logger.debug(f"更新X坐标: {current_x}")
+                                        current_x = event_value
                                     elif event_code == 54:  # ABS_MT_POSITION_Y
-                                        current_y = event_value * 600 / 9600
-                                        logger.debug(f"更新Y坐标: {current_y}")
-                                
+                                        current_y = event_value
+                                    
                                 elif event_type == 1 and event_code == 330:  # EV_KEY and BTN_TOUCH
                                     if event_value == 1:  # Press
                                         touch_start_time = event_time
@@ -148,25 +153,28 @@ class TouchMonitor:
                                     elif event_value == 0:  # Release
                                         if touch_start_time is not None and current_x is not None and current_y is not None:
                                             duration = event_time - touch_start_time
-                                            logger.debug(f"触摸结束: X: {current_x:.1f} Y: {current_y:.1f} 持续: {duration:.3f}秒")
+                                            # 转换坐标
+                                            screen_x, screen_y = convert_touch_to_screen(current_x, current_y)
+                                            logger.debug(f"触摸结束: X: {screen_x:.1f} Y: {screen_y:.1f} 持续: {duration:.3f}秒")
                                             self._send_event({
                                                 "type": "触摸坐标",
-                                                "x": round(current_x, 1),
-                                                "y": round(current_y, 1),
+                                                "x": screen_x,
+                                                "y": screen_y,
                                                 "duration": round(duration, 3),
                                                 "timestamp": event_time
                                             })
                                         current_x = None
                                         current_y = None
                                         touch_start_time = None
-                            else:
+                            elif device_info_skipped:
+                                # 只在跳过设备信息后记录无法匹配的行
                                 logger.debug(f"无法匹配事件模式: {line}")
                     else:
                         # 如果没有数据可读，短暂休眠避免CPU占用过高
                         time.sleep(0.1)
-                        
                 except Exception as e:
-                    logger.error(f"读取Channel数据时出错: {str(e)}")
+                    if str(e):
+                        logger.error(f"读取Channel数据时出错: {str(e)}")
                     break
                     
         except Exception as e:
@@ -186,7 +194,7 @@ class TouchMonitor:
             except:
                 pass
             self.channel = None
-        self.ssh_manager.disconnect()
+        # 不再主动断开SSH连接，让SSHManager管理连接生命周期
         if self.websocket:
             try:
                 self._send_event({"type": "stopped"})

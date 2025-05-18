@@ -5,7 +5,6 @@ import logging
 import paramiko
 import socket
 from utils.ssh_manager import SSHManager
-from backend.models.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +13,38 @@ class SSHService:
     
     @staticmethod
     def test_connection(ssh_settings):
-        """测试SSH连接"""
-        host = ssh_settings.get('host')
-        port = int(ssh_settings.get('port', 22))
-        username = ssh_settings.get('username')
-        password = ssh_settings.get('password')
+        """
+        测试SSH连接
+        
+        Args:
+            ssh_settings (dict): SSH连接配置，包含以下字段：
+                - host: SSH主机地址
+                - port: SSH端口号
+                - username: 用户名
+                - password: 密码
+        """
+        # 验证必要参数
+        required_fields = ['host', 'port', 'username', 'password']
+        for field in required_fields:
+            if field not in ssh_settings:
+                logger.error(f"缺少必要的SSH配置参数: {field}")
+                return {
+                    'success': False,
+                    'message': f'缺少必要的SSH配置参数: {field}',
+                    'diagnostics': {
+                        'authentication': False,
+                        'commandExecution': False,
+                        'networkConnectivity': False,
+                        'sshService': False,
+                        'errorType': 'missing_parameter',
+                        'errorDetails': f'缺少参数: {field}'
+                    }
+                }
+
+        host = ssh_settings['host']
+        port = int(ssh_settings['port'])
+        username = ssh_settings['username']
+        password = ssh_settings['password']
 
         logger.info(f"尝试连接 SSH: {host}:{port} with user {username}")
 
@@ -37,6 +63,9 @@ class SSHService:
                 ssh = paramiko.SSHClient()
                 ssh._transport = transport
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+                # 设置 TCP keepalive
+                transport.set_keepalive(60)  # 每60秒发送一个心跳包
 
                 logger.debug("执行测试命令...")
                 # 测试执行简单命令
@@ -60,8 +89,6 @@ class SSHService:
                 # 更新连接客户端
                 SSHManager._ssh_client = ssh
                 logger.info("已更新SSHManager的连接实例")
-
-                # 注意：不再关闭连接，让SSHManager管理它
 
                 return {
                     'success': True,
@@ -138,23 +165,30 @@ class SSHService:
             }
     
     @staticmethod
-    def get_settings():
-        """获取SSH设置"""
-        return Settings.get_ssh_settings()
-    
-    @staticmethod
-    def update_settings(ssh_data):
-        """更新SSH设置"""
-        return Settings.update_ssh_settings(ssh_data)
-    
-    @staticmethod
     def get_client():
-        """获取SSH客户端"""
-        # 获取SSHManager单例
-        ssh_manager = SSHManager.get_instance()
+        """获取SSH客户端
         
-        # 使用改进的get_client方法获取连接
-        client = ssh_manager.get_client()
-        
-        # 不再需要额外的日志记录，SSHManager内部已经处理
-        return client 
+        Returns:
+            paramiko.SSHClient: 有效的SSH客户端连接
+            None: 如果无法获取有效连接
+        """
+        try:
+            # 获取SSHManager单例
+            ssh_manager = SSHManager.get_instance()
+            
+            # 检查现有连接状态
+            if not SSHManager.is_connected():
+                logger.info("SSH未连接或连接已断开，尝试重新连接")
+                client = ssh_manager.reconnect()
+            else:
+                client = SSHManager.get_client()
+                
+            if not client:
+                logger.error("无法获取有效的SSH连接")
+                return None
+                
+            return client
+            
+        except Exception as e:
+            logger.error(f"获取SSH客户端时出错: {str(e)}")
+            return None 

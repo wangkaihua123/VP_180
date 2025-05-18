@@ -142,20 +142,8 @@ export function TestCaseList({
   }
 
   const handleRun = async (id: number) => {
-    try {
-      await testCasesAPI.run(id)
-      toast({
-        title: "执行成功",
-        description: "测试用例已开始执行",
-      })
-      onRefresh()
-    } catch (error) {
-      toast({
-        title: "执行失败",
-        description: error instanceof Error ? error.message : "执行测试用例失败",
-        variant: "destructive",
-      })
-    }
+    // 跳转到执行页面并设置自动执行参数
+    router.push(`/execute-all?autoExecute=true&ids=${id}&t=${Date.now()}`);
   }
 
   // const handleViewLog = async (id: number) => {

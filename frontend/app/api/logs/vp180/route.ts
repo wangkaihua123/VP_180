@@ -19,18 +19,22 @@ export async function GET() {
       
       // 解析日志行
       const parsedLogs = lines.map(line => {
-        const parts = line.split(' - ', 3);
-        if (parts.length >= 3) {
-          const [timestamp, level, rest] = parts;
+        // 使用 ' - ' 分割，但不限制分割次数
+        const parts = line.split(' - ');
+        if (parts.length >= 4) {
+          const [timestamp, level, source, ...messageParts] = parts;
           return {
             timestamp,
             level,
-            message: rest
+            source,
+            // 将剩余部分重新组合为完整的消息
+            message: messageParts.join(' - ')
           };
         }
         return {
           timestamp: '',
           level: 'UNKNOWN',
+          source: '',
           message: line
         };
       });

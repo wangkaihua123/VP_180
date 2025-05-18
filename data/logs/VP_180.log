@@ -1,323 +1,40 @@
-2025-05-07 09:55:28 - DEBUG - utils.serial_manager - 创建新的SerialManager实例
-2025-05-07 09:55:28 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=COM4, serialBaudRate=115200, timeout=1
-2025-05-07 09:55:28 - INFO - utils.serial_manager - 串口管理器初始化: port=COM4, baudrate=115200, timeout=1
-2025-05-07 09:55:28 - DEBUG - utils.serial_manager - 串口未连接
-2025-05-07 09:55:28 - INFO - utils.serial_manager - 开始建立新的串口连接: port=COM4, baudrate=115200, timeout=1
-2025-05-07 09:55:28 - INFO - utils.serial_manager - 串口连接成功: COM4
-2025-05-07 09:55:28 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-07 09:55:28 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-07 09:55:38 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-07 09:55:38 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
-2025-05-07 09:55:38 - DEBUG - utils.get_latest_image - 临时文件将保存到目录: E:\python\vp_180\frontend\public\img\temp
-2025-05-07 09:55:38 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
-2025-05-07 09:55:38 - DEBUG - utils.get_latest_screenshot - 临时文件将保存到目录: E:\python\vp_180\frontend\public\screenshot\temp
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 当前执行测试用例名称: 关开机，测试用例ID: 12，重复次数: 5
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 执行第 1/5 次测试
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 准备执行串口关-开机操作
-2025-05-07 09:55:39 - DEBUG - utils.serial_manager - 更新现有SerialManager实例参数
-2025-05-07 09:55:39 - DEBUG - utils.serial_manager - 串口未连接
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 串口未连接，尝试连接串口...
-2025-05-07 09:55:39 - DEBUG - utils.serial_manager - 串口已连接: port=COM4
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 串口连接成功，继续执行串口关-开机操作
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 发送关机命令...
-2025-05-07 09:55:39 - INFO - utils.test_case_executor - 等待 10.0 秒...
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 发送开机命令...
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 串口关-开机操作执行成功
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-07 09:55:49 - WARNING - utils.test_case_executor - 第 1 次测试执行失败，继续执行剩余的测试
-2025-05-07 09:55:49 - INFO - utils.test_case_executor - 执行第 2/5 次测试
-2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - SSH传输层不存在或不活动
-2025-05-07 09:55:49 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
-2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - 强制重新连接SSH
-2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
-2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - SSH连接已关闭
-2025-05-07 09:55:49 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-07 09:55:59 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-05-07 09:55:59 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
-2025-05-07 09:55:59 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-07 09:55:59 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-07 09:55:59 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-07 09:55:59 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-07 09:55:59 - WARNING - utils.test_case_executor - 第 2 次测试执行失败，继续执行剩余的测试
-2025-05-07 09:55:59 - INFO - utils.test_case_executor - 执行第 3/5 次测试
-2025-05-07 09:55:59 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
-2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - 强制重新连接SSH
-2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
-2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - SSH连接已关闭
-2025-05-07 09:55:59 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-07 09:56:09 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-05-07 09:56:09 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
-2025-05-07 09:56:09 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-07 09:56:09 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-07 09:56:09 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-07 09:56:09 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-07 09:56:09 - WARNING - utils.test_case_executor - 第 3 次测试执行失败，继续执行剩余的测试
-2025-05-07 09:56:09 - INFO - utils.test_case_executor - 执行第 4/5 次测试
-2025-05-07 09:56:09 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
-2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - 强制重新连接SSH
-2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
-2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - SSH连接已关闭
-2025-05-07 09:56:09 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-07 09:56:19 - ERROR - utils.ssh_manager - 第一次ssh连接失败: timed out
-2025-05-07 09:56:19 - ERROR - utils.test_case_executor - 重新连接SSH失败，无法执行操作步骤
-2025-05-07 09:56:19 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-07 09:56:19 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-07 09:56:19 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-07 09:56:19 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-07 09:56:19 - WARNING - utils.test_case_executor - 第 4 次测试执行失败，继续执行剩余的测试
-2025-05-07 09:56:19 - INFO - utils.test_case_executor - 执行第 5/5 次测试
-2025-05-07 09:56:19 - WARNING - utils.test_case_executor - 操作步骤执行前发现SSH连接不活动，尝试重新连接
-2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - 强制重新连接SSH
-2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - 正在关闭SSH连接
-2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - SSH连接已关闭
-2025-05-07 09:56:19 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-07 09:56:29 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-07 09:56:29 - INFO - utils.test_case_executor - 准备执行串口关-开机操作
-2025-05-07 09:56:29 - DEBUG - utils.serial_manager - 更新现有SerialManager实例参数
-2025-05-07 09:56:29 - DEBUG - utils.serial_manager - 串口未连接
-2025-05-07 09:56:29 - INFO - utils.test_case_executor - 串口未连接，尝试连接串口...
-2025-05-07 09:56:29 - DEBUG - utils.serial_manager - 串口已连接: port=COM4
-2025-05-07 09:56:29 - INFO - utils.test_case_executor - 串口连接成功，继续执行串口关-开机操作
-2025-05-07 09:56:29 - INFO - utils.test_case_executor - 发送关机命令...
-2025-05-07 09:56:29 - INFO - utils.test_case_executor - 等待 10.0 秒...
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 发送开机命令...
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 串口关-开机操作执行成功
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
-2025-05-07 09:56:39 - INFO - utils.test_case_executor - 测试用例 关开机 执行完成，共执行 5 次，最终状态: 失败
-2025-05-14 13:42:40 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-05-14 13:42:40 - ERROR - utils.serial_manager - serialPort参数为空
-2025-05-14 13:43:04 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-05-14 13:43:04 - DEBUG - utils.serial_manager - SerialManager初始化参数: serialPort=, serialBaudRate=9600, timeout=1
-2025-05-14 13:43:04 - ERROR - utils.serial_manager - serialPort参数为空
-2025-05-14 13:43:04 - ERROR - utils.serial_manager - serialPort参数为空
-2025-05-14 13:43:16 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:45:09 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:45:09 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 13:45:20 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 13:45:20 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 13:47:38 - INFO - __main__ - 
-停止监听
-2025-05-14 13:47:42 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:47:42 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 13:47:52 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 13:47:52 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:48:47 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:05 - ERROR - __main__ - 读取错误: unpack requires a buffer of 16 bytes
-2025-05-14 13:50:30 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:50:30 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 13:50:40 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 13:50:40 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 13:51:58 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:51:58 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 13:52:08 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 13:52:08 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 120 字节
-2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 72 字节
-2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 72 字节
-2025-05-14 13:52:11 - DEBUG - __main__ - 接收数据大小: 72 字节
-2025-05-14 13:54:03 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:54:03 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 13:54:13 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 13:54:13 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 13:58:17 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 13:58:17 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 13:58:28 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 13:58:28 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 14:20:56 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:20:56 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:21:06 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:21:06 - ERROR - __main__ - 无法建立SSH连接
-2025-05-14 14:21:22 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:21:22 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:21:24 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:21:24 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:22:05 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:22:12 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:22:12 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:22:22 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 14:22:22 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 14:27:45 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:27:45 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:27:55 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:27:55 - ERROR - __main__ - 无法建立SSH连接
-2025-05-14 14:31:16 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:31:16 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:31:26 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:31:26 - ERROR - __main__ - 无法建立SSH连接
-2025-05-14 14:31:33 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:31:33 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:31:43 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 14:31:43 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 14:31:46 - WARNING - __main__ - 检测到异常的触摸持续时间: 90303.00秒
-2025-05-14 14:31:46 - ERROR - __main__ - 读取错误: unsupported operand type(s) for -: 'float' and 'NoneType'
-2025-05-14 14:31:49 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:34:31 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:34:31 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:34:41 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 14:34:41 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1725577619.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -21584178.000秒
-2025-05-14 14:35:02 - DEBUG - __main__ - 开始触摸: id=12, time=0.000s, pos=(None, None)
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747161797.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743731088.991秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3430708.009秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747161797.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1747204500.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 90236.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747114264.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1747204500.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 94782.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747109718.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743665552.996秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3444165.004秒
-2025-05-14 14:35:02 - DEBUG - __main__ - 更新位置: id=12, pos=(8947, 3998)
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747109718.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743731088.991秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3370882.009秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747101971.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1747204500.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 107119.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747097381.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743665552.996秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3431828.004秒
-2025-05-14 14:35:02 - DEBUG - __main__ - 更新位置: id=12, pos=(8938, 3977)
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747097381.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743731088.991秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3361705.009秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747092794.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1747204500.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 116295.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747088205.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743665552.996秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3422652.004秒
-2025-05-14 14:35:02 - DEBUG - __main__ - 更新位置: id=12, pos=(8918, 3948)
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747088205.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743731088.991秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3349304.009秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747080393.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1747204500.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 128641.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747075859.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743665552.996秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3410306.004秒
-2025-05-14 14:35:02 - DEBUG - __main__ - 更新位置: id=12, pos=(8882, 3917)
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747075859.000秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -1743464650.033秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳回退: -3606589.967秒
-2025-05-14 14:35:02 - WARNING - __main__ - 检测到时间戳跳变: 1747071240.000秒
-2025-05-14 14:37:27 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:37:27 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:37:37 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:37:37 - ERROR - __main__ - 无法建立SSH连接
-2025-05-14 14:37:54 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:38:02 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:38:02 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:38:12 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 14:38:12 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 14:38:14 - DEBUG - __main__ - 更新位置: id=13, pos=(8441, 3135)
-2025-05-14 14:38:14 - DEBUG - __main__ - 更新位置: id=13, pos=(8466, 3120)
-2025-05-14 14:38:14 - DEBUG - __main__ - 更新位置: id=13, pos=(8513, 3069)
-2025-05-14 14:38:15 - DEBUG - __main__ - 更新位置: id=13, pos=(8575, 2968)
-2025-05-14 14:38:15 - DEBUG - __main__ - 更新位置: id=13, pos=(8630, 2841)
-2025-05-14 14:38:15 - DEBUG - __main__ - 更新位置: id=13, pos=(8673, 2734)
-2025-05-14 14:38:15 - DEBUG - __main__ - 更新位置: id=13, pos=(8705, 2658)
-2025-05-14 14:38:15 - DEBUG - __main__ - 更新位置: id=13, pos=(8726, 2617)
-2025-05-14 14:38:15 - DEBUG - __main__ - 更新位置: id=13, pos=(8734, 2597)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8627, 3932)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8612, 3901)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8600, 3871)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8592, 3851)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8586, 3881)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8580, 3912)
-2025-05-14 14:38:16 - DEBUG - __main__ - 更新位置: id=13, pos=(8560, 3942)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7504, 3871)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7475, 3891)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7162, 4530)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7168, 4555)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7174, 4600)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7185, 4650)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7194, 4690)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7200, 4725)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7205, 4745)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7197, 4745)
-2025-05-14 14:38:17 - DEBUG - __main__ - 更新位置: id=13, pos=(7185, 4735)
-2025-05-14 14:38:17 - ERROR - __main__ - 处理触摸结束事件时出错: unsupported operand type(s) for -: 'float' and 'NoneType'
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7094, 6130)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7100, 6155)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7106, 6195)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7112, 6241)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7117, 6302)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7123, 6333)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7129, 6353)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7330, 6490)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7330, 6510)
-2025-05-14 14:38:18 - DEBUG - __main__ - 更新位置: id=17, pos=(7312, 6495)
-2025-05-14 14:38:18 - ERROR - __main__ - 处理触摸结束事件时出错: unsupported operand type(s) for -: 'float' and 'NoneType'
-2025-05-14 14:40:15 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:40:15 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:40:26 - INFO - utils.ssh_manager - SSH连接成功
-2025-05-14 14:40:26 - INFO - __main__ - SSH连接成功，开始监听触摸事件...
-2025-05-14 14:40:28 - WARNING - __main__ - 检测到异常的触摸持续时间: 121092.00秒
-2025-05-14 14:40:28 - ERROR - __main__ - 读取错误: unsupported operand type(s) for -: 'float' and 'NoneType'
-2025-05-14 14:42:09 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:42:09 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:42:19 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:42:19 - ERROR - __main__ - 无法建立SSH连接
-2025-05-14 14:42:33 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:42:37 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:42:37 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:42:47 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:42:47 - ERROR - __main__ - 无法建立SSH连接
-2025-05-14 14:44:07 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
-2025-05-14 14:44:07 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
-2025-05-14 14:44:17 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
-2025-05-14 14:44:17 - ERROR - __main__ - 无法建立SSH连接
+2025-05-16 17:28:01 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第1次)
+2025-05-16 17:28:11 - ERROR - utils.ssh_manager - 第一次ssh连接失败: No existing session
+2025-05-16 17:28:15 - DEBUG - utils.ssh_manager - SSH连接检查失败: 
+2025-05-16 17:28:15 - DEBUG - utils.ssh_manager - 尝试SSH连接 (第2次)
+2025-05-16 17:28:15 - DEBUG - utils.ssh_manager - 关闭可能存在的旧连接
+2025-05-16 17:28:25 - INFO - utils.ssh_manager - SSH连接成功
+2025-05-16 17:28:25 - DEBUG - utils.get_latest_image - 图片将保存到目录: E:\python\vp_180\frontend\public\img
+2025-05-16 17:28:25 - DEBUG - utils.get_latest_screenshot - 截图将保存到目录: E:\python\vp_180\frontend\public\screenshot
+2025-05-16 17:28:25 - INFO - utils.test_case_executor - 当前执行测试用例名称: 点击电子放大，测试用例ID: 17，重复次数: 1
+2025-05-16 17:28:25 - INFO - utils.test_case_executor - 执行第 1/1 次测试
+2025-05-16 17:28:32 - DEBUG - utils.button_clicker - 点击点击坐标(946.0,231.6)按钮 (100, 14) (触摸时长: 3.571秒)
+2025-05-16 17:28:32 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 100 14 3.571
+2025-05-16 17:28:35 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸3.571秒触摸事件已发送: X=100, Y=14
+2025-05-16 17:28:41 - DEBUG - utils.button_clicker - 点击点击坐标(997.8,258.1)按钮 (106, 16) (触摸时长: 3.287秒)
+2025-05-16 17:28:41 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 106 16 3.287
+2025-05-16 17:28:45 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸3.287秒触摸事件已发送: X=106, Y=16
+2025-05-16 17:28:50 - DEBUG - utils.button_clicker - 点击点击坐标(1131.2,397.7)按钮 (120, 24) (触摸时长: 2.779秒)
+2025-05-16 17:28:50 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 120 24 2.779
+2025-05-16 17:28:52 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸2.779秒触摸事件已发送: X=120, Y=24
+2025-05-16 17:28:56 - DEBUG - utils.button_clicker - 点击点击坐标(1103.7,413.2)按钮 (117, 25) (触摸时长: 2.288秒)
+2025-05-16 17:28:56 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 117 25 2.288
+2025-05-16 17:28:59 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 触摸2.288秒触摸事件已发送: X=117, Y=25
+2025-05-16 17:28:59 - DEBUG - utils.test_case_executor - 等待操作步骤间隔时间: 1秒
+2025-05-16 17:29:00 - DEBUG - utils.button_clicker - 点击电子放大按钮 (399, 249)
+2025-05-16 17:29:00 - DEBUG - utils.button_clicker - 执行命令: python3 /app/jzj/touch_click.py 399 249
+2025-05-16 17:29:00 - DEBUG - utils.button_clicker - 点击按钮成功: ✅ 短按触摸事件已发送: X=399, Y=249
+2025-05-16 17:29:00 - DEBUG - utils.test_case_executor - 等待操作步骤间隔时间: 1秒
+2025-05-16 17:29:01 - INFO - utils.test_case_executor - 开始执行验证步骤，共 1 个验证步骤
+2025-05-16 17:29:01 - INFO - utils.test_case_executor - 执行验证步骤:  (ID: 1)
+2025-05-16 17:29:01 - INFO - utils.test_case_executor - 验证步骤结果: False - 未知的验证类型: 
+2025-05-16 17:29:01 - INFO - utils.test_case_executor - 验证步骤执行完成，结果: 测试不通过
+2025-05-16 17:29:01 - INFO - utils.test_case_executor - 测试用例 点击电子放大 执行完成，共执行 1 次，最终状态: 失败
+2025-05-16 17:34:28 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-16 17:34:28 - DEBUG - utils.ssh_manager - 心跳检测线程已启动
+2025-05-16 17:34:44 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-16 17:34:44 - DEBUG - utils.ssh_manager - 心跳检测线程已启动
+2025-05-16 17:38:20 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-16 17:38:20 - DEBUG - utils.ssh_manager - 心跳检测线程已启动
+2025-05-16 17:41:17 - DEBUG - utils.ssh_manager - SSH管理器初始化完成，使用设置: host=10.0.18.1, port=22, username=root
+2025-05-16 17:41:17 - DEBUG - utils.ssh_manager - 心跳检测线程已启动

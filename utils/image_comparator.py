@@ -95,12 +95,40 @@ class ImageComparator:
     def is_ssim(img1, img2, threshold=0.98, min_threshold=0.80):
         """使用 SSIM 结构相似性指数判断图像是否放大"""
         try:
-            # 转换为灰度图
-            gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-            gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+            # 转换为灰度图并转换为float32类型
+            gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY).astype(np.float32)
+            gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY).astype(np.float32)
+
+            # 确保两张图片尺寸相同
+            if gray1.shape != gray2.shape:
+                gray2 = cv2.resize(gray2, (gray1.shape[1], gray1.shape[0]))
+
+            # 归一化图像值到 0-1 范围
+            gray1 = gray1 / 255.0
+            gray2 = gray2 / 255.0
+
+            # 计算均值
+            mu1 = cv2.GaussianBlur(gray1, (11, 11), 1.5)
+            mu2 = cv2.GaussianBlur(gray2, (11, 11), 1.5)
+
+            # 计算方差和协方差
+            sigma1_sq = cv2.GaussianBlur(gray1 * gray1, (11, 11), 1.5) - mu1 * mu1
+            sigma2_sq = cv2.GaussianBlur(gray2 * gray2, (11, 11), 1.5) - mu2 * mu2
+            sigma12 = cv2.GaussianBlur(gray1 * gray2, (11, 11), 1.5) - mu1 * mu2
+
+            # SSIM 常数
+            C1 = 0.01 ** 2
+            C2 = 0.03 ** 2
 
             # 计算 SSIM
-            ssim_index = ssim(gray1, gray2, win_size=3)
+            num = (2 * mu1 * mu2 + C1) * (2 * sigma12 + C2)
+            den = (mu1 * mu1 + mu2 * mu2 + C1) * (sigma1_sq + sigma2_sq + C2)
+            ssim_map = num / den
+
+            # 计算平均 SSIM，确保在 0-1 范围内
+            ssim_index = float(np.mean(ssim_map))
+            ssim_index = max(0.0, min(1.0, ssim_index))
+
             logger.info(f"SSIM 相似度: {ssim_index:.4f}")
 
             # 判断相似度是否合理
