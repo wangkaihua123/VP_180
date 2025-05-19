@@ -146,47 +146,74 @@ class TestCaseExecutor:
                 # 创建一个字典来存储操作步骤的结果，特别是图像数据
                 operation_data = {}
 
-                # 执行操作步骤
-                operation_results = []
+                # 分离普通操作步骤和清理操作步骤
+                normal_operation_steps = []
+                cleanup_operation_steps = []
                 if 'operationSteps' in script_content:
                     for step in script_content['operationSteps']:
-                        result = self._execute_operation_step(step, test_case['title'], test_case_id)
-                        operation_results.append(result)
-                        
-                        # 存储关键操作的结果数据，特别是图像和截图
-                        step_id = step.get('id')
-                        if step_id and result.get('success') and 'data' in result:
-                            operation_data[str(step_id)] = result['data']
-                            logger.info(f"保存操作步骤 {step_id} 的结果数据")
-                        
-                        # 在操作步骤之间添加等待时间
-                        if self.operation_interval > 0:
-                            import time
-                            logger.debug(f"等待操作步骤间隔时间: {self.operation_interval}秒")
-                            time.sleep(self.operation_interval)
+                        # 默认步骤类型为test-case
+                        step_type = step.get('stepType', 'test-case') 
+                        if step_type == 'cleanup-environment':
+                            cleanup_operation_steps.append(step)
+                        else:
+                            normal_operation_steps.append(step)
+
+                # 执行普通操作步骤
+                current_operation_results = []
+                logger.info(f"开始执行普通操作步骤，共 {len(normal_operation_steps)} 个步骤")
+                for step in normal_operation_steps:
+                    result = self._execute_operation_step(step, test_case['title'], test_case_id)
+                    current_operation_results.append(result)
+                    
+                    # 存储关键操作的结果数据，特别是图像和截图
+                    step_id = step.get('id')
+                    if step_id and result.get('success') and 'data' in result:
+                        operation_data[str(step_id)] = result['data']
+                        logger.info(f"保存操作步骤 {step_id} 的结果数据")
+                    
+                    # 在操作步骤之间添加等待时间
+                    if self.operation_interval > 0:
+                        import time
+                        logger.debug(f"等待操作步骤间隔时间: {self.operation_interval}秒")
+                        time.sleep(self.operation_interval)
 
                 # 执行验证步骤
-                verification_results = []
+                current_verification_results = []
                 if 'verificationSteps' in script_content:
                     logger.info(f"开始执行验证步骤，共 {len(script_content['verificationSteps'])} 个验证步骤")
                     for step in script_content['verificationSteps']:
                         logger.info(f"执行验证步骤: {step.get('verification_key', '未知类型')} (ID: {step.get('id', 'n/a')})")
                         # 将操作步骤的结果数据传递给验证步骤
                         result = self._execute_verification_step(step, operation_data)
-                        verification_results.append(result)
+                        current_verification_results.append(result)
                         logger.info(f"验证步骤结果: {result.get('success', False)} - {result.get('message', '无消息')}")
-                    logger.info(f"验证步骤执行完成，结果: {'测试通过' if all(r['success'] for r in verification_results) else '测试不通过'}")
+                    logger.info(f"验证步骤执行完成，结果: {'测试通过' if all(r['success'] for r in current_verification_results) else '测试不通过'}")
                 else:
                     logger.warning("测试用例中没有验证步骤")
 
+                # 执行清理操作步骤
+                current_cleanup_results = []
+                logger.info(f"开始执行清理操作步骤，共 {len(cleanup_operation_steps)} 个步骤")
+                for step in cleanup_operation_steps:
+                     # 在清理步骤之间添加等待时间
+                    if self.operation_interval > 0:
+                        import time
+                        logger.debug(f"等待操作步骤间隔时间: {self.operation_interval}秒")
+                        time.sleep(self.operation_interval)
+
+                    result = self._execute_operation_step(step, test_case['title'], test_case_id) # 清理步骤也是操作步骤，复用执行函数
+                    current_cleanup_results.append(result)
+
                 # 判断当前执行的测试结果
-                current_success = all(r['success'] for r in operation_results + verification_results)
+                # 总体成功需要所有普通操作、验证步骤和清理操作都成功
+                current_success = all(r['success'] for r in current_operation_results + current_verification_results + current_cleanup_results)
+
                 if not current_success:
                     overall_success = False
                 
                 # 收集当前执行的结果
-                all_operation_results.extend(operation_results)
-                all_verification_results.extend(verification_results)
+                all_operation_results.extend(current_operation_results + current_cleanup_results) # 将清理操作结果添加到总操作结果中
+                all_verification_results.extend(current_verification_results)
                 
                 # 如果当前测试失败并且不是最后一次执行，记录日志
                 if not current_success and run_index < repeat_count - 1:

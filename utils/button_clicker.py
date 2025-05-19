@@ -125,7 +125,7 @@ class ButtonClicker:
         if x is None or y is None:
             logger.error("未提供按钮坐标")
             return False
-        # 将触摸屏坐标转换为屏幕坐标
+        
         duration_desc = f" (触摸时长: {touch_duration}秒)" if touch_duration is not None else ""
         logger.debug(f"点击{description}按钮 ({x}, {y}){duration_desc}")
         
@@ -418,9 +418,9 @@ class ButtonClicker:
     def triple_random_click(self):
         """执行三点随机点击"""
         return self.random_click('triple')
-if __name__ == "__main__":
-    print("开始调试 clicker.long_click")
-    clicker = ButtonClicker()
-    print("开始调试 clicker.long_click，第二步")
-    clicker.long_click(button_name="电子放大")
-    print("结束调试 clicker.long_click")
+# if __name__ == "__main__":
+#     print("开始调试 clicker.long_click")
+#     clicker = ButtonClicker()
+#     print("开始调试 clicker.long_click，第二步")
+#     clicker.long_click(button_name="电子放大")
+#     print("结束调试 clicker.long_click")

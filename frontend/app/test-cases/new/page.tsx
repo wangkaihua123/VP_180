@@ -177,6 +177,7 @@ interface OperationStep {
   step_type: "normal" | "visual";
   recorded_steps?: any[];
   operation_name?: string;
+  stepType?: "create-environment" | "test-case" | "cleanup-environment";
 }
 
 const getButtonOptions = () => {
@@ -228,18 +229,17 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [operationSteps, setOperationSteps] = useState<OperationStep[]>(() => {
     if (initialData?.script_content) {
       try {
-        // 检查script_content的类型
         const content = typeof initialData.script_content === 'string' 
           ? JSON.parse(initialData.script_content)
           : initialData.script_content;
           
-        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
+        return content.operationSteps || [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal", stepType: "test-case" }];
       } catch (e) {
         console.error('Error parsing script_content:', e);
-        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
+        return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal", stepType: "test-case" }];
       }
     }
-    return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }];
+    return [{ id: 1, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal", stepType: "test-case" }];
   })
   const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>(() => {
     if (initialData?.script_content) {
@@ -324,7 +324,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
   const addOperationStep = () => {
     const newId = operationSteps.length > 0 ? Math.max(...operationSteps.map((step) => step.id)) + 1 : 1
-    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal" }])
+    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal", stepType: "test-case" }])
   }
 
   const addVerificationStep = () => {
@@ -630,7 +630,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       y2: 0,
       step_type: "visual",
       recorded_steps: deviceEvents,
-      operation_name: recordingName.trim()
+      operation_name: recordingName.trim(),
+      stepType: "test-case"
     };
     setOperationSteps([...operationSteps, newStep]);
     setRecordingName("");
@@ -758,7 +759,15 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                 </div>
 
                 {operationSteps.map((step, index) => (
-                  <Card key={step.id}>
+                  <Card key={step.id} className={`${
+                    step.stepType === "create-environment"
+                      ? "border-blue-300 bg-blue-100"
+                      : step.stepType === "test-case"
+                        ? "border-blue-500 bg-blue-200"
+                        : step.stepType === "cleanup-environment"
+                          ? "border-gray-300 bg-gray-100"
+                          : ""
+                  }`}>
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <div>
@@ -767,6 +776,24 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                             {step.step_type === "visual" && (
                               <Badge variant="outline" className="ml-2">
                                 可视化录制
+                              </Badge>
+                            )}
+                            {step.stepType && (
+                              <Badge
+                                variant="outline"
+                                className={`ml-2 ${
+                                  step.stepType === "create-environment"
+                                    ? "bg-blue-200 text-blue-800"
+                                    : step.stepType === "test-case"
+                                      ? "bg-blue-500 text-white"
+                                      : "bg-gray-200 text-gray-800"
+                                }`}
+                              >
+                                {step.stepType === "create-environment"
+                                  ? "创建环境"
+                                  : step.stepType === "test-case"
+                                    ? "测试用例"
+                                    : "清除环境"}
                               </Badge>
                             )}
                           </CardTitle>
@@ -832,13 +859,31 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                     <CardContent>
                       {step.step_type === "visual" ? (
                         <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label>操作名称</Label>
-                            <Input
-                              value={step.operation_name || ""}
-                              onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
-                              placeholder="输入操作名称"
-                            />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>操作名称</Label>
+                              <Input
+                                value={step.operation_name || ""}
+                                onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
+                                placeholder="输入操作名称"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>步骤类型</Label>
+                              <Select
+                                value={step.stepType || "test-case"}
+                                onValueChange={(value) => updateOperationStep(step.id, "stepType", value)}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="选择步骤类型" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="create-environment">创建环境</SelectItem>
+                                  <SelectItem value="test-case">测试用例</SelectItem>
+                                  <SelectItem value="cleanup-environment">清除环境</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
                           </div>
                           <div className="text-sm text-gray-500">
                             包含 {step.recorded_steps?.length || 0} 个触摸事件
@@ -868,6 +913,22 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                     ))}
                                   </div>
                                 ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>步骤类型</Label>
+                            <Select
+                              value={step.stepType || "test-case"}
+                              onValueChange={(value) => updateOperationStep(step.id, "stepType", value)}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="选择步骤类型" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="create-environment">创建环境</SelectItem>
+                                <SelectItem value="test-case">测试用例</SelectItem>
+                                <SelectItem value="cleanup-environment">清除环境</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -1292,42 +1353,41 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           <DialogHeader>
             <DialogTitle>步骤详情</DialogTitle>
             <DialogDescription>
-              {selectedStepId && (
-                <div className="space-y-4 mt-2">
-                  <div className="space-y-2">
-                    <Label>操作名称</Label>
-                    <Input
-                      value={operationSteps.find(step => step.id === selectedStepId)?.operation_name || ""}
-                      onChange={(e) => updateOperationStep(selectedStepId, "operation_name", e.target.value)}
-                      placeholder="输入操作名称"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    录制的触摸事件详情：
-                  </div>
-                </div>
-              )}
+              查看录制的触摸事件详情
             </DialogDescription>
           </DialogHeader>
-          <div className="py-4">
-            <ScrollArea className="h-[300px] rounded-md border p-2">
-              {selectedStepId && operationSteps.find(step => step.id === selectedStepId)?.recorded_steps?.map((event, index) => (
-                <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
-                  <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
-                  <span className="font-medium">{event.type}</span>
-                  {event.x !== undefined && (
-                    <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
-                  )}
-                  {event.y !== undefined && (
-                    <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
-                  )}
-                  {event.duration !== undefined && (
-                    <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
-                  )}
-                </div>
-              ))}
-            </ScrollArea>
-          </div>
+          {selectedStepId && (
+            <div className="space-y-4 mt-2">
+              <div className="space-y-2">
+                <Label>操作名称</Label>
+                <Input
+                  value={operationSteps.find(step => step.id === selectedStepId)?.operation_name || ""}
+                  onChange={(e) => updateOperationStep(selectedStepId, "operation_name", e.target.value)}
+                  placeholder="输入操作名称"
+                />
+              </div>
+              <div className="text-sm text-gray-500">
+                录制的触摸事件详情：
+              </div>
+            </div>
+          )}
+          <ScrollArea className="h-[300px] rounded-md border p-2">
+            {selectedStepId && operationSteps.find(step => step.id === selectedStepId)?.recorded_steps?.map((event, index) => (
+              <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
+                <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
+                <span className="font-medium">{event.type}</span>
+                {event.x !== undefined && (
+                  <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                )}
+                {event.y !== undefined && (
+                  <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
+                )}
+                {event.duration !== undefined && (
+                  <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
+                )}
+              </div>
+            ))}
+          </ScrollArea>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsStepDetailsOpen(false)}>
               关闭

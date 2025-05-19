@@ -772,15 +772,20 @@ export default function ExecuteAllPage() {
     }
 
     setProgress(100) // 确保进度达到100%
-    
-    // 生成测试报告数据
+    setExecuting(false) // 设置执行状态为完成
+  }
+
+  /**
+   * 生成测试报告
+   */
+  const handleGenerateReport = async () => {
     try {
-      console.log('测试执行完成，准备生成测试报告...')
+      console.log('开始生成测试报告...')
       
       // 统计通过和失败的测试用例
-      const passedCases = casesToExecute.filter(tc => tc.status === 'completed').length
-      const failedCases = casesToExecute.filter(tc => tc.status === 'failed' || tc.status === 'error').length
-      const totalCases = casesToExecute.length
+      const passedCases = testCases.filter(tc => tc.status === 'completed').length
+      const failedCases = testCases.filter(tc => tc.status === 'failed' || tc.status === 'error').length
+      const totalCases = testCases.length
       const passRate = totalCases > 0 ? Math.round((passedCases / totalCases) * 100) : 0
 
       // 构建测试报告数据
@@ -803,7 +808,7 @@ export default function ExecuteAllPage() {
           { name: '用户反馈', passRate: 92, passed: Math.round(passedCases * 0.15), failed: Math.round(failedCases * 0.1) },
           { name: '智能库存', passRate: 83, passed: Math.round(passedCases * 0.1), failed: Math.round(failedCases * 0.1) }
         ],
-        failedTestCases: casesToExecute
+        failedTestCases: testCases
           .filter(tc => tc.status === 'failed' || tc.status === 'error')
           .map(tc => ({
             id: `TC-${tc.id.toString().padStart(3, '0')}`,
@@ -820,7 +825,7 @@ export default function ExecuteAllPage() {
         },
         generatedTime: new Date().toLocaleString('zh-CN'),
         team: '优亿测试开发部',
-        testCases: casesToExecute.map(tc => ({
+        testCases: testCases.map(tc => ({
           id: tc.id,
           title: tc.title,
           name: tc.name,
@@ -838,7 +843,7 @@ export default function ExecuteAllPage() {
         addLog(0, '测试报告已生成并保存', 'success')
         toast({
           title: "测试报告已生成",
-          description: "测试执行完成，报告已保存",
+          description: "测试报告已成功生成并保存",
         })
       } else {
         console.error('保存测试报告失败:', saveResult.message)
@@ -858,8 +863,6 @@ export default function ExecuteAllPage() {
         variant: "destructive",
       })
     }
-    
-    setExecuting(false) // 设置执行状态为完成
   }
 
   /**
@@ -1758,10 +1761,22 @@ export default function ExecuteAllPage() {
           {/* 测试执行结果统计卡片 */}
           <Card className="mt-6">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center">
-                <CheckCircle className="mr-2 h-5 w-5" />
-                测试执行结果统计
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center">
+                  <CheckCircle className="mr-2 h-5 w-5" />
+                  测试执行结果统计
+                </CardTitle>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleGenerateReport}
+                  disabled={executing || testCases.length === 0}
+                  className="flex items-center"
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  生成测试报告
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
