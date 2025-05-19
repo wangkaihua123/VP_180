@@ -215,6 +215,20 @@ const OPERATION_TYPES = {
   TRIPLE_RANDOM_CLICK: "triple_random_click", // 三点随机点击
 } as const
 
+// 添加步骤类型排序辅助函数
+const getStepTypeOrder = (stepType: string | undefined) => {
+  switch (stepType) {
+    case 'create-environment':
+      return 0;
+    case 'test-case':
+      return 1;
+    case 'cleanup-environment':
+      return 2;
+    default:
+      return 1;
+  }
+};
+
 export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -322,10 +336,38 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     loadProjects()
   }, [])
 
+  // 修改 addOperationStep 函数
   const addOperationStep = () => {
-    const newId = operationSteps.length > 0 ? Math.max(...operationSteps.map((step) => step.id)) + 1 : 1
-    setOperationSteps([...operationSteps, { id: newId, operation_key: "", button_name: "", x1: 0, y1: 0, x2: 0, y2: 0, step_type: "normal", stepType: "test-case" }])
-  }
+    const newId = operationSteps.length > 0 ? Math.max(...operationSteps.map((step) => step.id)) + 1 : 1;
+    const newStep: OperationStep = { 
+      id: newId, 
+      operation_key: "", 
+      button_name: "", 
+      x1: 0, 
+      y1: 0, 
+      x2: 0, 
+      y2: 0, 
+      step_type: "normal", 
+      stepType: "test-case" 
+    };
+
+    // 根据步骤类型插入到正确位置
+    const newSteps = [...operationSteps];
+    const newStepOrder = getStepTypeOrder(newStep.stepType);
+    
+    // 找到第一个大于新步骤顺序的位置
+    const insertIndex = newSteps.findIndex(step => getStepTypeOrder(step.stepType) > newStepOrder);
+    
+    if (insertIndex === -1) {
+      // 如果没有找到更大的顺序，添加到末尾
+      newSteps.push(newStep);
+    } else {
+      // 在找到的位置插入
+      newSteps.splice(insertIndex, 0, newStep);
+    }
+    
+    setOperationSteps(newSteps);
+  };
 
   const addVerificationStep = () => {
     const newId = verificationSteps.length > 0 ? Math.max(...verificationSteps.map((step) => step.id)) + 1 : 1
@@ -340,19 +382,31 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     setVerificationSteps(verificationSteps.filter((step) => step.id !== id))
   }
 
+  // 修改 moveOperationStep 函数
   const moveOperationStep = (id: number, direction: "up" | "down") => {
-    const index = operationSteps.findIndex((step) => step.id === id)
+    const index = operationSteps.findIndex((step) => step.id === id);
     if ((direction === "up" && index === 0) || (direction === "down" && index === operationSteps.length - 1)) {
-      return
+      return;
     }
 
-    const newSteps = [...operationSteps]
-    const targetIndex = direction === "up" ? index - 1 : index + 1
-    const temp = newSteps[index]
-    newSteps[index] = newSteps[targetIndex]
-    newSteps[targetIndex] = temp
-    setOperationSteps(newSteps)
-  }
+    const currentStep = operationSteps[index];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    const targetStep = operationSteps[targetIndex];
+
+    // 检查是否在同类型步骤内移动
+    // 对于可视化录制步骤，允许在测试用例类型内移动
+    if (currentStep.stepType !== targetStep.stepType && 
+        !(currentStep.step_type === "visual" && targetStep.stepType === "test-case") &&
+        !(currentStep.stepType === "test-case" && targetStep.step_type === "visual")) {
+      return;
+    }
+
+    const newSteps = [...operationSteps];
+    const temp = newSteps[index];
+    newSteps[index] = newSteps[targetIndex];
+    newSteps[targetIndex] = temp;
+    setOperationSteps(newSteps);
+  };
 
   const moveVerificationStep = (id: number, direction: "up" | "down") => {
     const index = verificationSteps.findIndex((step) => step.id === id)
@@ -368,26 +422,40 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     setVerificationSteps(newSteps)
   }
 
+  // 修改 updateOperationStep 函数
   const updateOperationStep = (id: number, field: keyof OperationStep, value: any) => {
-    setOperationSteps((steps) =>
-      steps.map((step) => {
+    setOperationSteps((steps) => {
+      const newSteps = steps.map((step) => {
         if (step.id === id) {
-          const updatedStep = { ...step, [field]: value }
+          const updatedStep = { ...step, [field]: value };
           if (field === 'button_name' && value && step.step_type === "normal") {
-            const buttonConfig = (FUNCTIONS as Functions)[value]
+            const buttonConfig = (FUNCTIONS as Functions)[value];
             if (buttonConfig) {
-              updatedStep.x1 = buttonConfig.touch[0]
-              updatedStep.y1 = buttonConfig.touch[1]
-              updatedStep.x2 = buttonConfig.screen[0]
-              updatedStep.y2 = buttonConfig.screen[1]
+              updatedStep.x1 = buttonConfig.touch[0];
+              updatedStep.y1 = buttonConfig.touch[1];
+              updatedStep.x2 = buttonConfig.screen[0];
+              updatedStep.y2 = buttonConfig.screen[1];
             }
           }
-          return updatedStep
+          return updatedStep;
         }
-        return step
-      })
-    )
-  }
+        return step;
+      });
+
+      // 如果更新了步骤类型，重新排序
+      if (field === 'stepType') {
+        return newSteps.sort((a, b) => {
+          // 保持可视化录制步骤在测试用例类型内
+          if (a.step_type === "visual" && b.step_type === "visual") {
+            return 0;
+          }
+          return getStepTypeOrder(a.stepType) - getStepTypeOrder(b.stepType);
+        });
+      }
+
+      return newSteps;
+    });
+  };
 
   const updateVerificationStep = (id: number, field: keyof VerificationStep, value: any) => {
     setVerificationSteps((steps) =>
@@ -633,7 +701,23 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       operation_name: recordingName.trim(),
       stepType: "test-case"
     };
-    setOperationSteps([...operationSteps, newStep]);
+
+    // 使用与 addOperationStep 相同的排序逻辑
+    const newSteps = [...operationSteps];
+    const newStepOrder = getStepTypeOrder(newStep.stepType);
+    
+    // 找到第一个大于新步骤顺序的位置
+    const insertIndex = newSteps.findIndex(step => getStepTypeOrder(step.stepType) > newStepOrder);
+    
+    if (insertIndex === -1) {
+      // 如果没有找到更大的顺序，添加到末尾
+      newSteps.push(newStep);
+    } else {
+      // 在找到的位置插入
+      newSteps.splice(insertIndex, 0, newStep);
+    }
+    
+    setOperationSteps(newSteps);
     setRecordingName("");
     stopRecording();
   };
@@ -860,13 +944,13 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                       {step.step_type === "visual" ? (
                         <div className="space-y-4">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>操作名称</Label>
-                              <Input
-                                value={step.operation_name || ""}
-                                onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
-                                placeholder="输入操作名称"
-                              />
+                          <div className="space-y-2">
+                            <Label>操作名称</Label>
+                            <Input
+                              value={step.operation_name || ""}
+                              onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
+                              placeholder="输入操作名称"
+                            />
                             </div>
                             <div className="space-y-2">
                               <Label>步骤类型</Label>
@@ -1356,38 +1440,38 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               查看录制的触摸事件详情
             </DialogDescription>
           </DialogHeader>
-          {selectedStepId && (
-            <div className="space-y-4 mt-2">
-              <div className="space-y-2">
-                <Label>操作名称</Label>
-                <Input
-                  value={operationSteps.find(step => step.id === selectedStepId)?.operation_name || ""}
-                  onChange={(e) => updateOperationStep(selectedStepId, "operation_name", e.target.value)}
-                  placeholder="输入操作名称"
-                />
-              </div>
-              <div className="text-sm text-gray-500">
-                录制的触摸事件详情：
-              </div>
-            </div>
-          )}
-          <ScrollArea className="h-[300px] rounded-md border p-2">
-            {selectedStepId && operationSteps.find(step => step.id === selectedStepId)?.recorded_steps?.map((event, index) => (
-              <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
-                <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
-                <span className="font-medium">{event.type}</span>
-                {event.x !== undefined && (
-                  <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
-                )}
-                {event.y !== undefined && (
-                  <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
-                )}
-                {event.duration !== undefined && (
-                  <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
-                )}
-              </div>
-            ))}
-          </ScrollArea>
+              {selectedStepId && (
+                <div className="space-y-4 mt-2">
+                  <div className="space-y-2">
+                    <Label>操作名称</Label>
+                    <Input
+                      value={operationSteps.find(step => step.id === selectedStepId)?.operation_name || ""}
+                      onChange={(e) => updateOperationStep(selectedStepId, "operation_name", e.target.value)}
+                      placeholder="输入操作名称"
+                    />
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    录制的触摸事件详情：
+                  </div>
+                </div>
+              )}
+            <ScrollArea className="h-[300px] rounded-md border p-2">
+              {selectedStepId && operationSteps.find(step => step.id === selectedStepId)?.recorded_steps?.map((event, index) => (
+                <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
+                  <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
+                  <span className="font-medium">{event.type}</span>
+                  {event.x !== undefined && (
+                    <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                  )}
+                  {event.y !== undefined && (
+                    <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
+                  )}
+                  {event.duration !== undefined && (
+                    <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
+                  )}
+                </div>
+              ))}
+            </ScrollArea>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsStepDetailsOpen(false)}>
               关闭
@@ -1398,4 +1482,5 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     </div>
   )
 }
+
 

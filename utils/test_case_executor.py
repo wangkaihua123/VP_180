@@ -14,7 +14,7 @@ logger = setup_logger(__name__)
 
 class TestCaseExecutor:
     # 默认操作步骤间隔时间（秒）
-    DEFAULT_OPERATION_INTERVAL = 1
+    DEFAULT_OPERATION_INTERVAL = 0.6
     
     def __init__(self, ssh_connection=None):
         """
