@@ -66,8 +66,8 @@ TODO
 │   ├── log_config.py      # 日志配置
 │   └── log_monitor.py     # 日志监控工具(实时监控日志文件)
 │
-├── data/                  # 数据存储目录
-│   ├── test_cases.json    # 测试用例数据
+├── data/                  # 数据目录
+│   ├── report.json        # 测试报告数据
 │   ├── settings.json      # 配置设置数据
 │   ├── logs/              # 日志文件
 │   ├── img/               # 图片资源

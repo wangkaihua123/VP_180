@@ -274,6 +274,7 @@ class TestCaseExecutor:
                 # 使用 ButtonClicker 的 long_click 方法
                 success = self.button_clicker.long_click(
                     x=x1, y=y1,
+                    button_name=button_name,
                     description=button_name or f'坐标({x1},{y1})'
                 )
                 return {

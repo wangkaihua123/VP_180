@@ -112,7 +112,7 @@ class ButtonClicker:
             found = False
             for key, value in FUNCTIONS.items():
                 if value.get('chinese_name') == button_name:
-                    x, y = value['touch']
+                    x, y = value['screen']
                     description = button_name
                     found = True
                     break
@@ -126,10 +126,8 @@ class ButtonClicker:
             logger.error("未提供按钮坐标")
             return False
         # 将触摸屏坐标转换为屏幕坐标
-        screen_x = int((x / 9599) * 1024)
-        screen_y = int((y / 9599) * 600)
         duration_desc = f" (触摸时长: {touch_duration}秒)" if touch_duration is not None else ""
-        logger.debug(f"点击{description}按钮 ({screen_x}, {screen_y}){duration_desc}")
+        logger.debug(f"点击{description}按钮 ({x}, {y}){duration_desc}")
         
         # 重试机制
         for attempt in range(self.max_retries):
@@ -145,7 +143,7 @@ class ButtonClicker:
                 
                 
                 # 构建触摸点击命令
-                command = f"python3 /app/jzj/touch_click.py {screen_x} {screen_y}"
+                command = f"python3 /app/jzj/touch_click.py {x} {y}"
                 if touch_duration is not None:
                     try:
                         duration = float(touch_duration)
@@ -188,8 +186,37 @@ class ButtonClicker:
         
         return False
         
-    def long_click(self, x, y, description="按钮"):
-        """长按指定坐标的按钮"""
+    def long_click(self, x=None, y=None, button_name=None, description="按钮"):
+        """
+        长按指定坐标或指定名称的按钮
+        :param x: 触摸屏X坐标（可选）
+        :param y: 触摸屏Y坐标（可选）
+        :param button_name: 按钮名称，对应Config.py中FUNCTIONS的chinese_name（可选）
+        :param description: 按钮描述
+        """
+        # 如果提供了按钮名称且不为空，则查找对应的坐标
+        if button_name and button_name.strip():
+            if not FUNCTIONS:
+                logger.error("FUNCTIONS配置未正确加载，无法通过按钮名称查找")
+                return False
+                
+            found = False
+            for key, value in FUNCTIONS.items():
+                if value.get('chinese_name') == button_name:
+                    x, y = value['screen']
+                    description = button_name
+                    found = True
+                    break
+            
+            if not found:
+                logger.error(f"未找到名称为 {button_name} 的按钮")
+                return False
+        
+        # 如果没有提供坐标，则返回错误
+        if x is None or y is None:
+            logger.error("未提供按钮坐标")
+            return False
+            
         logger.debug(f"长按{description}按钮 ({x}, {y})")
         
         # 重试机制
@@ -391,3 +418,9 @@ class ButtonClicker:
     def triple_random_click(self):
         """执行三点随机点击"""
         return self.random_click('triple')
+if __name__ == "__main__":
+    print("开始调试 clicker.long_click")
+    clicker = ButtonClicker()
+    print("开始调试 clicker.long_click，第二步")
+    clicker.long_click(button_name="电子放大")
+    print("结束调试 clicker.long_click")

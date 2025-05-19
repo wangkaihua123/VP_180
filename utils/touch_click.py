@@ -54,19 +54,39 @@ def send_touch_sequence(fd, x, y, is_press):
     
     if is_press:
         # 按下事件序列
-        send_event(fd, 1, 330, 1)              # BTN_TOUCH press
         send_event(fd, 3, 47, 0)               # ABS_MT_SLOT 0
         send_event(fd, 3, 57, 8)               # ABS_MT_TRACKING_ID 8
         send_event(fd, 3, 53, touch_x)         # ABS_MT_POSITION_X
         send_event(fd, 3, 54, touch_y)         # ABS_MT_POSITION_Y
         send_event(fd, 3, 48, 128)             # ABS_MT_TOUCH_MAJOR 128
+        send_event(fd, 3, 58, 128)             # ABS_MT_PRESSURE 128
+        send_event(fd, 1, 330, 1)              # BTN_TOUCH press
     else:
         # 抬起事件序列
+        send_event(fd, 3, 47, 0)               # ABS_MT_SLOT 0
         send_event(fd, 3, 57, -1)              # ABS_MT_TRACKING_ID -1
+        send_event(fd, 3, 48, 0)               # ABS_MT_TOUCH_MAJOR 0
+        send_event(fd, 3, 58, 0)               # ABS_MT_PRESSURE 0
         send_event(fd, 1, 330, 0)              # BTN_TOUCH release
     
     # 同步事件
     send_event(fd, 0, 0, 0)                    # SYN_REPORT
+
+def send_touch_update(fd, x, y):
+    """发送触摸状态更新事件
+    
+    Args:
+        fd: 设备文件描述符
+        x: X坐标（屏幕坐标）
+        y: Y坐标（屏幕坐标）
+    """
+    touch_x, touch_y = convert_screen_to_touch(x, y)
+    send_event(fd, 3, 47, 0)               # ABS_MT_SLOT 0
+    send_event(fd, 3, 53, touch_x)         # ABS_MT_POSITION_X
+    send_event(fd, 3, 54, touch_y)         # ABS_MT_POSITION_Y
+    send_event(fd, 3, 48, 128)             # ABS_MT_TOUCH_MAJOR 128
+    send_event(fd, 3, 58, 128)             # ABS_MT_PRESSURE 128
+    send_event(fd, 0, 0, 0)                # SYN_REPORT
 
 def calculate_points(x1, y1, x2, y2, steps=20):
     """计算滑动路径上的点
@@ -148,11 +168,20 @@ def click(x, y, long_press=False, touch_duration=None):
 
             # 2. 延迟时间
             if touch_duration is not None:
-                time.sleep(float(touch_duration))  # 使用自定义触摸时长
-                press_type = f"触摸{touch_duration}秒"
+                duration = float(touch_duration)
+                press_type = f"触摸{duration}秒"
+                # 在长按期间定期发送状态更新
+                start_time = time.time()
+                while time.time() - start_time < duration:
+                    time.sleep(0.05)  # 每50ms发送一次更新
+                    send_touch_update(fd, x, y)
             elif long_press:
-                time.sleep(1.2)  # 长按1.2秒
                 press_type = "长按"
+                # 在长按期间定期发送状态更新
+                start_time = time.time()
+                while time.time() - start_time < 1.2:
+                    time.sleep(0.05)  # 每50ms发送一次更新
+                    send_touch_update(fd, x, y)
             else:
                 time.sleep(0.1)  # 短按0.1秒
                 press_type = "短按"

@@ -45,9 +45,9 @@
   ],
   "failedTestCases": [
     {
-      "id": "TC-018",
+      "id": "TC-020",
       "type": "功能测试",
-      "name": "9090",
+      "name": "长按",
       "errorMsg": "测试验证失败",
       "status": "失败"
     }
@@ -58,18 +58,18 @@
     "database": "MySQL 8.0.28",
     "apiVersion": "v2.3.5"
   },
-  "generatedTime": "2025/5/19 10:13:47",
+  "generatedTime": "2025/5/19 13:53:59",
   "team": "优亿测试开发部",
   "testCases": [
     {
-      "id": 18,
-      "title": "9090",
-      "name": "9090",
+      "id": 20,
+      "title": "长按",
+      "name": "长按",
       "type": "功能测试",
       "status": "failed",
-      "color": "cyan"
+      "color": "blue"
     }
   ],
   "logs": [],
-  "generatedAt": "2025-05-19T02:13:47.748Z"
+  "generatedAt": "2025-05-19T05:53:59.748Z"
 }
