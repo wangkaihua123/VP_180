@@ -284,6 +284,16 @@ class TestCaseExecutor:
                     'message': f'成功获取截图',
                     'data': {'screenshot': screenshot}
                 }
+            elif operation_key == '获取操作界面':
+                # 使用 GetLatestImage 获取操作界面
+                self.screenshot_getter.test_name = test_name
+                # 将测试用例id参数传递给get_latest_screenshot方法
+                image = self.image_getter.get_screen_capture(id=test_case_id)
+                return {
+                    'success': True,
+                    'message': f'成功获取操作界面',
+                    'data': {'image': image}
+                }
                 
             elif operation_key == '点击按钮':
                 # 使用 ButtonClicker 的 click_button 方法

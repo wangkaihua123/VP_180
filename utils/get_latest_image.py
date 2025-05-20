@@ -238,3 +238,109 @@ class GetLatestImage:
         except Exception as e:
             logger.error(f"获取图像失败: {str(e)}")
             raise
+
+    def get_screen_capture(self, id=None):
+        """
+        使用ffmpeg捕获设备操作界面
+        
+        流程：
+        1. 生成带时间戳的文件名
+        2. 执行ffmpeg命令捕获屏幕
+        3. 将图像保存到/tmp/目录
+        4. 将图像复制到本地public/img目录
+        5. 返回捕获的图像数据
+        
+        Args:
+            id: 测试用例中的ID，用于标识图像
+            
+        Returns:
+            numpy.ndarray: 捕获的图像数据
+        """
+        try:
+            # 检查SSH连接是否有效
+            if not self.ssh or not hasattr(self.ssh, 'exec_command'):
+                logger.error("SSH连接无效，无法获取图像")
+                raise Exception("SSH连接无效，无法获取图像")
+            
+            # 生成带时间戳的文件名
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output_filename = f"screen_capture_{timestamp}.png"
+            output_path = f"/tmp/{output_filename}"
+            
+            # 构建ffmpeg命令
+            command = f'ffmpeg -f kmsgrab -device /dev/dri/card0 -crtc_id 137 -i - \-vf "hwdownload,format=bgr0" -frames:v 1 {output_path}'
+            
+            logger.debug(f"执行屏幕捕获命令: {command}")
+            
+            # 执行命令
+            stdin, stdout, stderr = self.ssh.exec_command(command)
+            # 等待命令执行完成
+            time.sleep(1)
+            
+            # 检查文件是否存在
+            stdin, stdout, stderr = self.ssh.exec_command(f"ls -l {output_path}")
+            if "No such file or directory" in stderr.read().decode():
+                logger.error(f"屏幕捕获文件未生成: {output_path}")
+                raise Exception(f"屏幕捕获文件未生成: {output_path}")
+            
+            logger.debug(f"确认远程文件存在: {output_path}")
+            
+            # 构建本地目标文件名
+            if id:
+                local_filename = f"id_{id}_{output_filename}"
+            else:
+                local_filename = output_filename
+                
+            # 本地目标路径
+            local_path = os.path.abspath(os.path.join(self.local_dir, local_filename))
+            
+            # 使用scp命令将文件复制到本地
+            logger.debug(f"正在将文件剪切到本地: {local_path}")
+            try:
+                # 创建SFTP客户端
+                sftp = self.ssh.open_sftp()
+                # 下载文件
+                sftp.get(output_path, local_path)
+                # 删除远程文件
+                sftp.remove(output_path)
+                sftp.close()
+                logger.debug(f"文件已成功剪切到: {local_path}")
+            except Exception as e:
+                logger.error(f"剪切文件到本地失败: {str(e)}")
+                # 添加更详细的错误信息
+                logger.error(f"远程文件路径: {output_path}")
+                logger.error(f"本地文件路径: {local_path}")
+                raise Exception(f"剪切文件到本地失败: {str(e)}")
+            
+            # 读取本地文件
+            try:
+                image = cv2.imread(local_path, cv2.IMREAD_COLOR)
+                if image is None:
+                    logger.error(f"无法读取本地图像文件: {local_path}")
+                    raise Exception(f"无法读取本地图像文件: {local_path}")
+                
+                logger.debug("屏幕捕获成功")
+                return image
+            except Exception as e:
+                logger.error(f"读取本地图像文件失败: {str(e)}")
+                # 如果读取失败，尝试删除本地文件
+                if os.path.exists(local_path):
+                    try:
+                        os.remove(local_path)
+                        logger.debug(f"已清理本地文件")
+                    except:
+                        pass
+                raise Exception(f"读取本地图像文件失败: {str(e)}")
+        except Exception as e:
+            logger.error(f"屏幕捕获失败: {str(e)}")
+            raise
+
+if __name__ == '__main__':
+    try:
+        # 启动应用
+        screen_capture=GetLatestImage()
+        screen_capture.get_screen_capture();
+    except Exception as e:
+        logger.error(f"获取失败: {str(e)}")
+    finally:
+        logger.info("完全失败") 

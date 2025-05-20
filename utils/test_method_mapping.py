@@ -47,6 +47,13 @@ STEP_METHODS: StepMethods = {
             "params": [],
             "default_values": {}
         },
+        "获取操作界面": {
+            "operation_key": "获取操作界面",
+            "description": "使用ffmpeg获取设备操作界面",
+            "operation_type": "获取图像",
+            "params": [],
+            "default_values": {}
+        },
         "点击按钮": {
             "operation_key": "点击按钮",
             "description": "点击指定按钮",

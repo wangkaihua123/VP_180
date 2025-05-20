@@ -52,20 +52,21 @@ const getOperationSteps = () => {
     const categories = {
       "基本操作": ["点击按钮", "长按按钮", "滑动操作"],
       "随机操作": ["随机点击", "单点随机点击", "双点随机点击", "三点随机点击"],
-      "图像操作": ["获取图像", "获取截图"],
+      "图像操作": ["获取图像", "获取截图", "获取操作界面"],
       "设备控制": ["串口开机", "串口关机", "串口关-开机", "SSH重启设备", "串口重启设备"],
       "其他操作": ["等待时间"]
     };
     
     // 获取所有步骤
-    const allSteps = Object.entries((STEP_METHODS as StepMethods)?.操作步骤 || {}).map(([key]) => ({
+    const allSteps = Object.entries((STEP_METHODS as StepMethods)?.操作步骤 || {}).map(([key, value]) => ({
       value: key,
       label: key,
+      description: value.description,
       category: Object.entries(categories).find(([_, steps]) => steps.includes(key))?.[0] || "其他操作"
     }));
     
     // 按类别组织步骤
-    const stepsByCategory: Record<string, {value: string, label: string}[]> = {};
+    const stepsByCategory: Record<string, {value: string, label: string, description?: string}[]> = {};
     
     // 初始化类别
     Object.keys(categories).forEach(category => {
@@ -77,7 +78,8 @@ const getOperationSteps = () => {
       if (stepsByCategory[step.category]) {
         stepsByCategory[step.category].push({
           value: step.value,
-          label: step.label
+          label: step.label,
+          description: step.description
         });
       }
     });
@@ -99,16 +101,33 @@ const getVerificationSteps = () => {
       "数值验证": ["检查数值范围"],
       "其他验证": []
     };
+
+    // 定义操作界面验证类别
+    const operationCategories: Record<string, string[]> = {
+      "元素验证": ["检查元素状态", "检查元素文本", "检查元素属性"],
+      "交互验证": ["检查点击响应", "检查滑动响应", "检查输入响应"],
+      "其他验证": []
+    };
     
     // 获取所有验证步骤
     const allSteps = Object.entries((STEP_METHODS as StepMethods)?.验证步骤 || {}).map(([key, value]) => {
       // 查找步骤所属的类别
       let category = "其他验证";
+      let stepType = "display"; // 默认为显示界面验证
       
       // 遍历类别，查找包含当前步骤的类别
       for (const [catName, steps] of Object.entries(categories)) {
         if (Array.isArray(steps) && steps.includes(key)) {
           category = catName;
+          break;
+        }
+      }
+
+      // 检查是否是操作界面验证类型
+      for (const [catName, steps] of Object.entries(operationCategories)) {
+        if (Array.isArray(steps) && steps.includes(key)) {
+          category = catName;
+          stepType = "operation";
           break;
         }
       }
@@ -119,15 +138,19 @@ const getVerificationSteps = () => {
         verification_key: value.verification_key,
         description: value.description,
         short_description: value.short_description || "",
-        category
+        category,
+        stepType
       };
     });
     
     // 按类别组织验证步骤
-    const stepsByCategory: Record<string, {value: string, label: string, verification_key?: string, description: string, short_description: string}[]> = {};
+    const stepsByCategory: Record<string, {value: string, label: string, verification_key?: string, description: string, short_description: string, stepType: string}[]> = {};
     
     // 初始化类别
     Object.keys(categories).forEach(category => {
+      stepsByCategory[category] = [];
+    });
+    Object.keys(operationCategories).forEach(category => {
       stepsByCategory[category] = [];
     });
     
@@ -139,7 +162,8 @@ const getVerificationSteps = () => {
           label: step.label,
           verification_key: step.verification_key,
           description: step.description,
-          short_description: step.short_description
+          short_description: step.short_description,
+          stepType: step.stepType
         });
       }
     });
@@ -163,6 +187,7 @@ interface VerificationStep {
   expected_text?: string;
   element_name?: string;
   expected_state?: string;
+  stepType: "operation" | "display";
 }
 
 interface OperationStep {
@@ -263,13 +288,16 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           ? JSON.parse(initialData.script_content)
           : initialData.script_content;
           
-        return content.verificationSteps || [{ id: 1, verification_key: "" }];
+        return content.verificationSteps?.map((step: any) => ({
+          ...step,
+          stepType: step.stepType || "display" // 确保现有步骤也有默认类型
+        })) || [{ id: 1, verification_key: "", stepType: "display" }];
       } catch (e) {
         console.error('Error parsing script_content:', e);
-        return [{ id: 1, verification_key: "" }];
+        return [{ id: 1, verification_key: "", stepType: "display" }];
       }
     }
-    return [{ id: 1, verification_key: "" }];
+    return [{ id: 1, verification_key: "", stepType: "display" }];
   })
   const [testType, setTestType] = useState(initialData?.type || "功能测试")
   const [repeatCount, setRepeatCount] = useState(() => {
@@ -370,9 +398,13 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   };
 
   const addVerificationStep = () => {
-    const newId = verificationSteps.length > 0 ? Math.max(...verificationSteps.map((step) => step.id)) + 1 : 1
-    setVerificationSteps([...verificationSteps, { id: newId, verification_key: "" }])
-  }
+    const newId = verificationSteps.length > 0 ? Math.max(...verificationSteps.map((step) => step.id)) + 1 : 1;
+    setVerificationSteps([...verificationSteps, { 
+      id: newId, 
+      verification_key: "",
+      stepType: "display" // 默认为显示界面验证
+    }]);
+  };
 
   const removeOperationStep = (id: number) => {
     setOperationSteps(operationSteps.filter((step) => step.id !== id))
@@ -459,9 +491,19 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
   const updateVerificationStep = (id: number, field: keyof VerificationStep, value: any) => {
     setVerificationSteps((steps) =>
-      steps.map((step) => (step.id === id ? { ...step, [field]: value } : step))
-    )
-  }
+      steps.map((step) => {
+        if (step.id === id) {
+          const updatedStep = { ...step, [field]: value };
+          // 如果更改了步骤类型，清空验证类型
+          if (field === 'stepType') {
+            updatedStep.verification_key = "";
+          }
+          return updatedStep;
+        }
+        return step;
+      })
+    );
+  };
 
   const handleProjectChange = (name: string) => {
     setProjectName(name)
@@ -992,7 +1034,12 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                     </div>
                                     {options.map((option) => (
                                       <SelectItem key={option.value} value={option.value}>
-                                        {option.label}
+                                        <div className="flex flex-col">
+                                          <span>{option.label}</span>
+                                          {option.description && (
+                                            <span className="text-xs text-gray-500">{option.description}</span>
+                                          )}
+                                        </div>
                                       </SelectItem>
                                     ))}
                                   </div>
@@ -1149,6 +1196,24 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                           <div className="space-y-2">
+                            <Label htmlFor={`verification-type-${step.id}`} className="text-sm font-medium">
+                              验证步骤类型
+                            </Label>
+                            <Select
+                              value={step.stepType}
+                              onValueChange={(value) => updateVerificationStep(step.id, "stepType", value)}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="选择验证步骤类型" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="display">显示界面验证</SelectItem>
+                                <SelectItem value="operation">操作界面验证</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div className="space-y-2">
                             <Label htmlFor={`verification-${step.id}`} className="text-sm font-medium">
                               验证类型
                             </Label>
@@ -1160,18 +1225,24 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 <SelectValue placeholder="选择验证类型" />
                               </SelectTrigger>
                               <SelectContent>
-                                {Object.entries(verificationStepsByCategory).map(([category, options]) => (
-                                  <div key={category}>
-                                    <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 bg-gray-50">
-                                      {category}
+                                {Object.entries(verificationStepsByCategory)
+                                  .filter(([category, options]) => 
+                                    options.some(opt => opt.stepType === step.stepType)
+                                  )
+                                  .map(([category, options]) => (
+                                    <div key={category}>
+                                      <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 bg-gray-50">
+                                        {category}
+                                      </div>
+                                      {options
+                                        .filter(opt => opt.stepType === step.stepType)
+                                        .map((option) => (
+                                          <SelectItem key={option.value} value={option.value}>
+                                            {option.label} - {option.short_description}
+                                          </SelectItem>
+                                        ))}
                                     </div>
-                                    {options.map((option) => (
-                                      <SelectItem key={option.value} value={option.value}>
-                                        {option.label} - {option.short_description}
-                                      </SelectItem>
-                                    ))}
-                                  </div>
-                                ))}
+                                  ))}
                               </SelectContent>
                             </Select>
                             {step.verification_key && (
