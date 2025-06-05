@@ -20,6 +20,7 @@ import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import Image from "next/image"
 
 interface StepMethod {
   description: string;
@@ -104,7 +105,8 @@ const getVerificationSteps = () => {
 
     // 定义操作界面验证类别
     const operationCategories: Record<string, string[]> = {
-      "元素验证": ["检查元素状态", "检查元素文本", "检查元素属性"],
+      "元素验证": ["检查元素状态", "检查元素文本", "检查元素属性", "文本识别验证"],
+      "截图验证": ["截图精准匹配", "截图包含匹配"],
       "交互验证": ["检查点击响应", "检查滑动响应", "检查输入响应"],
       "其他验证": []
     };
@@ -188,6 +190,13 @@ interface VerificationStep {
   element_name?: string;
   expected_state?: string;
   stepType: "operation" | "display";
+  reference_screenshot?: string;
+  reference_content?: string;
+  match_mode?: "精确匹配" | "模糊匹配";
+  region?: string;
+  threshold?: number;
+  isImageLoading?: boolean;
+  imageError?: string;
 }
 
 interface OperationStep {
@@ -512,6 +521,136 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       setProjectId(project.id)
     }
   }
+
+  // 删除图片文件
+  const deleteImage = async (fileUrl: string) => {
+    if (!fileUrl) return;
+    
+    try {
+      // 发送删除请求
+      const response = await fetch('/api/files/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fileUrl }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || '删除失败');
+      }
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        console.log(`图片删除成功: ${fileUrl}`);
+        toast({
+          title: "删除成功",
+          description: "图片已成功删除",
+        });
+        return true;
+      } else {
+        throw new Error(result.error || '删除失败');
+      }
+    } catch (error) {
+      console.error('图片删除错误:', error);
+      toast({
+        title: "删除失败",
+        description: error instanceof Error ? error.message : "图片删除失败，请重试",
+        variant: "destructive"
+      });
+      return false;
+    }
+  };
+
+  // 处理图片上传
+  const handleImageUpload = async (id: number, field: keyof VerificationStep, file: File) => {
+    if (!file) return;
+    
+    // 检查文件类型
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "文件类型错误",
+        description: "请上传图片文件（JPG、PNG等）",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // 检查文件大小（限制为5MB）
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "文件过大",
+        description: "图片大小不能超过5MB",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      // 设置加载状态
+      updateVerificationStep(id, "isImageLoading", true);
+      updateVerificationStep(id, "imageError", undefined);
+      
+      // 创建FormData对象
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      // 如果已有测试用例ID，添加到请求中
+      if (initialData?.id) {
+        formData.append('testCaseId', initialData.id.toString());
+      }
+      
+      // 根据字段类型确定文件类型
+      const fileType = field === 'reference_screenshot' ? 'screenshot' : 'image';
+      formData.append('fileType', fileType);
+      
+      // 显示上传中提示
+      toast({
+        title: "上传中",
+        description: "正在上传图片，请稍候...",
+      });
+      
+      // 发送上传请求
+      const response = await fetch('/api/files/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || '上传失败');
+      }
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        console.log(`图片上传成功: ${result.fileUrl}`);
+        
+        // 更新验证步骤，保存图片URL而不是Base64数据
+        updateVerificationStep(id, field, result.fileUrl);
+        updateVerificationStep(id, "isImageLoading", false);
+        
+        toast({
+          title: "上传成功",
+          description: "图片已成功上传",
+        });
+      } else {
+        throw new Error(result.error || '上传失败');
+      }
+    } catch (error) {
+      console.error('图片上传错误:', error);
+      updateVerificationStep(id, "isImageLoading", false);
+      updateVerificationStep(id, "imageError", error instanceof Error ? error.message : "图片上传失败");
+      
+      toast({
+        title: "上传失败",
+        description: error instanceof Error ? error.message : "图片上传失败，请重试",
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -1376,6 +1515,207 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                     value={step.expected_state}
                                     onChange={(e) => updateVerificationStep(step.id, "expected_state", e.target.value)}
                                   />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {step.verification_key === "文本识别验证" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">文本识别设置</Label>
+                              <div className="grid grid-cols-1 gap-4">
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">预期文本</Label>
+                                  <Input
+                                    value={step.expected_text}
+                                    onChange={(e) => updateVerificationStep(step.id, "expected_text", e.target.value)}
+                                    placeholder="输入需要验证的文本内容"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {step.verification_key === "截图精准匹配" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">参考截图上传</Label>
+                              <div className="grid grid-cols-1 gap-4">
+                                <div className="border rounded-md p-4">
+                                  <Label className="text-xs text-gray-500 mb-2 block">上传参考截图</Label>
+                                  <div className="flex flex-col items-center space-y-2">
+                                    <div className="flex items-center justify-center w-full">
+                                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                          <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                          </svg>
+                                          <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">点击上传</span> 或拖拽文件</p>
+                                          <p className="text-xs text-gray-500">PNG, JPG, WEBP, GIF (最大 5MB)</p>
+                                        </div>
+                                        <input 
+                                          type="file" 
+                                          className="hidden" 
+                                          accept="image/*"
+                                          onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                              handleImageUpload(step.id, "reference_screenshot", file);
+                                            }
+                                          }}
+                                        />
+                                      </label>
+                                    </div>
+                                    {step.isImageLoading ? (
+                                      <div className="flex items-center justify-center p-4">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                                        <span className="ml-2 text-sm text-gray-500">加载中...</span>
+                                      </div>
+                                    ) : step.reference_screenshot ? (
+                                      <div className="relative w-full">
+                                        <div className="border rounded-md p-2 bg-white">
+                                          <img 
+                                            src={step.reference_screenshot} 
+                                            alt="参考截图预览" 
+                                            className="max-h-40 mx-auto object-contain rounded-md"
+                                            onError={(e) => {
+                                              console.error('图片加载失败:', step.reference_screenshot);
+                                              updateVerificationStep(step.id, "imageError", "图片加载失败");
+                                              e.currentTarget.style.display = 'none';
+                                            }}
+                                          />
+                                          {step.imageError && (
+                                            <div className="text-center p-2 text-red-500 text-sm">
+                                              <p>图片加载失败</p>
+                                              <p className="text-xs">{step.imageError}</p>
+                                              <p className="text-xs mt-1">请尝试重新上传</p>
+                                            </div>
+                                          )}
+                                        </div>
+                                        <Button
+                                          type="button"
+                                          variant="destructive"
+                                          size="icon"
+                                          className="absolute top-0 right-0 h-6 w-6"
+                                          onClick={async () => {
+                                            if (step.reference_screenshot) {
+                                              await deleteImage(step.reference_screenshot);
+                                            }
+                                            updateVerificationStep(step.id, "reference_screenshot", undefined);
+                                            updateVerificationStep(step.id, "imageError", undefined);
+                                          }}
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">匹配阈值</Label>
+                                  <div className="flex items-center space-x-2">
+                                    <Input
+                                      type="range"
+                                      min="0.5"
+                                      max="1"
+                                      step="0.01"
+                                      value={step.threshold || 0.95}
+                                      onChange={(e) => updateVerificationStep(step.id, "threshold", parseFloat(e.target.value))}
+                                      className="w-full"
+                                    />
+                                    <span className="text-sm w-12">{(step.threshold || 0.95).toFixed(2)}</span>
+                                  </div>
+                                  <p className="text-xs text-gray-500 mt-1">值越高要求匹配越精确（0.95表示95%相似度）</p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {step.verification_key === "截图包含匹配" && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium">参考内容上传</Label>
+                              <div className="grid grid-cols-1 gap-4">
+                                <div className="border rounded-md p-4">
+                                  <Label className="text-xs text-gray-500 mb-2 block">上传参考内容图片</Label>
+                                  <div className="flex flex-col items-center space-y-2">
+                                    <div className="flex items-center justify-center w-full">
+                                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                          <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                          </svg>
+                                          <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">点击上传</span> 或拖拽文件</p>
+                                          <p className="text-xs text-gray-500">PNG, JPG, WEBP, GIF (最大 5MB)</p>
+                                        </div>
+                                        <input 
+                                          type="file" 
+                                          className="hidden" 
+                                          accept="image/*"
+                                          onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                              handleImageUpload(step.id, "reference_content", file);
+                                            }
+                                          }}
+                                        />
+                                      </label>
+                                    </div>
+                                    {step.isImageLoading ? (
+                                      <div className="flex items-center justify-center p-4">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                                        <span className="ml-2 text-sm text-gray-500">加载中...</span>
+                                      </div>
+                                    ) : step.reference_content ? (
+                                      <div className="relative w-full">
+                                        <div className="border rounded-md p-2 bg-white">
+                                          <img 
+                                            src={step.reference_content} 
+                                            alt="参考内容预览" 
+                                            className="max-h-40 mx-auto object-contain rounded-md"
+                                            onError={(e) => {
+                                              console.error('图片加载失败:', step.reference_content);
+                                              updateVerificationStep(step.id, "imageError", "图片加载失败");
+                                              e.currentTarget.style.display = 'none';
+                                            }}
+                                          />
+                                          {step.imageError && (
+                                            <div className="text-center p-2 text-red-500 text-sm">
+                                              <p>图片加载失败</p>
+                                              <p className="text-xs">{step.imageError}</p>
+                                              <p className="text-xs mt-1">请尝试重新上传</p>
+                                            </div>
+                                          )}
+                                        </div>
+                                        <Button
+                                          type="button"
+                                          variant="destructive"
+                                          size="icon"
+                                          className="absolute top-0 right-0 h-6 w-6"
+                                          onClick={async () => {
+                                            if (step.reference_content) {
+                                              await deleteImage(step.reference_content);
+                                            }
+                                            updateVerificationStep(step.id, "reference_content", undefined);
+                                            updateVerificationStep(step.id, "imageError", undefined);
+                                          }}
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">匹配阈值</Label>
+                                  <div className="flex items-center space-x-2">
+                                    <Input
+                                      type="range"
+                                      min="0.5"
+                                      max="1"
+                                      step="0.01"
+                                      value={step.threshold || 0.8}
+                                      onChange={(e) => updateVerificationStep(step.id, "threshold", parseFloat(e.target.value))}
+                                      className="w-full"
+                                    />
+                                    <span className="text-sm w-12">{(step.threshold || 0.8).toFixed(2)}</span>
+                                  </div>
+                                  <p className="text-xs text-gray-500 mt-1">值越高要求匹配越精确（0.8表示80%相似度）</p>
                                 </div>
                               </div>
                             </div>

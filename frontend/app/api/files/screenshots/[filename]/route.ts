@@ -12,13 +12,20 @@ export async function GET(
   try {
     // 更新为使用frontend/public/screenshot目录
     const possiblePaths = [
-      // 相对路径（开发环境）
+      // 优先检查upload子目录（新路径）
+      path.join(process.cwd(), 'public/screenshot/upload', filename),
+      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'screenshot', 'upload', filename),
+      // 然后检查原始目录（兼容性）
       path.join(process.cwd(), 'public/screenshot', filename),
-      // 绝对路径（生产环境）
       path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'screenshot', filename),
       // 旧路径（兼容性）
       path.join(process.cwd(), '../data/screenshots', filename),
-      path.join('E:', 'python', 'vp_180', 'data', 'screenshots', filename)
+      path.join('E:', 'python', 'vp_180', 'data', 'screenshots', filename),
+      // 添加更多可能的路径
+      path.join(process.cwd(), 'public/img/upload', filename),
+      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', 'upload', filename),
+      path.join(process.cwd(), 'public/img', filename),
+      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', filename),
     ];
     
     let filePath = null;
@@ -28,21 +35,21 @@ export async function GET(
     // 尝试每一个可能的路径
     for (const testPath of possiblePaths) {
       try {
-        console.log(`尝试访问截图路径: ${testPath}`);
+        console.log(`尝试访问路径: ${testPath}`);
         await fs.access(testPath);
         filePath = testPath;
         fileExists = true;
-        console.log(`找到截图文件: ${filePath}`);
+        console.log(`找到文件: ${filePath}`);
         break;
       } catch (error) {
         // 记录尝试失败的路径
-        console.log(`截图路径不存在: ${testPath}`);
+        console.log(`路径不存在: ${testPath}`);
         triedPaths.push(testPath);
       }
     }
     
     if (!fileExists || !filePath) {
-      console.error(`找不到截图文件: ${filename}, 尝试过的路径:`, triedPaths);
+      console.error(`找不到文件: ${filename}, 尝试过的路径:`, triedPaths);
       return new NextResponse(JSON.stringify({
         error: '截图文件不存在',
         filename: filename,
@@ -61,20 +68,31 @@ export async function GET(
     
     // 根据文件扩展名设置Content-Type
     let contentType = 'image/png';
-    if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) {
+    const lowerFilename = filename.toLowerCase();
+    
+    // 扩展支持的图片格式
+    if (lowerFilename.endsWith('.jpg') || lowerFilename.endsWith('.jpeg')) {
       contentType = 'image/jpeg';
-    } else if (filename.endsWith('.gif')) {
+    } else if (lowerFilename.endsWith('.gif')) {
       contentType = 'image/gif';
-    } else if (filename.endsWith('.tiff') || filename.endsWith('.tif')) {
+    } else if (lowerFilename.endsWith('.tiff') || lowerFilename.endsWith('.tif')) {
       contentType = 'image/tiff';
+    } else if (lowerFilename.endsWith('.webp')) {
+      contentType = 'image/webp';
+    } else if (lowerFilename.endsWith('.svg')) {
+      contentType = 'image/svg+xml';
+    } else if (lowerFilename.endsWith('.bmp')) {
+      contentType = 'image/bmp';
+    } else if (lowerFilename.endsWith('.ico')) {
+      contentType = 'image/x-icon';
     }
     
     console.log(`返回截图文件: ${filename}, Content-Type: ${contentType}`);
     
-    // 将 Buffer 转换为 ArrayBuffer
+    // 将Buffer转换为ArrayBuffer
     const arrayBuffer = Buffer.from(fileBuffer).buffer;
     
-    // 使用标准 Response 处理二进制数据
+    // 添加CORS头
     return new Response(arrayBuffer, {
       status: 200,
       headers: {

@@ -173,7 +173,39 @@ const STEP_METHODS: StepMethods = {
         threshold: 0.65
       },
       expected_result: true
-    }
+    },
+    "文本识别验证": {
+      "verification_key": "操作界面验证",
+      "short_description": "识别并验证界面文本",
+      "description": "使用OCR技术从界面截图中识别文本内容，并与预期文本进行比较。适用于验证界面上显示的文字、数字、状态信息等是否符合预期，支持模糊匹配和精确匹配两种模式。",
+      "params": ["screenshot", "expected_text", "match_mode", "region"],
+      "default_values": {
+          "match_mode": "精确匹配",
+          "region": "全屏"
+      },
+      "expected_result": true
+  },
+  "截图精准匹配": {
+      "verification_key": "操作界面验证",
+      "short_description": "与上传截图精确匹配",
+      "description": "将测试运行时获取的截图与用户预先上传的参考截图进行精确比对。要求两张图像完全一致或差异极小，完全一致时验证通过。适用于UI一致性测试、界面显示准确性验证等场景。",
+      "params": ["runtime_screenshot", "reference_screenshot", "threshold"],
+      "default_values": {
+          "threshold": 0.95
+      },
+      "expected_result": true
+  },
+  "截图包含匹配": {
+      "verification_key": "操作界面验证",
+      "short_description": "检测包含上传截图",
+      "description": "检测测试运行时获取的截图中是否包含用户预先上传的参考图像内容。只要运行时截图中包含参考图像的内容，即验证通过。适用于验证特定UI元素、图标或局部内容是否正确显示。",
+      "params": ["runtime_screenshot", "reference_content", "threshold"],
+      "default_values": {
+          "threshold": 0.80
+      },
+      "expected_result": true
+  }
+  
   }
 };
 
