@@ -903,6 +903,64 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     stopRecording();
   };
 
+  // 在NewTestCasePage组件中添加handleScreenCapture函数
+  const handleScreenCapture = async (id: number, field: keyof VerificationStep) => {
+    try {
+      // 设置加载状态
+      updateVerificationStep(id, "isImageLoading", true);
+      updateVerificationStep(id, "imageError", undefined);
+      
+      // 显示上传中提示
+      toast({
+        title: "获取中",
+        description: "正在获取操作界面截图，请稍候...",
+      });
+      
+      // 构建请求URL
+      const url = `/api/screen/capture${initialData?.id ? `?testCaseId=${initialData.id}` : ''}`;
+      
+      // 发送请求
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || '获取失败');
+      }
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        console.log(`操作界面截图获取成功: ${result.fileUrl}`);
+        
+        // 更新验证步骤，保存图片URL
+        updateVerificationStep(id, field, result.fileUrl);
+        updateVerificationStep(id, "isImageLoading", false);
+        
+        toast({
+          title: "获取成功",
+          description: "操作界面截图已成功获取",
+        });
+      } else {
+        throw new Error(result.error || '获取失败');
+      }
+    } catch (error) {
+      console.error('获取操作界面截图错误:', error);
+      updateVerificationStep(id, "isImageLoading", false);
+      updateVerificationStep(id, "imageError", error instanceof Error ? error.message : "获取操作界面截图失败");
+      
+      toast({
+        title: "获取失败",
+        description: error instanceof Error ? error.message : "获取操作界面截图失败，请重试",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 container mx-auto px-4 py-6">
@@ -1563,6 +1621,22 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                         />
                                       </label>
                                     </div>
+                                    <div className="flex items-center justify-center w-full mt-2">
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="w-full"
+                                        onClick={() => handleScreenCapture(step.id, "reference_screenshot")}
+                                      >
+                                        <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <rect width="18" height="14" x="3" y="5" rx="2" stroke="currentColor" strokeWidth="2"/>
+                                          <path d="M3 7c0-1.886 0-2.828.586-3.414C4.172 3 5.114 3 7 3h10c1.886 0 2.828 0 3.414.586C21 4.172 21 5.114 21 7" stroke="currentColor" strokeWidth="2"/>
+                                          <path d="M8 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" strokeWidth="2"/>
+                                          <path d="m21 15-2-2-4 4-2-2-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                        获取操作界面截图
+                                      </Button>
+                                    </div>
                                     {step.isImageLoading ? (
                                       <div className="flex items-center justify-center p-4">
                                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -1655,6 +1729,22 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                           }}
                                         />
                                       </label>
+                                    </div>
+                                    <div className="flex items-center justify-center w-full mt-2">
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="w-full"
+                                        onClick={() => handleScreenCapture(step.id, "reference_content")}
+                                      >
+                                        <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <rect width="18" height="14" x="3" y="5" rx="2" stroke="currentColor" strokeWidth="2"/>
+                                          <path d="M3 7c0-1.886 0-2.828.586-3.414C4.172 3 5.114 3 7 3h10c1.886 0 2.828 0 3.414.586C21 4.172 21 5.114 21 7" stroke="currentColor" strokeWidth="2"/>
+                                          <path d="M8 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" strokeWidth="2"/>
+                                          <path d="m21 15-2-2-4 4-2-2-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                        获取操作界面截图
+                                      </Button>
                                     </div>
                                     {step.isImageLoading ? (
                                       <div className="flex items-center justify-center p-4">
