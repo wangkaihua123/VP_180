@@ -93,7 +93,7 @@ class ImageComparator:
 
     @staticmethod
     def is_ssim(img1, img2, threshold=0.98, min_threshold=0.80):
-        """使用 SSIM 结构相似性指数判断图像是否放大"""
+        """使用 SSIM 结构相似性指数判断图像是否相似"""
         try:
             # 转换为灰度图并转换为float32类型
             gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY).astype(np.float32)
@@ -131,13 +131,13 @@ class ImageComparator:
 
             logger.info(f"SSIM 相似度: {ssim_index:.4f}")
 
-            # 判断相似度是否合理
-            is_zoomed = min_threshold < ssim_index < threshold
-            logger.info(f"图像的相似度{'较' if is_zoomed else '不'}合理,测试 {'通过' if is_zoomed else '不通过'}"
+            # 判断相似度是否达到阈值
+            is_similar = ssim_index >= threshold
+            logger.info(f"图像相似度{'达到' if is_similar else '未达到'}阈值,测试 {'通过' if is_similar else '不通过'}"
                        f"(SSIM 值: {ssim_index:.4f}, "
-                       f"阈值范围: {min_threshold:.2f} - {threshold:.2f})")
+                       f"阈值: {threshold:.2f})")
             
-            return is_zoomed
+            return is_similar
 
         except Exception as e:
             logger.error(f"SSIM 计算过程出错: {str(e)}")

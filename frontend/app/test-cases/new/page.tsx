@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowLeft, Plus, Trash2, ChevronUp, ChevronDown, Save, X } from "lucide-react"
+import { ArrowLeft, Plus, Trash2, ChevronUp, ChevronDown, Save, X, ZoomIn, RotateCw, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -17,7 +17,7 @@ import { testCasesAPI } from "@/lib/api/test-cases"
 import STEP_METHODS from "@/utils/test_method_mapping"
 import { FUNCTIONS } from "@/utils/Config"
 import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import Image from "next/image"
@@ -197,6 +197,7 @@ interface VerificationStep {
   threshold?: number;
   isImageLoading?: boolean;
   imageError?: string;
+  operation_screenshot?: string; // 存储选择的操作界面截图步骤ID
 }
 
 interface OperationStep {
@@ -338,13 +339,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         const projectList = await projectSettingsAPI.getProjects()
         setProjects(projectList)
         
-        // 设置默认项目为最早创建的项目
+        // 设置默认项目
         if (projectList.length > 0) {
-          // 按创建时间排序（升序）
-          const sortedProjects = [...projectList].sort((a, b) => 
-            new Date(a.createTime).getTime() - new Date(b.createTime).getTime()
-          )
-          
           // 如果是编辑模式且已有项目名称
           if (mode === 'edit' && initialData?.project_name) {
             setProjectName(initialData.project_name)
@@ -354,10 +350,15 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               setProjectId(foundProject.id)
             }
           } else {
-            // 使用最早创建的项目
-            const firstProject = sortedProjects[0]
-            setProjectName(firstProject.name)
-            setProjectId(firstProject.id)
+            // 使用创建时间最早的项目（最简单的方式）
+            const earliestProject = projectList.reduce((earliest, current) => {
+              const earliestTime = new Date(earliest.createTime).getTime()
+              const currentTime = new Date(current.createTime).getTime()
+              return currentTime < earliestTime ? current : earliest
+            }, projectList[0])
+            
+            setProjectName(earliestProject.name)
+            setProjectId(earliestProject.id)
           }
         }
       } catch (error) {
@@ -564,6 +565,62 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     }
   };
 
+  // 删除已存在的图片
+  const deleteExistingImage = async (step: VerificationStep, field: keyof VerificationStep) => {
+    const imageData = step[field];
+    if (!imageData) return true; // 没有旧图片，直接返回成功
+    
+    try {
+      let fileName: string | undefined;
+      let fileUrl: string | undefined;
+      
+      // 尝试解析JSON数据
+      if (typeof imageData === 'string') {
+        if (imageData.startsWith('{')) {
+          try {
+            const parsedData = JSON.parse(imageData);
+            fileName = parsedData.fileName;
+            fileUrl = parsedData.url;
+            
+            // 如果没有fileName但有URL，尝试从URL提取文件名
+            if (!fileName && fileUrl) {
+              fileName = fileUrl.split('/').pop();
+            }
+          } catch (e) {
+            // 解析失败，使用原始字符串
+            fileUrl = imageData;
+            fileName = imageData.split('/').pop();
+          }
+        } else {
+          fileUrl = imageData;
+          fileName = imageData.split('/').pop();
+        }
+      }
+      
+      // 如果有文件名或URL，尝试删除
+      if (fileName || fileUrl) {
+        console.log(`删除旧图片: ${fileName || fileUrl}`);
+        
+        // 如果只有文件名没有完整URL，构建可能的URL
+        if (fileName && !fileUrl) {
+          // 尝试构建完整的API URL
+          fileUrl = fileName.includes('screen_capture') ? 
+            `/api/files/screenshots/${fileName}` : 
+            `/api/files/images/${fileName}`;
+        }
+        
+        await deleteImage(fileUrl || fileName || '');
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('删除旧图片时出错:', error);
+      // 即使删除失败也继续上传新图片
+      return false;
+    }
+  };
+
   // 处理图片上传
   const handleImageUpload = async (id: number, field: keyof VerificationStep, file: File) => {
     if (!file) return;
@@ -593,6 +650,13 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       updateVerificationStep(id, "isImageLoading", true);
       updateVerificationStep(id, "imageError", undefined);
       
+      // 查找当前步骤
+      const currentStep = verificationSteps.find(step => step.id === id);
+      if (currentStep) {
+        // 尝试删除已存在的图片
+        await deleteExistingImage(currentStep, field);
+      }
+      
       // 创建FormData对象
       const formData = new FormData();
       formData.append('file', file);
@@ -602,8 +666,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         formData.append('testCaseId', initialData.id.toString());
       }
       
-      // 根据字段类型确定文件类型
-      const fileType = field === 'reference_screenshot' ? 'screenshot' : 'image';
+      // 设置文件类型为'screenshot'，确保保存到/screenshot/upload目录
+      const fileType = 'screenshot';
       formData.append('fileType', fileType);
       
       // 显示上传中提示
@@ -627,9 +691,17 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       
       if (result.success) {
         console.log(`图片上传成功: ${result.fileUrl}`);
+        console.log(`备用URL: ${result.alternativeUrl || '无'}`);
         
-        // 更新验证步骤，保存图片URL而不是Base64数据
-        updateVerificationStep(id, field, result.fileUrl);
+        // 更新验证步骤，保存图片URL和备用URL
+        const imageData = {
+          url: result.fileUrl,
+          alternativeUrl: result.alternativeUrl,
+          fileName: result.fileName
+        };
+        
+        // 将图片信息保存为JSON字符串，以便在需要时可以尝试不同的URL
+        updateVerificationStep(id, field, JSON.stringify(imageData));
         updateVerificationStep(id, "isImageLoading", false);
         
         toast({
@@ -910,13 +982,20 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       updateVerificationStep(id, "isImageLoading", true);
       updateVerificationStep(id, "imageError", undefined);
       
+      // 查找当前步骤
+      const currentStep = verificationSteps.find(step => step.id === id);
+      if (currentStep) {
+        // 尝试删除已存在的图片
+        await deleteExistingImage(currentStep, field);
+      }
+      
       // 显示上传中提示
       toast({
         title: "获取中",
         description: "正在获取操作界面截图，请稍候...",
       });
       
-      // 构建请求URL
+      // 构建请求URL，移除fileType参数，使用默认的/screenshot/upload目录
       const url = `/api/screen/capture${initialData?.id ? `?testCaseId=${initialData.id}` : ''}`;
       
       // 发送请求
@@ -937,8 +1016,15 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       if (result.success) {
         console.log(`操作界面截图获取成功: ${result.fileUrl}`);
         
-        // 更新验证步骤，保存图片URL
-        updateVerificationStep(id, field, result.fileUrl);
+        // 更新验证步骤，保存图片URL和备用URL
+        const imageData = {
+          url: result.fileUrl,
+          alternativeUrl: result.alternativeUrl || `/screenshot/upload/${result.fileName}`, // 确保有备用URL指向/screenshot/upload目录
+          fileName: result.fileName
+        };
+        
+        // 将图片信息保存为JSON字符串，以便在需要时可以尝试不同的URL
+        updateVerificationStep(id, field, JSON.stringify(imageData));
         updateVerificationStep(id, "isImageLoading", false);
         
         toast({
@@ -959,6 +1045,153 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         variant: "destructive"
       });
     }
+  };
+
+  // 添加图片预览相关状态
+  const [imagePreviewOpen, setImagePreviewOpen] = useState(false)
+  const [previewImage, setPreviewImage] = useState<string | undefined>()
+  const [imageTitle, setImageTitle] = useState("")
+  const [zoomLevel, setZoomLevel] = useState(1)
+  const [rotation, setRotation] = useState(0)
+
+  // 处理图片点击预览
+  const handleImagePreview = (imageUrl: string, title: string = "图片预览") => {
+    if (!imageUrl) {
+      toast({
+        title: "无法预览",
+        description: "图片URL为空，无法预览",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // 处理可能的JSON格式图片数据
+    let actualUrl = imageUrl;
+    try {
+      // 检查是否是JSON字符串
+      if (imageUrl.startsWith('{') && imageUrl.endsWith('}')) {
+        const imageData = JSON.parse(imageUrl);
+        actualUrl = imageData.url || imageData.alternativeUrl || imageUrl;
+        console.log(`从JSON解析图片URL: ${actualUrl}`);
+      }
+    } catch (error) {
+      // 如果解析失败，使用原始URL
+      console.log('URL不是JSON格式，使用原始URL');
+    }
+    
+    console.log(`预览图片: ${actualUrl}, 标题: ${title}`);
+    setPreviewImage(actualUrl);
+    setImageTitle(title);
+    setZoomLevel(1);
+    setRotation(0);
+    setImagePreviewOpen(true);
+  }
+  
+  // 放大图片
+  const zoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.5, 3))
+  }
+  
+  // 缩小图片
+  const zoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.5, 0.5))
+  }
+  
+  // 旋转图片
+  const rotateImage = (direction: 'clockwise' | 'counterclockwise') => {
+    setRotation(prev => {
+      const change = direction === 'clockwise' ? 90 : -90
+      return prev + change
+    })
+  }
+
+  // 获取图片URL，处理可能的JSON格式
+  const getImageUrl = (imageData: string | undefined): string | undefined => {
+    if (!imageData) return undefined;
+    
+    try {
+      // 检查是否是JSON字符串
+      if (imageData.startsWith('{') && imageData.endsWith('}')) {
+        const parsedData = JSON.parse(imageData);
+        // 优先使用指向/screenshot/upload目录的URL
+        if (parsedData.alternativeUrl && parsedData.alternativeUrl.includes('/screenshot/upload/')) {
+          return parsedData.alternativeUrl;
+        }
+        return parsedData.url || parsedData.alternativeUrl;
+      }
+    } catch (error) {
+      // 如果解析失败，返回原始字符串
+      console.log('URL不是JSON格式，使用原始URL');
+    }
+    
+    // 如果是直接URL，检查是否需要转换为/screenshot/upload路径
+    if (typeof imageData === 'string' && imageData.includes('/api/files/')) {
+      // 尝试转换为/screenshot/upload路径
+      const filename = imageData.split('/').pop();
+      if (filename) {
+        return `/screenshot/upload/${filename}`;
+      }
+    }
+    
+    return imageData;
+  };
+
+  // 处理图片加载错误，尝试多种URL格式
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, stepId: number, imageData: string) => {
+    const imgElement = e.currentTarget;
+    let imgUrl = imageData;
+    let alternativeUrl: string | undefined;
+    let fileName: string | undefined;
+    
+    // 尝试解析JSON数据
+    try {
+      if (imageData.startsWith('{') && imageData.endsWith('}')) {
+        const parsedData = JSON.parse(imageData);
+        imgUrl = parsedData.url || imageData;
+        alternativeUrl = parsedData.alternativeUrl;
+        fileName = parsedData.fileName;
+      }
+    } catch (error) {
+      console.log('URL不是JSON格式，使用原始URL');
+    }
+    
+    console.error('图片加载失败:', imgUrl);
+    
+    // 优先尝试alternativeUrl，因为它通常指向/screenshot/upload目录
+    if (alternativeUrl) {
+      console.log(`尝试备用URL: ${alternativeUrl}`);
+      imgElement.src = alternativeUrl;
+      return; // 尝试新URL，不立即隐藏图片
+    }
+    
+    // 尝试不同的URL格式
+    if (fileName) {
+      // 尝试/screenshot/upload目录
+      const screenshotUrl = `/screenshot/upload/${fileName}`;
+      console.log(`尝试转换后的URL: ${screenshotUrl}`);
+      imgElement.src = screenshotUrl;
+      return;
+    }
+    
+    // 如果以上都失败，并且URL包含/api/路径，尝试直接访问public目录
+    if (imgUrl.includes('/api/files/')) {
+      const directUrl = imgUrl.replace('/api/files/screenshots/', '/screenshot/upload/').replace('/api/files/images/', '/screenshot/upload/');
+      console.log(`尝试直接URL: ${directUrl}`);
+      imgElement.src = directUrl;
+      return;
+    }
+    
+    // 最后尝试原始URL的不同变体
+    if (imgUrl.startsWith('/')) {
+      const withoutLeadingSlash = imgUrl.substring(1);
+      console.log(`尝试去除前导斜杠: ${withoutLeadingSlash}`);
+      imgElement.src = withoutLeadingSlash;
+      return;
+    }
+    
+    // 如果所有尝试都失败，更新错误状态
+    updateVerificationStep(stepId, "imageError", "无法加载图片，请尝试重新获取");
+    console.error('所有尝试加载图片的方法都失败了');
   };
 
   return (
@@ -1183,16 +1416,16 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                       {step.step_type === "visual" ? (
                         <div className="space-y-4">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>操作名称</Label>
-                            <Input
-                              value={step.operation_name || ""}
-                              onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
-                              placeholder="输入操作名称"
-                            />
+                            <div className="space-y-2">
+                              <Label className="block text-sm mb-1">操作名称</Label>
+                              <Input
+                                value={step.operation_name || ""}
+                                onChange={(e) => updateOperationStep(step.id, "operation_name", e.target.value)}
+                                placeholder="输入操作名称"
+                              />
                             </div>
                             <div className="space-y-2">
-                              <Label>步骤类型</Label>
+                              <Label className="block text-sm mb-1">步骤类型</Label>
                               <Select
                                 value={step.stepType || "test-case"}
                                 onValueChange={(value) => updateOperationStep(step.id, "stepType", value)}
@@ -1215,7 +1448,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label>操作类型</Label>
+                            <Label className="block text-sm mb-1">操作类型</Label>
                             <Select
                               value={step.operation_key}
                               onValueChange={(value) => updateOperationStep(step.id, "operation_key", value)}
@@ -1245,7 +1478,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                             </Select>
                           </div>
                           <div className="space-y-2">
-                            <Label>步骤类型</Label>
+                            <Label className="block text-sm mb-1">步骤类型</Label>
                             <Select
                               value={step.stepType || "test-case"}
                               onValueChange={(value) => updateOperationStep(step.id, "stepType", value)}
@@ -1262,7 +1495,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                           </div>
                           {(step.operation_key === "点击按钮" || step.operation_key === "长按按钮") && (
                             <div className="space-y-2">
-                              <Label>按钮</Label>
+                              <Label className="block text-sm mb-1">按钮</Label>
                               <Select
                                 value={step.button_name}
                                 onValueChange={(value) => updateOperationStep(step.id, "button_name", value)}
@@ -1282,7 +1515,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                           )}
                           {step.operation_key === "滑动操作" && (
                             <div className="space-y-2">
-                              <Label>滑动坐标</Label>
+                              <Label className="block text-sm mb-1">滑动坐标</Label>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <Label className="text-xs text-gray-500 mb-1">起始点X (x1)</Label>
@@ -1321,7 +1554,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                           )}
                           {(step.operation_key === "串口开机" || step.operation_key === "串口关机" || step.operation_key === "串口关-开机") && (
                             <div className="space-y-2">
-                              <Label>等待时间 (毫秒)</Label>
+                              <Label className="block text-sm mb-1">等待时间 (毫秒)</Label>
                               <Input
                                 type="number"
                                 value={step.waitTime || 1000}
@@ -1468,7 +1701,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                           index: opIndex,
                                           type: op.operation_key
                                         }))
-                                        .filter(op => op.type === "获取图像" || op.type === "获取截图")
+                                        .filter(op => op.type === "获取图像" || op.type === "获取截图" || op.type === "获取操作界面")
                                         .map((op) => (
                                           <SelectItem key={op.id} value={op.id.toString()}>
                                             步骤 {op.index + 1}
@@ -1492,7 +1725,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                           index: opIndex,
                                           type: op.operation_key
                                         }))
-                                        .filter(op => op.type === "获取图像" || op.type === "获取截图")
+                                        .filter(op => op.type === "获取图像" || op.type === "获取截图" || op.type === "获取操作界面")
                                         .map((op) => (
                                           <SelectItem key={op.id} value={op.id.toString()}>
                                             步骤 {op.index + 1}
@@ -1589,6 +1822,31 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                     placeholder="输入需要验证的文本内容"
                                   />
                                 </div>
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">图像选择</Label>
+                                  <Select
+                                    value={step.operation_screenshot}
+                                    onValueChange={(value) => updateVerificationStep(step.id, "operation_screenshot", value)}
+                                  >
+                                    <SelectTrigger className="w-full">
+                                      <SelectValue placeholder="选择操作界面截图" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {operationSteps
+                                        .map((op, opIndex) => ({
+                                          id: op.id,
+                                          index: opIndex,
+                                          type: op.operation_key
+                                        }))
+                                        .filter(op => op.type === "获取操作界面")
+                                        .map((op) => (
+                                          <SelectItem key={op.id} value={op.id.toString()}>
+                                            步骤 {op.index + 1}
+                                          </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
                               </div>
                             </div>
                           )}
@@ -1596,6 +1854,31 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                             <div className="space-y-2">
                               <Label className="text-sm font-medium">参考截图上传</Label>
                               <div className="grid grid-cols-1 gap-4">
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">图像选择</Label>
+                                  <Select
+                                    value={step.operation_screenshot}
+                                    onValueChange={(value) => updateVerificationStep(step.id, "operation_screenshot", value)}
+                                  >
+                                    <SelectTrigger className="w-full">
+                                      <SelectValue placeholder="选择操作界面截图" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {operationSteps
+                                        .map((op, opIndex) => ({
+                                          id: op.id,
+                                          index: opIndex,
+                                          type: op.operation_key
+                                        }))
+                                        .filter(op => op.type === "获取操作界面")
+                                        .map((op) => (
+                                          <SelectItem key={op.id} value={op.id.toString()}>
+                                            步骤 {op.index + 1}
+                                          </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
                                 <div className="border rounded-md p-4">
                                   <Label className="text-xs text-gray-500 mb-2 block">上传操作界面截图</Label>
                                   <div className="flex flex-col items-center space-y-2">
@@ -1646,19 +1929,16 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                       <div className="relative w-full">
                                         <div className="border rounded-md p-2 bg-white">
                                           <img 
-                                            src={step.reference_screenshot} 
+                                            src={getImageUrl(step.reference_screenshot)}
                                             alt="参考截图预览" 
-                                            className="max-h-40 mx-auto object-contain rounded-md"
-                                            onError={(e) => {
-                                              console.error('图片加载失败:', step.reference_screenshot);
-                                              updateVerificationStep(step.id, "imageError", "图片加载失败");
-                                              e.currentTarget.style.display = 'none';
-                                            }}
+                                            className="max-h-40 mx-auto object-contain rounded-md cursor-pointer"
+                                            onClick={() => handleImagePreview(step.reference_screenshot!, "参考截图预览")}
+                                            onError={(e) => handleImageError(e, step.id, step.reference_screenshot!)}
                                           />
                                           {step.imageError && (
                                             <div className="text-center p-2 text-red-500 text-sm">
                                               <p>图片加载失败</p>
-                                              <p className="text-xs">{step.imageError}</p>
+                                              <p className="text-xs break-all">{step.imageError}</p>
                                               <p className="text-xs mt-1">请尝试重新上传</p>
                                             </div>
                                           )}
@@ -1670,7 +1950,22 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                           className="absolute top-0 right-0 h-6 w-6"
                                           onClick={async () => {
                                             if (step.reference_screenshot) {
-                                              await deleteImage(step.reference_screenshot);
+                                              // 尝试获取文件名
+                                              let fileName;
+                                              try {
+                                                if (typeof step.reference_screenshot === 'string' && step.reference_screenshot.startsWith('{')) {
+                                                  const data = JSON.parse(step.reference_screenshot);
+                                                  fileName = data.fileName;
+                                                } else if (typeof step.reference_screenshot === 'string') {
+                                                  fileName = step.reference_screenshot.split('/').pop();
+                                                }
+                                              } catch (e: unknown) {
+                                                fileName = step.reference_screenshot;
+                                              }
+                                              
+                                              if (fileName || typeof step.reference_screenshot === 'string') {
+                                                await deleteImage(fileName || step.reference_screenshot);
+                                              }
                                             }
                                             updateVerificationStep(step.id, "reference_screenshot", undefined);
                                             updateVerificationStep(step.id, "imageError", undefined);
@@ -1705,6 +2000,31 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                             <div className="space-y-2">
                               <Label className="text-sm font-medium">参考截图上传</Label>
                               <div className="grid grid-cols-1 gap-4">
+                                <div>
+                                  <Label className="text-xs text-gray-500 mb-1">图像选择</Label>
+                                  <Select
+                                    value={step.operation_screenshot}
+                                    onValueChange={(value) => updateVerificationStep(step.id, "operation_screenshot", value)}
+                                  >
+                                    <SelectTrigger className="w-full">
+                                      <SelectValue placeholder="选择操作界面截图" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {operationSteps
+                                        .map((op, opIndex) => ({
+                                          id: op.id,
+                                          index: opIndex,
+                                          type: op.operation_key
+                                        }))
+                                        .filter(op => op.type === "获取操作界面")
+                                        .map((op) => (
+                                          <SelectItem key={op.id} value={op.id.toString()}>
+                                            步骤 {op.index + 1}
+                                          </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
                                 <div className="border rounded-md p-4">
                                   <Label className="text-xs text-gray-500 mb-2 block">上传参考截图</Label>
                                   <div className="flex flex-col items-center space-y-2">
@@ -1755,19 +2075,16 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                       <div className="relative w-full">
                                         <div className="border rounded-md p-2 bg-white">
                                           <img 
-                                            src={step.reference_content} 
+                                            src={getImageUrl(step.reference_content)}
                                             alt="参考内容预览" 
-                                            className="max-h-40 mx-auto object-contain rounded-md"
-                                            onError={(e) => {
-                                              console.error('图片加载失败:', step.reference_content);
-                                              updateVerificationStep(step.id, "imageError", "图片加载失败");
-                                              e.currentTarget.style.display = 'none';
-                                            }}
+                                            className="max-h-40 mx-auto object-contain rounded-md cursor-pointer"
+                                            onClick={() => handleImagePreview(step.reference_content!, "参考内容预览")}
+                                            onError={(e) => handleImageError(e, step.id, step.reference_content!)}
                                           />
                                           {step.imageError && (
                                             <div className="text-center p-2 text-red-500 text-sm">
                                               <p>图片加载失败</p>
-                                              <p className="text-xs">{step.imageError}</p>
+                                              <p className="text-xs break-all">{step.imageError}</p>
                                               <p className="text-xs mt-1">请尝试重新上传</p>
                                             </div>
                                           )}
@@ -1779,7 +2096,22 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                           className="absolute top-0 right-0 h-6 w-6"
                                           onClick={async () => {
                                             if (step.reference_content) {
-                                              await deleteImage(step.reference_content);
+                                              // 尝试获取文件名
+                                              let fileName;
+                                              try {
+                                                if (typeof step.reference_content === 'string' && step.reference_content.startsWith('{')) {
+                                                  const data = JSON.parse(step.reference_content);
+                                                  fileName = data.fileName;
+                                                } else if (typeof step.reference_content === 'string') {
+                                                  fileName = step.reference_content.split('/').pop();
+                                                }
+                                              } catch (e: unknown) {
+                                                fileName = step.reference_content;
+                                              }
+                                              
+                                              if (fileName || typeof step.reference_content === 'string') {
+                                                await deleteImage(fileName || step.reference_content);
+                                              }
                                             }
                                             updateVerificationStep(step.id, "reference_content", undefined);
                                             updateVerificationStep(step.id, "imageError", undefined);
@@ -1799,13 +2131,13 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                       min="0.5"
                                       max="1"
                                       step="0.01"
-                                      value={step.threshold || 0.8}
+                                      value={step.threshold || 1.00}
                                       onChange={(e) => updateVerificationStep(step.id, "threshold", parseFloat(e.target.value))}
                                       className="w-full"
                                     />
-                                    <span className="text-sm w-12">{(step.threshold || 0.8).toFixed(2)}</span>
+                                    <span className="text-sm w-12">{(step.threshold || 1.00).toFixed(2)}</span>
                                   </div>
-                                  <p className="text-xs text-gray-500 mt-1">值越高要求匹配越精确（0.8表示80%相似度）</p>
+                                  <p className="text-xs text-gray-500 mt-1">值越高要求匹配越精确（1.00表示100%相似度）</p>
                                 </div>
                               </div>
                             </div>
@@ -1978,6 +2310,100 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               关闭
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* 添加图片预览对话框 */}
+      <Dialog open={imagePreviewOpen} onOpenChange={setImagePreviewOpen}>
+        <DialogContent className="max-w-4xl p-0 bg-black/90 border-gray-800 max-h-[90vh] overflow-hidden">
+          <div className="relative flex flex-col h-full">
+            <DialogClose className="absolute right-2 top-2 z-10">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <X className="h-5 w-5" />
+              </Button>
+            </DialogClose>
+
+            <div className="flex justify-between items-center p-4 border-b border-gray-800 w-full">
+              <div className="text-white">
+                <h3 className="font-medium">{imageTitle}</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-white hover:bg-white/20"
+                  onClick={() => zoomOut()}
+                >
+                  <ZoomIn className="h-5 w-5 rotate-180" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-white hover:bg-white/20"
+                  onClick={() => zoomIn()}
+                >
+                  <ZoomIn className="h-5 w-5" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-white hover:bg-white/20"
+                  onClick={() => rotateImage('counterclockwise')}
+                >
+                  <RotateCcw className="h-5 w-5" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-white hover:bg-white/20"
+                  onClick={() => rotateImage('clockwise')}
+                >
+                  <RotateCw className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex-1 w-full relative flex items-center justify-center bg-black overflow-hidden">
+              {previewImage && (
+                <div
+                  className="relative flex items-center justify-center w-full h-full max-h-[calc(90vh-140px)]"
+                  style={{
+                    overflow: "hidden",
+                    padding: "20px"
+                  }}
+                >
+                  <img
+                    src={previewImage}
+                    alt={imageTitle}
+                    className="max-w-full max-h-full object-contain"
+                    style={{
+                      transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
+                      transition: "transform 0.2s ease",
+                    }}
+                    onError={(e) => {
+                      console.error('图片加载失败:', previewImage);
+                      // 尝试修复可能的URL问题
+                      const fixedUrl = previewImage.startsWith('http') ? previewImage : 
+                        (previewImage.startsWith('/') ? previewImage : `/${previewImage}`);
+                      
+                      if (fixedUrl !== previewImage) {
+                        console.log(`尝试使用修复后的URL: ${fixedUrl}`);
+                        (e.target as HTMLImageElement).src = fixedUrl;
+                      } else {
+                        // 设置一个错误占位图
+                        (e.target as HTMLImageElement).src = "/placeholder.svg";
+                        toast({
+                          title: "图片加载失败",
+                          description: `无法加载图片: ${previewImage}`,
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

@@ -662,6 +662,455 @@ class TestCaseExecutor:
                         'success': False,
                         'message': f'图像对比出错: {str(e)}'
                     }
+            
+            elif verification_key == '文本识别验证':
+                # 导入OCR处理模块
+                from .ocr import process_image
+                import tempfile
+                
+                # 获取预期文本和操作界面截图ID
+                expected_text = step.get('expected_text', '')
+                screenshot_id = step.get('operation_screenshot', '')
+                
+                if not expected_text:
+                    logger.error("文本识别验证缺少预期文本")
+                    return {
+                        'success': False,
+                        'message': '文本识别验证缺少预期文本'
+                    }
+                
+                if not screenshot_id:
+                    logger.error("文本识别验证缺少操作界面截图ID")
+                    return {
+                        'success': False,
+                        'message': '文本识别验证缺少操作界面截图ID'
+                    }
+                
+                # 获取操作界面截图
+                image = None
+                
+                # 首先尝试从操作步骤数据中获取图像
+                if screenshot_id in operation_data and 'image' in operation_data[screenshot_id]:
+                    image = operation_data[screenshot_id]['image']
+                    logger.info(f"从操作步骤 {screenshot_id} 获取到图像")
+                
+                # 如果无法从操作步骤数据中获取，尝试从文件路径获取
+                if image is None:
+                    # 首先尝试从img目录获取（优先使用）
+                    img_dir = os.path.join('frontend', 'public', 'img')
+                    if os.path.exists(img_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(img_dir, latest_file)
+                            try:
+                                image = cv2.imread(img_path)
+                                logger.info(f"从img目录读取图像: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取图像: {str(e)}")
+                
+                # 如果在img目录中找不到，尝试在screenshot/upload目录中查找
+                if image is None:
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot', 'upload')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                image = cv2.imread(img_path)
+                                logger.info(f"从screenshot/upload目录读取图像: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取图像: {str(e)}")
+                
+                # 如果仍然找不到，尝试在旧的screenshot目录中查找
+                if image is None:
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                image = cv2.imread(img_path)
+                                logger.info(f"从screenshot目录读取图像: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取图像: {str(e)}")
+                
+                # 如果仍然无法获取图像，返回失败
+                if image is None:
+                    logger.error(f"无法获取用于文本识别的图像: screenshot_id={screenshot_id}")
+                    return {
+                        'success': False,
+                        'message': f'无法获取用于文本识别的图像: screenshot_id={screenshot_id}'
+                    }
+                
+                try:
+                    # 将图像保存为临时文件
+                    with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+                        temp_path = temp_file.name
+                        cv2.imwrite(temp_path, image)
+                        logger.info(f"临时图像保存到: {temp_path}")
+                    
+                    # 使用OCR进行文本识别
+                    ocr_result = process_image(temp_path)
+                    
+                    # 删除临时文件
+                    try:
+                        os.unlink(temp_path)
+                    except Exception as e:
+                        logger.warning(f"删除临时文件失败: {str(e)}")
+                    
+                    # 检查OCR结果是否包含错误
+                    if ocr_result.get('error'):
+                        logger.error(f"OCR处理出错: {ocr_result['error']}")
+                        return {
+                            'success': False,
+                            'message': f"OCR处理出错: {ocr_result['error']}"
+                        }
+                    
+                    # 获取识别的文本列表
+                    text_results = ocr_result.get('text_results', [])
+                    
+                    # 将所有识别的文本连接成一个字符串，以便进行包含检查
+                    all_text = ' '.join(text_results)
+                    
+                    # 检查识别结果是否包含预期文本
+                    contains_text = expected_text in all_text
+                    
+                    logger.info(f"文本识别结果: {text_results}")
+                    logger.info(f"预期文本: '{expected_text}'")
+                    logger.info(f"验证结果: {'通过' if contains_text else '不通过'}")
+                    
+                    return {
+                        'success': contains_text,
+                        'message': f"文本识别验证 {'通过' if contains_text else '不通过'}: 预期文本 '{expected_text}' {'存在' if contains_text else '不存在'} 于识别结果中",
+                        'details': {
+                            'expected_text': expected_text,
+                            'recognized_texts': text_results
+                        }
+                    }
+                    
+                except Exception as e:
+                    logger.error(f"文本识别过程出错: {str(e)}")
+                    return {
+                        'success': False,
+                        'message': f'文本识别过程出错: {str(e)}'
+                    }
+            
+            elif verification_key == '截图精准匹配':
+                # 获取参考截图和操作界面截图ID
+                reference_screenshot = step.get('reference_screenshot', '')
+                screenshot_id = step.get('operation_screenshot', '')
+                threshold = float(step.get('threshold', 0.99))  # 获取用户设置的阈值，默认0.99
+                
+                if not reference_screenshot:
+                    logger.error("截图精准匹配缺少参考截图")
+                    return {
+                        'success': False,
+                        'message': '截图精准匹配缺少参考截图'
+                    }
+                
+                if not screenshot_id:
+                    logger.error("截图精准匹配缺少操作界面截图ID")
+                    return {
+                        'success': False,
+                        'message': '截图精准匹配缺少操作界面截图ID'
+                    }
+                
+                # 获取操作界面截图
+                operation_image = None
+                
+                # 首先尝试从操作步骤数据中获取图像
+                if screenshot_id in operation_data and 'image' in operation_data[screenshot_id]:
+                    operation_image = operation_data[screenshot_id]['image']
+                    logger.info(f"从操作步骤 {screenshot_id} 获取到操作界面截图")
+                
+                # 如果无法从操作步骤数据中获取，尝试从文件路径获取
+                if operation_image is None:
+                    # 首先尝试从img目录获取（优先使用）
+                    img_dir = os.path.join('frontend', 'public', 'img')
+                    if os.path.exists(img_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(img_dir, latest_file)
+                            try:
+                                operation_image = cv2.imread(img_path)
+                                logger.info(f"从img目录读取操作界面截图: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
+                
+                # 如果在img目录中找不到，尝试在screenshot/upload目录中查找
+                if operation_image is None:
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot', 'upload')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                operation_image = cv2.imread(img_path)
+                                logger.info(f"从screenshot/upload目录读取操作界面截图: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
+                
+                # 如果仍然找不到，尝试在旧的screenshot目录中查找
+                if operation_image is None:
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                operation_image = cv2.imread(img_path)
+                                logger.info(f"从screenshot目录读取操作界面截图: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
+                
+                # 如果仍然无法获取操作界面截图，返回失败
+                if operation_image is None:
+                    logger.error(f"无法获取操作界面截图: screenshot_id={screenshot_id}")
+                    return {
+                        'success': False,
+                        'message': f'无法获取操作界面截图: screenshot_id={screenshot_id}'
+                    }
+                
+                # 获取参考截图
+                reference_image = None
+                
+                # 尝试解析参考截图路径
+                try:
+                    # 检查是否是JSON字符串
+                    if reference_screenshot.startswith('{') and reference_screenshot.endswith('}'):
+                        # 解析JSON获取文件名
+                        import json
+                        ref_data = json.loads(reference_screenshot)
+                        ref_filename = ref_data.get('fileName')
+                        
+                        # 尝试从img目录获取参考截图
+                        if ref_filename:
+                            img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                            if os.path.exists(img_path):
+                                reference_image = cv2.imread(img_path)
+                                logger.info(f"从img目录读取参考截图: {img_path}")
+                            
+                            # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
+                            if reference_image is None:
+                                screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                                if os.path.exists(screenshot_path):
+                                    reference_image = cv2.imread(screenshot_path)
+                                    logger.info(f"从screenshot/upload目录读取参考截图: {screenshot_path}")
+                    else:
+                        # 直接使用路径
+                        ref_filename = reference_screenshot.split('/')[-1]
+                        
+                        # 先尝试img目录
+                        img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                        if os.path.exists(img_path):
+                            reference_image = cv2.imread(img_path)
+                            logger.info(f"从img目录读取参考截图: {img_path}")
+                        
+                        # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
+                        if reference_image is None:
+                            screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                            if os.path.exists(screenshot_path):
+                                reference_image = cv2.imread(screenshot_path)
+                                logger.info(f"从screenshot/upload目录读取参考截图: {screenshot_path}")
+                except Exception as e:
+                    logger.warning(f"解析参考截图路径出错: {str(e)}")
+                
+                # 如果仍然无法获取参考截图，返回失败
+                if reference_image is None:
+                    logger.error(f"无法获取参考截图: reference_screenshot={reference_screenshot}")
+                    return {
+                        'success': False,
+                        'message': f'无法获取参考截图'
+                    }
+                
+                try:
+                    # 使用ImageComparator的is_ssim方法进行精准匹配
+                    from .image_comparator import ImageComparator
+                    
+                    # 确保图像尺寸相同
+                    if reference_image.shape != operation_image.shape:
+                        reference_image = cv2.resize(reference_image, (operation_image.shape[1], operation_image.shape[0]))
+                        logger.info("调整参考截图尺寸以匹配操作界面截图")
+                    
+                    # 使用用户设置的阈值作为上限，0.5作为下限
+                    match_result = ImageComparator.is_ssim(operation_image, reference_image, threshold=threshold, min_threshold=0.5)
+                    
+                    logger.info(f"截图精准匹配结果: {'通过' if match_result else '不通过'}, 阈值: {threshold}")
+                    
+                    return {
+                        'success': match_result,
+                        'message': f"截图精准匹配 {'通过' if match_result else '不通过'} (阈值: {threshold})",
+                    }
+                    
+                except Exception as e:
+                    logger.error(f"截图精准匹配过程出错: {str(e)}")
+                    return {
+                        'success': False,
+                        'message': f'截图精准匹配过程出错: {str(e)}'
+                    }
+            
+            elif verification_key == '截图包含匹配':
+                # 获取参考内容和操作界面截图ID
+                reference_content = step.get('reference_content', '')
+                screenshot_id = step.get('operation_screenshot', '')
+                threshold = float(step.get('threshold', 0.8))  # 获取用户设置的阈值，默认0.8
+                
+                if not reference_content:
+                    logger.error("截图包含匹配缺少参考内容")
+                    return {
+                        'success': False,
+                        'message': '截图包含匹配缺少参考内容'
+                    }
+                
+                if not screenshot_id:
+                    logger.error("截图包含匹配缺少操作界面截图ID")
+                    return {
+                        'success': False,
+                        'message': '截图包含匹配缺少操作界面截图ID'
+                    }
+                
+                # 获取操作界面截图
+                operation_image = None
+                
+                # 首先尝试从操作步骤数据中获取图像
+                if screenshot_id in operation_data and 'image' in operation_data[screenshot_id]:
+                    operation_image = operation_data[screenshot_id]['image']
+                    logger.info(f"从操作步骤 {screenshot_id} 获取到操作界面截图")
+                
+                # 如果无法从操作步骤数据中获取，尝试从文件路径获取
+                if operation_image is None:
+                    # 首先尝试从img目录获取（优先使用）
+                    img_dir = os.path.join('frontend', 'public', 'img')
+                    if os.path.exists(img_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(img_dir, latest_file)
+                            try:
+                                operation_image = cv2.imread(img_path)
+                                logger.info(f"从img目录读取操作界面截图: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
+                
+                # 如果在img目录中找不到，尝试在screenshot目录中查找
+                if operation_image is None:
+                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    if os.path.exists(screenshot_dir):
+                        # 获取最新的匹配文件
+                        matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        if matching_files:
+                            latest_file = max(matching_files)  # 获取最新的文件
+                            img_path = os.path.join(screenshot_dir, latest_file)
+                            try:
+                                operation_image = cv2.imread(img_path)
+                                logger.info(f"从screenshot目录读取操作界面截图: {img_path}")
+                            except Exception as e:
+                                logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
+                
+                # 如果仍然无法获取操作界面截图，返回失败
+                if operation_image is None:
+                    logger.error(f"无法获取操作界面截图: screenshot_id={screenshot_id}")
+                    return {
+                        'success': False,
+                        'message': f'无法获取操作界面截图: screenshot_id={screenshot_id}'
+                    }
+                
+                # 获取参考内容
+                reference_image = None
+                
+                # 尝试解析参考内容路径
+                try:
+                    # 检查是否是JSON字符串
+                    if reference_content.startswith('{') and reference_content.endswith('}'):
+                        # 解析JSON获取文件名
+                        import json
+                        ref_data = json.loads(reference_content)
+                        ref_filename = ref_data.get('fileName')
+                        
+                        # 尝试从img目录获取参考内容
+                        if ref_filename:
+                            img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                            if os.path.exists(img_path):
+                                reference_image = cv2.imread(img_path)
+                                logger.info(f"从img目录读取参考内容: {img_path}")
+                            
+                            # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
+                            if reference_image is None:
+                                screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                                if os.path.exists(screenshot_path):
+                                    reference_image = cv2.imread(screenshot_path)
+                                    logger.info(f"从screenshot/upload目录读取参考内容: {screenshot_path}")
+                    else:
+                        # 直接使用路径
+                        ref_filename = reference_content.split('/')[-1]
+                        
+                        # 先尝试img目录
+                        img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                        if os.path.exists(img_path):
+                            reference_image = cv2.imread(img_path)
+                            logger.info(f"从img目录读取参考内容: {img_path}")
+                        
+                        # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
+                        if reference_image is None:
+                            screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                            if os.path.exists(screenshot_path):
+                                reference_image = cv2.imread(screenshot_path)
+                                logger.info(f"从screenshot/upload目录读取参考内容: {screenshot_path}")
+                except Exception as e:
+                    logger.warning(f"解析参考内容路径出错: {str(e)}")
+                
+                # 如果仍然无法获取参考内容，返回失败
+                if reference_image is None:
+                    logger.error(f"无法获取参考内容: reference_content={reference_content}")
+                    return {
+                        'success': False,
+                        'message': f'无法获取参考内容'
+                    }
+                
+                try:
+                    # 使用ImageComparator的template_matching方法进行包含匹配
+                    from .image_comparator import ImageComparator
+                    
+                    # 确保参考内容尺寸小于操作界面截图尺寸
+                    if reference_image.shape[0] > operation_image.shape[0] or reference_image.shape[1] > operation_image.shape[1]:
+                        # 调整参考内容尺寸，确保其不大于操作界面截图
+                        scale = min(operation_image.shape[0] / reference_image.shape[0], 
+                                  operation_image.shape[1] / reference_image.shape[1])
+                        if scale < 1:  # 只有需要缩小时才调整
+                            new_height = int(reference_image.shape[0] * scale)
+                            new_width = int(reference_image.shape[1] * scale)
+                            reference_image = cv2.resize(reference_image, (new_width, new_height))
+                            logger.info(f"调整参考内容尺寸为 {new_width}x{new_height}")
+                    
+                    # 使用用户设置的阈值进行模板匹配
+                    match_result = ImageComparator.template_matching(operation_image, reference_image, threshold=threshold)
+                    
+                    logger.info(f"截图包含匹配结果: {'通过' if match_result else '不通过'}, 阈值: {threshold}")
+                    
+                    return {
+                        'success': match_result,
+                        'message': f"截图包含匹配 {'通过' if match_result else '不通过'} (阈值: {threshold})",
+                    }
+                    
+                except Exception as e:
+                    logger.error(f"截图包含匹配过程出错: {str(e)}")
+                    return {
+                        'success': False,
+                        'message': f'截图包含匹配过程出错: {str(e)}'
+                    }
                 
             elif verification_key == '检查数值范围':
                 # TODO: 实现数值范围检查逻辑
