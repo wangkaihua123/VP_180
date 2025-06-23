@@ -12,8 +12,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'youyi_medical_test_platform_secret_key')
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')
 
 # IP配置
-USE_FIXED_IP = os.getenv('USE_FIXED_IP', 'false').lower() in ('true', '1', 't')
-FIXED_HOST = os.getenv('FIXED_HOST', '10.0.18.191')
+USE_FIXED_IP = os.getenv('USE_FIXED_IP', 'true').lower() in ('true', '1', 't')
+FIXED_HOST = os.getenv('FIXED_HOST', '0.0.0.0')
 FIXED_PORT = int(os.getenv('FIXED_PORT', 5000))
 
 # 动态获取主机IP

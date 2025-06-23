@@ -1597,7 +1597,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                               <Label className="text-sm font-medium">参考截图上传</Label>
                               <div className="grid grid-cols-1 gap-4">
                                 <div className="border rounded-md p-4">
-                                  <Label className="text-xs text-gray-500 mb-2 block">上传参考截图</Label>
+                                  <Label className="text-xs text-gray-500 mb-2 block">上传操作界面截图</Label>
                                   <div className="flex flex-col items-center space-y-2">
                                     <div className="flex items-center justify-center w-full">
                                       <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
@@ -1690,23 +1690,23 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                       min="0.5"
                                       max="1"
                                       step="0.01"
-                                      value={step.threshold || 0.95}
+                                      value={step.threshold || 0.99}
                                       onChange={(e) => updateVerificationStep(step.id, "threshold", parseFloat(e.target.value))}
                                       className="w-full"
                                     />
-                                    <span className="text-sm w-12">{(step.threshold || 0.95).toFixed(2)}</span>
+                                    <span className="text-sm w-12">{(step.threshold || 0.99).toFixed(2)}</span>
                                   </div>
-                                  <p className="text-xs text-gray-500 mt-1">值越高要求匹配越精确（0.95表示95%相似度）</p>
+                                  <p className="text-xs text-gray-500 mt-1">值越高要求匹配越精确（0.99表示99%相似度）</p>
                                 </div>
                               </div>
                             </div>
                           )}
                           {step.verification_key === "截图包含匹配" && (
                             <div className="space-y-2">
-                              <Label className="text-sm font-medium">参考内容上传</Label>
+                              <Label className="text-sm font-medium">参考截图上传</Label>
                               <div className="grid grid-cols-1 gap-4">
                                 <div className="border rounded-md p-4">
-                                  <Label className="text-xs text-gray-500 mb-2 block">上传参考内容图片</Label>
+                                  <Label className="text-xs text-gray-500 mb-2 block">上传参考截图</Label>
                                   <div className="flex flex-col items-center space-y-2">
                                     <div className="flex items-center justify-center w-full">
                                       <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">

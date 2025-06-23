@@ -133,10 +133,10 @@ TODO
 
 ```bash
 # Windows
-.\py_venv\Scripts\activate
+.\py310_venv\Scripts\activate
 
 # Linux/macOS
-source py_venv/bin/activate
+source py310_venv/bin/activate
 ```
 
 2. 安装必要的依赖：

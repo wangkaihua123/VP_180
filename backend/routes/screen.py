@@ -27,7 +27,7 @@ def capture_screen():
         
         # 获取SSH连接
         ssh_manager = SSHManager()
-        ssh_connection = ssh_manager.get_connection()
+        ssh_connection = ssh_manager.get_client()
         
         if not ssh_connection:
             logger.error("无法获取SSH连接")
