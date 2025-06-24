@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// 使用相对路径和process.cwd()
-const settingsFilePath = path.join(process.cwd(), 'data', 'settings.json');
+// 获取项目根目录（frontend的上一级目录）
+function getRootDir() {
+  // 从当前文件位置（frontend/app/api/settings/projects/[id]/route.ts）向上5级到达项目根目录
+  return path.resolve(process.cwd(), '..');
+}
+
+// 使用相对路径和项目根目录
+const settingsFilePath = path.join(getRootDir(), 'data', 'settings.json');
 
 // 读取设置文件
 function readSettings() {
@@ -45,8 +51,8 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
-    const { name, description } = await request.json();
+    const projectId = params.id;
+    const { name, description, imagePath, systemType, screenshotPath, imageTypes } = await request.json();
     
     if (!name || name.trim() === '') {
       return NextResponse.json(
@@ -58,8 +64,8 @@ export async function PUT(
     const settings = readSettings();
     const projects = settings.projects || [];
     
-    // 查找指定ID的项目
-    const projectIndex = projects.findIndex((p: any) => p.id === id);
+    // 查找项目
+    const projectIndex = projects.findIndex((p: any) => p.id === projectId);
     if (projectIndex === -1) {
       return NextResponse.json(
         { success: false, message: '项目不存在' },
@@ -67,8 +73,8 @@ export async function PUT(
       );
     }
     
-    // 检查更新的名称是否与其他项目重名
-    const nameExists = projects.some((p: any, index: number) => p.name === name && index !== projectIndex);
+    // 检查更新后的项目名称是否与其他项目冲突
+    const nameExists = projects.some((p: any) => p.name === name && p.id !== projectId);
     if (nameExists) {
       return NextResponse.json(
         { success: false, message: '项目名称已存在' },
@@ -77,11 +83,16 @@ export async function PUT(
     }
     
     // 更新项目
+    const now = new Date().toISOString();
     const updatedProject = {
       ...projects[projectIndex],
       name,
       description: description || '',
-      updateTime: new Date().toISOString()
+      imagePath: imagePath || '',
+      systemType: systemType || 'android',
+      screenshotPath: screenshotPath || '',
+      imageTypes: imageTypes || '',
+      updateTime: now
     };
     
     projects[projectIndex] = updatedProject;

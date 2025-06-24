@@ -48,7 +48,11 @@ export default function SettingsPage() {
   const [showDeleteProjectDialog, setShowDeleteProjectDialog] = useState(false)
   const [newProject, setNewProject] = useState({
     name: '',
-    description: ''
+    description: '',
+    imagePath: '',
+    systemType: 'android' as 'android' | 'linux',
+    screenshotPath: '',
+    imageTypes: ''
   })
   
   const [settings, setSettings] = useState<SSHSettings>({
@@ -81,6 +85,15 @@ export default function SettingsPage() {
     loadProjects()
     checkSerialConnection()
     checkSshConnection()
+    
+    // 从URL参数中获取tab
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam && ['ssh', 'serial', 'project', 'ip'].includes(tabParam)) {
+        setActiveTab(tabParam);
+      }
+    }
   }, [])
 
   const loadSettings = async () => {
@@ -435,11 +448,15 @@ export default function SettingsPage() {
     try {
       const createdProject = await projectSettingsAPI.createProject({
         name: newProject.name,
-        description: newProject.description
+        description: newProject.description,
+        imagePath: newProject.imagePath,
+        systemType: newProject.systemType,
+        screenshotPath: newProject.screenshotPath,
+        imageTypes: newProject.imageTypes
       })
       
       setProjects(prev => [...prev, createdProject])
-      setNewProject({ name: '', description: '' })
+      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '' })
       
       toast({
         title: "创建成功",
@@ -464,7 +481,11 @@ export default function SettingsPage() {
     setCurrentProject(project)
     setNewProject({
       name: project.name,
-      description: project.description
+      description: project.description,
+      imagePath: project.imagePath || '',
+      systemType: project.systemType || 'android',
+      screenshotPath: project.screenshotPath || '',
+      imageTypes: project.imageTypes || ''
     })
     setEditingProject(true)
   }
@@ -473,7 +494,7 @@ export default function SettingsPage() {
   const cancelEdit = () => {
     setEditingProject(false)
     setCurrentProject(null)
-    setNewProject({ name: '', description: '' })
+    setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '' })
     setShowCreateForm(false) // 也隐藏表单
   }
 
@@ -506,7 +527,11 @@ export default function SettingsPage() {
       const updatedProject = await projectSettingsAPI.updateProject({
         id: currentProject.id,
         name: newProject.name,
-        description: newProject.description
+        description: newProject.description,
+        imagePath: newProject.imagePath,
+        systemType: newProject.systemType,
+        screenshotPath: newProject.screenshotPath,
+        imageTypes: newProject.imageTypes
       })
       
       setProjects(prev => 
@@ -520,7 +545,7 @@ export default function SettingsPage() {
       
       setEditingProject(false)
       setCurrentProject(null)
-      setNewProject({ name: '', description: '' })
+      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '' })
       setShowCreateForm(false) // 更新成功后隐藏表单
     } catch (error) {
       toast({
@@ -887,36 +912,58 @@ export default function SettingsPage() {
                         {projects.length > 0 ? (
                           <div className="grid gap-4">
                             {projects.map((project) => (
-                              <div key={project.id} className="flex items-center justify-between p-4 rounded-md border hover:bg-gray-50">
-                                <div>
-                                  <div className="font-medium">{project.name}</div>
-                                  <div className="text-sm text-gray-500">{project.description}</div>
-                                  <div className="text-xs text-gray-400 mt-1 space-y-1">
-                                    <span>创建时间: {new Date(project.createTime).toLocaleString('zh-CN')}</span>
-                                    {project.updateTime && project.updateTime !== project.createTime && (
-                                      <span>更新时间: {new Date(project.updateTime).toLocaleString('zh-CN')}</span>
-                                    )}
+                              <div key={project.id} className="p-4 rounded-md border hover:bg-gray-50">
+                                <div className="flex justify-between">
+                                  <div>
+                                    <div className="font-medium text-lg">{project.name}</div>
+                                    <div className="text-sm text-gray-500 mb-2">{project.description}</div>
+                                  </div>
+                                  <div className="flex space-x-2">
+                                    <Button 
+                                      variant="outline" 
+                                      size="icon"
+                                      onClick={() => {
+                                        handleEditProject(project);
+                                        setShowCreateForm(true);
+                                      }}
+                                    >
+                                      <Edit className="h-4 w-4" />
+                                    </Button>
+                                    <Button 
+                                      variant="outline" 
+                                      size="icon"
+                                      className="text-red-500 hover:bg-red-50 hover:text-red-600"
+                                      onClick={() => handleDeleteProject(project)}
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
                                   </div>
                                 </div>
-                                <div className="flex space-x-2">
-                                  <Button 
-                                    variant="outline" 
-                                    size="icon"
-                                    onClick={() => {
-                                      handleEditProject(project);
-                                      setShowCreateForm(true);
-                                    }}
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                  <Button 
-                                    variant="outline" 
-                                    size="icon"
-                                    className="text-red-500 hover:bg-red-50 hover:text-red-600"
-                                    onClick={() => handleDeleteProject(project)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-sm">
+                                  <div>
+                                    <span className="font-medium">系统类型：</span>
+                                    <span className="text-gray-700">{project.systemType === 'android' ? 'Android' : 'Linux'}</span>
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">图像获取路径：</span>
+                                    <span className="text-gray-700">{project.imagePath || '未设置'}</span>
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">截图获取路径：</span>
+                                    <span className="text-gray-700">{project.screenshotPath || '未设置'}</span>
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">图片类型：</span>
+                                    <span className="text-gray-700">{project.imageTypes || '未设置'}</span>
+                                  </div>
+                                </div>
+                                
+                                <div className="text-xs text-gray-400 mt-3 flex space-x-4">
+                                  <span>创建时间: {new Date(project.createTime).toLocaleString('zh-CN')}</span>
+                                  {project.updateTime && project.updateTime !== project.createTime && (
+                                    <span>更新时间: {new Date(project.updateTime).toLocaleString('zh-CN')}</span>
+                                  )}
                                 </div>
                               </div>
                             ))}
@@ -958,6 +1005,48 @@ export default function SettingsPage() {
                                   placeholder="输入项目描述（可选）" 
                                   value={newProject.description}
                                   onChange={(e) => setNewProject(prev => ({ ...prev, description: e.target.value }))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="image-path">图像获取路径</Label>
+                                <Input 
+                                  id="image-path" 
+                                  placeholder="输入图像获取路径" 
+                                  value={newProject.imagePath}
+                                  onChange={(e) => setNewProject(prev => ({ ...prev, imagePath: e.target.value }))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="system-type">系统类型</Label>
+                                <Select 
+                                  value={newProject.systemType} 
+                                  onValueChange={(value) => setNewProject(prev => ({ ...prev, systemType: value as 'android' | 'linux' }))}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="选择系统类型" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="android">Android</SelectItem>
+                                    <SelectItem value="linux">Linux</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="screenshot-path">截图获取路径</Label>
+                                <Input 
+                                  id="screenshot-path" 
+                                  placeholder="输入截图获取路径" 
+                                  value={newProject.screenshotPath}
+                                  onChange={(e) => setNewProject(prev => ({ ...prev, screenshotPath: e.target.value }))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="image-types">图片类型</Label>
+                                <Input 
+                                  id="image-types" 
+                                  placeholder="输入图片类型（可选）" 
+                                  value={newProject.imageTypes}
+                                  onChange={(e) => setNewProject(prev => ({ ...prev, imageTypes: e.target.value }))}
                                 />
                               </div>
                               <div className="flex justify-end space-x-2 pt-2">

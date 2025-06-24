@@ -5,7 +5,11 @@
       "name": "VP-180",
       "description": "镜中镜图像处理器",
       "createTime": "2025-05-06T13:19:20.444Z",
-      "updateTime": "2025-05-06T13:19:20.444Z"
+      "updateTime": "2025-06-23T10:01:40.565Z",
+      "imagePath": "ue/ue_data/",
+      "systemType": "linux",
+      "screenshotPath": "qwe21322",
+      "imageTypes": "tiff"
     }
   ]
 }

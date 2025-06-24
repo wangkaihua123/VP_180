@@ -2,6 +2,12 @@ import { NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// 获取项目根目录（frontend的上一级目录）
+function getRootDir() {
+  // 从当前文件位置（frontend/app/api/reports/save/route.ts）向上4级到达项目根目录
+  return path.resolve(process.cwd(), '..');
+}
+
 /**
  * 处理保存测试报告请求
  * @param request POST请求，包含测试报告数据
@@ -18,8 +24,8 @@ export async function POST(request: Request) {
     }
     
     // 获取数据目录的绝对路径
-    // 使用process.cwd()获取项目根目录
-    const dataDir = path.join(process.cwd(), 'data');
+    // 使用自定义函数获取项目根目录
+    const dataDir = path.join(getRootDir(), 'data');
     
     // 确保数据目录存在
     if (!fs.existsSync(dataDir)) {

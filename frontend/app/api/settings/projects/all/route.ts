@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// 使用相对路径和process.cwd()
-const settingsFilePath = path.join(process.cwd(), 'data', 'settings.json');
+// 获取项目根目录（frontend的上一级目录）
+function getRootDir() {
+  // 从当前文件位置（frontend/app/api/settings/projects/all/route.ts）向上5级到达项目根目录
+  return path.resolve(process.cwd(), '..');
+}
+
+// 使用相对路径和项目根目录
+const settingsFilePath = path.join(getRootDir(), 'data', 'settings.json');
 
 // 读取设置文件
 function readSettings() {

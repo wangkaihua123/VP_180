@@ -15,12 +15,20 @@ export interface Project {
   description: string;
   createTime: string;
   updateTime: string;
+  imagePath?: string; // 图像获取路径
+  systemType?: 'android' | 'linux'; // 系统类型（安卓或Linux）
+  screenshotPath?: string; // 截图获取路径
+  imageTypes?: string; // 图片类型（多个用英文逗号分隔）
 }
 
 // 创建项目接口
 export interface CreateProjectPayload {
   name: string;
   description: string;
+  imagePath?: string; // 图像获取路径
+  systemType?: 'android' | 'linux'; // 系统类型（安卓或Linux）
+  screenshotPath?: string; // 截图获取路径
+  imageTypes?: string; // 图片类型（多个用英文逗号分隔）
 }
 
 // 更新项目接口
@@ -28,6 +36,10 @@ export interface UpdateProjectPayload {
   id: string;
   name: string;
   description: string;
+  imagePath?: string; // 图像获取路径
+  systemType?: 'android' | 'linux'; // 系统类型（安卓或Linux）
+  screenshotPath?: string; // 截图获取路径
+  imageTypes?: string; // 图片类型（多个用英文逗号分隔）
 }
 
 // 项目设置API

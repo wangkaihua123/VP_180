@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import { ArrowLeft, Plus, Trash2, ChevronUp, ChevronDown, Save, X, ZoomIn, RotateCw, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -209,6 +209,7 @@ interface OperationStep {
   x2: number;
   y2: number;
   waitTime?: number;
+  waitTimeMs?: number; // 添加等待时间属性（毫秒）
   step_type: "normal" | "visual";
   recorded_steps?: any[];
   operation_name?: string;
@@ -336,11 +337,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   useEffect(() => {
     const loadProjects = async () => {
       try {
+        // 先设置加载状态
+        setIsLoading(true);
+        
         const projectList = await projectSettingsAPI.getProjects()
         setProjects(projectList)
         
         // 设置默认项目
-        if (projectList.length > 0) {
+        if (projectList && projectList.length > 0) {
           // 如果是编辑模式且已有项目名称
           if (mode === 'edit' && initialData?.project_name) {
             setProjectName(initialData.project_name)
@@ -357,9 +361,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               return currentTime < earliestTime ? current : earliest
             }, projectList[0])
             
+            console.log('设置默认项目:', earliestProject.name);
             setProjectName(earliestProject.name)
             setProjectId(earliestProject.id)
           }
+        } else {
+          // 如果没有项目，记录日志
+          console.warn('没有可用的项目，请先创建项目');
+          // 可以考虑添加提示或者自动跳转到创建项目页面
         }
       } catch (error) {
         console.error('加载项目列表失败:', error)
@@ -368,11 +377,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           description: error instanceof Error ? error.message : "未知错误",
           variant: "destructive"
         })
+      } finally {
+        // 完成加载，取消加载状态
+        setIsLoading(false);
       }
     }
     
     loadProjects()
-  }, [])
+  }, [mode, initialData, toast])
 
   // 修改 addOperationStep 函数
   const addOperationStep = () => {
@@ -479,6 +491,10 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
               updatedStep.y2 = buttonConfig.screen[1];
             }
           }
+          // 当操作类型变为"等待时间"时，初始化waitTimeMs属性为1000
+          if (field === 'operation_key' && value === "等待时间") {
+            updatedStep.waitTimeMs = 1000;
+          }
           return updatedStep;
         }
         return step;
@@ -516,6 +532,11 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   };
 
   const handleProjectChange = (name: string) => {
+    // 如果选择了"暂无项目"选项，不进行任何操作
+    if (name === "no-projects") {
+      return;
+    }
+    
     setProjectName(name)
     const project = projects.find(p => p.name === name)
     if (project) {
@@ -1226,18 +1247,41 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                 <Label htmlFor="project" className="text-sm font-medium">
                   所属项目 <span className="text-red-500">*</span>
                 </Label>
-                <Select value={projectName} onValueChange={handleProjectChange} required>
+                <Select 
+                  value={projectName} 
+                  onValueChange={handleProjectChange} 
+                  disabled={isLoading || projects.length === 0}
+                  required
+                >
                   <SelectTrigger>
-                    <SelectValue placeholder="选择项目" />
+                    <SelectValue placeholder={isLoading ? "加载项目中..." : projects.length === 0 ? "暂无项目，请先创建项目" : "选择项目"} />
                   </SelectTrigger>
                   <SelectContent>
-                    {projects.map((project) => (
-                      <SelectItem key={project.id} value={project.name}>
-                        {project.name}
+                    {projects.length > 0 ? (
+                      projects.map((project) => (
+                        <SelectItem key={project.id} value={project.name}>
+                          {project.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="no-projects" disabled>
+                        暂无项目，请先创建项目
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
+                {projects.length === 0 && !isLoading && (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-sm text-red-500">请先在项目设置中创建项目</p>
+                    <Button 
+                      variant="link" 
+                      className="text-sm text-blue-500 hover:text-blue-700 p-0 h-auto" 
+                      onClick={() => router.push('/settings?tab=project')}
+                    >
+                      前往创建项目
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -1560,6 +1604,18 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                                 value={step.waitTime || 1000}
                                 onChange={(e) => updateOperationStep(step.id, "waitTime", parseInt(e.target.value) || 1000)}
                               />
+                            </div>
+                          )}
+                          {step.operation_key === "等待时间" && (
+                            <div className="space-y-2">
+                              <Label className="block text-sm mb-1">等待时间 (毫秒)</Label>
+                              <Input
+                                type="number"
+                                value={step.waitTimeMs || 1000}
+                                onChange={(e) => updateOperationStep(step.id, "waitTimeMs", parseInt(e.target.value) || 1000)}
+                                min="0"
+                              />
+                              <p className="text-xs text-gray-500">默认值：1000毫秒 (1秒)</p>
                             </div>
                           )}
                         </div>

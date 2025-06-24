@@ -151,7 +151,7 @@ pip install -r backend/requirements.txt
 python backend/app.py
 ```
 
-后端API将运行在 http://localhost:5000
+后端API将运行在 http://localhost:5000 或本机ip（端口5000）
 
 ### Next.js 前端
 
@@ -168,7 +168,7 @@ npm install
 npm run dev
 ```
 
-前端应用将运行在 http://localhost:3000
+前端应用将运行在 http://localhost:3000 或本机ip（端口3000）
 
 ### 日志监控工具
 

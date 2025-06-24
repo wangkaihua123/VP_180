@@ -2,15 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+// 获取项目根目录（frontend的上一级目录）
+function getRootDir() {
+  // 从当前文件位置（frontend/app/api/logs/route.ts）向上3级到达项目根目录
+  return path.resolve(process.cwd(), '..');
+}
+
 export async function GET(request: NextRequest) {
   try {
     const logPaths = [
-      // 相对路径（开发环境）
-      path.join(process.cwd(), '../data/logs'),
+      // 使用自定义函数获取项目根目录
+      path.join(getRootDir(), 'data/logs'),
       // 绝对路径（生产环境）
       path.join('E:', 'python', 'vp_180', 'data', 'logs'),
-      // 项目内部路径（备选）
-      path.join(process.cwd(), 'data/logs')
+      // 备用路径
+      path.join(process.cwd(), '../data/logs')
     ];
     
     let logDirPath = null;

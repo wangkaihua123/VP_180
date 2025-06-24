@@ -100,6 +100,7 @@ env/*
 
 # 项目特定
 data/*
+!data/*.json
 !data/.gitkeep
 *.db
 *.sqlite

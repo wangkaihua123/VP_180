@@ -64,8 +64,8 @@ SERIAL_TIMEOUT = int(os.getenv('SERIAL_TIMEOUT', 1))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
 # 测试用例配置
-TEST_CASES_DIR = os.path.join(DATA_DIR, 'test_cases')
-os.makedirs(TEST_CASES_DIR, exist_ok=True)
+# TEST_CASES_DIR = os.path.join(DATA_DIR, 'test_cases')
+# os.makedirs(TEST_CASES_DIR, exist_ok=True)
 
 # 测试用例日志目录 - 已移除
 # TEST_CASE_LOGS_DIR = os.path.join(LOGS_DIR, 'logs')

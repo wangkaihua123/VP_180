@@ -2,15 +2,26 @@ import { NextResponse } from 'next/server'
 import * as fs from 'fs'
 import * as path from 'path'
 
+// 获取项目根目录（frontend的上一级目录）
+function getRootDir() {
+  // 从当前文件位置（frontend/app/api/reports/latest/route.ts）向上4级到达项目根目录
+  return path.resolve(process.cwd(), '..');
+}
+
 /**
  * 获取最新的测试报告数据
  * @returns 包含测试报告数据的JSON响应
  */
 export async function GET() {
   try {
-    // 获取数据目录的绝对路径
-    const dataDir = path.join(process.cwd(), 'data')
+    // 使用自定义函数获取项目根目录
+    const BASE_DIR = getRootDir()
+    const dataDir = path.join(BASE_DIR, 'data')
     const reportPath = path.join(dataDir, 'report.json')
+    
+    console.log('项目根目录:', BASE_DIR)
+    console.log('数据目录:', dataDir)
+    console.log('报告文件路径:', reportPath)
     
     // 检查报告文件是否存在
     if (!fs.existsSync(reportPath)) {
