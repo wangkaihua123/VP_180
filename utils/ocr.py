@@ -68,6 +68,6 @@ def process_images(image_paths):
 
 if __name__ == "__main__":
     # 测试代码
-    test_image = "frontend\public\img\id_23_screen_capture_20250520_155304.png"
+    test_image = "data/img/id_23_screen_capture_20250520_155304.png"
     result = process_images([test_image])
     print(json.dumps(result, ensure_ascii=False, indent=2))

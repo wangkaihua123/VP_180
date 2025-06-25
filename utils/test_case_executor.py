@@ -605,7 +605,7 @@ class TestCaseExecutor:
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
                 if img1 is None:
                     # 尝试在screenshot目录中查找对应的截图
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    screenshot_dir = os.path.join('data', 'screenshots')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{img1_ref}_')]
@@ -620,7 +620,7 @@ class TestCaseExecutor:
                 
                 if img2 is None:
                     # 尝试在screenshot目录中查找对应的截图
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    screenshot_dir = os.path.join('data', 'screenshots')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{img2_ref}_')]
@@ -697,7 +697,7 @@ class TestCaseExecutor:
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
                 if image is None:
                     # 首先尝试从img目录获取（优先使用）
-                    img_dir = os.path.join('frontend', 'public', 'img')
+                    img_dir = os.path.join('data', 'img','operation_img')
                     if os.path.exists(img_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -712,7 +712,7 @@ class TestCaseExecutor:
                 
                 # 如果在img目录中找不到，尝试在screenshot/upload目录中查找
                 if image is None:
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot', 'upload')
+                    screenshot_dir = os.path.join('data', 'screenshots', 'upload')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -727,7 +727,7 @@ class TestCaseExecutor:
                 
                 # 如果仍然找不到，尝试在旧的screenshot目录中查找
                 if image is None:
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    screenshot_dir = os.path.join('data', 'screenshots')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -832,7 +832,8 @@ class TestCaseExecutor:
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
                 if operation_image is None:
                     # 首先尝试从img目录获取（优先使用）
-                    img_dir = os.path.join('frontend', 'public', 'img')
+                    img_dir = os.path.join('data', 'img')
+                    logger.info(f"获取精准截图路径img_dir: {img_dir}")
                     if os.path.exists(img_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -847,7 +848,7 @@ class TestCaseExecutor:
                 
                 # 如果在img目录中找不到，尝试在screenshot/upload目录中查找
                 if operation_image is None:
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot', 'upload')
+                    screenshot_dir = os.path.join('data', 'screenshots', 'upload')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -862,7 +863,7 @@ class TestCaseExecutor:
                 
                 # 如果仍然找不到，尝试在旧的screenshot目录中查找
                 if operation_image is None:
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    screenshot_dir = os.path.join('data', 'screenshots')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -891,20 +892,19 @@ class TestCaseExecutor:
                     # 检查是否是JSON字符串
                     if reference_screenshot.startswith('{') and reference_screenshot.endswith('}'):
                         # 解析JSON获取文件名
-                        import json
                         ref_data = json.loads(reference_screenshot)
                         ref_filename = ref_data.get('fileName')
                         
                         # 尝试从img目录获取参考截图
                         if ref_filename:
-                            img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                            img_path = os.path.join('data', 'img', ref_filename)
                             if os.path.exists(img_path):
                                 reference_image = cv2.imread(img_path)
                                 logger.info(f"从img目录读取参考截图: {img_path}")
                             
                             # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
                             if reference_image is None:
-                                screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                                screenshot_path = os.path.join('data', 'screenshots', 'upload', ref_filename)
                                 if os.path.exists(screenshot_path):
                                     reference_image = cv2.imread(screenshot_path)
                                     logger.info(f"从screenshot/upload目录读取参考截图: {screenshot_path}")
@@ -913,14 +913,14 @@ class TestCaseExecutor:
                         ref_filename = reference_screenshot.split('/')[-1]
                         
                         # 先尝试img目录
-                        img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                        img_path = os.path.join('data', 'img', ref_filename)
                         if os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
                             logger.info(f"从img目录读取参考截图: {img_path}")
                         
                         # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
                         if reference_image is None:
-                            screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                            screenshot_path = os.path.join('data', 'screenshots', 'upload', ref_filename)
                             if os.path.exists(screenshot_path):
                                 reference_image = cv2.imread(screenshot_path)
                                 logger.info(f"从screenshot/upload目录读取参考截图: {screenshot_path}")
@@ -937,7 +937,6 @@ class TestCaseExecutor:
                 
                 try:
                     # 使用ImageComparator的is_ssim方法进行精准匹配
-                    from .image_comparator import ImageComparator
                     
                     # 确保图像尺寸相同
                     if reference_image.shape != operation_image.shape:
@@ -992,7 +991,7 @@ class TestCaseExecutor:
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
                 if operation_image is None:
                     # 首先尝试从img目录获取（优先使用）
-                    img_dir = os.path.join('frontend', 'public', 'img')
+                    img_dir = os.path.join('data', 'img', 'operation_img')
                     if os.path.exists(img_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -1007,7 +1006,7 @@ class TestCaseExecutor:
                 
                 # 如果在img目录中找不到，尝试在screenshot目录中查找
                 if operation_image is None:
-                    screenshot_dir = os.path.join('frontend', 'public', 'screenshot')
+                    screenshot_dir = os.path.join('data', 'screenshots')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -1036,20 +1035,19 @@ class TestCaseExecutor:
                     # 检查是否是JSON字符串
                     if reference_content.startswith('{') and reference_content.endswith('}'):
                         # 解析JSON获取文件名
-                        import json
                         ref_data = json.loads(reference_content)
                         ref_filename = ref_data.get('fileName')
                         
                         # 尝试从img目录获取参考内容
                         if ref_filename:
-                            img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                            img_path = os.path.join('data', 'img', 'upload', ref_filename)
                             if os.path.exists(img_path):
                                 reference_image = cv2.imread(img_path)
                                 logger.info(f"从img目录读取参考内容: {img_path}")
                             
                             # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
                             if reference_image is None:
-                                screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                                screenshot_path = os.path.join('data', 'screenshots', 'upload', ref_filename)
                                 if os.path.exists(screenshot_path):
                                     reference_image = cv2.imread(screenshot_path)
                                     logger.info(f"从screenshot/upload目录读取参考内容: {screenshot_path}")
@@ -1058,14 +1056,14 @@ class TestCaseExecutor:
                         ref_filename = reference_content.split('/')[-1]
                         
                         # 先尝试img目录
-                        img_path = os.path.join('frontend', 'public', 'img', ref_filename)
+                        img_path = os.path.join('data', 'img', ref_filename)
                         if os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
                             logger.info(f"从img目录读取参考内容: {img_path}")
                         
                         # 如果在img目录中找不到，尝试从screenshot/upload目录中查找
                         if reference_image is None:
-                            screenshot_path = os.path.join('frontend', 'public', 'screenshot', 'upload', ref_filename)
+                            screenshot_path = os.path.join('data', 'screenshots', 'upload', ref_filename)
                             if os.path.exists(screenshot_path):
                                 reference_image = cv2.imread(screenshot_path)
                                 logger.info(f"从screenshot/upload目录读取参考内容: {screenshot_path}")
@@ -1082,7 +1080,7 @@ class TestCaseExecutor:
                 
                 try:
                     # 使用ImageComparator的template_matching方法进行包含匹配
-                    from .image_comparator import ImageComparator
+                    # from .image_comparator import ImageComparator
                     
                     # 确保参考内容尺寸小于操作界面截图尺寸
                     if reference_image.shape[0] > operation_image.shape[0] or reference_image.shape[1] > operation_image.shape[1]:

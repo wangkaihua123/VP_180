@@ -8,8 +8,8 @@ export async function POST() {
     console.log('处理清空图片和截图目录请求');
     
     // 获取目录路径
-    const imgDir = path.join(process.cwd(), 'public', 'img');
-    const screenshotDir = path.join(process.cwd(), 'public', 'screenshot');
+    const imgDir = path.join(process.cwd(), '..', 'data', 'img');
+    const screenshotDir = path.join(process.cwd(), '..', 'data', 'screenshots');
     
     // 确保目录存在
     try {
@@ -37,7 +37,7 @@ export async function POST() {
       // 处理每个文件/目录
       for (const file of imgFiles) {
         // 跳过temp目录
-        if (file === 'temp') continue;
+        if (file === 'temp' || file === 'upload' ) continue;
         
         const filePath = path.join(imgDir, file);
         const stat = await fs.stat(filePath);
@@ -65,7 +65,7 @@ export async function POST() {
       // 处理每个文件/目录
       for (const file of screenshotFiles) {
         // 跳过temp目录
-        if (file === 'temp') continue;
+        if (file === 'temp' || file === 'upload' ) continue;
         
         const filePath = path.join(screenshotDir, file);
         const stat = await fs.stat(filePath);

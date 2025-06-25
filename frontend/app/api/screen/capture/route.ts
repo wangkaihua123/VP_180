@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     // 获取查询参数
     const searchParams = request.nextUrl.searchParams;
     const testCaseId = searchParams.get('testCaseId');
+    const customFileName = searchParams.get('fileName');
     
     console.log(`测试用例ID: ${testCaseId || '无'}`);
     
@@ -50,8 +51,8 @@ export async function GET(request: NextRequest) {
     // 解码Base64图像
     const imageBuffer = Buffer.from(data.imageBase64, 'base64');
     
-    // 确定保存目录
-    const saveDir = path.join(process.cwd(), 'public/screenshot/upload');
+    // 更新保存目录为public/screenshot/upload
+    const saveDir = path.join(process.cwd(), 'public', 'screenshot', 'upload');
     
     // 确保目录存在
     try {
@@ -62,10 +63,12 @@ export async function GET(request: NextRequest) {
       // 继续执行，因为目录可能已经存在
     }
     
-    // 生成唯一文件名
-    const fileName = testCaseId 
-      ? `id_${testCaseId}_screen_capture_${uuidv4()}.png`
-      : `screen_capture_${uuidv4()}.png`;
+    // 生成文件名，优先使用自定义
+    const fileName = customFileName && customFileName.endsWith('.png')
+      ? customFileName
+      : (testCaseId 
+        ? `id_${testCaseId}_screen_capture_${uuidv4()}.png`
+        : `screen_capture_${uuidv4()}.png`);
     
     const filePath = path.join(saveDir, fileName);
     
@@ -77,11 +80,15 @@ export async function GET(request: NextRequest) {
       // 生成访问URL
       const fileUrl = `/api/files/screenshots/${fileName}`;
       
+      // 添加备用URL，直接指向public目录
+      const alternativeUrl = `/screenshot/upload/${fileName}`;
+      
       // 返回成功响应
       return NextResponse.json({
         success: true,
         fileName,
         fileUrl,
+        alternativeUrl,
         fileType: 'screenshot',
         fileSize: imageBuffer.length,
         testCaseId: testCaseId || null

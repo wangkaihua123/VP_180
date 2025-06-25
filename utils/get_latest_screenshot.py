@@ -29,8 +29,8 @@ from .button_clicker import ButtonClicker  # 添加ButtonClicker导入
 logger = setup_logger(__name__)
 
 BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
-# 修改为使用frontend/public/screenshot目录存储截图
-LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "screenshots")
+# 修改为使用data/screenshots目录存储截图
+LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "screenshots")
 
 class GetLatestScreenshot:
     def __init__(self, ssh, test_name=None):

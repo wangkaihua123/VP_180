@@ -32,11 +32,20 @@ export async function POST(request: NextRequest) {
 
     console.log(`文件信息: 类型=${file.type}, 大小=${file.size}字节`);
 
-    // 确定保存目录
-    const saveDir = fileType === 'screenshot' 
-      ? path.join(process.cwd(), 'public/screenshot/upload')
-      : path.join(process.cwd(), 'public/img/upload');
+    // 获取 fileName 字段
+    const customFileName = formData.get('fileName') as string | undefined;
+    // 获取 targetDir 字段
+    const targetDir = formData.get('targetDir') as string | undefined;
 
+    // 确定保存目录
+    let saveDir;
+    if (fileType === 'operation_img' || targetDir === 'operation_img') {
+      saveDir = path.join(process.cwd(), 'data', 'img', 'operation_img');
+    } else if (fileType === 'screenshot') {
+      saveDir = path.join(process.cwd(), 'public/screenshot/upload');
+    } else {
+      saveDir = path.join(process.cwd(), 'public/img/upload');
+    }
     console.log(`保存目录: ${saveDir}`);
 
     // 确保目录存在
@@ -48,12 +57,11 @@ export async function POST(request: NextRequest) {
       // 继续执行，因为目录可能已经存在
     }
 
-    // 生成唯一文件名
+    // 生成文件名，优先用前端 fileName
     const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'png';
-    const fileName = testCaseId 
-      ? `id_${testCaseId}_${uuidv4()}.${fileExtension}`
-      : `${uuidv4()}.${fileExtension}`;
-    
+    const fileName = customFileName && customFileName.endsWith('.png')
+      ? customFileName
+      : `${Date.now()}.${fileExtension}`;
     const filePath = path.join(saveDir, fileName);
     console.log(`将保存文件到: ${filePath}`);
 

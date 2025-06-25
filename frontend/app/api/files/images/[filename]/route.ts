@@ -13,12 +13,9 @@ export async function GET(
     // 更新为使用frontend/public/img目录
     const possiblePaths = [
       // 相对路径（开发环境）
-      path.join(process.cwd(), 'public/img', filename),
-      // 绝对路径（生产环境）
-      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', filename),
-      // 旧路径（兼容性）
       path.join(process.cwd(), '../data/img', filename),
-      path.join('E:', 'python', 'vp_180', 'data', 'img', filename)
+      // 绝对路径（生产环境）
+      // path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', filename),
     ];
     
     let filePath = null;
@@ -71,8 +68,10 @@ export async function GET(
     
     console.log(`返回图像文件: ${filename}, Content-Type: ${contentType}`);
     
-    // 添加CORS头
-    return new NextResponse(fileBuffer, {
+    // 将Buffer转换为Uint8Array，这是Web API可接受的类型
+    const uint8Array = new Uint8Array(fileBuffer);
+    
+    return new Response(uint8Array, {
       status: 200,
       headers: {
         'Content-Type': contentType,

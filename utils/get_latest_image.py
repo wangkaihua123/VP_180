@@ -31,8 +31,8 @@ logger = setup_logger(__name__)
 
 # 修改BASE_IMG_DIR确保路径正确
 BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
-# 修改为使用frontend/public/img目录存储图片
-LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public", "img")
+# 修改为使用data/img目录存储图片
+LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
 
 class GetLatestImage:
     def __init__(self, ssh_connection, test_name="Test"):
@@ -40,8 +40,8 @@ class GetLatestImage:
         self.ssh = ssh_connection
         self.test_name = test_name
         self.base_dir = "/ue/ue_harddisk/ue_data"
-        # 更新本地目录路径为frontend/public/img
-        self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public", "img")
+        # 更新本地目录路径为data/img/operation_img  
+        self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
         logger.debug(f"图片将保存到目录: {self.local_dir}")
         
@@ -172,7 +172,7 @@ class GetLatestImage:
             temp_tiff_path = os.path.join(self.temp_dir, temp_tiff_filename)
             
             # 目标PNG文件路径
-            local_png_path = os.path.join(self.local_dir, filename)
+            local_png_path = os.path.join(self.local_dir, 'display_img',filename)
                 
             # 下载图像文件
             logger.debug("开始下载图像文件")
@@ -247,7 +247,7 @@ class GetLatestImage:
         1. 生成带时间戳的文件名
         2. 执行ffmpeg命令捕获屏幕
         3. 将图像保存到/tmp/目录
-        4. 将图像复制到本地public/img目录
+        4. 将图像复制到本地目录
         5. 返回捕获的图像数据
         
         Args:
@@ -292,7 +292,7 @@ class GetLatestImage:
                 local_filename = output_filename
                 
             # 本地目标路径
-            local_path = os.path.abspath(os.path.join(self.local_dir, local_filename))
+            local_path = os.path.abspath(os.path.join(self.local_dir,'operation_img', local_filename))
             
             # 使用scp命令将文件复制到本地
             logger.debug(f"正在将文件剪切到本地: {local_path}")

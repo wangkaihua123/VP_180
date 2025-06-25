@@ -26,6 +26,9 @@ export async function GET(
       path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', 'upload', filename),
       path.join(process.cwd(), 'public/img', filename),
       path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', filename),
+      // 添加data/upload路径作为备用选项
+      path.join(process.cwd(), '../data/upload', filename),
+      path.join('E:', 'python', 'vp_180', 'data', 'upload', filename),
     ];
     
     let filePath = null;

@@ -13,12 +13,9 @@ export async function GET(request: NextRequest) {
     // 使用frontend/public/screenshot目录
     const possibleDirs = [
       // 相对路径（开发环境）
-      path.join(process.cwd(), 'public/screenshot'),
-      // 绝对路径（生产环境）
-      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'screenshot'),
-      // 旧路径（兼容性）
       path.join(process.cwd(), '../data/screenshots'),
-      path.join('E:', 'python', 'vp_180', 'data', 'screenshots')
+      // 绝对路径（生产环境）
+      // path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'screenshot'),
     ];
     
     let screenshotDirPath: string | null = null;

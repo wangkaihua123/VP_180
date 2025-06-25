@@ -39,7 +39,7 @@ export async function GET(
     
     if (!fileExists || !filePath) {
       console.error(`找不到文件: ${filename}`);
-      return new NextResponse('图像文件不存在', { status: 404 });
+      return new Response('图像文件不存在', { status: 404 });
     }
     
     // 读取文件内容
@@ -56,7 +56,10 @@ export async function GET(
     }
     
     // 添加CORS头
-    return new NextResponse(fileBuffer, {
+    // 将Buffer转换为Uint8Array，这是Web API可接受的类型
+    const uint8Array = new Uint8Array(fileBuffer);
+    
+    return new Response(uint8Array, {
       status: 200,
       headers: {
         'Content-Type': contentType,
@@ -67,7 +70,7 @@ export async function GET(
     });
   } catch (error: any) {
     console.error(`处理图像请求时出错: ${error}`);
-    return new NextResponse(
+    return new Response(
       JSON.stringify({ 
         error: '处理图像请求时出错', 
         details: error.message || '未知错误',
