@@ -21,9 +21,10 @@ def capture_screen():
         JSON: 包含Base64编码的截图数据
     """
     try:
-        # 获取测试用例ID
+        # 获取测试用例ID和文件名参数
         test_case_id = request.args.get('testCaseId')
-        logger.info(f"接收到操作界面截图请求，测试用例ID: {test_case_id or '无'}")
+        file_name = request.args.get('fileName')
+        logger.info(f"接收到操作界面截图请求，测试用例ID: {test_case_id or '无'}, 文件名: {file_name or '无'}")
         
         # 获取SSH连接
         ssh_manager = SSHManager()
@@ -39,9 +40,9 @@ def capture_screen():
         # 创建GetLatestImage实例
         image_getter = GetLatestImage(ssh_connection)
         
-        # 获取操作界面截图
+        # 获取操作界面截图，传入自定义文件名
         logger.info("正在获取操作界面截图...")
-        image = image_getter.get_screen_capture(id=test_case_id)
+        image = image_getter.get_screen_capture(id=test_case_id, filename=file_name)
         
         if image is None:
             logger.error("获取操作界面截图失败")

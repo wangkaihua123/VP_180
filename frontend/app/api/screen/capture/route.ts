@@ -12,11 +12,17 @@ export async function GET(request: NextRequest) {
     const testCaseId = searchParams.get('testCaseId');
     const customFileName = searchParams.get('fileName');
     
-    console.log(`测试用例ID: ${testCaseId || '无'}`);
+    console.log(`测试用例ID: ${testCaseId || '无'}, 自定义文件名: ${customFileName || '无'}`);
     
     // 构建API请求URL（调用后端Python服务）
     const apiUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-    const url = `${apiUrl}/api/screen/capture${testCaseId ? `?testCaseId=${testCaseId}` : ''}`;
+    
+    // 构建查询参数，添加fileName参数传递给后端
+    const queryParams = [];
+    if (testCaseId) queryParams.push(`testCaseId=${testCaseId}`);
+    if (customFileName) queryParams.push(`fileName=${encodeURIComponent(customFileName)}`);
+    
+    const url = `${apiUrl}/api/screen/capture${queryParams.length > 0 ? `?${queryParams.join('&')}` : ''}`;
     
     console.log(`请求后端API: ${url}`);
     

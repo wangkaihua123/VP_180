@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     if (fileType === 'operation_img' || targetDir === 'operation_img') {
       saveDir = path.join(process.cwd(), 'data', 'img', 'operation_img');
     } else if (fileType === 'screenshot') {
-      saveDir = path.join(process.cwd(), 'public/screenshot/upload');
+      saveDir = path.join(process.cwd(), 'public/img/upload');
     } else {
       saveDir = path.join(process.cwd(), 'public/img/upload');
     }
@@ -96,14 +96,19 @@ export async function POST(request: NextRequest) {
     }
 
     // 生成访问URL (确保URL格式正确)
-    const fileUrl = fileType === 'screenshot'
-      ? `/api/files/screenshots/${fileName}`
-      : `/api/files/images/${fileName}`;
+    let fileUrl, alternativeUrl;
     
-    // 生成备用URL (直接指向文件的相对路径)
-    const alternativeUrl = fileType === 'screenshot'
-      ? `/screenshot/upload/${fileName}`
-      : `/img/upload/${fileName}`;
+    if (fileType === 'operation_img' || targetDir === 'operation_img') {
+      // operation_img 类型的文件，使用相对路径
+      fileUrl = `/api/files/images/operation_img/${fileName}`;
+      alternativeUrl = `/img/operation_img/${fileName}`;
+    } else if (fileType === 'screenshot') {
+      fileUrl = `/api/files/screenshots/${fileName}`;
+      alternativeUrl = `/screenshot/upload/${fileName}`;
+    } else {
+      fileUrl = `/api/files/images/${fileName}`;
+      alternativeUrl = `/img/upload/${fileName}`;
+    }
 
     console.log(`文件已保存: ${filePath}`);
     console.log(`主要访问URL: ${fileUrl}`);

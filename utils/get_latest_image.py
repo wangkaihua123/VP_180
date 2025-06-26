@@ -239,7 +239,7 @@ class GetLatestImage:
             logger.error(f"获取图像失败: {str(e)}")
             raise
 
-    def get_screen_capture(self, id=None):
+    def get_screen_capture(self, id=None, filename=None):
         """
         使用ffmpeg捕获设备操作界面
         
@@ -252,6 +252,7 @@ class GetLatestImage:
         
         Args:
             id: 测试用例中的ID，用于标识图像
+            filename: 自定义文件名，如果提供则优先使用
             
         Returns:
             numpy.ndarray: 捕获的图像数据
@@ -262,9 +263,16 @@ class GetLatestImage:
                 logger.error("SSH连接无效，无法获取图像")
                 raise Exception("SSH连接无效，无法获取图像")
             
-            # 生成带时间戳的文件名
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            output_filename = f"screen_capture_{timestamp}.png"
+            # 生成文件名：优先使用提供的自定义文件名，否则使用带时间戳的文件名
+            if filename:
+                output_filename = filename
+                logger.debug(f"使用自定义文件名: {output_filename}")
+            else:
+                # 生成带时间戳的文件名
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                output_filename = f"screen_capture_{timestamp}.png"
+                logger.debug(f"使用时间戳生成文件名: {output_filename}")
+                
             output_path = f"/tmp/{output_filename}"
             
             # 构建ffmpeg命令
