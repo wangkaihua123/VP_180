@@ -1233,7 +1233,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   // 获取图片URL，处理可能的JSON格式
   const getImageUrl = (imgData: string | undefined): string | undefined => {
     if (!imgData) return undefined;
-    // 只要是 fileName（不含/，不含http），一律拼接 /screenshot/upload/
+    // 只要是 fileName（不含/，不含http），一律拼接 /img/upload/
     if (typeof imgData === 'string' && !imgData.includes('/') && !imgData.startsWith('http')) {
       return `/img/upload/${imgData}`;
     }
