@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     // 确定保存目录
     let saveDir;
     if (fileType === 'operation_img' || targetDir === 'operation_img') {
-      saveDir = path.join(process.cwd(), 'data', 'img', 'operation_img');
+      saveDir = path.join(process.cwd(), 'backend/data', 'img', 'operation_img');
     } else if (fileType === 'screenshot') {
       saveDir = path.join(process.cwd(), 'public/img/upload');
     } else {

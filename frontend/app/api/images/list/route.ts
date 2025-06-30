@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
     // 尝试多个可能的图像目录路径
     const possibleDirs = [
       // 相对路径（开发环境）
-      path.join(process.cwd(), '../data/img'),
+      path.join(process.cwd(), '../backend/data/img'),
       // 绝对路径（生产环境）
-      path.join('E:', 'python', 'vp_180', 'data', 'img'),
+      path.join('E:', 'python', 'vp_180', 'backend', 'data', 'img'),
       // 项目内部路径（备选）
-      path.join(process.cwd(), 'data/img')
+      path.join(process.cwd(), 'backend/data/img')
     ];
     
     let imgDirPath = null;

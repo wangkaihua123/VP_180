@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     
     // 获取数据目录的绝对路径
     // 使用自定义函数获取项目根目录
-    const dataDir = path.join(getRootDir(), 'data');
+    const dataDir = path.join(getRootDir(), 'backend/data');
     
     // 确保数据目录存在
     if (!fs.existsSync(dataDir)) {

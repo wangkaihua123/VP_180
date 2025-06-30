@@ -35,7 +35,7 @@ PORT = FIXED_PORT
 
 # 数据目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(BASE_DIR, 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 TEST_CASES_FILE = os.path.join(DATA_DIR, 'test_cases.json')
 SETTINGS_FILE = os.path.join(DATA_DIR, 'settings.json')
 LOGS_DIR = os.path.join(DATA_DIR, 'logs')

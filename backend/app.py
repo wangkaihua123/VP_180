@@ -19,10 +19,10 @@ from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp, screen_bp
 
 # 导入触摸屏监控
-from utils.touch_monitor_ssh import TouchMonitor
+from backend.utils.touch_monitor_ssh import TouchMonitor
 
 # 设置日志文件路径
-LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+LOG_DIR = os.path.join(os.path.dirname(__file__), 'data')
 
 # 配置日志
 logging.basicConfig(
@@ -46,7 +46,7 @@ def create_app(config=None):
     app.config.from_mapping(
         SECRET_KEY=os.environ.get('SECRET_KEY', 'dev_key'),
         DATABASE=os.path.join(app.instance_path, 'database.sqlite'),
-        DATA_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data'),
+        DATA_DIR=os.path.join(os.path.dirname(__file__), 'data'),
     )
     
     if config:

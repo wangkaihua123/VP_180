@@ -8,7 +8,7 @@ export async function POST() {
     console.log('处理清空系统日志请求');
     
     // 日志文件路径
-    const logFilePath = path.join(process.cwd(), '..', 'data', 'logs', 'VP_180.log');
+    const logFilePath = path.join(process.cwd(), '..', 'backend', 'data', 'logs', 'VP_180.log');
     
     try {
       // 清空文件内容（写入空字符串）

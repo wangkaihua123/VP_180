@@ -9,7 +9,7 @@ import logging
 from datetime import datetime
 
 # 定义数据目录
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 
 # 使用已经在__init__.py中创建的蓝图实例
 from backend.routes import test_cases_bp

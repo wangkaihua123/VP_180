@@ -57,8 +57,8 @@ export async function GET(request: NextRequest) {
     // 解码Base64图像
     const imageBuffer = Buffer.from(data.imageBase64, 'base64');
     
-    // 更新保存目录为public/screenshot/upload
-    const saveDir = path.join(process.cwd(), 'public', 'screenshot', 'upload');
+    // 更新保存目录为public/img/upload
+    const saveDir = path.join(process.cwd(), 'public', 'img', 'upload');
     
     // 确保目录存在
     try {

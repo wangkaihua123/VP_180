@@ -5,7 +5,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const execPromise = promisify(exec);
-const testCasesPath = path.join(process.cwd(), 'data/test_cases.json');
+const testCasesPath = path.join(process.cwd(), 'backend/data/test_cases.json');
 
 // 读取测试用例文件
 async function readTestCases() {

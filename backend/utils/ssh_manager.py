@@ -26,7 +26,7 @@ logger = setup_logger(__name__)
 
 # 读取设置文件
 def load_settings():
-    settings_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'settings.json')
+    settings_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'settings.json')
     try:
         if os.path.exists(settings_file):
             with open(settings_file, 'r', encoding='utf-8') as f:

@@ -9,7 +9,7 @@ function getRootDir() {
 }
 
 // 使用相对路径和项目根目录
-const settingsFilePath = path.join(getRootDir(), 'data', 'settings.json');
+const settingsFilePath = path.join(getRootDir(), 'backend', 'data', 'settings.json');
 
 // 读取设置文件
 function readSettings() {

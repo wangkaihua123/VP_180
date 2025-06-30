@@ -16,7 +16,7 @@ export async function GET() {
   try {
     // 使用自定义函数获取项目根目录
     const BASE_DIR = getRootDir()
-    const dataDir = path.join(BASE_DIR, 'data')
+    const dataDir = path.join(BASE_DIR, 'backend/data')
     const reportPath = path.join(dataDir, 'report.json')
     
     console.log('项目根目录:', BASE_DIR)

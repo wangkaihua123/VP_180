@@ -12,11 +12,11 @@ export async function GET(request: NextRequest) {
   try {
     const logPaths = [
       // 使用自定义函数获取项目根目录
-      path.join(getRootDir(), 'data/logs'),
+      path.join(getRootDir(), 'backend/data/logs'),
       // 绝对路径（生产环境）
-      path.join('E:', 'python', 'vp_180', 'data', 'logs'),
+      path.join('E:', 'python', 'vp_180', 'backend', 'data', 'logs'),
       // 备用路径
-      path.join(process.cwd(), '../data/logs')
+      path.join(process.cwd(), '../backend/data/logs')
     ];
     
     let logDirPath = null;

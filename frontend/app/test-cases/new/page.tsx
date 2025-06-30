@@ -739,6 +739,12 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         // 只保存自定义文件名
         updateVerificationStep(id, field, customFileName);
         updateVerificationStep(id, "isImageLoading", false);
+
+        // 强制重新渲染以更新图片显示（通过触发状态更新）
+        setTimeout(() => {
+          updateVerificationStep(id, field, customFileName);
+        }, 100);
+
         toast({
           title: "上传成功",
           description: "图片已成功上传",
@@ -781,13 +787,10 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
     setIsLoading(true)
     try {
-      // 处理验证步骤中的图片，上传到data/img/upload目录
-      const processedSteps = await processVerificationSteps();
-      
       const serializedContent = JSON.stringify({
         repeatCount: parseInt(repeatCount.toString()) || 1,
         operationSteps,
-        verificationSteps: processedSteps
+        verificationSteps
       })
       
       // 检查操作步骤中是否包含串口操作
@@ -835,105 +838,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     }
   }
   
-  // 处理验证步骤中的图片URL，上传到data/img/operation_img目录
-  const processVerificationSteps = async (): Promise<VerificationStep[]> => {
-    // 创建新的验证步骤数组，避免修改原数组
-    const processedSteps = [...verificationSteps];
-    const testCaseId = initialData?.id?.toString();
-    
-    // 显示上传提示
-    toast({
-      title: "处理中",
-      description: "正在处理测试用例中的图片...",
-    });
-    
-    try {
-      // 遍历所有验证步骤
-      for (let i = 0; i < processedSteps.length; i++) {
-        const step = processedSteps[i];
-        
-        // 处理可能包含图片URL的字段
-        const imageFields: (keyof VerificationStep)[] = [
-          'reference_screenshot',
-          'reference_content'
-        ];
-        
-        // 处理每个可能包含图片的字段
-        for (const field of imageFields) {
-          const imageData = step[field] as string | undefined;
-          
-          if (imageData) {
-            try {
-              // 尝试解析JSON字符串
-              let imageUrl: string | undefined;
-              let fileName: string | undefined;
-              
-              if (typeof imageData === 'string' && imageData.startsWith('{') && imageData.endsWith('}')) {
-                const parsedData = JSON.parse(imageData);
-                imageUrl = parsedData.url;
-                fileName = parsedData.fileName;
-              } else if (typeof imageData === 'string') {
-                imageUrl = imageData;
-                fileName = imageUrl.split('/').pop();
-              }
-              
-              // 如果有URL，通过API上传到data/img/operation_img目录
-              if (imageUrl) {
-                console.log(`处理验证步骤 ${step.id} 中的图片: ${fileName}`);
-                
-                // 通过API上传图片
-                const uploadResult = await uploadImageFromUrl(imageUrl, testCaseId);
-                
-                console.log(`图片已上传到data/img/operation_img: ${uploadResult.fileUrl}`);
-                
-                // 更新验证步骤中的图片URL
-                const newImageData = {
-                  url: uploadResult.fileUrl,
-                  alternativeUrl: uploadResult.alternativeUrl || `/img/operation_img/${uploadResult.fileName}`,
-                  fileName: uploadResult.fileName,
-                  filePath: uploadResult.filePath
-                };
-                
-                // 更新步骤
-                processedSteps[i] = {
-                  ...step,
-                  [field]: JSON.stringify(newImageData)
-                };
-                
-                console.log(`已更新验证步骤 ${step.id} 中的图片URL`);
-              }
-            } catch (error) {
-              console.error(`处理验证步骤 ${step.id} 中的图片失败:`, error);
-              // 继续处理其他图片，不中断流程
-            }
-          }
-        }
-        
-        // 确保所有操作界面验证类型的步骤都有operation_screenshot字段
-        if (step.stepType === "operation" && !step.operation_screenshot) {
-          const operationInterfaceSteps = operationSteps.filter(opStep => 
-            opStep.operation_key === "获取操作界面"
-          );
-          
-          if (operationInterfaceSteps.length > 0) {
-            const lastStep = operationInterfaceSteps[operationInterfaceSteps.length - 1];
-            console.log(`为验证步骤 ${step.id} 自动设置操作界面截图步骤 ID: ${lastStep.id}`);
-            processedSteps[i] = {
-              ...step,
-              operation_screenshot: lastStep.id.toString()
-            };
-          }
-        }
-      }
-      
-      console.log("验证步骤图片处理完成");
-      return processedSteps;
-    } catch (error) {
-      console.error("处理验证步骤图片失败:", error);
-      // 返回原始步骤，确保流程不会中断
-      return verificationSteps;
-    }
-  };
+
 
   const [isRecording, setIsRecording] = useState(false)
   const [recordingType, setRecordingType] = useState<"operation" | "verification">("operation")
@@ -1141,42 +1046,21 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       }
       const result = await response.json();
       if (result.success) {
-        // 获取成功后，将图片从 public/screenshot/upload 移动到 data/img/operation_img
-        // 1. 先保存文件名到验证步骤
+        // 保存文件名到验证步骤
         updateVerificationStep(id, field, customFileName);
         updateVerificationStep(id, "isImageLoading", false);
-        
-        // 2. 自动设置 operation_screenshot
+
+        // 自动设置 operation_screenshot
         const operationInterfaceStep = operationSteps.find(step => step.operation_key === "获取操作界面");
         if (operationInterfaceStep) {
           updateVerificationStep(id, "operation_screenshot", operationInterfaceStep.id.toString());
         }
-        
-        // 3. 通过 uploadImageFromUrl 将图片移动到 data/img/operation_img 目录
-        try {
-          const testCaseId = initialData?.id?.toString();
-          const imageUrl = result.alternativeUrl || result.fileUrl;
-          
-          // 仅当测试用例ID存在时才移动图片（保存测试用例时会处理）
-          if (testCaseId) {
-            const uploadResult = await uploadImageFromUrl(imageUrl, testCaseId);
-            console.log(`操作界面截图已移动到 data/img/operation_img: ${uploadResult.fileName}`);
-            
-            // 更新验证步骤中的图片信息
-            const newImageData = {
-              url: uploadResult.fileUrl,
-              alternativeUrl: uploadResult.alternativeUrl || `/img/operation_img/${uploadResult.fileName}`,
-              fileName: uploadResult.fileName,
-              filePath: uploadResult.filePath
-            };
-            
-            updateVerificationStep(id, field, JSON.stringify(newImageData));
-          }
-        } catch (moveError) {
-          console.error('移动图片到 operation_img 目录失败:', moveError);
-          // 继续使用原始图片路径，不中断流程
-        }
-        
+
+        // 强制重新渲染以更新图片显示（通过触发状态更新）
+        setTimeout(() => {
+          updateVerificationStep(id, field, customFileName);
+        }, 100);
+
         toast({ title: "获取成功", description: "操作界面截图已成功获取" });
       } else {
         throw new Error(result.error || '获取失败');
@@ -1235,72 +1119,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     if (!imgData) return undefined;
     // 只要是 fileName（不含/，不含http），一律拼接 /img/upload/
     if (typeof imgData === 'string' && !imgData.includes('/') && !imgData.startsWith('http')) {
-      return `/img/upload/${imgData}`;
+      // 添加时间戳参数来避免浏览器缓存问题
+      const timestamp = Date.now();
+      return `/img/upload/${imgData}?t=${timestamp}`;
     }
     return imgData;
   };
 
-  // 从URL获取图片并上传到data/img/upload目录
-  const uploadImageFromUrl = async (imageUrl: string, testCaseId?: string): Promise<any> => {
-    try {
-      console.log(`从URL获取图片并上传: ${imageUrl}`);
-      
-      // 从URL获取图片数据
-      const response = await fetch(imageUrl);
-      if (!response.ok) {
-        throw new Error(`获取图片失败: ${response.statusText}`);
-      }
-      
-      // 将响应转换为Blob
-      const imageBlob = await response.blob();
-      
-      // 创建FormData对象
-      const formData = new FormData();
-      formData.append('file', imageBlob, 'screenshot.png');
-      
-      // 添加参数
-      if (testCaseId) {
-        formData.append('testCaseId', testCaseId);
-      }
-      
-      // 提取原始文件名（如果存在）
-      let originalFileName = '';
-      if (imageUrl.includes('/')) {
-        originalFileName = imageUrl.split('/').pop() || '';
-      } else {
-        originalFileName = imageUrl;
-      }
-      
-      // 生成自定义文件名
-      const timestamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0].replace('T', '');
-      const customFileName = testCaseId ? 
-        `id_${testCaseId}_${originalFileName}` : 
-        originalFileName;
-      
-      formData.append('fileName', customFileName);
-      
-      // 指定fileType为'operation_img'，确保保存到data/img/operation_img目录
-      formData.append('fileType', 'operation_img');
-      formData.append('targetDir', 'operation_img');
-      
-      // 上传图片
-      const uploadResponse = await fetch('/api/files/upload', {
-        method: 'POST',
-        body: formData
-      });
-      
-      if (!uploadResponse.ok) {
-        const errorData = await uploadResponse.json();
-        throw new Error(errorData.error || '上传失败');
-      }
-      
-      // 返回上传结果
-      return await uploadResponse.json();
-    } catch (error) {
-      console.error('上传图片错误:', error);
-      throw error;
-    }
-  };
+
 
   // 处理图片加载错误，尝试多种URL格式
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, stepId: number, imageData: string) => {

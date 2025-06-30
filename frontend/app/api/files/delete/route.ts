@@ -26,17 +26,13 @@ export async function POST(request: NextRequest) {
     const possiblePaths = [
       // 优先检查upload子目录（新路径）
       path.join(process.cwd(), 'public/screenshot/upload', filename),
-      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'screenshot', 'upload', filename),
       path.join(process.cwd(), 'public/img/upload', filename),
-      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', 'upload', filename),
       // 然后检查原始目录（兼容性）
       path.join(process.cwd(), 'public/screenshot', filename),
-      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'screenshot', filename),
       path.join(process.cwd(), 'public/img', filename),
-      path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img', filename),
+
       // 旧路径（兼容性）
-      path.join(process.cwd(), '../data/screenshots', filename),
-      path.join('E:', 'python', 'vp_180', 'data', 'screenshots', filename),
+      path.join(process.cwd(), '../backend/data/screenshots', filename),
     ];
     
     // 尝试找到并删除文件

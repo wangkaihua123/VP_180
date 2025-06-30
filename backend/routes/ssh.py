@@ -3,7 +3,7 @@ SSH设置路由处理模块 - 处理SSH连接设置的API
 """
 from flask import request, jsonify
 from . import ssh_bp
-from utils.ssh_manager import SSHManager
+from backend.utils.ssh_manager import SSHManager
 from backend.models.settings import Settings
 
 

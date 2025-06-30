@@ -43,6 +43,8 @@ class GetLatestImage:
         # 更新本地目录路径为data/img/operation_img  
         self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
+        os.makedirs(os.path.join(self.local_dir, "operation_img"), exist_ok=True)
+        os.makedirs(os.path.join(self.local_dir, "display_img"), exist_ok=True)
         logger.debug(f"图片将保存到目录: {self.local_dir}")
         
         # 创建临时目录用于保存TIFF文件

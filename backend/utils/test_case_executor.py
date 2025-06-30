@@ -751,7 +751,7 @@ class TestCaseExecutor:
                 
                 # 如果在img目录中找不到，尝试在screenshot/upload目录中查找
                 if image is None:
-                    screenshot_dir = os.path.join('frontend', 'public', 'img', 'upload')
+                    screenshot_dir = os.path.join('..', 'frontend', 'public', 'img', 'upload')
                     if os.path.exists(screenshot_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(screenshot_dir) if f.startswith(f'id_{screenshot_id}_')]
@@ -856,7 +856,7 @@ class TestCaseExecutor:
                 
                 # 如果在img目录中找不到，尝试在img/upload目录中查找
                 if operation_image is None:
-                    screenshot_dir = os.path.join('frontend','public', 'img', 'upload')
+                    screenshot_dir = os.path.join('..', 'frontend', 'public', 'screenshot', 'upload')
                     img_path = self.find_matching_file(screenshot_dir, f"id_{screenshot_id}_")
                     logger.info(f"从 {screenshot_dir} 获取到操作界面截图")
                     if img_path:
@@ -915,27 +915,27 @@ class TestCaseExecutor:
                         # 如果有文件名，从多个目录查找包含该文件名的文件
                         if ref_filename:
                             # 1. 先尝试public/screenshot/upload目录
-                            img_path = self.find_matching_file(os.path.join('public', 'img', 'upload'), ref_filename)
-                            
+                            img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'screenshot', 'upload'), ref_filename)
+                            logger.info(f"✅ 日志输出路径：{img_path}")
                             if img_path and os.path.exists(img_path):
                                 reference_image = cv2.imread(img_path)
-                                logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
+                                logger.info(f"从public/screenshot/upload目录读取参考截图: {img_path}")
                             
                             # 2. 如果找不到，尝试data/img目录
                             if reference_image is None:
-                                img_path = self.find_matching_file(os.path.join('data', 'img'), ref_filename)
-                                
-                                if img_path and os.path.exists(img_path):
-                                    reference_image = cv2.imread(img_path)
-                                    logger.info(f"从data/img目录读取参考截图: {img_path}")
-                            
-                            # 3. 如果仍找不到，尝试data/img/operation_img目录
-                            if reference_image is None:
-                                img_path = self.find_matching_file(os.path.join('data', 'img', 'operation_img'), ref_filename)
+                                img_path = self.find_matching_file(os.path.join('..', 'data', 'img','operation_img'), ref_filename)
                                 
                                 if img_path and os.path.exists(img_path):
                                     reference_image = cv2.imread(img_path)
                                     logger.info(f"从data/img/operation_img目录读取参考截图: {img_path}")
+                            
+                            # 3. 如果仍找不到，尝试public/img/upload目录    
+                            if reference_image is None:
+                                img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
+                                
+                                if img_path and os.path.exists(img_path):
+                                    reference_image = cv2.imread(img_path)
+                                    logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
                     else:
                         # 直接使用路径
                         ref_filename = reference_screenshot
@@ -944,20 +944,20 @@ class TestCaseExecutor:
                             # 如果包含路径分隔符，提取文件名
                             ref_filename = ref_filename.split('/')[-1]
                         
-                        # 1. 先尝试public/img/upload目录
-                        img_path = self.find_matching_file(os.path.join('frontend', 'public', 'img', 'upload'), ref_filename)
+                        # 1. 先尝试public/screenshot/upload目录
+                        img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'screenshot', 'upload'), ref_filename)
                         
                         if img_path and os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
-                            logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
+                            logger.info(f"从public/screenshot/upload目录读取参考截图: {img_path}")
                         
-                        # 2. 如果找不到，尝试data/img目录
+                        # 2. 如果找不到，尝试public/img/upload目录
                         if reference_image is None:
-                            img_path = self.find_matching_file(os.path.join('data', 'img'), ref_filename)
+                            img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
                             
                             if img_path and os.path.exists(img_path):
                                 reference_image = cv2.imread(img_path)
-                                logger.info(f"从data/img目录读取参考截图: {img_path}")
+                                logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
                         
                         # 3. 如果仍找不到，尝试data/img/operation_img目录
                         if reference_image is None:
@@ -1058,7 +1058,7 @@ class TestCaseExecutor:
                 
                 # 如果在img目录中找不到，尝试在public/screenshot/upload目录中查找
                 if operation_image is None:
-                    screenshot_dir = os.path.join('public', 'screenshot', 'upload')
+                    screenshot_dir = os.path.join('..', 'frontend', 'public', 'screenshot', 'upload')
                     img_path = self.find_matching_file(screenshot_dir, f"id_{screenshot_id}_")
                     
                     if img_path:
@@ -1090,11 +1090,11 @@ class TestCaseExecutor:
                         # 如果有文件名，从多个目录查找包含该文件名的文件
                         if ref_filename:
                             # 1. 先尝试public/screenshot/upload目录
-                            img_path = self.find_matching_file(os.path.join('public', 'screenshot', 'upload'), ref_filename)
+                            img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
                             
                             if img_path and os.path.exists(img_path):
                                 reference_image = cv2.imread(img_path)
-                                logger.info(f"从public/screenshot/upload目录读取参考内容: {img_path}")
+                                logger.info(f"从public/img/upload目录读取参考内容: {img_path}")
                             
                             # 2. 如果找不到，尝试data/img目录
                             if reference_image is None:
@@ -1120,11 +1120,11 @@ class TestCaseExecutor:
                             ref_filename = ref_filename.split('/')[-1]
                         
                         # 1. 先尝试public/screenshot/upload目录
-                        img_path = self.find_matching_file(os.path.join('public', 'screenshot', 'upload'), ref_filename)
+                        img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
                         
                         if img_path and os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
-                            logger.info(f"从public/screenshot/upload目录读取参考内容: {img_path}")
+                            logger.info(f"从public/img/upload目录读取参考内容: {img_path}")
                         
                         # 2. 如果找不到，尝试data/img目录
                         if reference_image is None:

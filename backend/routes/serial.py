@@ -3,7 +3,7 @@
 """
 from flask import Blueprint, request, jsonify
 import serial
-from utils.serial_manager import SerialManager
+from backend.utils.serial_manager import SerialManager
 from backend.models.settings import Settings
 
 # 使用已经在__init__.py中创建的蓝图实例

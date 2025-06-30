@@ -5,8 +5,8 @@ import numpy as np
 import os
 import logging
 from datetime import datetime
-from utils.get_latest_image import GetLatestImage
-from utils.ssh_manager import SSHManager
+from backend.utils.get_latest_image import GetLatestImage
+from backend.utils.ssh_manager import SSHManager
 
 # 创建蓝图
 screen_bp = Blueprint('screen', __name__)
