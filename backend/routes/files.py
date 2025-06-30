@@ -2,7 +2,7 @@
 文件服务相关路由 - 处理图片和截图文件的访问
 """
 from flask import Blueprint, send_from_directory
-from backend.config import IMAGES_DIR, SCREENSHOTS_DIR
+from backend.config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
 
 # 创建蓝图
 files_bp = Blueprint('files', __name__)
@@ -11,6 +11,16 @@ files_bp = Blueprint('files', __name__)
 def serve_image(filename):
     """提供图片文件服务"""
     return send_from_directory(IMAGES_DIR, filename)
+
+@files_bp.route('/api/files/operation_img/<path:filename>')
+def serve_operation_image(filename):
+    """提供操作图片文件服务"""
+    return send_from_directory(OPERATION_IMAGES_DIR, filename)
+
+@files_bp.route('/api/files/display_img/<path:filename>')
+def serve_display_image(filename):
+    """提供显示图片文件服务"""
+    return send_from_directory(DISPLAY_IMAGES_DIR, filename)
 
 @files_bp.route('/api/files/screenshots/<path:filename>')
 def serve_screenshot(filename):

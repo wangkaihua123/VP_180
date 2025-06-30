@@ -50,6 +50,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI, TestExecutionResponse } from "@/lib/api/test-cases"
+import { API_BASE_URL } from "@/lib/constants"
 import type { TestCase } from "@/app/api/routes"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
@@ -398,12 +399,16 @@ export default function ExecuteAllPage() {
       return;
     }
     
-    // 确保URL使用API路径格式
-    if (!modifiedImage.url.startsWith('/api/')) {
-      modifiedImage.url = convertImageUrlToApiPath(modifiedImage.url);
+    // 确保URL使用API_BASE_URL
+    if (typeof modifiedImage.url === 'string' && !modifiedImage.url.includes(API_BASE_URL)) {
+      console.log(`修正图片URL: 添加API_BASE_URL (${API_BASE_URL})`);
+      // 如果URL以/开头，则直接拼接，否则添加/
+      modifiedImage.url = modifiedImage.url.startsWith('/') 
+        ? `${API_BASE_URL}${modifiedImage.url}`
+        : `${API_BASE_URL}/${modifiedImage.url}`;
     }
     
-    console.log('打开图片查看器 - 处理后的图片:', modifiedImage);
+    console.log('打开图片查看器 - 处理后的图片URL:', modifiedImage.url);
     
     // 设置缩放级别为默认值
     setZoomLevel(1);
@@ -433,13 +438,10 @@ export default function ExecuteAllPage() {
       const nextImg = allImages[currentIndex + 1];
       console.log('下一张图片:', nextImg);
       
-      // 保持URL格式一致，不再调用convertImageUrlToApiPath
-      const modifiedImage = { ...nextImg };
-      
-      // 保持当前缩放级别，只重置旋转
-      setSelectedImage(modifiedImage)
+      // 直接使用下一张图片的对象，不做额外的路径转换
+      setSelectedImage(nextImg)
       setRotation(0)
-      console.log('已切换到下一张图片:', modifiedImage);
+      console.log('已切换到下一张图片:', nextImg);
     }
   }
 
@@ -459,13 +461,10 @@ export default function ExecuteAllPage() {
       const prevImg = allImages[currentIndex - 1];
       console.log('上一张图片:', prevImg);
       
-      // 保持URL格式一致，不再调用convertImageUrlToApiPath
-      const modifiedImage = { ...prevImg };
-      
-      // 保持当前缩放级别，只重置旋转
-      setSelectedImage(modifiedImage)
+      // 直接使用上一张图片的对象，不做额外的路径转换
+      setSelectedImage(prevImg)
       setRotation(0)
-      console.log('已切换到上一张图片:', modifiedImage);
+      console.log('已切换到上一张图片:', prevImg);
     }
   }
 
@@ -884,12 +883,16 @@ export default function ExecuteAllPage() {
           }
           
           const localImagesData = await localImagesResponse.json();
-          const localImageFiles: string[] = localImagesData.images || [];
+          console.log(`测试用例 ${testCaseId} 的图片列表数据:`, localImagesData);
+          
+          // 使用API返回的图片详情
+          const imageDetails = localImagesData.imageDetails || [];
           
           // 处理本地图片
           const testImages: TestImage[] = [];
-          localImageFiles.forEach((filename: string) => {
+          imageDetails.forEach((imageDetail: any) => {
             // 检查文件名是否符合格式：id_{步骤ID}_*.png
+            const filename = imageDetail.name;
             const idMatch = filename.match(/^id_(\d+)_/);
             if (idMatch) {
               const stepId = parseInt(idMatch[1]);
@@ -897,7 +900,7 @@ export default function ExecuteAllPage() {
               // 尝试从文件名中提取时间戳，如果无法提取则使用当前时间
               // 假设文件名格式可能包含时间信息，如id_1_20230415120000.png
               const timestampMatch = filename.match(/_(\d{14})/);
-              let timestamp = new Date().toISOString();
+              let timestamp = imageDetail.lastModified || new Date().toISOString();
               if (timestampMatch && timestampMatch[1]) {
                 // 尝试将提取的时间字符串转换为日期格式
                 try {
@@ -917,16 +920,25 @@ export default function ExecuteAllPage() {
                 }
               }
               
-              // 创建图片对象，使用API路径而不是本地路径
+              // 创建图片对象，使用API返回的路径，但添加后端基础URL
+              // 确保使用完整的后端URL，而不是相对路径
+              const apiPath = imageDetail.path.startsWith('/') 
+                ? `${API_BASE_URL}${imageDetail.path}` 
+                : `${API_BASE_URL}/${imageDetail.path}`;
+              
+              console.log(`构建图片URL: 原始路径=${imageDetail.path}, 完整URL=${apiPath}`);
+              
               testImages.push({
                 id: filename,
                 testCaseId: testCaseId,
                 timestamp: timestamp,
                 title: `步骤 ${stepId} 图片`,
                 description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
-                url: `/api/files/images/${filename}`, // 直接使用API路径，不再调用convertImageUrlToApiPath
+                url: apiPath, // 使用带有后端基础URL的完整路径
                 type: 'image'
               });
+              
+              console.log(`添加图片: ${filename}, 路径: ${apiPath}, 子目录: ${imageDetail.subDir || 'root'}`);
             }
           });
           
@@ -950,19 +962,23 @@ export default function ExecuteAllPage() {
           }
           
           const localScreenshotsData = await localScreenshotsResponse.json();
-          const localScreenshotFiles: string[] = localScreenshotsData.screenshots || [];
+          console.log(`测试用例 ${testCaseId} 的截图列表数据:`, localScreenshotsData);
+          
+          // 使用API返回的截图详情
+          const screenshotDetails = localScreenshotsData.imageDetails || [];
           
           // 处理本地截图
           const testScreenshots: TestImage[] = [];
-          localScreenshotFiles.forEach((filename: string) => {
+          screenshotDetails.forEach((screenshotDetail: any) => {
             // 检查文件名是否符合格式：id_{步骤ID}_*.png/tiff/jpg
+            const filename = screenshotDetail.name;
             const idMatch = filename.match(/^id_(\d+)_/);
             if (idMatch) {
               const stepId = parseInt(idMatch[1]);
               
               // 尝试从文件名中提取时间戳，如果无法提取则使用当前时间
               const timestampMatch = filename.match(/_(\d{14})/);
-              let timestamp = new Date().toISOString();
+              let timestamp = screenshotDetail.lastModified || new Date().toISOString();
               if (timestampMatch && timestampMatch[1]) {
                 // 尝试将提取的时间字符串转换为日期格式
                 try {
@@ -982,16 +998,25 @@ export default function ExecuteAllPage() {
                 }
               }
               
-              // 创建截图对象，使用API路径而不是本地路径
+              // 创建截图对象，使用API返回的路径，但添加后端基础URL
+              // 确保使用完整的后端URL，而不是相对路径
+              const apiPath = screenshotDetail.path.startsWith('/') 
+                ? `${API_BASE_URL}${screenshotDetail.path}` 
+                : `${API_BASE_URL}/${screenshotDetail.path}`;
+              
+              console.log(`构建截图URL: 原始路径=${screenshotDetail.path}, 完整URL=${apiPath}`);
+              
               testScreenshots.push({
                 id: filename,
                 testCaseId: testCaseId,
                 timestamp: timestamp,
                 title: `步骤 ${stepId} 截图`,
                 description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
-                url: `/api/files/screenshots/${filename}`, // 直接使用API路径，不再调用convertImageUrlToApiPath
+                url: apiPath, // 使用带有后端基础URL的完整路径
                 type: 'screenshot'
               });
+              
+              console.log(`添加截图: ${filename}, 路径: ${apiPath}`);
             }
           });
           
@@ -2014,7 +2039,16 @@ export default function ExecuteAllPage() {
                         id: selectedImage?.id,
                         type: selectedImage?.type
                       });
-                      // 设置一个错误占位图
+                      // 尝试使用不同的URL格式重新加载
+                      if (selectedImage?.url && !selectedImage.url.includes(API_BASE_URL)) {
+                        const newUrl = selectedImage.url.startsWith('/') ? 
+                          `${API_BASE_URL}${selectedImage.url}` : 
+                          `${API_BASE_URL}/${selectedImage.url}`;
+                        console.log('尝试使用新URL重新加载:', newUrl);
+                        (e.target as HTMLImageElement).src = newUrl;
+                        return;
+                      }
+                      // 如果仍然失败，设置一个错误占位图
                       (e.target as HTMLImageElement).src = "/placeholder.svg";
                       toast({
                         title: "图片加载失败",

@@ -42,51 +42,86 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // 读取目录中的所有文件
-    let files: string[] = await fs.readdir(imgDirPath);
+    // 定义子目录
+    const subDirs = ['', 'operation_img', 'display_img'];
+    let allFiles: { name: string, path: string, size: number, lastModified: string, subDir: string }[] = [];
     
-    // 只保留图像文件（.png, .jpg, .jpeg, .gif, .tiff）
-    files = files.filter(file => 
-      /\.(png|jpg|jpeg|gif|tiff|tif)$/i.test(file)
-    );
-    
-    // 如果指定了测试用例ID，过滤匹配的图像文件
-    if (testCaseId) {
-      // 文件名格式应该是id_{testCaseId}_*.png
-      const regex = new RegExp(`^id_${testCaseId}_`, 'i');
-      files = files.filter(file => regex.test(file));
+    // 读取主目录和子目录中的所有文件
+    for (const subDir of subDirs) {
+      try {
+        const currentDir = subDir ? path.join(imgDirPath, subDir) : imgDirPath;
+        console.log(`检查目录: ${currentDir}`);
+        
+        try {
+          await fs.access(currentDir);
+        } catch (error) {
+          console.log(`目录不存在，跳过: ${currentDir}`);
+          continue;
+        }
+        
+        const files = await fs.readdir(currentDir);
+        
+        // 只保留图像文件（.png, .jpg, .jpeg, .gif, .tiff）
+        const imageFiles = files.filter(file => 
+          /\.(png|jpg|jpeg|gif|tiff|tif)$/i.test(file)
+        );
+        
+        // 如果指定了测试用例ID，过滤匹配的图像文件
+        let filteredFiles = imageFiles;
+        if (testCaseId) {
+          // 文件名格式应该是id_{testCaseId}_*.png
+          const regex = new RegExp(`^id_${testCaseId}_|^${testCaseId}_`, 'i');
+          filteredFiles = imageFiles.filter(file => regex.test(file));
+        }
+        
+        // 获取文件的详细信息
+        const fileInfos = await Promise.all(
+          filteredFiles.map(async (file) => {
+            try {
+              const filePath = path.join(currentDir, file);
+              const stats = await fs.stat(filePath);
+              
+              // 构建API路径
+              let apiPath;
+              if (subDir === '') {
+                apiPath = `/api/files/images/${file}`;
+              } else if (subDir === 'operation_img') {
+                apiPath = `/api/files/operation_img/${file}`;
+              } else if (subDir === 'display_img') {
+                apiPath = `/api/files/display_img/${file}`;
+              }
+              
+              return {
+                name: file,
+                path: apiPath,
+                size: stats.size,
+                lastModified: stats.mtime.toISOString(),
+                subDir: subDir || 'root'
+              };
+            } catch (error) {
+              console.error(`获取文件信息时出错: ${file}`, error);
+              return null;
+            }
+          })
+        );
+        
+        // 过滤掉无法获取信息的文件
+        const validFileInfos = fileInfos.filter(Boolean);
+        allFiles = [...allFiles, ...validFileInfos as any];
+        
+        console.log(`在目录 ${subDir || 'root'} 中找到 ${validFileInfos.length} 个图像文件`);
+      } catch (error) {
+        console.error(`读取目录 ${subDir} 时出错:`, error);
+      }
     }
     
-    // 获取文件的详细信息
-    const fileInfos = await Promise.all(
-      files.map(async (file) => {
-        try {
-          const filePath = path.join(imgDirPath!, file);
-          const stats = await fs.stat(filePath);
-          
-          return {
-            name: file,
-            path: `/api/files/images/${file}`,
-            size: stats.size,
-            lastModified: stats.mtime.toISOString()
-          };
-        } catch (error) {
-          console.error(`获取文件信息时出错: ${file}`, error);
-          return null;
-        }
-      })
-    );
-    
-    // 过滤掉无法获取信息的文件
-    const validFiles = fileInfos.filter(Boolean);
-    
-    console.log(`找到 ${validFiles.length} 个图像文件 (files/images/list路由)`);
+    console.log(`总共找到 ${allFiles.length} 个图像文件 (files/images/list路由)`);
     
     // 返回图像列表
     return NextResponse.json({
       success: true,
-      images: files, // 简单返回文件名列表，前端可以自行构建完整URL
-      imageDetails: validFiles, // 返回详细信息对象数组
+      images: allFiles.map(file => file.name), // 简单返回文件名列表
+      imageDetails: allFiles, // 返回详细信息对象数组
       testCaseId: testCaseId || null,
       timestamp: new Date().toISOString()
     }, {

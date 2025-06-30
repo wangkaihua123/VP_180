@@ -42,10 +42,13 @@ LOGS_DIR = os.path.join(DATA_DIR, 'logs')
 
 # 文件存储目录
 IMAGES_DIR = os.path.join(DATA_DIR, 'img')
+# 新增两个图片目录配置
+OPERATION_IMAGES_DIR = os.path.join(IMAGES_DIR, 'operation_img')
+DISPLAY_IMAGES_DIR = os.path.join(IMAGES_DIR, 'display_img')
 SCREENSHOTS_DIR = os.path.join(DATA_DIR, 'screenshots')
 
 # 确保必要的目录存在
-for directory in (DATA_DIR, LOGS_DIR, IMAGES_DIR, SCREENSHOTS_DIR):
+for directory in (DATA_DIR, LOGS_DIR, IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR):
     os.makedirs(directory, exist_ok=True)
 
 # 默认数据库配置

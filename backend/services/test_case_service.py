@@ -9,7 +9,7 @@ from utils.test_case_executor import TestCaseExecutor
 from utils.serial_manager import SerialManager
 from backend.models.test_case import TestCase
 from backend.services.ssh_service import SSHService
-from backend.config import IMAGES_DIR, SCREENSHOTS_DIR
+from backend.config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
 from backend.models.settings import Settings
 
 logger = logging.getLogger(__name__)
@@ -203,18 +203,26 @@ class TestCaseService:
                 for file in screenshot_files:
                     screenshots.append(f'/api/files/screenshots/{file}')
 
-            # 获取图片
-            images = []
-            if os.path.exists(IMAGES_DIR):
-                image_files = [f for f in os.listdir(IMAGES_DIR) if f.endswith(('.png', '.jpg', '.jpeg', '.tiff'))]
-                for file in image_files:
-                    images.append(f'/api/files/images/{file}')
+            # 获取操作图片
+            operation_img = []
+            if os.path.exists(OPERATION_IMAGES_DIR):
+                operation_image_files = [f for f in os.listdir(OPERATION_IMAGES_DIR) if f.endswith(('.png', '.jpg', '.jpeg', '.tiff'))]
+                for file in operation_image_files:
+                    operation_img.append(f'/api/files/operation_img/{file}')
+
+            # 获取显示图片
+            display_img = []
+            if os.path.exists(DISPLAY_IMAGES_DIR):
+                display_image_files = [f for f in os.listdir(DISPLAY_IMAGES_DIR) if f.endswith(('.png', '.jpg', '.jpeg', '.tiff'))]
+                for file in display_image_files:
+                    display_img.append(f'/api/files/display_img/{file}')
 
             return {
                 'success': True,
                 'data': {
                     'log_content': "日志功能已禁用",
-                    'images': images,
+                    'operation_img': operation_img,
+                    'display_img': display_img,
                     'screenshots': screenshots,
                     'timestamp': timestamp
                 }

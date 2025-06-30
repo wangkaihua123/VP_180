@@ -8,7 +8,7 @@ export async function POST() {
     console.log('处理清空图片和截图目录请求');
     
     // 获取目录路径
-    const imgDir = path.join(process.cwd(), '..', 'data', 'img');
+    const imgDir = path.join(process.cwd(), '..', 'data', 'img','operation_img');
     const screenshotDir = path.join(process.cwd(), '..', 'data', 'screenshots');
     
     // 确保目录存在

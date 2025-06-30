@@ -213,7 +213,7 @@
     "type": "功能测试",
     "status": "失败",
     "create_time": "2025-06-26 16:46",
-    "last_execution_time": "2025-06-26 17:24:10",
+    "last_execution_time": "2025-06-27 16:46:11",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取操作界面\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"normal\", \"stepType\": \"test-case\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"截图精准匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"operation_screenshot\": \"1\", \"reference_screenshot\": \"screen_capture_20250626165033_222_001.png\"}]}",
     "serial_connect": false,

@@ -10,6 +10,12 @@ const nextConfig = {
       },
       {
         protocol: 'http',
+        hostname: '192.168.241.1',
+        port: '5000',
+        pathname: '/api/files/**',
+      },
+      {
+        protocol: 'http',
         hostname: 'localhost',
         port: '3000',
         pathname: '/api/images/**',
@@ -19,6 +25,18 @@ const nextConfig = {
         hostname: 'localhost',
         port: '3000',
         pathname: '/api/files/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/files/operation_img/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/files/display_img/**',
       },
       {
         protocol: 'http',
@@ -38,19 +56,49 @@ const nextConfig = {
         port: '3000',
         pathname: '/data/screenshots/**',
       },
+      {
+        protocol: 'http',
+        hostname: '192.168.241.1',
+        port: '3000',
+        pathname: '/api/**',
+      },
     ],
-    domains: ['localhost'],
+    domains: ['localhost', '192.168.241.1'],
     unoptimized: true,
   },
   async rewrites() {
     return [
       {
         source: '/data/img/:path*',
-        destination: '/api/files/images/:path*',
+        destination: 'http://localhost:5000/api/files/images/:path*',
+      },
+      {
+        source: '/data/img/operation_img/:path*',
+        destination: 'http://localhost:5000/api/files/operation_img/:path*',
+      },
+      {
+        source: '/data/img/display_img/:path*',
+        destination: 'http://localhost:5000/api/files/display_img/:path*',
       },
       {
         source: '/data/screenshots/:path*',
-        destination: '/api/files/screenshots/:path*',
+        destination: 'http://localhost:5000/api/files/screenshots/:path*',
+      },
+      {
+        source: '/api/files/images/:path*',
+        destination: 'http://localhost:5000/api/files/images/:path*',
+      },
+      {
+        source: '/api/files/operation_img/:path*',
+        destination: 'http://localhost:5000/api/files/operation_img/:path*',
+      },
+      {
+        source: '/api/files/display_img/:path*',
+        destination: 'http://localhost:5000/api/files/display_img/:path*',
+      },
+      {
+        source: '/api/files/screenshots/:path*',
+        destination: 'http://localhost:5000/api/files/screenshots/:path*',
       },
     ];
   },

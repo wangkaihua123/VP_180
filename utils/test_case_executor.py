@@ -949,7 +949,7 @@ class TestCaseExecutor:
                         
                         if img_path and os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
-                            logger.info(f"从public/screenshot/upload目录读取参考截图: {img_path}")
+                            logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
                         
                         # 2. 如果找不到，尝试data/img目录
                         if reference_image is None:
