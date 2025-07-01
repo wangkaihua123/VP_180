@@ -785,6 +785,29 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       return
     }
 
+    // 验证验证步骤是否完整
+    const validationResult = validateVerificationSteps();
+    if (!validationResult.isValid) {
+      const errorMessages = validationResult.message.split('\n');
+      const displayMessage = errorMessages.length > 3
+        ? `${errorMessages.slice(0, 3).join('\n')}\n... 还有 ${errorMessages.length - 3} 个错误`
+        : validationResult.message;
+
+      toast({
+        title: "验证步骤不完整",
+        description: displayMessage,
+        variant: "destructive"
+      })
+
+      // 自动切换到验证步骤标签页
+      const verificationTab = document.querySelector('[value="verification"]') as HTMLElement;
+      if (verificationTab) {
+        verificationTab.click();
+      }
+
+      return
+    }
+
     setIsLoading(true)
     try {
       const serializedContent = JSON.stringify({
@@ -1132,6 +1155,142 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, stepId: number, imageData: string) => {
     updateVerificationStep(stepId, "imageError", "无法加载图片，请尝试重新获取");
     console.error('图片加载失败:', imageData);
+  };
+
+  // 验证验证步骤是否完整
+  const validateVerificationSteps = () => {
+    const errors: string[] = [];
+
+    // 检查是否至少有一个验证步骤
+    if (verificationSteps.length === 0) {
+      errors.push("请至少添加一个验证步骤");
+      return {
+        isValid: false,
+        message: errors.join('\n')
+      };
+    }
+
+    verificationSteps.forEach((step, index) => {
+      const stepNumber = index + 1;
+
+      // 检查验证类型是否已选择
+      if (!step.verification_key || step.verification_key.trim() === "") {
+        errors.push(`验证步骤 ${stepNumber}: 请选择验证类型`);
+        return;
+      }
+
+      // 根据验证类型检查必填字段
+      switch (step.verification_key) {
+        case "对比图像相似度":
+        case "对比图像关键点":
+        case "直方图比较":
+        case "颜色差异分析":
+        case "模板匹配":
+        case "边缘检测比较":
+          // 图像验证需要参考图片
+          if (!step.reference_screenshot && !step.reference_content) {
+            errors.push(`验证步骤 ${stepNumber}: 请上传参考图片`);
+          }
+          break;
+
+        case "亮度差异比较":
+        case "对比度比较":
+          // 亮度验证需要参考图片和阈值
+          if (!step.reference_screenshot && !step.reference_content) {
+            errors.push(`验证步骤 ${stepNumber}: 请上传参考图片`);
+          }
+          if (!step.threshold && step.threshold !== 0) {
+            errors.push(`验证步骤 ${stepNumber}: 请设置阈值`);
+          }
+          break;
+
+        case "纹理特征比较":
+          // 纹理验证需要参考图片
+          if (!step.reference_screenshot && !step.reference_content) {
+            errors.push(`验证步骤 ${stepNumber}: 请上传参考图片`);
+          }
+          break;
+
+        case "检查数值范围":
+          // 数值验证需要最小值和最大值
+          if (!step.min_value && step.min_value !== "0") {
+            errors.push(`验证步骤 ${stepNumber}: 请设置最小值`);
+          }
+          if (!step.max_value && step.max_value !== "0") {
+            errors.push(`验证步骤 ${stepNumber}: 请设置最大值`);
+          }
+          break;
+
+        case "检查元素状态":
+          // 元素状态验证需要元素名称和期望状态
+          if (!step.element_name || step.element_name.trim() === "") {
+            errors.push(`验证步骤 ${stepNumber}: 请输入元素名称`);
+          }
+          if (!step.expected_state || step.expected_state.trim() === "") {
+            errors.push(`验证步骤 ${stepNumber}: 请选择期望状态`);
+          }
+          break;
+
+        case "检查元素文本":
+        case "文本识别验证":
+          // 文本验证需要期望文本
+          if (!step.expected_text || step.expected_text.trim() === "") {
+            errors.push(`验证步骤 ${stepNumber}: 请输入期望文本`);
+          }
+          break;
+
+        case "检查元素属性":
+          // 属性验证需要元素名称和期望值
+          if (!step.element_name || step.element_name.trim() === "") {
+            errors.push(`验证步骤 ${stepNumber}: 请输入元素名称`);
+          }
+          if (!step.value || step.value.trim() === "") {
+            errors.push(`验证步骤 ${stepNumber}: 请输入期望值`);
+          }
+          break;
+
+        case "截图精准匹配":
+          // 精准匹配需要参考截图
+          if (!step.reference_screenshot) {
+            errors.push(`验证步骤 ${stepNumber}: 请获取参考截图`);
+          }
+          break;
+
+        case "截图包含匹配":
+          // 包含匹配需要参考内容
+          if (!step.reference_content) {
+            errors.push(`验证步骤 ${stepNumber}: 请上传参考内容图片`);
+          }
+          break;
+
+        case "检查点击响应":
+        case "检查滑动响应":
+        case "检查输入响应":
+          // 交互验证需要操作界面截图
+          if (step.stepType === "operation" && !step.operation_screenshot) {
+            errors.push(`验证步骤 ${stepNumber}: 请选择操作界面截图步骤`);
+          }
+          break;
+      }
+
+      // 检查操作界面验证类型是否选择了操作界面截图步骤
+      if (step.stepType === "operation") {
+        const operationInterfaceSteps = operationSteps.filter(opStep =>
+          opStep.operation_key === "获取操作界面"
+        );
+
+        if (operationInterfaceSteps.length === 0) {
+          errors.push(`验证步骤 ${stepNumber}: 操作界面验证需要先添加"获取操作界面"操作步骤`);
+        } else if (!step.operation_screenshot) {
+          errors.push(`验证步骤 ${stepNumber}: 请选择操作界面截图步骤`);
+        }
+      }
+    });
+
+    return {
+      isValid: errors.length === 0,
+      message: errors.length > 0 ? errors.join('\n') : ""
+    };
   };
 
   return (

@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     // 更新为使用frontend/public/img目录
     const possibleDirs = [
       // 相对路径（开发环境）
-      path.join(process.cwd(), '../data/img'),
+      path.join(process.cwd(), '../backend/data/img'),
       // 绝对路径（生产环境）
       // path.join('E:', 'python', 'vp_180', 'frontend', 'public', 'img'),
     ];

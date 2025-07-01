@@ -15,8 +15,9 @@
  * 
  * 所有API调用都使用标准的APIResponse接口返回结果，确保数据格式一致性。
  */
-import { TestCase } from "@/app/api/routes"
+import { TestCase } from "@/types/api"
 import { fetchAPI } from "../api"
+import { API_BASE_URL } from "../constants"
 
 // 定义通用API响应接口
 export interface APIResponse<T> {
@@ -121,7 +122,7 @@ export const testCasesAPI = {
    */
   async getSystemLog() {
     try {
-      const response = await fetch('/api/logs/vp180');
+      const response = await fetch(`${API_BASE_URL}/api/logs/vp180`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -140,7 +141,7 @@ export const testCasesAPI = {
    */
   async clearSystemLog() {
     try {
-      const response = await fetch('/api/logs/vp180/clear', {
+      const response = await fetch(`${API_BASE_URL}/api/logs/vp180/clear`, {
         method: 'POST'
       });
       const data = await response.json();
@@ -160,7 +161,7 @@ export const testCasesAPI = {
    */
   async clearImages() {
     try {
-      const response = await fetch('/api/files/clear', {
+      const response = await fetch(`${API_BASE_URL}/api/files/clear`, {
         method: 'POST'
       });
       const data = await response.json();

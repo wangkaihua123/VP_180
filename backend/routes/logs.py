@@ -60,4 +60,29 @@ def get_vp180_log():
             'success': False,
             'message': f"获取日志数据失败: {str(e)}",
             'data': []
-        }), 500 
+        }), 500
+
+@logs_bp.route('/vp180/clear', methods=['POST'])
+@cross_origin()
+def clear_vp180_log():
+    """清空VP_180.log日志文件"""
+    try:
+        log_file_path = os.path.join(current_app.config['DATA_DIR'], 'logs', 'VP_180.log')
+
+        # 清空文件内容（写入空字符串）
+        with open(log_file_path, 'w', encoding='utf-8') as file:
+            file.write('')
+
+        current_app.logger.info(f"成功清空日志文件: {log_file_path}")
+
+        return jsonify({
+            'success': True,
+            'message': '系统日志已清空'
+        })
+
+    except Exception as e:
+        current_app.logger.error(f"清空VP_180.log文件时出错: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f"清空日志文件失败: {str(e)}"
+        }), 500

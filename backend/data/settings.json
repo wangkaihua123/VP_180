@@ -11,5 +11,7 @@
       "screenshotPath": "qwe21322",
       "imageTypes": "tiff"
     }
-  ]
+  ],
+  "serialPort": "",
+  "serialBaudRate": "9600"
 }

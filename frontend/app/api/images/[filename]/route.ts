@@ -13,9 +13,11 @@ export async function GET(
     // 尝试多个可能的图像文件路径
     const possiblePaths = [
       // 相对路径（开发环境）
-      path.join(process.cwd(), '../backend/data/img', filename),
-      // 绝对路径（生产环境）
-      path.join('E:', 'python', 'vp_180', 'backend', 'data', 'img', filename),
+      path.join(process.cwd(), '../backend/data/img/display_img', filename),
+      path.join(process.cwd(), '../backend/data/img/operation_img', filename),
+      // // 绝对路径（生产环境）
+      // path.join('E:', 'python', 'vp_180', 'backend', 'data', 'img', 'display_img', filename),
+      // path.join('E:', 'python', 'vp_180', 'backend', 'data', 'img', 'operation_img', filename),
       // 项目内部路径（备选）
       path.join(process.cwd(), 'backend/data/img', filename)
     ];

@@ -246,14 +246,19 @@ class SSHManager:
     def get_client(cls):
         """获取已存在的SSH客户端或创建新的"""
         instance = cls.get_instance()
-        
+
         with cls._instance._connection_lock:
-            # 检查现有连接是否有效
-            if not cls.is_connected():
-                # 如果连接无效，尝试重新连接
-                return instance.reconnect()
-                
-            return cls._ssh_client
+            # 如果客户端存在，先尝试返回现有客户端
+            if cls._ssh_client:
+                # 简单检查传输层是否存在
+                transport = cls._ssh_client.get_transport()
+                if transport and transport.is_active():
+                    cls._is_connected = True
+                    return cls._ssh_client
+
+            # 如果连接无效，尝试重新连接
+            logger.debug("SSH客户端不存在或传输层不活动，尝试重新连接")
+            return instance.reconnect()
     
     @classmethod
     def is_connected(cls):
@@ -262,16 +267,20 @@ class SSHManager:
         if not cls._ssh_client:
             cls._is_connected = False
             return False
-        
+
         # 检查传输层是否存在且活动
         transport = cls._ssh_client.get_transport()
         if not transport or not transport.is_active():
             logger.debug("SSH传输层不存在或不活动")
             cls._is_connected = False
             return False
-        
+
+        # 如果连接是最近建立的（5秒内），直接认为有效，避免频繁检查
+        if cls._last_connection_time and (time.time() - cls._last_connection_time) < 5:
+            cls._is_connected = True
+            return True
+
         # 大多数情况下，如果传输层活动，我们认为连接是有效的
-        # 只在需要确认时才执行命令检查
         cls._is_connected = True
         return True
 
@@ -402,11 +411,12 @@ class SSHManager:
             self.__class__._connection_attempts = 0
             self.__class__._is_connected = True
             self.__class__._last_error = None
-            
+            self.__class__._last_connection_time = time.time()
+
             # 更新连接统计
             self.__class__._connection_stats["successful_connections"] += 1
             self.__class__._connection_stats["last_successful_connection"] = time.time()
-            
+
             return self.__class__._ssh_client
         except Exception as e:
             # 根据尝试次数记录不同的日志

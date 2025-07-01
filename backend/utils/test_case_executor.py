@@ -63,37 +63,33 @@ class TestCaseExecutor:
     def _verify_ssh_connection(self, ssh_connection):
         """
         验证SSH连接是否有效
-        
+
         Args:
             ssh_connection: 要验证的SSH连接
-            
+
         Returns:
             bool: 连接是否有效
         """
         if not ssh_connection:
             return False
-        
+
         try:
             # 检查SSH连接的基本属性
             if not hasattr(ssh_connection, 'exec_command'):
                 logger.warning("SSH连接对象缺少exec_command方法")
                 return False
-            
+
             # 检查传输层
             transport = ssh_connection.get_transport()
             if not transport or not transport.is_active():
                 logger.warning("SSH连接的传输层不存在或不活动")
                 return False
-            
-            # 尝试执行简单命令
-            stdin, stdout, stderr = ssh_connection.exec_command("echo test", timeout=3)
-            output = stdout.read().decode().strip()
-            if output != "test":
-                logger.warning(f"SSH测试命令响应异常: {output}")
-                return False
-            
-            # logger.debug("SSH连接验证成功")
+
+            # 如果传输层活动，我们认为连接是有效的
+            # 不再执行测试命令，避免因为通道问题导致误判
+            logger.debug("SSH连接验证成功（基于传输层状态）")
             return True
+
         except Exception as e:
             logger.error(f"验证SSH连接时出错: {e}")
             return False

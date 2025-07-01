@@ -9,8 +9,8 @@
  * 
  * 该模块是前端与后端通信的核心桥梁，封装了所有API调用的实现细节。
  */
-import { API_ROUTES, SSHSettings, SerialSettings, SerialPort, TestCase, TestLog, BatchExecutionStatus } from '@/app/api/routes'
-import { API_BASE_URL } from './constants'
+import { SSHSettings, SerialSettings, SerialPort } from '@/types/api'
+import { API_BASE_URL, API_ROUTES } from './constants'
 
 
 
@@ -91,13 +91,13 @@ export const sshSettingsAPI = {
     
   testConnection: (settings: SSHSettings) => {
     // 测试连接仍然需要调用后端API
-    return fetchAPI('/api/ssh/test', {
+    return fetchAPI(API_ROUTES.SSH_SETTINGS.TEST_CONNECTION, {
       method: 'POST',
       body: JSON.stringify(settings),
     });
   },
   disconnect: async () => {
-    return fetchAPI('/api/ssh/disconnect', {
+    return fetchAPI(API_ROUTES.SSH_SETTINGS.DISCONNECT, {
       method: 'POST',
     })
   },

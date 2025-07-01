@@ -1,11 +1,7 @@
 """
 SSH服务 - 处理SSH连接测试和相关操作
 """
-import os
-import json
-import time
 import logging
-import threading
 import paramiko
 import socket
 from backend.utils.ssh_manager import SSHManager
@@ -53,27 +49,53 @@ class SSHService:
         logger.info(f"尝试连接 SSH: {host}:{port} with user {username}")
 
         try:
-            # 创建传输层
-            logger.debug("创建 SSH 传输层...")
-            transport = paramiko.Transport((host, port))
-            transport.start_client()
+            # 首先测试网络连接
+            logger.debug(f"测试网络连接到 {host}:{port}...")
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(10)  # 10秒超时
+            result = sock.connect_ex((host, port))
+            sock.close()
 
-            logger.debug("尝试密码认证...")
-            transport.auth_password(username, password)
+            if result != 0:
+                logger.error(f"无法连接到 {host}:{port}，错误代码: {result}")
+                return {
+                    'success': False,
+                    'message': f'无法连接到主机 {host}:{port}，请检查主机地址、端口和网络连接',
+                    'diagnostics': {
+                        'authentication': False,
+                        'commandExecution': False,
+                        'networkConnectivity': False,
+                        'sshService': False,
+                        'errorType': 'network_unreachable',
+                        'errorDetails': f'连接被拒绝或主机不可达，错误代码: {result}'
+                    }
+                }
 
-            if transport.is_authenticated():
-                logger.debug("认证成功，创建 SSH 会话...")
-                # 创建 SSH 会话
-                ssh = paramiko.SSHClient()
-                ssh._transport = transport
-                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            logger.debug("网络连接正常，创建 SSH 客户端...")
+            # 创建SSH客户端
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+            logger.debug("尝试连接和认证...")
+            ssh.connect(
+                hostname=host,
+                port=port,
+                username=username,
+                password=password,
+                timeout=10,
+                auth_timeout=10
+            )
+
+            if ssh.get_transport() and ssh.get_transport().is_authenticated():
+                logger.debug("认证成功，获取传输层...")
+                transport = ssh.get_transport()
 
                 # 设置 TCP keepalive
                 transport.set_keepalive(60)  # 每60秒发送一个心跳包
 
                 logger.debug("执行测试命令...")
                 # 测试执行简单命令
-                stdin, stdout, stderr = ssh.exec_command('echo "Test connection successful"', timeout=5)
+                _, stdout, stderr = ssh.exec_command('echo "Test connection successful"', timeout=5)
                 output = stdout.read().decode()
                 error = stderr.read().decode()
 

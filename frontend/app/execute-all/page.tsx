@@ -45,13 +45,13 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogClose, DialogTitle } from "@/components/ui/dialog"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI, TestExecutionResponse } from "@/lib/api/test-cases"
 import { API_BASE_URL } from "@/lib/constants"
-import type { TestCase } from "@/app/api/routes"
+import type { TestCase } from "@/types/api"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 
@@ -399,11 +399,11 @@ export default function ExecuteAllPage() {
       return;
     }
     
-    // 确保URL使用API_BASE_URL
-    if (typeof modifiedImage.url === 'string' && !modifiedImage.url.includes(API_BASE_URL)) {
+    // 确保URL使用正确的基础URL
+    if (typeof modifiedImage.url === 'string' && !modifiedImage.url.includes('http')) {
       console.log(`修正图片URL: 添加API_BASE_URL (${API_BASE_URL})`);
-      // 如果URL以/开头，则直接拼接，否则添加/
-      modifiedImage.url = modifiedImage.url.startsWith('/') 
+      // 所有API请求都发送到Flask后端
+      modifiedImage.url = modifiedImage.url.startsWith('/')
         ? `${API_BASE_URL}${modifiedImage.url}`
         : `${API_BASE_URL}/${modifiedImage.url}`;
     }
@@ -877,7 +877,7 @@ export default function ExecuteAllPage() {
         // 从/img目录中获取图片
         try {
           // 获取从本地匹配id_{testCaseId}_*.png的图片文件列表
-          const localImagesResponse = await fetch(`/api/files/images/list?testCaseId=${testCaseId}`);
+          const localImagesResponse = await fetch(`${API_BASE_URL}/api/files/images/list?testCaseId=${testCaseId}`);
           if (!localImagesResponse.ok) {
             throw new Error(`获取本地图片列表失败: ${localImagesResponse.statusText}`);
           }
@@ -920,13 +920,17 @@ export default function ExecuteAllPage() {
                 }
               }
               
-              // 创建图片对象，使用API返回的路径，但添加后端基础URL
-              // 确保使用完整的后端URL，而不是相对路径
-              const apiPath = imageDetail.path.startsWith('/') 
-                ? `${API_BASE_URL}${imageDetail.path}` 
-                : `${API_BASE_URL}/${imageDetail.path}`;
-              
-              console.log(`构建图片URL: 原始路径=${imageDetail.path}, 完整URL=${apiPath}`);
+              // 创建图片对象，使用API返回的路径
+              // 所有API请求都发送到Flask后端
+              let apiPath = imageDetail.path;
+              console.log(`🔍 调试图片URL构建: 文件名=${filename}`);
+              console.log(`🔍 调试图片URL构建: 原始路径=${imageDetail.path}`);
+
+              // 构建完整的后端API URL
+              apiPath = imageDetail.path && imageDetail.path.startsWith('/')
+                ? `${API_BASE_URL}${imageDetail.path}`
+                : `${API_BASE_URL}/${imageDetail.path || ''}`;
+              console.log(`✅ 构建图片URL (后端API): 原始路径=${imageDetail.path}, 最终URL=${apiPath}`);
               
               testImages.push({
                 id: filename,
@@ -956,7 +960,7 @@ export default function ExecuteAllPage() {
         // 从/screenshot目录中获取截图
         try {
           // 获取从本地匹配id_{testCaseId}_*.png/tiff/jpg的截图文件列表
-          const localScreenshotsResponse = await fetch(`/api/files/screenshots/list?testCaseId=${testCaseId}`);
+          const localScreenshotsResponse = await fetch(`${API_BASE_URL}/api/files/screenshots/list?testCaseId=${testCaseId}`);
           if (!localScreenshotsResponse.ok) {
             throw new Error(`获取本地截图列表失败: ${localScreenshotsResponse.statusText}`);
           }
@@ -998,13 +1002,15 @@ export default function ExecuteAllPage() {
                 }
               }
               
-              // 创建截图对象，使用API返回的路径，但添加后端基础URL
-              // 确保使用完整的后端URL，而不是相对路径
-              const apiPath = screenshotDetail.path.startsWith('/') 
-                ? `${API_BASE_URL}${screenshotDetail.path}` 
-                : `${API_BASE_URL}/${screenshotDetail.path}`;
-              
-              console.log(`构建截图URL: 原始路径=${screenshotDetail.path}, 完整URL=${apiPath}`);
+              // 创建截图对象，使用API返回的路径
+              // 所有API请求都发送到Flask后端
+              let apiPath = screenshotDetail.path;
+
+              // 构建完整的后端API URL
+              apiPath = screenshotDetail.path && screenshotDetail.path.startsWith('/')
+                ? `${API_BASE_URL}${screenshotDetail.path}`
+                : `${API_BASE_URL}/${screenshotDetail.path || ''}`;
+              console.log(`构建截图URL (后端API): 原始路径=${screenshotDetail.path}, 最终URL=${apiPath}`);
               
               testScreenshots.push({
                 id: filename,
@@ -1958,6 +1964,9 @@ export default function ExecuteAllPage() {
       {/* 图片查看器对话框 */}
       <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
         <DialogContent className="max-w-4xl p-0 bg-black/90 border-gray-800 max-h-[90vh] overflow-hidden">
+          <DialogTitle className="sr-only">
+            图片查看器 - {selectedImage?.id || '未知图片'}
+          </DialogTitle>
           <div className="relative flex flex-col h-full">
             <DialogClose className="absolute right-2 top-2 z-10">
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" asChild>
@@ -2035,14 +2044,15 @@ export default function ExecuteAllPage() {
                       console.error('图片加载失败:', selectedImage?.url);
                       console.error('图片URL详情:', {
                         url: selectedImage?.url,
-                        isApiPath: selectedImage?.url?.startsWith('/api/') ? true : false,
+                        isApiPath: selectedImage?.url?.includes('/api/') ? true : false,
                         id: selectedImage?.id,
                         type: selectedImage?.type
                       });
                       // 尝试使用不同的URL格式重新加载
-                      if (selectedImage?.url && !selectedImage.url.includes(API_BASE_URL)) {
-                        const newUrl = selectedImage.url.startsWith('/') ? 
-                          `${API_BASE_URL}${selectedImage.url}` : 
+                      if (selectedImage?.url && !selectedImage.url.includes('http')) {
+                        // 所有API请求都发送到Flask后端
+                        const newUrl = selectedImage.url.startsWith('/') ?
+                          `${API_BASE_URL}${selectedImage.url}` :
                           `${API_BASE_URL}/${selectedImage.url}`;
                         console.log('尝试使用新URL重新加载:', newUrl);
                         (e.target as HTMLImageElement).src = newUrl;

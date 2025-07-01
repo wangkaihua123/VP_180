@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import NewTestCasePage from "../../new/page"
 import { use } from "react"
-import type { TestCase } from "@/app/api/routes"
+import type { TestCase } from "@/types/api"
 import { useToast } from "@/components/ui/use-toast"
 
 export default function EditTestCasePage({ params }: { params: Promise<{ id: string }> }) {

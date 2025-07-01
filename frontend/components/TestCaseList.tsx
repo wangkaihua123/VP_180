@@ -10,25 +10,18 @@
  */
 "use client"
 
-import { TestCase } from "@/app/api/routes"
+import { TestCase } from "@/types/api"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import { useToast } from "@/components/ui/use-toast"
-import { Play, Edit, Trash2, FileText } from "lucide-react"
+import { Play, Edit, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { motion, AnimatePresence } from "framer-motion"
-
-// 导入API_BASE_URL用于图像URL
-import { API_BASE_URL } from "@/lib/constants"
 
 interface TestCaseListProps {
   testCases: TestCase[]
@@ -42,12 +35,7 @@ interface TestCaseListProps {
   onSelectAll?: (checked: boolean) => void
 }
 
-interface TestCaseLog {
-  log_content: string;
-  images: string[];
-  screenshots: string[];
-  timestamp: string;
-}
+
 
 export function TestCaseList({ 
   testCases, 
@@ -63,8 +51,6 @@ export function TestCaseList({
   const router = useRouter()
   const { toast } = useToast()
   const [deletingId, setDeletingId] = useState<number | null>(null)
-  const [selectedLog, setSelectedLog] = useState<TestCaseLog | null>(null)
-  const [isLogDialogOpen, setIsLogDialogOpen] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null)
   const [showBatchDeleteDialog, setShowBatchDeleteDialog] = useState(false)
@@ -108,11 +94,7 @@ export function TestCaseList({
     setShowDeleteDialog(true)
   }
 
-  const handleDeleteSelected = async () => {
-    if (selectedIds.length === 0) return
-    
-    setShowBatchDeleteDialog(true)
-  }
+
   
   const confirmDeleteSelected = async () => {
     try {
@@ -169,11 +151,7 @@ export function TestCaseList({
     onSelectionChange(newSelectedIds);
   }
 
-  const handleExecuteSelected = () => {
-    if (selectedIds.length > 0) {
-      router.push(`/execute-all?ids=${selectedIds.join(',')}`)
-    }
-  }
+
 
   if (loading) {
     return <div className="text-center py-4">加载中...</div>
