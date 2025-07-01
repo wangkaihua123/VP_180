@@ -10,6 +10,7 @@ serial_bp = Blueprint('serial', __name__, url_prefix='/api/serial')
 test_cases_bp = Blueprint('test_cases', __name__, url_prefix='/api/test-cases')
 files_bp = Blueprint('files', __name__, url_prefix='/api/files')
 screen_bp = Blueprint('screen', __name__, url_prefix='/api/screen')
+settings_bp = Blueprint('settings', __name__, url_prefix='/api/settings')
 # 从logs.py中导入logs_bp，而不是在这里创建
 # logs_bp = Blueprint('logs', __name__, url_prefix='/api/logs')
 
@@ -22,8 +23,10 @@ from backend.routes import test_cases
 from backend.routes import files
 from backend.routes import logs  # 添加logs模块的导入
 from backend.routes import screen  # 添加screen模块的导入
+from backend.routes import settings  # 添加settings模块的导入
 
 # 所有蓝图
 from .logs import logs_bp  # 显式导入logs_bp
 from .screen import screen_bp  # 显式导入screen_bp
-__all__ = ['auth_bp', 'ssh_bp', 'serial_bp', 'test_cases_bp', 'files_bp', 'logs_bp', 'screen_bp'] 
+from .settings import settings_bp  # 显式导入settings_bp
+__all__ = ['auth_bp', 'ssh_bp', 'serial_bp', 'test_cases_bp', 'files_bp', 'logs_bp', 'screen_bp', 'settings_bp']

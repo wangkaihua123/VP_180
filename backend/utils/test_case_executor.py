@@ -187,16 +187,25 @@ class TestCaseExecutor:
                 if 'operationSteps' in script_content:
                     for step in script_content['operationSteps']:
                         # 默认步骤类型为test-case
-                        step_type = step.get('stepType', 'test-case') 
+                        step_type = step.get('stepType', 'test-case')
                         if step_type == 'cleanup-environment':
                             cleanup_operation_steps.append(step)
                         else:
                             normal_operation_steps.append(step)
 
+                # 保持用户在前端设置的步骤顺序，不进行重新排序
+                # 用户在前端界面中已经通过拖拽等方式设置了步骤的执行顺序
+                # 这个顺序已经保存在数组中，应该按照这个顺序执行
+
                 # 执行普通操作步骤
                 current_operation_results = []
                 logger.info(f"开始执行普通操作步骤，共 {len(normal_operation_steps)} 个步骤")
                 for step in normal_operation_steps:
+                    # 打印当前执行的步骤信息
+                    step_name = step.get('operation_key', '未知操作')
+                    step_id = step.get('id', 'n/a')
+                    logger.info(f"当前执行步骤：{step_name} (ID: {step_id})")
+
                     result = self._execute_operation_step(step, test_case['title'], test_case_id)
                     current_operation_results.append(result)
                     
@@ -215,9 +224,15 @@ class TestCaseExecutor:
                 # 执行验证步骤
                 current_verification_results = []
                 if 'verificationSteps' in script_content:
-                    logger.info(f"开始执行验证步骤，共 {len(script_content['verificationSteps'])} 个验证步骤")
-                    for step in script_content['verificationSteps']:
-                        logger.info(f"执行验证步骤: {step.get('verification_key', '未知类型')} (ID: {step.get('id', 'n/a')})")
+                    # 保持用户在前端设置的验证步骤顺序，不进行重新排序
+                    verification_steps = script_content['verificationSteps']
+                    logger.info(f"开始执行验证步骤，共 {len(verification_steps)} 个验证步骤")
+                    for step in verification_steps:
+                        # 打印当前执行的步骤信息
+                        step_name = step.get('verification_key', '未知验证')
+                        step_id = step.get('id', 'n/a')
+                        logger.info(f"当前执行步骤：{step_name} (ID: {step_id})")
+
                         # 将操作步骤的结果数据传递给验证步骤
                         result = self._execute_verification_step(step, operation_data)
                         current_verification_results.append(result)
@@ -230,6 +245,11 @@ class TestCaseExecutor:
                 current_cleanup_results = []
                 logger.info(f"开始执行清理操作步骤，共 {len(cleanup_operation_steps)} 个步骤")
                 for step in cleanup_operation_steps:
+                    # 打印当前执行的步骤信息
+                    step_name = step.get('operation_key', '未知清理操作')
+                    step_id = step.get('id', 'n/a')
+                    logger.info(f"当前执行步骤：{step_name} (ID: {step_id})")
+
                      # 在清理步骤之间添加等待时间
                     if self.operation_interval > 0:
                         import time
@@ -258,11 +278,35 @@ class TestCaseExecutor:
             status = '通过' if overall_success else '失败'
             logger.info(f"测试用例 {test_case['title']} 执行完成，共执行 {repeat_count} 次，最终状态: {status}")
 
+            # 清理所有结果中的不可序列化对象，避免JSON序列化错误
+            def clean_for_json(obj):
+                """递归清理对象，移除不可序列化的内容"""
+                import numpy as np
+
+                if isinstance(obj, dict):
+                    cleaned = {}
+                    for k, v in obj.items():
+                        if k == 'data':  # 跳过data字段，因为它可能包含numpy数组
+                            continue
+                        cleaned[k] = clean_for_json(v)
+                    return cleaned
+                elif isinstance(obj, list):
+                    return [clean_for_json(item) for item in obj]
+                elif isinstance(obj, np.ndarray):
+                    return None  # 移除numpy数组
+                elif hasattr(obj, '__dict__'):
+                    return str(obj)  # 将复杂对象转换为字符串
+                else:
+                    return obj
+
+            cleaned_operation_results = clean_for_json(all_operation_results)
+            cleaned_verification_results = clean_for_json(all_verification_results)
+
             return {
                 'success': overall_success,
                 'status': status,
-                'operation_results': all_operation_results,
-                'verification_results': all_verification_results,
+                'operation_results': cleaned_operation_results,
+                'verification_results': cleaned_verification_results,
                 'repeat_count': repeat_count
             }
 
@@ -306,7 +350,7 @@ class TestCaseExecutor:
                 return {
                     'success': True,
                     'message': f'成功获取图像',
-                    'data': {'image': image}
+                    'data': {'image': image}  # 内部使用，不会被序列化
                 }
                 
             elif operation_key == '获取截图':

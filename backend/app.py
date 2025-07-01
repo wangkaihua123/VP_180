@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from backend.config import SECRET_KEY, DEBUG, HOST, PORT
 
 # 导入路由蓝图
-from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp, screen_bp
+from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp, screen_bp, settings_bp
 
 # 导入触摸屏监控
 from backend.utils.touch_monitor_ssh import TouchMonitor
@@ -63,6 +63,7 @@ def create_app(config=None):
     app.register_blueprint(files_bp)
     app.register_blueprint(logs_bp)
     app.register_blueprint(screen_bp)
+    app.register_blueprint(settings_bp)
     
     # 创建TouchMonitor实例
     touch_monitor = TouchMonitor()

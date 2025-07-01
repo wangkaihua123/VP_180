@@ -1181,33 +1181,18 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
       // 根据验证类型检查必填字段
       switch (step.verification_key) {
-        case "对比图像相似度":
-        case "对比图像关键点":
-        case "直方图比较":
-        case "颜色差异分析":
-        case "模板匹配":
-        case "边缘检测比较":
-          // 图像验证需要参考图片
-          if (!step.reference_screenshot && !step.reference_content) {
-            errors.push(`验证步骤 ${stepNumber}: 请上传参考图片`);
+        // 只有截图验证类型需要参考图片
+        case "截图精准匹配":
+          // 精准匹配需要参考截图
+          if (!step.reference_screenshot) {
+            errors.push(`验证步骤 ${stepNumber}: 请获取参考截图`);
           }
           break;
 
-        case "亮度差异比较":
-        case "对比度比较":
-          // 亮度验证需要参考图片和阈值
-          if (!step.reference_screenshot && !step.reference_content) {
-            errors.push(`验证步骤 ${stepNumber}: 请上传参考图片`);
-          }
-          if (!step.threshold && step.threshold !== 0) {
-            errors.push(`验证步骤 ${stepNumber}: 请设置阈值`);
-          }
-          break;
-
-        case "纹理特征比较":
-          // 纹理验证需要参考图片
-          if (!step.reference_screenshot && !step.reference_content) {
-            errors.push(`验证步骤 ${stepNumber}: 请上传参考图片`);
+        case "截图包含匹配":
+          // 包含匹配需要参考内容
+          if (!step.reference_content) {
+            errors.push(`验证步骤 ${stepNumber}: 请上传参考内容图片`);
           }
           break;
 
@@ -1249,19 +1234,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           }
           break;
 
-        case "截图精准匹配":
-          // 精准匹配需要参考截图
-          if (!step.reference_screenshot) {
-            errors.push(`验证步骤 ${stepNumber}: 请获取参考截图`);
-          }
-          break;
 
-        case "截图包含匹配":
-          // 包含匹配需要参考内容
-          if (!step.reference_content) {
-            errors.push(`验证步骤 ${stepNumber}: 请上传参考内容图片`);
-          }
-          break;
 
         case "检查点击响应":
         case "检查滑动响应":

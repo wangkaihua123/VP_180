@@ -50,7 +50,8 @@ export const projectSettingsAPI = {
    */
   getProjects: async (): Promise<Project[]> => {
     try {
-      const response = await fetch('/api/settings/projects');
+      // 调用Flask后端API
+      const response = await fetch('http://10.0.18.133:5000/api/settings/projects');
       if (!response.ok) {
         throw new Error(`获取项目列表失败: ${response.statusText}`);
       }
@@ -69,18 +70,19 @@ export const projectSettingsAPI = {
    */
   createProject: async (project: CreateProjectPayload): Promise<Project> => {
     try {
-      const response = await fetch('/api/settings/projects', {
+      // 调用Flask后端API
+      const response = await fetch('http://10.0.18.133:5000/api/settings/projects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(project),
       });
-      
+
       if (!response.ok) {
         throw new Error(`创建项目失败: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data.project;
     } catch (error) {
@@ -96,18 +98,19 @@ export const projectSettingsAPI = {
    */
   updateProject: async (project: UpdateProjectPayload): Promise<Project> => {
     try {
-      const response = await fetch(`/api/settings/projects/${project.id}`, {
+      // 调用Flask后端API
+      const response = await fetch(`http://10.0.18.133:5000/api/settings/projects/${project.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(project),
       });
-      
+
       if (!response.ok) {
         throw new Error(`更新项目失败: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data.project;
     } catch (error) {
@@ -123,17 +126,19 @@ export const projectSettingsAPI = {
    */
   deleteProject: async (id: string): Promise<{success: boolean; message: string}> => {
     try {
-      const response = await fetch(`/api/settings/projects/${id}`, {
+      // 调用Flask后端API
+      const response = await fetch(`http://10.0.18.133:5000/api/settings/projects/${id}`, {
         method: 'DELETE',
       });
-      
+
       if (!response.ok) {
         throw new Error(`删除项目失败: ${response.statusText}`);
       }
-      
+
+      const data = await response.json();
       return {
-        success: true,
-        message: '项目已成功删除'
+        success: data.success,
+        message: data.message || '项目已成功删除'
       };
     } catch (error) {
       console.error('删除项目失败:', error);

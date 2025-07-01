@@ -870,9 +870,22 @@ export default function ExecuteAllPage() {
    */
   const loadTestCaseMedia = async (testCaseId: number) => {
     try {
+      // 首先获取测试用例详情，包含验证步骤配置
+      const testCaseResponse = await testCasesAPI.get(testCaseId);
+      let verificationSteps: any[] = [];
+
+      if (testCaseResponse.success && testCaseResponse.data) {
+        try {
+          const scriptContent = JSON.parse(testCaseResponse.data.script_content);
+          verificationSteps = scriptContent.verificationSteps || [];
+        } catch (e) {
+          console.warn('解析测试用例脚本内容失败:', e);
+        }
+      }
+
       // 调用API获取最新日志，包含图片和截图URL
       const response = await testCasesAPI.getLatestLog(testCaseId);
-      
+
       if (response.success && response.data) {
         // 从/img目录中获取图片
         try {
@@ -897,12 +910,13 @@ export default function ExecuteAllPage() {
             if (idMatch) {
               const stepId = parseInt(idMatch[1]);
               
-              // 尝试从文件名中提取时间戳，如果无法提取则使用当前时间
+              // 尝试从文件名中提取时间戳，如果无法提取则使用文件修改时间或当前时间
               // 假设文件名格式可能包含时间信息，如id_1_20230415120000.png
               const timestampMatch = filename.match(/_(\d{14})/);
-              let timestamp = imageDetail.lastModified || new Date().toISOString();
+              let timestamp = new Date().toISOString(); // 默认使用当前时间
+
+              // 首先尝试从文件名中提取时间戳
               if (timestampMatch && timestampMatch[1]) {
-                // 尝试将提取的时间字符串转换为日期格式
                 try {
                   const timeStr = timestampMatch[1];
                   // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
@@ -912,11 +926,22 @@ export default function ExecuteAllPage() {
                   const hour = timeStr.substring(8, 10);
                   const minute = timeStr.substring(10, 12);
                   const second = timeStr.substring(12, 14);
-                  
+
                   const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
                   timestamp = new Date(formattedTime).toISOString();
                 } catch (e) {
                   console.warn('无法从文件名解析时间戳:', filename);
+                }
+              } else if (imageDetail.lastModified) {
+                // 如果文件名中没有时间戳，尝试使用文件修改时间
+                try {
+                  // lastModified可能是字符串或数字，需要正确处理
+                  const modifiedTime = typeof imageDetail.lastModified === 'string'
+                    ? imageDetail.lastModified
+                    : new Date(imageDetail.lastModified).toISOString();
+                  timestamp = modifiedTime;
+                } catch (e) {
+                  console.warn('无法解析文件修改时间:', imageDetail.lastModified);
                 }
               }
               
@@ -947,7 +972,52 @@ export default function ExecuteAllPage() {
           });
           
           console.log(`测试用例 ${testCaseId} 从本地加载到 ${testImages.length} 张图片`);
-          
+
+          // 添加参考图片（从frontend/public/img/upload目录）
+          verificationSteps.forEach((step: any) => {
+            const stepId = step.id;
+
+            // 检查reference_screenshot字段
+            if (step.reference_screenshot) {
+              const referenceFile = step.reference_screenshot;
+              // 构建参考图片URL
+              const referenceUrl = `/img/upload/${referenceFile}`;
+
+              testImages.push({
+                id: `ref_screenshot_${stepId}_${referenceFile}`,
+                testCaseId: testCaseId,
+                timestamp: new Date().toISOString(),
+                title: `步骤 ${stepId} 参考截图`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考截图: ${referenceFile}`,
+                url: referenceUrl,
+                type: 'image'
+              });
+
+              console.log(`添加参考截图: ${referenceFile}, URL: ${referenceUrl}`);
+            }
+
+            // 检查reference_content字段
+            if (step.reference_content) {
+              const referenceFile = step.reference_content;
+              // 构建参考内容URL
+              const referenceUrl = `/img/upload/${referenceFile}`;
+
+              testImages.push({
+                id: `ref_content_${stepId}_${referenceFile}`,
+                testCaseId: testCaseId,
+                timestamp: new Date().toISOString(),
+                title: `步骤 ${stepId} 参考内容`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考内容: ${referenceFile}`,
+                url: referenceUrl,
+                type: 'image'
+              });
+
+              console.log(`添加参考内容: ${referenceFile}, URL: ${referenceUrl}`);
+            }
+          });
+
+          console.log(`测试用例 ${testCaseId} 总共加载到 ${testImages.length} 张图片（包含参考图片）`);
+
           // 更新状态
           setTestCaseImages(prev => ({
             ...prev,
@@ -980,11 +1050,12 @@ export default function ExecuteAllPage() {
             if (idMatch) {
               const stepId = parseInt(idMatch[1]);
               
-              // 尝试从文件名中提取时间戳，如果无法提取则使用当前时间
+              // 尝试从文件名中提取时间戳，如果无法提取则使用文件修改时间或当前时间
               const timestampMatch = filename.match(/_(\d{14})/);
-              let timestamp = screenshotDetail.lastModified || new Date().toISOString();
+              let timestamp = new Date().toISOString(); // 默认使用当前时间
+
+              // 首先尝试从文件名中提取时间戳
               if (timestampMatch && timestampMatch[1]) {
-                // 尝试将提取的时间字符串转换为日期格式
                 try {
                   const timeStr = timestampMatch[1];
                   // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
@@ -994,11 +1065,22 @@ export default function ExecuteAllPage() {
                   const hour = timeStr.substring(8, 10);
                   const minute = timeStr.substring(10, 12);
                   const second = timeStr.substring(12, 14);
-                  
+
                   const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
                   timestamp = new Date(formattedTime).toISOString();
                 } catch (e) {
                   console.warn('无法从文件名解析时间戳:', filename);
+                }
+              } else if (screenshotDetail.lastModified) {
+                // 如果文件名中没有时间戳，尝试使用文件修改时间
+                try {
+                  // lastModified可能是字符串或数字，需要正确处理
+                  const modifiedTime = typeof screenshotDetail.lastModified === 'string'
+                    ? screenshotDetail.lastModified
+                    : new Date(screenshotDetail.lastModified).toISOString();
+                  timestamp = modifiedTime;
+                } catch (e) {
+                  console.warn('无法解析文件修改时间:', screenshotDetail.lastModified);
                 }
               }
               
@@ -1027,7 +1109,52 @@ export default function ExecuteAllPage() {
           });
           
           console.log(`测试用例 ${testCaseId} 从本地加载到 ${testScreenshots.length} 张截图`);
-          
+
+          // 添加参考截图（从frontend/public/img/upload目录）
+          verificationSteps.forEach((step: any) => {
+            const stepId = step.id;
+
+            // 检查reference_screenshot字段
+            if (step.reference_screenshot) {
+              const referenceFile = step.reference_screenshot;
+              // 构建参考截图URL
+              const referenceUrl = `/img/upload/${referenceFile}`;
+
+              testScreenshots.push({
+                id: `ref_screenshot_${stepId}_${referenceFile}`,
+                testCaseId: testCaseId,
+                timestamp: new Date().toISOString(),
+                title: `步骤 ${stepId} 参考截图`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考截图: ${referenceFile}`,
+                url: referenceUrl,
+                type: 'screenshot'
+              });
+
+              console.log(`添加参考截图到截图列表: ${referenceFile}, URL: ${referenceUrl}`);
+            }
+
+            // 检查reference_content字段
+            if (step.reference_content) {
+              const referenceFile = step.reference_content;
+              // 构建参考内容URL
+              const referenceUrl = `/img/upload/${referenceFile}`;
+
+              testScreenshots.push({
+                id: `ref_content_${stepId}_${referenceFile}`,
+                testCaseId: testCaseId,
+                timestamp: new Date().toISOString(),
+                title: `步骤 ${stepId} 参考内容`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考内容: ${referenceFile}`,
+                url: referenceUrl,
+                type: 'screenshot'
+              });
+
+              console.log(`添加参考内容到截图列表: ${referenceFile}, URL: ${referenceUrl}`);
+            }
+          });
+
+          console.log(`测试用例 ${testCaseId} 总共加载到 ${testScreenshots.length} 张截图（包含参考截图）`);
+
           // 更新截图状态
           setTestCaseScreenshots(prev => ({
             ...prev,
