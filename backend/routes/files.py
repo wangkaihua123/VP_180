@@ -5,6 +5,7 @@ import os
 import shutil
 import logging
 from flask import send_from_directory, jsonify, request
+from werkzeug.utils import secure_filename
 from backend.config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
 
 # 设置日志
@@ -243,4 +244,182 @@ def clear_images():
             'message': error_msg,
             'cleared': [],
             'errors': [error_msg]
+        }), 500
+
+@files_bp.route('/upload', methods=['POST'])
+def upload_file():
+    """上传文件到指定目录"""
+    try:
+        # 检查是否有文件
+        if 'file' not in request.files:
+            return jsonify({
+                'success': False,
+                'error': '没有选择文件'
+            }), 400
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({
+                'success': False,
+                'error': '没有选择文件'
+            }), 400
+
+        # 获取其他参数
+        file_type = request.form.get('fileType', 'screenshot')  # 默认为screenshot
+        custom_filename = request.form.get('fileName')
+        test_case_id = request.form.get('testCaseId')
+
+        # 验证文件类型
+        allowed_extensions = {'.png', '.jpg', '.jpeg', '.gif', '.tiff', '.tif', '.webp'}
+        file_ext = os.path.splitext(file.filename)[1].lower()
+        if file_ext not in allowed_extensions:
+            return jsonify({
+                'success': False,
+                'error': f'不支持的文件类型: {file_ext}。支持的类型: {", ".join(allowed_extensions)}'
+            }), 400
+
+        # 确定保存目录
+        if file_type == 'screenshot':
+            # 保存到前端public/img/upload目录，这样前端可以直接访问
+            upload_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'public', 'img', 'upload')
+        else:
+            # 其他类型保存到后端目录
+            upload_dir = IMAGES_DIR
+
+        # 确保目录存在
+        os.makedirs(upload_dir, exist_ok=True)
+
+        # 确定文件名
+        if custom_filename:
+            # 使用自定义文件名，确保有正确的扩展名
+            filename = custom_filename
+            if not filename.lower().endswith(file_ext):
+                filename = os.path.splitext(filename)[0] + file_ext
+        else:
+            # 使用安全的原始文件名
+            filename = secure_filename(file.filename)
+
+        # 构建完整的文件路径
+        file_path = os.path.join(upload_dir, filename)
+
+        # 如果文件已存在，先删除
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            logger.info(f"删除已存在的文件: {file_path}")
+
+        # 保存文件
+        file.save(file_path)
+        logger.info(f"文件上传成功: {file_path}")
+
+        # 构建访问URL
+        if file_type == 'screenshot':
+            # 前端public目录的文件可以直接通过/img/upload/访问
+            file_url = f'/img/upload/{filename}'
+        else:
+            # 后端文件通过API访问
+            file_url = f'/api/files/images/{filename}'
+
+        return jsonify({
+            'success': True,
+            'message': '文件上传成功',
+            'filename': filename,
+            'file_path': file_path,
+            'file_url': file_url,
+            'file_type': file_type,
+            'test_case_id': test_case_id
+        })
+
+    except Exception as e:
+        logger.error(f"文件上传失败: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': f'文件上传失败: {str(e)}'
+        }), 500
+
+@files_bp.route('/delete', methods=['POST'])
+def delete_file():
+    """删除指定的文件"""
+    try:
+        data = request.get_json()
+        if not data or 'fileUrl' not in data:
+            return jsonify({
+                'success': False,
+                'error': '缺少fileUrl参数'
+            }), 400
+
+        file_url = data['fileUrl']
+        logger.info(f"收到删除文件请求: {file_url}")
+
+        # 解析文件路径
+        file_path = None
+
+        if file_url.startswith('/img/upload/'):
+            # 前端public目录的文件
+            filename = file_url.replace('/img/upload/', '')
+            file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'public', 'img', 'upload', filename)
+        elif file_url.startswith('/api/files/images/'):
+            # 后端images目录的文件
+            filename = file_url.replace('/api/files/images/', '')
+            file_path = os.path.join(IMAGES_DIR, filename)
+        elif file_url.startswith('/api/files/screenshots/'):
+            # 后端screenshots目录的文件
+            filename = file_url.replace('/api/files/screenshots/', '')
+            file_path = os.path.join(SCREENSHOTS_DIR, filename)
+        elif file_url.startswith('/api/files/operation_img/'):
+            # 后端operation_images目录的文件
+            filename = file_url.replace('/api/files/operation_img/', '')
+            file_path = os.path.join(OPERATION_IMAGES_DIR, filename)
+        elif file_url.startswith('/api/files/display_img/'):
+            # 后端display_images目录的文件
+            filename = file_url.replace('/api/files/display_img/', '')
+            file_path = os.path.join(DISPLAY_IMAGES_DIR, filename)
+        else:
+            # 尝试直接作为文件名处理
+            filename = os.path.basename(file_url)
+            # 先尝试在upload目录中查找
+            upload_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'public', 'img', 'upload', filename)
+            if os.path.exists(upload_path):
+                file_path = upload_path
+            else:
+                # 再尝试在images目录中查找
+                images_path = os.path.join(IMAGES_DIR, filename)
+                if os.path.exists(images_path):
+                    file_path = images_path
+                else:
+                    # 最后尝试在screenshots目录中查找
+                    screenshots_path = os.path.join(SCREENSHOTS_DIR, filename)
+                    if os.path.exists(screenshots_path):
+                        file_path = screenshots_path
+
+        if not file_path:
+            return jsonify({
+                'success': False,
+                'error': f'无法解析文件路径: {file_url}'
+            }), 400
+
+        # 检查文件是否存在
+        if not os.path.exists(file_path):
+            logger.warning(f"要删除的文件不存在: {file_path}")
+            return jsonify({
+                'success': True,
+                'message': '文件不存在，视为删除成功',
+                'file_path': file_path
+            })
+
+        # 删除文件
+        os.remove(file_path)
+        logger.info(f"文件删除成功: {file_path}")
+
+        return jsonify({
+            'success': True,
+            'message': '文件删除成功',
+            'file_path': file_path,
+            'file_url': file_url
+        })
+
+    except Exception as e:
+        logger.error(f"文件删除失败: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': f'文件删除失败: {str(e)}'
         }), 500

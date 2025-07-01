@@ -20,7 +20,7 @@ import { Plus, Play, Home, FilePlus, FileBarChart2, LayoutGrid, Trash2 } from "l
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI } from "@/lib/api/test-cases"
 import { useEffect, useState, useMemo } from "react"
-import { TestCase } from "../api/routes"
+import { TestCase } from "@/types/api"
 import { useToast } from "@/components/ui/use-toast"
 import { 
   Select, 

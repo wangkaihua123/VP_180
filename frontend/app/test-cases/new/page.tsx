@@ -17,6 +17,7 @@ import { testCasesAPI } from "@/lib/api/test-cases"
 import STEP_METHODS from "@/utils/test_method_mapping"
 import { FUNCTIONS } from "@/utils/Config"
 import { projectSettingsAPI, Project } from "@/lib/api/project-settings"
+import { API_BASE_URL } from "@/lib/constants"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -736,13 +737,14 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       const result = await response.json();
       
       if (result.success) {
-        // 只保存自定义文件名
-        updateVerificationStep(id, field, customFileName);
+        // 使用后端返回的文件名，与截图功能保持一致
+        const savedFileName = result.filename || customFileName;
+        updateVerificationStep(id, field, savedFileName);
         updateVerificationStep(id, "isImageLoading", false);
 
         // 强制重新渲染以更新图片显示（通过触发状态更新）
         setTimeout(() => {
-          updateVerificationStep(id, field, customFileName);
+          updateVerificationStep(id, field, savedFileName);
         }, 100);
 
         toast({
@@ -1060,8 +1062,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       toast({ title: "获取中", description: "正在获取操作界面截图，请稍候..." });
       // 生成自定义文件名
       const customFileName = getNextScreenCaptureFileName(id);
-      // 构建请求URL，带 fileName 参数
-      const url = `/api/screen/capture?fileName=${encodeURIComponent(customFileName)}${initialData?.id ? `&testCaseId=${initialData.id}` : ''}`;
+      // 构建请求URL，使用后端API基础URL
+      const url = `${API_BASE_URL}/api/screen/capture?fileName=${encodeURIComponent(customFileName)}${initialData?.id ? `&testCaseId=${initialData.id}` : ''}`;
       const response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
       if (!response.ok) {
         const errorData = await response.json();
@@ -1069,8 +1071,15 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       }
       const result = await response.json();
       if (result.success) {
-        // 保存文件名到验证步骤
-        updateVerificationStep(id, field, customFileName);
+        // 后端已经保存了文件，直接使用返回的文件名
+        if (result.filename) {
+          // 保存文件名到验证步骤
+          updateVerificationStep(id, field, result.filename);
+        } else {
+          // 兼容性处理：使用自定义文件名
+          updateVerificationStep(id, field, customFileName);
+        }
+
         updateVerificationStep(id, "isImageLoading", false);
 
         // 自动设置 operation_screenshot
@@ -1078,11 +1087,6 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         if (operationInterfaceStep) {
           updateVerificationStep(id, "operation_screenshot", operationInterfaceStep.id.toString());
         }
-
-        // 强制重新渲染以更新图片显示（通过触发状态更新）
-        setTimeout(() => {
-          updateVerificationStep(id, field, customFileName);
-        }, 100);
 
         toast({ title: "获取成功", description: "操作界面截图已成功获取" });
       } else {
@@ -1137,16 +1141,18 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     })
   }
 
-  // 获取图片URL，处理可能的JSON格式
+  // 获取图片URL，处理文件名格式
   const getImageUrl = (imgData: string | undefined): string | undefined => {
     if (!imgData) return undefined;
-    // 只要是 fileName（不含/，不含http），一律拼接 /img/upload/
-    if (typeof imgData === 'string' && !imgData.includes('/') && !imgData.startsWith('http')) {
-      // 添加时间戳参数来避免浏览器缓存问题
-      const timestamp = Date.now();
-      return `/img/upload/${imgData}?t=${timestamp}`;
+
+    // 如果是完整的URL（包含http或/），直接返回
+    if (imgData.includes('/') || imgData.startsWith('http')) {
+      return imgData;
     }
-    return imgData;
+
+    // 否则认为是文件名，拼接 /img/upload/
+    const timestamp = Date.now();
+    return `/img/upload/${imgData}?t=${timestamp}`;
   };
 
 

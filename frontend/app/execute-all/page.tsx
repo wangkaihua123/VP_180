@@ -870,22 +870,9 @@ export default function ExecuteAllPage() {
    */
   const loadTestCaseMedia = async (testCaseId: number) => {
     try {
-      // 首先获取测试用例详情，包含验证步骤配置
-      const testCaseResponse = await testCasesAPI.get(testCaseId);
-      let verificationSteps: any[] = [];
-
-      if (testCaseResponse.success && testCaseResponse.data) {
-        try {
-          const scriptContent = JSON.parse(testCaseResponse.data.script_content);
-          verificationSteps = scriptContent.verificationSteps || [];
-        } catch (e) {
-          console.warn('解析测试用例脚本内容失败:', e);
-        }
-      }
-
       // 调用API获取最新日志，包含图片和截图URL
       const response = await testCasesAPI.getLatestLog(testCaseId);
-
+      
       if (response.success && response.data) {
         // 从/img目录中获取图片
         try {
@@ -972,52 +959,7 @@ export default function ExecuteAllPage() {
           });
           
           console.log(`测试用例 ${testCaseId} 从本地加载到 ${testImages.length} 张图片`);
-
-          // 添加参考图片（从frontend/public/img/upload目录）
-          verificationSteps.forEach((step: any) => {
-            const stepId = step.id;
-
-            // 检查reference_screenshot字段
-            if (step.reference_screenshot) {
-              const referenceFile = step.reference_screenshot;
-              // 构建参考图片URL
-              const referenceUrl = `/img/upload/${referenceFile}`;
-
-              testImages.push({
-                id: `ref_screenshot_${stepId}_${referenceFile}`,
-                testCaseId: testCaseId,
-                timestamp: new Date().toISOString(),
-                title: `步骤 ${stepId} 参考截图`,
-                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考截图: ${referenceFile}`,
-                url: referenceUrl,
-                type: 'image'
-              });
-
-              console.log(`添加参考截图: ${referenceFile}, URL: ${referenceUrl}`);
-            }
-
-            // 检查reference_content字段
-            if (step.reference_content) {
-              const referenceFile = step.reference_content;
-              // 构建参考内容URL
-              const referenceUrl = `/img/upload/${referenceFile}`;
-
-              testImages.push({
-                id: `ref_content_${stepId}_${referenceFile}`,
-                testCaseId: testCaseId,
-                timestamp: new Date().toISOString(),
-                title: `步骤 ${stepId} 参考内容`,
-                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考内容: ${referenceFile}`,
-                url: referenceUrl,
-                type: 'image'
-              });
-
-              console.log(`添加参考内容: ${referenceFile}, URL: ${referenceUrl}`);
-            }
-          });
-
-          console.log(`测试用例 ${testCaseId} 总共加载到 ${testImages.length} 张图片（包含参考图片）`);
-
+          
           // 更新状态
           setTestCaseImages(prev => ({
             ...prev,
@@ -1109,52 +1051,7 @@ export default function ExecuteAllPage() {
           });
           
           console.log(`测试用例 ${testCaseId} 从本地加载到 ${testScreenshots.length} 张截图`);
-
-          // 添加参考截图（从frontend/public/img/upload目录）
-          verificationSteps.forEach((step: any) => {
-            const stepId = step.id;
-
-            // 检查reference_screenshot字段
-            if (step.reference_screenshot) {
-              const referenceFile = step.reference_screenshot;
-              // 构建参考截图URL
-              const referenceUrl = `/img/upload/${referenceFile}`;
-
-              testScreenshots.push({
-                id: `ref_screenshot_${stepId}_${referenceFile}`,
-                testCaseId: testCaseId,
-                timestamp: new Date().toISOString(),
-                title: `步骤 ${stepId} 参考截图`,
-                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考截图: ${referenceFile}`,
-                url: referenceUrl,
-                type: 'screenshot'
-              });
-
-              console.log(`添加参考截图到截图列表: ${referenceFile}, URL: ${referenceUrl}`);
-            }
-
-            // 检查reference_content字段
-            if (step.reference_content) {
-              const referenceFile = step.reference_content;
-              // 构建参考内容URL
-              const referenceUrl = `/img/upload/${referenceFile}`;
-
-              testScreenshots.push({
-                id: `ref_content_${stepId}_${referenceFile}`,
-                testCaseId: testCaseId,
-                timestamp: new Date().toISOString(),
-                title: `步骤 ${stepId} 参考内容`,
-                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的参考内容: ${referenceFile}`,
-                url: referenceUrl,
-                type: 'screenshot'
-              });
-
-              console.log(`添加参考内容到截图列表: ${referenceFile}, URL: ${referenceUrl}`);
-            }
-          });
-
-          console.log(`测试用例 ${testCaseId} 总共加载到 ${testScreenshots.length} 张截图（包含参考截图）`);
-
+          
           // 更新截图状态
           setTestCaseScreenshots(prev => ({
             ...prev,

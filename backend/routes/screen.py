@@ -1,10 +1,7 @@
 from flask import Blueprint, jsonify, request
-import base64
 import cv2
-import numpy as np
 import os
 import logging
-from datetime import datetime
 from backend.utils.get_latest_image import GetLatestImage
 from backend.utils.ssh_manager import SSHManager
 
@@ -51,14 +48,30 @@ def capture_screen():
                 'error': '获取操作界面截图失败'
             }), 500
         
-        # 将图像编码为Base64
-        _, buffer = cv2.imencode('.png', image)
-        image_base64 = base64.b64encode(buffer).decode('utf-8')
-        
-        logger.info("操作界面截图获取成功")
+        # 直接保存图片文件到前端public目录
+        upload_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'public', 'img', 'upload')
+        os.makedirs(upload_dir, exist_ok=True)
+
+        # 构建完整的文件路径
+        file_path = os.path.join(upload_dir, file_name)
+
+        # 如果文件已存在，先删除
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            logger.info(f"删除已存在的截图文件: {file_path}")
+
+        # 保存图片文件
+        cv2.imwrite(file_path, image)
+        logger.info(f"操作界面截图保存成功: {file_path}")
+
+        # 构建访问URL
+        file_url = f'/img/upload/{file_name}'
+
         return jsonify({
             'success': True,
-            'imageBase64': image_base64,
+            'filename': file_name,
+            'file_url': file_url,
+            'file_path': file_path,
             'testCaseId': test_case_id
         })
         
