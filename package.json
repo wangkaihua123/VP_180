@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.2",
+    "@upstash/context7-mcp": "^1.0.14"
+  },
+  "name": "vp_180",
+  "version": "1.0.0",
+  "description": "这是一个基于Flask REST API后端和Next.js前端的自动化测试系统，支持医疗设备（特别是180系统）的测试用例创建、管理和执行。\r 准备工作：\r 连接串口，ssh线\r 将touch_click.py文件放进设备的app/jzj文件夹下面\r 将ip设置成10.0.18.xxx，须跟自动化测试平台中的ip设置保持一致",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangkaihua123/VP_180.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/wangkaihua123/VP_180/issues"
+  },
+  "homepage": "https://github.com/wangkaihua123/VP_180#readme"
+}

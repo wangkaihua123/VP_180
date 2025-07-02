@@ -33,8 +33,8 @@ const getBackendUrl = () => {
   return 'http://localhost:5000';
 };
 
-// 导出API基础URL
-export const API_BASE_URL = getBackendUrl();
+// 导出API基础URL - 临时硬编码修复
+export const API_BASE_URL = 'http://10.0.18.133:5000';
 
 // API路由常量
 export const API_ROUTES = {

@@ -557,42 +557,25 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     }
   }
 
-  // 删除图片文件
-  const deleteImage = async (fileUrl: string) => {
-    if (!fileUrl) return;
-    
+  // 删除图片文件 - 前端直接处理
+  const deleteImage = async (fileName: string) => {
+    if (!fileName) return;
+
     try {
-      // 发送删除请求
-      const response = await fetch('/api/files/delete', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fileUrl }),
+      // 从sessionStorage中删除
+      sessionStorage.removeItem(`upload_${fileName}`);
+
+      console.log(`图片删除成功: ${fileName}`);
+      toast({
+        title: "删除成功",
+        description: "图片已成功删除",
       });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || '删除失败');
-      }
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        console.log(`图片删除成功: ${fileUrl}`);
-        toast({
-          title: "删除成功",
-          description: "图片已成功删除",
-        });
-        return true;
-      } else {
-        throw new Error(result.error || '删除失败');
-      }
+      return true;
     } catch (error) {
       console.error('图片删除错误:', error);
       toast({
         title: "删除失败",
-        description: error instanceof Error ? error.message : "图片删除失败，请重试",
+        description: "图片删除失败，请重试",
         variant: "destructive"
       });
       return false;
@@ -661,13 +644,17 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     const idStr = stepId.toString().padStart(3, '0');
     // 根据字段类型区分前缀
     const prefix = field === 'reference_screenshot' ? 'screen_capture' : 'upload';
-    return `${prefix}_${sessionId}_${idStr}.png`;
+    if (prefix === 'screen_capture') {
+      return `${prefix}_${sessionId}_${idStr}.png`;
+    } else {
+      return `${sessionId}_${idStr}.png`;
+    }
   };
 
-  // 处理图片上传
+  // 处理图片上传 - 前端直接处理
   const handleImageUpload = async (id: number, field: keyof VerificationStep, file: File) => {
     if (!file) return;
-    
+
     // 检查文件类型
     if (!file.type.startsWith('image/')) {
       toast({
@@ -677,7 +664,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       });
       return;
     }
-    
+
     // 检查文件大小（限制为5MB）
     if (file.size > 5 * 1024 * 1024) {
       toast({
@@ -692,73 +679,91 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       // 设置加载状态
       updateVerificationStep(id, "isImageLoading", true);
       updateVerificationStep(id, "imageError", undefined);
-      
-      // 查找当前步骤
-      const currentStep = verificationSteps.find(step => step.id === id);
-      if (currentStep) {
-        // 尝试删除已存在的图片
-        await deleteExistingImage(currentStep, field);
-      }
-      
-      // 创建FormData对象
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      // 如果已有测试用例ID，添加到请求中
-      if (initialData?.id) {
-        formData.append('testCaseId', initialData.id.toString());
-      }
-      
-      // 设置文件类型为'screenshot'，确保保存到/screenshot/upload目录
-      const fileType = 'screenshot';
-      formData.append('fileType', fileType);
-      
+
       // 生成自定义文件名
       const customFileName = getNextUploadFileName(field, id);
-      formData.append('fileName', customFileName);
-      
+
       // 显示上传中提示
       toast({
         title: "上传中",
-        description: "正在上传图片，请稍候...",
+        description: "正在处理图片，请稍候...",
       });
-      
-      // 发送上传请求
-      const response = await fetch('/api/files/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || '上传失败');
-      }
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        // 使用后端返回的文件名，与截图功能保持一致
-        const savedFileName = result.filename || customFileName;
-        updateVerificationStep(id, field, savedFileName);
-        updateVerificationStep(id, "isImageLoading", false);
 
-        // 强制重新渲染以更新图片显示（通过触发状态更新）
-        setTimeout(() => {
-          updateVerificationStep(id, field, savedFileName);
-        }, 100);
+      // 前端直接处理文件
+      const fileReader = new FileReader();
+
+      fileReader.onload = (e) => {
+        try {
+          const result = e.target?.result as string;
+          const fileName = customFileName; // 保存到局部变量
+
+          // 创建一个Image对象来验证图片
+          const img = document.createElement('img');
+          img.onload = () => {
+            // 图片加载成功，保存文件名
+            updateVerificationStep(id, field, fileName);
+            updateVerificationStep(id, "isImageLoading", false);
+
+            // 将文件数据保存到sessionStorage，用于后续处理
+            const fileData = {
+              name: fileName,
+              data: result,
+              type: file.type,
+              size: file.size,
+              timestamp: Date.now()
+            };
+            sessionStorage.setItem(`upload_${fileName}`, JSON.stringify(fileData));
+
+            toast({
+              title: "上传成功",
+              description: "图片已成功处理",
+            });
+          };
+
+          img.onerror = () => {
+            updateVerificationStep(id, "isImageLoading", false);
+            updateVerificationStep(id, "imageError", "图片格式无效");
+            toast({
+              title: "处理失败",
+              description: "图片格式无效",
+              variant: "destructive"
+            });
+          };
+
+          img.src = result;
+
+        } catch (error) {
+          console.error('图片处理错误:', error);
+          updateVerificationStep(id, "isImageLoading", false);
+          updateVerificationStep(id, "imageError", error instanceof Error ? error.message : "图片处理失败");
+
+          toast({
+            title: "处理失败",
+            description: error instanceof Error ? error.message : "图片处理失败，请重试",
+            variant: "destructive"
+          });
+        }
+      };
+
+      fileReader.onerror = () => {
+        updateVerificationStep(id, "isImageLoading", false);
+        updateVerificationStep(id, "imageError", "文件读取失败");
 
         toast({
-          title: "上传成功",
-          description: "图片已成功上传",
+          title: "读取失败",
+          description: "文件读取失败，请重试",
+          variant: "destructive"
         });
-      } else {
-        throw new Error(result.error || '上传失败');
-      }
+      };
+
+      // 读取文件为Data URL
+      fileReader.readAsDataURL(file);
+
     } catch (error) {
       console.error('图片上传错误:', error);
       updateVerificationStep(id, "isImageLoading", false);
       updateVerificationStep(id, "imageError", error instanceof Error ? error.message : "图片上传失败");
-      
+
       toast({
         title: "上传失败",
         description: error instanceof Error ? error.message : "图片上传失败，请重试",
@@ -1141,13 +1146,27 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     })
   }
 
-  // 获取图片URL，处理文件名格式
+  // 获取图片URL，处理文件名格式和sessionStorage数据
   const getImageUrl = (imgData: string | undefined): string | undefined => {
     if (!imgData) return undefined;
 
     // 如果是完整的URL（包含http或/），直接返回
     if (imgData.includes('/') || imgData.startsWith('http')) {
       return imgData;
+    }
+
+    // 检查sessionStorage中是否有对应的图片数据
+    try {
+      const storedData = sessionStorage.getItem(`upload_${imgData}`);
+      if (storedData) {
+        const fileData = JSON.parse(storedData);
+        if (fileData.data) {
+          // 返回Base64数据URL
+          return fileData.data;
+        }
+      }
+    } catch (error) {
+      console.warn('读取sessionStorage图片数据失败:', error);
     }
 
     // 否则认为是文件名，拼接 /img/upload/
