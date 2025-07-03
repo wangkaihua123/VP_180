@@ -127,6 +127,10 @@ TODO
 
 ## 如何运行
 
+环境配置
+前端：1，进入next.config.js，修改API_BASE_URL为后端运行的服务器ip,2，pakage.json中添加"dev": "next dev -H 172.16.10.141"
+后端：1，进入config.py，修改HOST为本机ip，
+
 ### 后端 API 服务
 
 1. 首先激活虚拟环境：

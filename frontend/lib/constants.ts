@@ -34,7 +34,7 @@ const getBackendUrl = () => {
 };
 
 // 导出API基础URL - 临时硬编码修复
-export const API_BASE_URL = 'http://10.0.18.133:5000';
+export const API_BASE_URL = 'http://172.16.10.141:5000';
 
 // API路由常量
 export const API_ROUTES = {
