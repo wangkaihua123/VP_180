@@ -101,6 +101,12 @@ export const sshSettingsAPI = {
       method: 'POST',
     })
   },
+
+  uploadTouchScript: async () => {
+    return fetchAPI(API_ROUTES.SSH_SETTINGS.UPLOAD_TOUCH_SCRIPT, {
+      method: 'POST',
+    })
+  },
 }
 
 // 串口设置相关API

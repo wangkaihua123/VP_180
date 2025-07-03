@@ -50,6 +50,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI, TestExecutionResponse } from "@/lib/api/test-cases"
+import { sshSettingsAPI } from "@/lib/api"
 import { API_BASE_URL } from "@/lib/constants"
 import type { TestCase } from "@/types/api"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -529,6 +530,58 @@ export default function ExecuteAllPage() {
   }
 
   /**
+   * 保存测试数据到report.json
+   * @param executedTestCases 已执行的测试用例
+   */
+  const saveTestDataToReport = async (executedTestCases: TestCaseWithStatus[]) => {
+    try {
+      console.log('开始保存测试数据到report.json...')
+
+      // 统计测试结果
+      const passedCases = executedTestCases.filter(tc => tc.status === 'completed').length
+      const failedCases = executedTestCases.filter(tc => tc.status === 'failed' || tc.status === 'error').length
+      const totalCases = executedTestCases.length
+      const passRate = totalCases > 0 ? Math.round((passedCases / totalCases) * 100) : 0
+
+      // 构建测试数据
+      const testData = {
+        testResults: executedTestCases.map(tc => ({
+          testId: tc.id,
+          testName: tc.title || tc.name || `测试用例 #${tc.id}`,
+          testResult: tc.status === 'completed' ? '通过' :
+                     tc.status === 'failed' ? '失败' :
+                     tc.status === 'error' ? '异常' : '未知',
+          lastExecutionTime: new Date().toISOString(),
+          testType: tc.type || '功能测试',
+          description: tc.description || '',
+          executionDuration: 0 // 可以后续添加执行时间统计
+        })),
+        summary: {
+          totalCases: totalCases,
+          passedCases: passedCases,
+          failedCases: failedCases,
+          passRate: passRate,
+          executionTime: new Date().toISOString(),
+          project: 'VP-180项目'
+        }
+      }
+
+      // 调用API保存测试数据
+      const saveResult = await testCasesAPI.saveReport(testData)
+      if (saveResult.success) {
+        console.log('测试数据已保存到report.json:', saveResult)
+        addLog(0, '测试数据已保存到report.json', 'success')
+      } else {
+        console.error('保存测试数据失败:', saveResult.message)
+        addLog(0, `保存测试数据失败: ${saveResult.message}`, 'error')
+      }
+    } catch (error) {
+      console.error('保存测试数据出错:', error)
+      addLog(0, `保存测试数据出错: ${error instanceof Error ? error.message : '未知错误'}`, 'error')
+    }
+  }
+
+  /**
    * 执行选中的测试用例
    */
   const handleExecuteSelected = async () => {
@@ -539,6 +592,25 @@ export default function ExecuteAllPage() {
     setLogs([]) // 确保清空之前的日志
     setProgress(0)
     setCompletedTestCases(0)
+
+    // 上传touch_click.py脚本到远程设备
+    try {
+      console.log('上传touch_click.py脚本到远程设备...')
+      addLog(0, '正在上传touch_click.py脚本到远程设备...', 'info')
+      const uploadResult = await sshSettingsAPI.uploadTouchScript()
+      if (uploadResult.success) {
+        console.log('touch_click.py脚本上传成功:', uploadResult)
+        addLog(0, `touch_click.py脚本上传成功: ${uploadResult.remote_path}`, 'success')
+      } else {
+        console.warn('touch_click.py脚本上传失败:', uploadResult.message)
+        addLog(0, `touch_click.py脚本上传失败: ${uploadResult.message}`, 'warning')
+        // 上传失败不阻止测试执行，只是记录警告
+      }
+    } catch (error) {
+      console.error('上传touch_click.py脚本出错:', error)
+      addLog(0, `上传touch_click.py脚本出错: ${error instanceof Error ? error.message : '未知错误'}`, 'error')
+      // 上传失败不阻止测试执行，只是记录错误
+    }
     
     // 清空系统日志文件
     try {
@@ -772,6 +844,9 @@ export default function ExecuteAllPage() {
 
     setProgress(100) // 确保进度达到100%
     setExecuting(false) // 设置执行状态为完成
+
+    // 测试用例执行完成后，保存测试数据到report.json
+    await saveTestDataToReport(casesToExecute)
   }
 
   /**

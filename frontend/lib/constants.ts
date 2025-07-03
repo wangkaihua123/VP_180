@@ -44,6 +44,7 @@ export const API_ROUTES = {
     UPDATE: '/api/ssh/settings',
     TEST_CONNECTION: '/api/ssh/test',
     DISCONNECT: '/api/ssh/disconnect',
+    UPLOAD_TOUCH_SCRIPT: '/api/ssh/upload-touch-script',
   },
   SERIAL_SETTINGS: {
     GET_PORTS: '/api/serial/ports',
