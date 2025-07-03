@@ -169,6 +169,50 @@ def list_screenshots():
             'screenshots': []
         }), 500
 
+@files_bp.route('/upload/list')
+def list_upload_files():
+    """获取前端upload目录的文件列表"""
+    try:
+        # 前端upload目录路径
+        upload_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'public', 'img', 'upload')
+
+        if not os.path.exists(upload_dir):
+            logger.warning(f"Upload目录不存在: {upload_dir}")
+            return jsonify({
+                'success': True,
+                'files': [],
+                'message': 'Upload目录不存在'
+            })
+
+        try:
+            files = os.listdir(upload_dir)
+            # 过滤图片文件
+            image_files = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.tiff', '.tif', '.webp'))]
+
+            # 按修改时间排序（最新的在前）
+            image_files.sort(key=lambda x: os.path.getmtime(os.path.join(upload_dir, x)), reverse=True)
+
+            logger.info(f"在upload目录找到 {len(image_files)} 个图片文件")
+
+            return jsonify({
+                'success': True,
+                'files': image_files
+            })
+
+        except Exception as e:
+            logger.error(f"扫描upload目录时出错: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': f'扫描upload目录时出错: {str(e)}'
+            }), 500
+
+    except Exception as e:
+        logger.error(f"获取upload文件列表时出错: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': f'获取upload文件列表时出错: {str(e)}'
+        }), 500
+
 @files_bp.route('/clear', methods=['POST'])
 def clear_images():
     """清空图片和截图目录"""

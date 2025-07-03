@@ -870,199 +870,107 @@ export default function ExecuteAllPage() {
    */
   const loadTestCaseMedia = async (testCaseId: number) => {
     try {
-      // 调用API获取最新日志，包含图片和截图URL
-      const response = await testCasesAPI.getLatestLog(testCaseId);
-      
-      if (response.success && response.data) {
-        // 从/img目录中获取图片
-        try {
-          // 获取从本地匹配id_{testCaseId}_*.png的图片文件列表
-          const localImagesResponse = await fetch(`${API_BASE_URL}/api/files/images/list?testCaseId=${testCaseId}`);
-          if (!localImagesResponse.ok) {
-            throw new Error(`获取本地图片列表失败: ${localImagesResponse.statusText}`);
-          }
-          
-          const localImagesData = await localImagesResponse.json();
-          console.log(`测试用例 ${testCaseId} 的图片列表数据:`, localImagesData);
-          
-          // 使用API返回的图片详情
-          const imageDetails = localImagesData.imageDetails || [];
-          
-          // 处理本地图片
-          const testImages: TestImage[] = [];
-          imageDetails.forEach((imageDetail: any) => {
-            // 检查文件名是否符合格式：id_{步骤ID}_*.png
-            const filename = imageDetail.name;
-            const idMatch = filename.match(/^id_(\d+)_/);
-            if (idMatch) {
-              const stepId = parseInt(idMatch[1]);
-              
-              // 尝试从文件名中提取时间戳，如果无法提取则使用文件修改时间或当前时间
-              // 假设文件名格式可能包含时间信息，如id_1_20230415120000.png
-              const timestampMatch = filename.match(/_(\d{14})/);
-              let timestamp = new Date().toISOString(); // 默认使用当前时间
-
-              // 首先尝试从文件名中提取时间戳
-              if (timestampMatch && timestampMatch[1]) {
-                try {
-                  const timeStr = timestampMatch[1];
-                  // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
-                  const year = timeStr.substring(0, 4);
-                  const month = timeStr.substring(4, 6);
-                  const day = timeStr.substring(6, 8);
-                  const hour = timeStr.substring(8, 10);
-                  const minute = timeStr.substring(10, 12);
-                  const second = timeStr.substring(12, 14);
-
-                  const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
-                  timestamp = new Date(formattedTime).toISOString();
-                } catch (e) {
-                  console.warn('无法从文件名解析时间戳:', filename);
-                }
-              } else if (imageDetail.lastModified) {
-                // 如果文件名中没有时间戳，尝试使用文件修改时间
-                try {
-                  // lastModified可能是字符串或数字，需要正确处理
-                  const modifiedTime = typeof imageDetail.lastModified === 'string'
-                    ? imageDetail.lastModified
-                    : new Date(imageDetail.lastModified).toISOString();
-                  timestamp = modifiedTime;
-                } catch (e) {
-                  console.warn('无法解析文件修改时间:', imageDetail.lastModified);
-                }
-              }
-              
-              // 创建图片对象，使用API返回的路径
-              // 所有API请求都发送到Flask后端
-              let apiPath = imageDetail.path;
-              console.log(`🔍 调试图片URL构建: 文件名=${filename}`);
-              console.log(`🔍 调试图片URL构建: 原始路径=${imageDetail.path}`);
-
-              // 构建完整的后端API URL
-              apiPath = imageDetail.path && imageDetail.path.startsWith('/')
-                ? `${API_BASE_URL}${imageDetail.path}`
-                : `${API_BASE_URL}/${imageDetail.path || ''}`;
-              console.log(`✅ 构建图片URL (后端API): 原始路径=${imageDetail.path}, 最终URL=${apiPath}`);
-              
-              testImages.push({
-                id: filename,
-                testCaseId: testCaseId,
-                timestamp: timestamp,
-                title: `步骤 ${stepId} 图片`,
-                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
-                url: apiPath, // 使用带有后端基础URL的完整路径
-                type: 'image'
-              });
-              
-              console.log(`添加图片: ${filename}, 路径: ${apiPath}, 子目录: ${imageDetail.subDir || 'root'}`);
-            }
-          });
-          
-          console.log(`测试用例 ${testCaseId} 从本地加载到 ${testImages.length} 张图片`);
-          
-          // 更新状态
-          setTestCaseImages(prev => ({
-            ...prev,
-            [testCaseId]: testImages
-          }));
-        } catch (imgError) {
-          console.error(`加载本地图片失败:`, imgError);
-        }
-        
-        // 从/screenshot目录中获取截图
-        try {
-          // 获取从本地匹配id_{testCaseId}_*.png/tiff/jpg的截图文件列表
-          const localScreenshotsResponse = await fetch(`${API_BASE_URL}/api/files/screenshots/list?testCaseId=${testCaseId}`);
-          if (!localScreenshotsResponse.ok) {
-            throw new Error(`获取本地截图列表失败: ${localScreenshotsResponse.statusText}`);
-          }
-          
-          const localScreenshotsData = await localScreenshotsResponse.json();
-          console.log(`测试用例 ${testCaseId} 的截图列表数据:`, localScreenshotsData);
-          
-          // 使用API返回的截图详情
-          const screenshotDetails = localScreenshotsData.imageDetails || [];
-          
-          // 处理本地截图
-          const testScreenshots: TestImage[] = [];
-          screenshotDetails.forEach((screenshotDetail: any) => {
-            // 检查文件名是否符合格式：id_{步骤ID}_*.png/tiff/jpg
-            const filename = screenshotDetail.name;
-            const idMatch = filename.match(/^id_(\d+)_/);
-            if (idMatch) {
-              const stepId = parseInt(idMatch[1]);
-              
-              // 尝试从文件名中提取时间戳，如果无法提取则使用文件修改时间或当前时间
-              const timestampMatch = filename.match(/_(\d{14})/);
-              let timestamp = new Date().toISOString(); // 默认使用当前时间
-
-              // 首先尝试从文件名中提取时间戳
-              if (timestampMatch && timestampMatch[1]) {
-                try {
-                  const timeStr = timestampMatch[1];
-                  // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
-                  const year = timeStr.substring(0, 4);
-                  const month = timeStr.substring(4, 6);
-                  const day = timeStr.substring(6, 8);
-                  const hour = timeStr.substring(8, 10);
-                  const minute = timeStr.substring(10, 12);
-                  const second = timeStr.substring(12, 14);
-
-                  const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
-                  timestamp = new Date(formattedTime).toISOString();
-                } catch (e) {
-                  console.warn('无法从文件名解析时间戳:', filename);
-                }
-              } else if (screenshotDetail.lastModified) {
-                // 如果文件名中没有时间戳，尝试使用文件修改时间
-                try {
-                  // lastModified可能是字符串或数字，需要正确处理
-                  const modifiedTime = typeof screenshotDetail.lastModified === 'string'
-                    ? screenshotDetail.lastModified
-                    : new Date(screenshotDetail.lastModified).toISOString();
-                  timestamp = modifiedTime;
-                } catch (e) {
-                  console.warn('无法解析文件修改时间:', screenshotDetail.lastModified);
-                }
-              }
-              
-              // 创建截图对象，使用API返回的路径
-              // 所有API请求都发送到Flask后端
-              let apiPath = screenshotDetail.path;
-
-              // 构建完整的后端API URL
-              apiPath = screenshotDetail.path && screenshotDetail.path.startsWith('/')
-                ? `${API_BASE_URL}${screenshotDetail.path}`
-                : `${API_BASE_URL}/${screenshotDetail.path || ''}`;
-              console.log(`构建截图URL (后端API): 原始路径=${screenshotDetail.path}, 最终URL=${apiPath}`);
-              
-              testScreenshots.push({
-                id: filename,
-                testCaseId: testCaseId,
-                timestamp: timestamp,
-                title: `步骤 ${stepId} 截图`,
-                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
-                url: apiPath, // 使用带有后端基础URL的完整路径
-                type: 'screenshot'
-              });
-              
-              console.log(`添加截图: ${filename}, 路径: ${apiPath}`);
-            }
-          });
-          
-          console.log(`测试用例 ${testCaseId} 从本地加载到 ${testScreenshots.length} 张截图`);
-          
-          // 更新截图状态
-          setTestCaseScreenshots(prev => ({
-            ...prev,
-            [testCaseId]: testScreenshots
-          }));
-        } catch (screenshotError) {
-          console.error(`加载本地截图失败:`, screenshotError);
-        }
-      } else {
-        console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, response.message);
+      // 获取当前测试用例的数据，解析reference_screenshot
+      const currentTestCase = testCases.find(tc => tc.id === testCaseId);
+      if (!currentTestCase) {
+        console.warn(`未找到测试用例 ${testCaseId}`);
+        return;
       }
+
+      // 解析script_content获取reference_screenshot
+      let referenceScreenshots: string[] = [];
+      let referenceContents: string[] = [];
+
+      try {
+        const scriptContent = JSON.parse(currentTestCase.script_content || '{}');
+        const verificationSteps = scriptContent.verificationSteps || [];
+
+        verificationSteps.forEach((step: any) => {
+          if (step.reference_screenshot) {
+            referenceScreenshots.push(step.reference_screenshot);
+          }
+          if (step.reference_content) {
+            referenceContents.push(step.reference_content);
+          }
+        });
+
+        console.log(`测试用例 ${testCaseId} 的参考截图:`, referenceScreenshots);
+        console.log(`测试用例 ${testCaseId} 的参考内容:`, referenceContents);
+      } catch (parseError) {
+        console.error(`解析测试用例 ${testCaseId} 的script_content失败:`, parseError);
+      }
+
+      // 遍历frontend/public/img/upload目录，匹配图片
+      try {
+        // 直接读取前端upload目录的文件列表
+        const uploadResponse = await fetch('/api/files/upload/list');
+        if (!uploadResponse.ok) {
+          throw new Error(`获取upload目录文件列表失败: ${uploadResponse.statusText}`);
+        }
+
+        const uploadData = await uploadResponse.json();
+        console.log(`frontend/public/img/upload目录文件列表:`, uploadData);
+
+        const uploadFiles = uploadData.files || [];
+
+        // 处理匹配的图片
+        const testImages: TestImage[] = [];
+        const testScreenshots: TestImage[] = [];
+
+        uploadFiles.forEach((filename: string) => {
+          // 检查图片名称是否被reference_screenshot包含
+          const isReferenceScreenshot = referenceScreenshots.some(ref =>
+            filename.includes(ref) || ref.includes(filename)
+          );
+
+          // 检查图片名称是否被reference_content包含
+          const isReferenceContent = referenceContents.some(ref =>
+            filename.includes(ref) || ref.includes(filename)
+          );
+
+          if (isReferenceScreenshot || isReferenceContent) {
+            const timestamp = new Date().toISOString();
+
+            // 构建图片URL - 直接使用前端路径
+            const imageUrl = `/img/upload/${filename}`;
+
+            const imageData = {
+              id: filename,
+              testCaseId: testCaseId,
+              timestamp: timestamp,
+              title: isReferenceScreenshot ? '参考截图' : '参考内容',
+              description: `测试用例 ${testCaseId} 的${isReferenceScreenshot ? '参考截图' : '参考内容'}`,
+              url: imageUrl,
+              type: isReferenceScreenshot ? 'screenshot' : 'image'
+            } as TestImage;
+
+            if (isReferenceScreenshot) {
+              testScreenshots.push(imageData);
+              console.log(`匹配参考截图: ${filename}, 路径: ${imageUrl}`);
+            } else {
+              testImages.push(imageData);
+              console.log(`匹配参考内容: ${filename}, 路径: ${imageUrl}`);
+            }
+          }
+        });
+
+        console.log(`测试用例 ${testCaseId} 从upload目录匹配到 ${testImages.length} 张图片, ${testScreenshots.length} 张截图`);
+
+        // 更新状态
+        setTestCaseImages(prev => ({
+          ...prev,
+          [testCaseId]: testImages
+        }));
+
+        setTestCaseScreenshots(prev => ({
+          ...prev,
+          [testCaseId]: testScreenshots
+        }));
+
+      } catch (uploadError) {
+        console.error(`遍历upload目录失败:`, uploadError);
+      }
+
     } catch (error) {
       console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, error);
     }
