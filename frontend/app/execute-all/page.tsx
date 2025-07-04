@@ -10,7 +10,7 @@
  */
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, Suspense } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
@@ -50,7 +50,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import { TestCaseList } from "@/components/TestCaseList"
 import { testCasesAPI, TestExecutionResponse } from "@/lib/api/test-cases"
-import { sshSettingsAPI } from "@/lib/api"
 import { API_BASE_URL } from "@/lib/constants"
 import type { TestCase } from "@/types/api"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -178,7 +177,7 @@ const convertImageUrlToApiPath = (url: string): string => {
 /**
  * 测试用例执行页面组件
  */
-export default function ExecuteAllPage() {
+function ExecuteAllPageContent() {
   const router = useRouter()
   const { toast } = useToast()
   const [logs, setLogs] = useState<TestCaseLog[]>([])
@@ -530,58 +529,6 @@ export default function ExecuteAllPage() {
   }
 
   /**
-   * 保存测试数据到report.json
-   * @param executedTestCases 已执行的测试用例
-   */
-  const saveTestDataToReport = async (executedTestCases: TestCaseWithStatus[]) => {
-    try {
-      console.log('开始保存测试数据到report.json...')
-
-      // 统计测试结果
-      const passedCases = executedTestCases.filter(tc => tc.status === 'completed').length
-      const failedCases = executedTestCases.filter(tc => tc.status === 'failed' || tc.status === 'error').length
-      const totalCases = executedTestCases.length
-      const passRate = totalCases > 0 ? Math.round((passedCases / totalCases) * 100) : 0
-
-      // 构建测试数据
-      const testData = {
-        testResults: executedTestCases.map(tc => ({
-          testId: tc.id,
-          testName: tc.title || tc.name || `测试用例 #${tc.id}`,
-          testResult: tc.status === 'completed' ? '通过' :
-                     tc.status === 'failed' ? '失败' :
-                     tc.status === 'error' ? '异常' : '未知',
-          lastExecutionTime: new Date().toISOString(),
-          testType: tc.type || '功能测试',
-          description: tc.description || '',
-          executionDuration: 0 // 可以后续添加执行时间统计
-        })),
-        summary: {
-          totalCases: totalCases,
-          passedCases: passedCases,
-          failedCases: failedCases,
-          passRate: passRate,
-          executionTime: new Date().toISOString(),
-          project: 'VP-180项目'
-        }
-      }
-
-      // 调用API保存测试数据
-      const saveResult = await testCasesAPI.saveReport(testData)
-      if (saveResult.success) {
-        console.log('测试数据已保存到report.json:', saveResult)
-        addLog(0, '测试数据已保存到report.json', 'success')
-      } else {
-        console.error('保存测试数据失败:', saveResult.message)
-        addLog(0, `保存测试数据失败: ${saveResult.message}`, 'error')
-      }
-    } catch (error) {
-      console.error('保存测试数据出错:', error)
-      addLog(0, `保存测试数据出错: ${error instanceof Error ? error.message : '未知错误'}`, 'error')
-    }
-  }
-
-  /**
    * 执行选中的测试用例
    */
   const handleExecuteSelected = async () => {
@@ -592,25 +539,6 @@ export default function ExecuteAllPage() {
     setLogs([]) // 确保清空之前的日志
     setProgress(0)
     setCompletedTestCases(0)
-
-    // 上传touch_click.py脚本到远程设备
-    try {
-      console.log('上传touch_click.py脚本到远程设备...')
-      addLog(0, '正在上传touch_click.py脚本到远程设备...', 'info')
-      const uploadResult = await sshSettingsAPI.uploadTouchScript()
-      if (uploadResult.success) {
-        console.log('touch_click.py脚本上传成功:', uploadResult)
-        addLog(0, `touch_click.py脚本上传成功: ${uploadResult.remote_path}`, 'success')
-      } else {
-        console.warn('touch_click.py脚本上传失败:', uploadResult.message)
-        addLog(0, `touch_click.py脚本上传失败: ${uploadResult.message}`, 'warning')
-        // 上传失败不阻止测试执行，只是记录警告
-      }
-    } catch (error) {
-      console.error('上传touch_click.py脚本出错:', error)
-      addLog(0, `上传touch_click.py脚本出错: ${error instanceof Error ? error.message : '未知错误'}`, 'error')
-      // 上传失败不阻止测试执行，只是记录错误
-    }
     
     // 清空系统日志文件
     try {
@@ -844,9 +772,6 @@ export default function ExecuteAllPage() {
 
     setProgress(100) // 确保进度达到100%
     setExecuting(false) // 设置执行状态为完成
-
-    // 测试用例执行完成后，保存测试数据到report.json
-    await saveTestDataToReport(casesToExecute)
   }
 
   /**
@@ -945,107 +870,304 @@ export default function ExecuteAllPage() {
    */
   const loadTestCaseMedia = async (testCaseId: number) => {
     try {
-      // 获取当前测试用例的数据，解析reference_screenshot
-      const currentTestCase = testCases.find(tc => tc.id === testCaseId);
-      if (!currentTestCase) {
-        console.warn(`未找到测试用例 ${testCaseId}`);
-        return;
-      }
+      // 调用API获取最新日志，包含图片和截图URL
+      const response = await testCasesAPI.getLatestLog(testCaseId);
 
-      // 解析script_content获取reference_screenshot
-      let referenceScreenshots: string[] = [];
-      let referenceContents: string[] = [];
-
-      try {
-        const scriptContent = JSON.parse(currentTestCase.script_content || '{}');
-        const verificationSteps = scriptContent.verificationSteps || [];
-
-        verificationSteps.forEach((step: any) => {
-          if (step.reference_screenshot) {
-            referenceScreenshots.push(step.reference_screenshot);
+      if (response.success && response.data) {
+        // 从/img目录中获取图片
+        try {
+          // 获取从本地匹配id_{testCaseId}_*.png的图片文件列表
+          const localImagesResponse = await fetch(`${API_BASE_URL}/api/files/images/list?testCaseId=${testCaseId}`);
+          if (!localImagesResponse.ok) {
+            throw new Error(`获取本地图片列表失败: ${localImagesResponse.statusText}`);
           }
-          if (step.reference_content) {
-            referenceContents.push(step.reference_content);
-          }
-        });
 
-        console.log(`测试用例 ${testCaseId} 的参考截图:`, referenceScreenshots);
-        console.log(`测试用例 ${testCaseId} 的参考内容:`, referenceContents);
-      } catch (parseError) {
-        console.error(`解析测试用例 ${testCaseId} 的script_content失败:`, parseError);
-      }
+          const localImagesData = await localImagesResponse.json();
+          console.log(`测试用例 ${testCaseId} 的图片列表数据:`, localImagesData);
 
-      // 遍历frontend/public/img/upload目录，匹配图片
-      try {
-        // 直接读取前端upload目录的文件列表
-        const uploadResponse = await fetch('/api/files/upload/list');
-        if (!uploadResponse.ok) {
-          throw new Error(`获取upload目录文件列表失败: ${uploadResponse.statusText}`);
-        }
+          // 使用API返回的图片详情
+          const imageDetails = localImagesData.imageDetails || [];
 
-        const uploadData = await uploadResponse.json();
-        console.log(`frontend/public/img/upload目录文件列表:`, uploadData);
+          // 处理本地图片
+          const testImages: TestImage[] = [];
+          imageDetails.forEach((imageDetail: any) => {
+            // 检查文件名是否符合格式：id_{步骤ID}_*.png
+            const filename = imageDetail.name;
+            const idMatch = filename.match(/^id_(\d+)_/);
+            if (idMatch) {
+              const stepId = parseInt(idMatch[1]);
 
-        const uploadFiles = uploadData.files || [];
+              // 尝试从文件名中提取时间戳，如果无法提取则使用文件修改时间或当前时间
+              // 假设文件名格式可能包含时间信息，如id_1_20230415120000.png
+              const timestampMatch = filename.match(/_(\d{14})/);
+              let timestamp = new Date().toISOString(); // 默认使用当前时间
 
-        // 处理匹配的图片
-        const testImages: TestImage[] = [];
-        const testScreenshots: TestImage[] = [];
+              // 首先尝试从文件名中提取时间戳
+              if (timestampMatch && timestampMatch[1]) {
+                try {
+                  const timeStr = timestampMatch[1];
+                  // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
+                  const year = timeStr.substring(0, 4);
+                  const month = timeStr.substring(4, 6);
+                  const day = timeStr.substring(6, 8);
+                  const hour = timeStr.substring(8, 10);
+                  const minute = timeStr.substring(10, 12);
+                  const second = timeStr.substring(12, 14);
 
-        uploadFiles.forEach((filename: string) => {
-          // 检查图片名称是否被reference_screenshot包含
-          const isReferenceScreenshot = referenceScreenshots.some(ref =>
-            filename.includes(ref) || ref.includes(filename)
-          );
+                  const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+                  timestamp = new Date(formattedTime).toISOString();
+                } catch (e) {
+                  console.warn('无法从文件名解析时间戳:', filename);
+                }
+              } else if (imageDetail.lastModified) {
+                // 如果文件名中没有时间戳，尝试使用文件修改时间
+                try {
+                  // lastModified可能是字符串或数字，需要正确处理
+                  const modifiedTime = typeof imageDetail.lastModified === 'string'
+                    ? imageDetail.lastModified
+                    : new Date(imageDetail.lastModified).toISOString();
+                  timestamp = modifiedTime;
+                } catch (e) {
+                  console.warn('无法解析文件修改时间:', imageDetail.lastModified);
+                }
+              }
 
-          // 检查图片名称是否被reference_content包含
-          const isReferenceContent = referenceContents.some(ref =>
-            filename.includes(ref) || ref.includes(filename)
-          );
+              // 创建图片对象，使用API返回的路径
+              // 所有API请求都发送到Flask后端
+              let apiPath = imageDetail.path;
+              console.log(`🔍 调试图片URL构建: 文件名=${filename}`);
+              console.log(`🔍 调试图片URL构建: 原始路径=${imageDetail.path}`);
 
-          if (isReferenceScreenshot || isReferenceContent) {
-            const timestamp = new Date().toISOString();
+              // 构建完整的后端API URL
+              apiPath = imageDetail.path && imageDetail.path.startsWith('/')
+                ? `${API_BASE_URL}${imageDetail.path}`
+                : `${API_BASE_URL}/${imageDetail.path || ''}`;
+              console.log(`✅ 构建图片URL (后端API): 原始路径=${imageDetail.path}, 最终URL=${apiPath}`);
 
-            // 构建图片URL - 直接使用前端路径
-            const imageUrl = `/img/upload/${filename}`;
+              testImages.push({
+                id: filename,
+                testCaseId: testCaseId,
+                timestamp: timestamp,
+                title: `步骤 ${stepId} 图片`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的图片`,
+                url: apiPath, // 使用带有后端基础URL的完整路径
+                type: 'image'
+              });
 
-            const imageData = {
-              id: filename,
-              testCaseId: testCaseId,
-              timestamp: timestamp,
-              title: isReferenceScreenshot ? '参考截图' : '参考内容',
-              description: `测试用例 ${testCaseId} 的${isReferenceScreenshot ? '参考截图' : '参考内容'}`,
-              url: imageUrl,
-              type: isReferenceScreenshot ? 'screenshot' : 'image'
-            } as TestImage;
-
-            if (isReferenceScreenshot) {
-              testScreenshots.push(imageData);
-              console.log(`匹配参考截图: ${filename}, 路径: ${imageUrl}`);
-            } else {
-              testImages.push(imageData);
-              console.log(`匹配参考内容: ${filename}, 路径: ${imageUrl}`);
+              console.log(`添加图片: ${filename}, 路径: ${apiPath}, 子目录: ${imageDetail.subDir || 'root'}`);
             }
+          });
+
+          // 加载frontend/public/img/upload下的图片，通过sessionId匹配
+          try {
+            console.log(`开始加载测试用例 ${testCaseId} 的upload图片`);
+
+            // 获取测试用例详情以获取sessionId
+            const testCaseResponse = await testCasesAPI.get(testCaseId);
+            if (testCaseResponse.success && testCaseResponse.data) {
+              const testCaseData = testCaseResponse.data;
+              let sessionId = null;
+
+              // 尝试从script_content中解析sessionId
+              if (testCaseData.script_content) {
+                try {
+                  const scriptContent = typeof testCaseData.script_content === 'string'
+                    ? JSON.parse(testCaseData.script_content)
+                    : testCaseData.script_content;
+                  sessionId = scriptContent.sessionId;
+                } catch (e) {
+                  console.warn('无法解析script_content中的sessionId:', e);
+                }
+              }
+
+              if (sessionId) {
+                console.log(`找到测试用例 ${testCaseId} 的sessionId: ${sessionId}`);
+
+                // 加载frontend/public/img/upload下的图片
+                const loadUploadImages = () => {
+                  const uploadImages: TestImage[] = [];
+
+                  // 检查sessionStorage中是否有匹配sessionId的图片数据
+                  for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    if (key && key.startsWith('upload_') && key.includes(sessionId)) {
+                      try {
+                        const storedData = sessionStorage.getItem(key);
+                        if (storedData) {
+                          const fileData = JSON.parse(storedData);
+                          const fileName = fileData.name;
+
+                          // 从文件名中提取步骤ID
+                          const stepMatch = fileName.match(/_(\d+)\.png$/);
+                          const stepId = stepMatch ? parseInt(stepMatch[1]) : 0;
+
+                          console.log(`从sessionStorage找到upload图片: ${fileName}`);
+                          uploadImages.push({
+                            id: `upload_${fileName}`,
+                            testCaseId: testCaseId,
+                            timestamp: new Date(fileData.timestamp || Date.now()).toISOString(),
+                            title: `上传图片 ${stepId > 0 ? `步骤 ${stepId}` : ''}`,
+                            description: `测试用例 ${testCaseId} 的上传图片`,
+                            url: fileData.data, // 使用Base64数据
+                            type: 'image'
+                          });
+                        }
+                      } catch (e) {
+                        console.warn('解析sessionStorage图片数据失败:', e);
+                      }
+                    }
+                  }
+
+                  // 如果sessionStorage中没有找到，尝试直接访问文件
+                  if (uploadImages.length === 0) {
+                    console.log('sessionStorage中没有找到图片，尝试直接访问文件');
+                    const possibleExtensions = ['png', 'jpg', 'jpeg'];
+
+                    for (let i = 1; i <= 10; i++) {
+                      for (const ext of possibleExtensions) {
+                        const possibleNames = [
+                          `${sessionId}_${i.toString().padStart(3, '0')}.${ext}`,
+                          `screen_capture_${sessionId}_${i.toString().padStart(3, '0')}.${ext}`
+                        ];
+
+                        for (const fileName of possibleNames) {
+                          const fileUrl = `/img/upload/${fileName}`;
+
+                          // 创建一个图片对象，但不等待加载完成
+                          uploadImages.push({
+                            id: `upload_${fileName}`,
+                            testCaseId: testCaseId,
+                            timestamp: new Date().toISOString(),
+                            title: `上传图片 步骤 ${i}`,
+                            description: `测试用例 ${testCaseId} 的上传图片`,
+                            url: fileUrl,
+                            type: 'image'
+                          });
+                          break; // 每个步骤只添加一个
+                        }
+                      }
+                    }
+                  }
+
+                  return uploadImages;
+                };
+
+                const uploadImages = loadUploadImages();
+                testImages.push(...uploadImages);
+                console.log(`从upload目录加载了 ${uploadImages.length} 张图片`);
+              } else {
+                console.log(`测试用例 ${testCaseId} 没有找到sessionId`);
+              }
+            }
+          } catch (uploadError) {
+            console.error('加载upload图片失败:', uploadError);
           }
-        });
 
-        console.log(`测试用例 ${testCaseId} 从upload目录匹配到 ${testImages.length} 张图片, ${testScreenshots.length} 张截图`);
+          console.log(`测试用例 ${testCaseId} 总共加载到 ${testImages.length} 张图片`);
 
-        // 更新状态
-        setTestCaseImages(prev => ({
-          ...prev,
-          [testCaseId]: testImages
-        }));
+          // 更新状态
+          setTestCaseImages(prev => ({
+            ...prev,
+            [testCaseId]: testImages
+          }));
+        } catch (imgError) {
+          console.error(`加载本地图片失败:`, imgError);
+        }
+        
+        // 从/screenshot目录中获取截图
+        try {
+          // 获取从本地匹配id_{testCaseId}_*.png/tiff/jpg的截图文件列表
+          const localScreenshotsResponse = await fetch(`${API_BASE_URL}/api/files/screenshots/list?testCaseId=${testCaseId}`);
+          if (!localScreenshotsResponse.ok) {
+            throw new Error(`获取本地截图列表失败: ${localScreenshotsResponse.statusText}`);
+          }
+          
+          const localScreenshotsData = await localScreenshotsResponse.json();
+          console.log(`测试用例 ${testCaseId} 的截图列表数据:`, localScreenshotsData);
+          
+          // 使用API返回的截图详情
+          const screenshotDetails = localScreenshotsData.imageDetails || [];
+          
+          // 处理本地截图
+          const testScreenshots: TestImage[] = [];
+          screenshotDetails.forEach((screenshotDetail: any) => {
+            // 检查文件名是否符合格式：id_{步骤ID}_*.png/tiff/jpg
+            const filename = screenshotDetail.name;
+            const idMatch = filename.match(/^id_(\d+)_/);
+            if (idMatch) {
+              const stepId = parseInt(idMatch[1]);
+              
+              // 尝试从文件名中提取时间戳，如果无法提取则使用文件修改时间或当前时间
+              const timestampMatch = filename.match(/_(\d{14})/);
+              let timestamp = new Date().toISOString(); // 默认使用当前时间
 
-        setTestCaseScreenshots(prev => ({
-          ...prev,
-          [testCaseId]: testScreenshots
-        }));
+              // 首先尝试从文件名中提取时间戳
+              if (timestampMatch && timestampMatch[1]) {
+                try {
+                  const timeStr = timestampMatch[1];
+                  // 格式: 年(4)月(2)日(2)时(2)分(2)秒(2)
+                  const year = timeStr.substring(0, 4);
+                  const month = timeStr.substring(4, 6);
+                  const day = timeStr.substring(6, 8);
+                  const hour = timeStr.substring(8, 10);
+                  const minute = timeStr.substring(10, 12);
+                  const second = timeStr.substring(12, 14);
 
-      } catch (uploadError) {
-        console.error(`遍历upload目录失败:`, uploadError);
+                  const formattedTime = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+                  timestamp = new Date(formattedTime).toISOString();
+                } catch (e) {
+                  console.warn('无法从文件名解析时间戳:', filename);
+                }
+              } else if (screenshotDetail.lastModified) {
+                // 如果文件名中没有时间戳，尝试使用文件修改时间
+                try {
+                  // lastModified可能是字符串或数字，需要正确处理
+                  const modifiedTime = typeof screenshotDetail.lastModified === 'string'
+                    ? screenshotDetail.lastModified
+                    : new Date(screenshotDetail.lastModified).toISOString();
+                  timestamp = modifiedTime;
+                } catch (e) {
+                  console.warn('无法解析文件修改时间:', screenshotDetail.lastModified);
+                }
+              }
+              
+              // 创建截图对象，使用API返回的路径
+              // 所有API请求都发送到Flask后端
+              let apiPath = screenshotDetail.path;
+
+              // 构建完整的后端API URL
+              apiPath = screenshotDetail.path && screenshotDetail.path.startsWith('/')
+                ? `${API_BASE_URL}${screenshotDetail.path}`
+                : `${API_BASE_URL}/${screenshotDetail.path || ''}`;
+              console.log(`构建截图URL (后端API): 原始路径=${screenshotDetail.path}, 最终URL=${apiPath}`);
+              
+              testScreenshots.push({
+                id: filename,
+                testCaseId: testCaseId,
+                timestamp: timestamp,
+                title: `步骤 ${stepId} 截图`,
+                description: `测试用例 ${testCaseId} 步骤 ${stepId} 的截图`,
+                url: apiPath, // 使用带有后端基础URL的完整路径
+                type: 'screenshot'
+              });
+              
+              console.log(`添加截图: ${filename}, 路径: ${apiPath}`);
+            }
+          });
+          
+          console.log(`测试用例 ${testCaseId} 从本地加载到 ${testScreenshots.length} 张截图`);
+          
+          // 更新截图状态
+          setTestCaseScreenshots(prev => ({
+            ...prev,
+            [testCaseId]: testScreenshots
+          }));
+        } catch (screenshotError) {
+          console.error(`加载本地截图失败:`, screenshotError);
+        }
+      } else {
+        console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, response.message);
       }
-
     } catch (error) {
       console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, error);
     }
@@ -2133,3 +2255,18 @@ export default function ExecuteAllPage() {
   )
 }
 
+// 默认导出的页面组件，包装在Suspense中
+export default function ExecuteAllPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2">加载中...</p>
+        </div>
+      </div>
+    }>
+      <ExecuteAllPageContent />
+    </Suspense>
+  )
+}

@@ -10,6 +10,10 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
+interface PageProps {
+  params: Promise<{ id: string }>
+}
+
 // 模拟数据
 const testCase = {
   id: 1,
@@ -74,7 +78,7 @@ const testCase = {
   ],
 }
 
-export default function TestLogsPage({ params }: { params: { id: string } }) {
+export default function TestLogsPage({ params }: PageProps) {
   const [expandedSteps, setExpandedSteps] = useState<number[]>([])
 
   const toggleStep = (stepId: number) => {

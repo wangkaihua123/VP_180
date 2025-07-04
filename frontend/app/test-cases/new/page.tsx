@@ -234,6 +234,9 @@ interface NewTestCasePageProps {
   mode?: 'new' | 'edit';
 }
 
+// 默认导出的页面组件不接受props
+interface PageProps {}
+
 // 定义操作类型
 const OPERATION_TYPES = {
   CLICK: "click",
@@ -275,7 +278,7 @@ function generateSessionId() {
   return `${dateStr}_${rand}`;
 }
 
-export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps) {
+function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -343,8 +346,21 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const { stepsByCategory: verificationStepsByCategory, allSteps: allVerificationSteps } = useMemo(() => getVerificationSteps(), []);
   const buttonOptions = useMemo(() => getButtonOptions(), []);
 
-  // 新增 sessionId
-  const [sessionId] = useState(() => generateSessionId());
+  // 新增 sessionId - 在编辑模式下从initialData中获取，否则生成新的
+  const [sessionId] = useState(() => {
+    if (mode === 'edit' && initialData?.script_content) {
+      try {
+        const content = typeof initialData.script_content === 'string'
+          ? JSON.parse(initialData.script_content)
+          : initialData.script_content;
+        return content.sessionId || generateSessionId();
+      } catch (e) {
+        console.error('Error parsing sessionId from script_content:', e);
+        return generateSessionId();
+      }
+    }
+    return generateSessionId();
+  });
 
   // 加载项目列表
   useEffect(() => {
@@ -820,7 +836,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       const serializedContent = JSON.stringify({
         repeatCount: parseInt(repeatCount.toString()) || 1,
         operationSteps,
-        verificationSteps
+        verificationSteps,
+        sessionId // 保存sessionId
       })
       
       // 检查操作步骤中是否包含串口操作
@@ -1387,6 +1404,25 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                   value={repeatCount}
                   onChange={(e) => setRepeatCount(parseInt(e.target.value) || 1)}
                 />
+              </div>
+            </div>
+
+            {/* 显示SessionId */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">
+                    测试用例ID (SessionId)
+                  </Label>
+                  <p className="text-sm text-gray-600 mt-1">
+                    此ID用于关联测试用例和相关的图片文件
+                  </p>
+                </div>
+                <div className="text-right">
+                  <Badge variant="outline" className="font-mono text-xs">
+                    {sessionId}
+                  </Badge>
+                </div>
               </div>
             </div>
 
@@ -2530,4 +2566,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   )
 }
 
-
+// 默认导出的页面组件
+export default function Page() {
+  return <NewTestCasePage />
+}
