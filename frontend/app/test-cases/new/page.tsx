@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { motion } from "framer-motion"
@@ -275,7 +275,7 @@ function generateSessionId() {
   return `${dateStr}_${rand}`;
 }
 
-export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps) {
+export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCasePageProps): React.ReactElement {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -639,15 +639,54 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   };
 
   // 生成上传图片的文件名，使用验证步骤ID
-  const getNextUploadFileName = (field: keyof VerificationStep, stepId: number) => {
+  const getNextUploadFileName = (field: keyof VerificationStep, stepId: number, isManualUpload: boolean = false) => {
     // 使用步骤ID作为文件名的末尾数字
     const idStr = stepId.toString().padStart(3, '0');
-    // 根据字段类型区分前缀
+
+    // 如果是手动上传，统一使用简单格式
+    if (isManualUpload) {
+      return `${sessionId}_${idStr}.png`;
+    }
+
+    // 自动截图时根据字段类型区分前缀
     const prefix = field === 'reference_screenshot' ? 'screen_capture' : 'upload';
     if (prefix === 'screen_capture') {
       return `${prefix}_${sessionId}_${idStr}.png`;
-    } else {
-      return `${sessionId}_${idStr}.png`;
+    }
+
+    // 默认返回upload格式
+    return `${prefix}_${sessionId}_${idStr}.png`;
+  };
+
+  // 保存图片到upload目录的函数
+  const saveImageToUploadDirectory = async (fileName: string, base64Data: string) => {
+    try {
+      // 将Base64数据转换为Blob
+      const response = await fetch(base64Data);
+      const blob = await response.blob();
+
+      // 创建FormData
+      const formData = new FormData();
+      formData.append('file', blob, fileName);
+      formData.append('fileName', fileName);
+      formData.append('fileType', 'screenshot'); // 指定保存到前端upload目录
+
+      // 发送到后端API保存文件
+      const uploadResponse = await fetch(`${API_BASE_URL}/api/files/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`保存文件失败: ${uploadResponse.statusText}`);
+      }
+
+      const result = await uploadResponse.json();
+      console.log('文件保存成功:', result);
+      return result;
+    } catch (error) {
+      console.error('保存图片到upload目录失败:', error);
+      throw error;
     }
   };
 
@@ -680,8 +719,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       updateVerificationStep(id, "isImageLoading", true);
       updateVerificationStep(id, "imageError", undefined);
 
-      // 生成自定义文件名
-      const customFileName = getNextUploadFileName(field, id);
+      // 生成自定义文件名 - 手动上传标记为true
+      const customFileName = getNextUploadFileName(field, id, true);
 
       // 显示上传中提示
       toast({
@@ -699,25 +738,39 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
 
           // 创建一个Image对象来验证图片
           const img = document.createElement('img');
-          img.onload = () => {
-            // 图片加载成功，保存文件名
-            updateVerificationStep(id, field, fileName);
-            updateVerificationStep(id, "isImageLoading", false);
+          img.onload = async () => {
+            try {
+              // 图片加载成功，先保存到文件系统
+              await saveImageToUploadDirectory(fileName, result);
 
-            // 将文件数据保存到sessionStorage，用于后续处理
-            const fileData = {
-              name: fileName,
-              data: result,
-              type: file.type,
-              size: file.size,
-              timestamp: Date.now()
-            };
-            sessionStorage.setItem(`upload_${fileName}`, JSON.stringify(fileData));
+              // 保存文件名到验证步骤
+              updateVerificationStep(id, field, fileName);
+              updateVerificationStep(id, "isImageLoading", false);
 
-            toast({
-              title: "上传成功",
-              description: "图片已成功处理",
-            });
+              // 将文件数据保存到sessionStorage，用于后续处理
+              const fileData = {
+                name: fileName,
+                data: result,
+                type: file.type,
+                size: file.size,
+                timestamp: Date.now()
+              };
+              sessionStorage.setItem(`upload_${fileName}`, JSON.stringify(fileData));
+
+              toast({
+                title: "上传成功",
+                description: "图片已成功保存到upload目录",
+              });
+            } catch (error) {
+              console.error('保存图片到文件系统失败:', error);
+              updateVerificationStep(id, "isImageLoading", false);
+              updateVerificationStep(id, "imageError", "保存图片失败");
+              toast({
+                title: "保存失败",
+                description: "图片保存到文件系统失败",
+                variant: "destructive"
+              });
+            }
           };
 
           img.onerror = () => {
@@ -839,7 +892,8 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
         create_time: new Date().toISOString().split('T')[0],
         serial_connect: hasSerialOperation,
         project_name: projectName,
-        project_id: projectId
+        project_id: projectId,
+        sessionId: sessionId  // 添加sessionId到测试用例数据中
       }
 
       if (mode === 'edit' && initialData?.id) {
@@ -867,7 +921,6 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       setIsLoading(false)
     }
   }
-  
 
 
   const [isRecording, setIsRecording] = useState(false)
@@ -2529,5 +2582,3 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     </div>
   )
 }
-
-

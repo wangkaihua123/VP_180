@@ -74,11 +74,14 @@ const nextConfig = {
     ];
   },
   env: {
-    // 使用环境变量，不要写死默认值
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://10.0.18.133:5000',
-    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL || 'http://10.0.18.133:5000',
-    FRONTEND_HOST: process.env.FRONTEND_HOST || '10.0.18.133',
-    FRONTEND_PORT: process.env.FRONTEND_PORT || '3000',
+    // 从环境变量动态构建URL，统一管理IP配置
+    NEXT_PUBLIC_BACKEND_HOST: process.env.NEXT_PUBLIC_BACKEND_HOST || '10.0.18.134',
+    NEXT_PUBLIC_BACKEND_PORT: process.env.NEXT_PUBLIC_BACKEND_PORT || '5000',
+    NEXT_PUBLIC_FRONTEND_HOST: process.env.NEXT_PUBLIC_FRONTEND_HOST || '10.0.18.134',
+    NEXT_PUBLIC_FRONTEND_PORT: process.env.NEXT_PUBLIC_FRONTEND_PORT || '3000',
+    // 自动构建的API URLs
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || `http://${process.env.NEXT_PUBLIC_BACKEND_HOST || '10.0.18.134'}:${process.env.NEXT_PUBLIC_BACKEND_PORT || '5000'}`,
+    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL || `http://${process.env.NEXT_PUBLIC_BACKEND_HOST || '10.0.18.134'}:${process.env.NEXT_PUBLIC_BACKEND_PORT || '5000'}`,
   },
 }
 

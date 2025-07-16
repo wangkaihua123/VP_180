@@ -128,5 +128,57 @@
     "serial_connect": false,
     "project_name": "VP-180",
     "project_id": "5604442429"
+  },
+  {
+    "id": 28,
+    "title": "123213",
+    "type": "功能测试",
+    "status": "未运行",
+    "create_time": "2025-07-04 10:18",
+    "last_execution_time": "",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取操作界面\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"normal\", \"stepType\": \"test-case\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"截图精准匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_screenshot\": \"screen_capture_20250704101741_410_001.png\", \"operation_screenshot\": \"1\"}, {\"id\": 2, \"verification_key\": \"截图包含匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_content\": \"20250704101741_410_002.png\", \"operation_screenshot\": \"1\"}]}",
+    "serial_connect": false,
+    "project_name": "VP-180",
+    "project_id": "5604442429"
+  },
+  {
+    "id": 29,
+    "title": "2222",
+    "type": "功能测试",
+    "status": "通过",
+    "create_time": "2025-07-04 10:31",
+    "last_execution_time": "2025-07-04 10:50:15",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取操作界面\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"normal\", \"stepType\": \"test-case\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"截图精准匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_screenshot\": \"screen_capture_20250704103120_204_001.png\", \"operation_screenshot\": \"1\"}, {\"id\": 2, \"verification_key\": \"截图包含匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_content\": \"20250704103120_204_002.png\", \"operation_screenshot\": \"1\"}]}",
+    "serial_connect": false,
+    "project_name": "VP-180",
+    "project_id": "5604442429"
+  },
+  {
+    "id": 30,
+    "title": "2222",
+    "type": "功能测试",
+    "status": "通过",
+    "create_time": "2025-07-04 10:50",
+    "last_execution_time": "2025-07-04 10:54:39",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取操作界面\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"normal\", \"stepType\": \"test-case\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"截图精准匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_screenshot\": \"screen_capture_20250704104930_152_001.png\", \"operation_screenshot\": \"1\"}, {\"id\": 2, \"verification_key\": \"截图包含匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_content\": \"20250704104930_152_002.png\", \"operation_screenshot\": \"1\"}]}",
+    "serial_connect": false,
+    "project_name": "VP-180",
+    "project_id": "5604442429"
+  },
+  {
+    "id": 31,
+    "title": "12312",
+    "type": "功能测试",
+    "status": "失败",
+    "create_time": "2025-07-04 10:54",
+    "last_execution_time": "2025-07-16 09:09:49",
+    "description": "",
+    "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 1, \"operation_key\": \"获取操作界面\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"normal\", \"stepType\": \"test-case\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"截图精准匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_screenshot\": \"screen_capture_20250704105243_751_001.png\", \"operation_screenshot\": \"1\"}, {\"id\": 2, \"verification_key\": \"截图包含匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_content\": \"upload_20250704105243_751_002.png\", \"operation_screenshot\": \"1\"}]}",
+    "serial_connect": false,
+    "project_name": "VP-180",
+    "project_id": "5604442429"
   }
 ]

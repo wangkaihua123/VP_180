@@ -1,12 +1,13 @@
 /**
  * 项目设置API模块
- * 
+ *
  * 该模块提供了与项目设置相关的API调用:
  * - 获取项目列表 (getProjects)
  * - 创建项目 (createProject)
  * - 更新项目 (updateProject)
  * - 删除项目 (deleteProject)
  */
+import { getBackendUrl } from '../config';
 
 // 定义项目接口
 export interface Project {
@@ -50,8 +51,8 @@ export const projectSettingsAPI = {
    */
   getProjects: async (): Promise<Project[]> => {
     try {
-      // 调用Flask后端API
-      const response = await fetch('http://10.0.18.133:5000/api/settings/projects');
+      // 调用Flask后端API - 使用统一的配置管理
+      const response = await fetch(`${getBackendUrl()}/api/settings/projects`);
       if (!response.ok) {
         throw new Error(`获取项目列表失败: ${response.statusText}`);
       }
@@ -70,8 +71,8 @@ export const projectSettingsAPI = {
    */
   createProject: async (project: CreateProjectPayload): Promise<Project> => {
     try {
-      // 调用Flask后端API
-      const response = await fetch('http://10.0.18.133:5000/api/settings/projects', {
+      // 调用Flask后端API - 使用统一的配置管理
+      const response = await fetch(`${getBackendUrl()}/api/settings/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,8 +99,8 @@ export const projectSettingsAPI = {
    */
   updateProject: async (project: UpdateProjectPayload): Promise<Project> => {
     try {
-      // 调用Flask后端API
-      const response = await fetch(`http://10.0.18.133:5000/api/settings/projects/${project.id}`, {
+      // 调用Flask后端API - 使用统一的配置管理
+      const response = await fetch(`${getBackendUrl()}/api/settings/projects/${project.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -126,8 +127,8 @@ export const projectSettingsAPI = {
    */
   deleteProject: async (id: string): Promise<{success: boolean; message: string}> => {
     try {
-      // 调用Flask后端API
-      const response = await fetch(`http://10.0.18.133:5000/api/settings/projects/${id}`, {
+      // 调用Flask后端API - 使用统一的配置管理
+      const response = await fetch(`${getBackendUrl()}/api/settings/projects/${id}`, {
         method: 'DELETE',
       });
 

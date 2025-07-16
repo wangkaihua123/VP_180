@@ -1,40 +1,10 @@
 /**
  * 应用常量配置
  */
+import { getBackendUrl } from './config';
 
-// 自动检测API基础URL
-const getBackendUrl = () => {
-  // 优先使用固定IP设置
-  if (typeof window !== 'undefined') {
-    // 从localStorage读取IP设置
-    const storedSettings = localStorage.getItem('ipSettings');
-    
-    if (storedSettings) {
-      try {
-        const settings = JSON.parse(storedSettings);
-        if (settings.useFixedIp) {
-          return `http://${settings.fixedHost}:${settings.fixedPort}`;
-        }
-      } catch (error) {
-        console.error('解析IP设置失败:', error);
-      }
-    }
-    
-    // 如果没有使用固定IP或解析失败，使用当前主机名
-    return `http://${window.location.hostname}:5000`;
-  }
-  
-  // 非浏览器环境，使用环境变量或默认值
-  if (process.env.NEXT_PUBLIC_FIXED_API_URL) {
-    return process.env.NEXT_PUBLIC_FIXED_API_URL;
-  }
-  
-  // 兜底
-  return 'http://localhost:5000';
-};
-
-// 导出API基础URL - 临时硬编码修复
-export const API_BASE_URL = 'http://172.16.10.141:5000';
+// 导出API基础URL - 统一从配置管理
+export const API_BASE_URL = getBackendUrl();
 
 // API路由常量
 export const API_ROUTES = {

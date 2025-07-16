@@ -257,11 +257,17 @@ export default function ExecuteAllPage() {
       console.log('测试用例加载完成，准备执行测试:', testCases.length, '个测试用例');
       // 设置标记防止重复执行
       autoExecuteAttemptedRef.current = true;
-      
+
       // 延迟执行以确保UI更新完成
       setTimeout(() => {
         handleExecuteSelected();
       }, 100);
+    }
+
+    // 在页面加载完成后，无论是否执行，都获取一次历史日志
+    if (!loading) {
+      console.log('页面加载完成，获取历史日志');
+      fetchSystemLogs();
     }
   }, [loading, testCases, executing]);
   
@@ -978,7 +984,7 @@ export default function ExecuteAllPage() {
       // 遍历frontend/public/img/upload目录，匹配图片
       try {
         // 直接读取前端upload目录的文件列表
-        const uploadResponse = await fetch('/api/files/upload/list');
+        const uploadResponse = await fetch(`${API_BASE_URL}/api/files/upload/list`);
         if (!uploadResponse.ok) {
           throw new Error(`获取upload目录文件列表失败: ${uploadResponse.statusText}`);
         }
@@ -1402,8 +1408,8 @@ export default function ExecuteAllPage() {
       // 组合source和message以进行全文搜索
       const logText = `${log.source || ''} ${log.message || ''}`.toLowerCase();
       
-      // 添加更多可能的匹配模式
-      return logText.includes(`#${testCaseId}`) || 
+      // 添加更多可能的匹配模式，支持大小写
+      return logText.includes(`#${testCaseId}`) ||
              // 匹配"当前执行测试用例名称: XXX，测试用例ID: 数字"格式
              logText.includes(`测试用例id: ${testCaseId}`) ||
              logText.includes(`，测试用例id: ${testCaseId}`) ||
@@ -1428,8 +1434,8 @@ export default function ExecuteAllPage() {
       const logText = `${log.source || ''} ${log.message || ''}`.toLowerCase();
       // 查找测试用例开始执行的标记
       if (logText.includes("当前执行测试用例名称")) {
-        // 尝试提取测试用例ID
-        const match = logText.match(/测试用例id:\s*(\d+)/i);
+        // 尝试提取测试用例ID，支持大小写
+        const match = logText.match(/测试用例id[：:]\s*(\d+)/i);
         if (match && match[1]) {
           const id = parseInt(match[1], 10);
           if (!isNaN(id)) {
@@ -1481,9 +1487,11 @@ export default function ExecuteAllPage() {
 
   // 定期刷新系统日志
   useEffect(() => {
-    // 只在执行测试用例时进行轮询
+    // 在执行测试用例时进行轮询，或者在页面加载时获取一次日志
     if (!executing) {
-      console.log('测试用例未在执行中，不启动日志轮询');
+      console.log('测试用例未在执行中，获取一次日志后不启动轮询');
+      // 即使不在执行中，也获取一次日志以显示历史日志
+      fetchSystemLogs();
       return;
     }
     
