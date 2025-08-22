@@ -137,3 +137,6 @@ tests/**/__pycache__/
 
 # 日志文件
 data/logs/*.log
+
+
+venv/

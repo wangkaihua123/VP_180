@@ -10,8 +10,19 @@
       "systemType": "linux",
       "screenshotPath": "qwe21322",
       "imageTypes": "tiff"
+    },
+    {
+      "id": "9493089662",
+      "name": "680项目",
+      "description": "680项目自动化测试",
+      "createTime": "2025-08-22T10:15:49.308678Z",
+      "updateTime": "2025-08-22T10:21:05.914033Z",
+      "imagePath": "/media/sata/ue_data/*/*/*/",
+      "systemType": "linux",
+      "screenshotPath": "/media/sata/ue_data/*/*/*/",
+      "imageTypes": "tiff,jpg"
     }
   ],
-  "serialPort": "",
+  "serialPort": "COM3",
   "serialBaudRate": "9600"
 }
