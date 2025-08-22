@@ -20,7 +20,7 @@ logging.basicConfig(
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 导入SSH管理器
-from backend.utils.ssh_manager import SSHManager, SSHConnectionService
+from utils.ssh_manager import SSHManager, SSHConnectionService
 
 def test_ssh_connection():
     """测试SSH连接管理功能"""

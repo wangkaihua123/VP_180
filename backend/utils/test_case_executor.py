@@ -8,7 +8,7 @@ from .button_clicker import ButtonClicker
 from .ssh_manager import SSHManager
 from .image_comparator import ImageComparator
 from .log_config import setup_logger
-from backend.models.settings import Settings
+from models.settings import Settings
 
 logger = setup_logger(__name__)
 

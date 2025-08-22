@@ -13,13 +13,13 @@ from flask_sock import Sock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 导入配置
-from backend.config import SECRET_KEY, DEBUG, HOST, PORT
+from config import SECRET_KEY, DEBUG, HOST, PORT
 
 # 导入路由蓝图
-from backend.routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp, screen_bp, settings_bp, reports_bp
+from routes import auth_bp, ssh_bp, serial_bp, test_cases_bp, files_bp, logs_bp, screen_bp, settings_bp, reports_bp
 
 # 导入触摸屏监控
-from backend.utils.touch_monitor_ssh import TouchMonitor
+from utils.touch_monitor_ssh import TouchMonitor
 
 # 设置日志文件路径
 LOG_DIR = os.path.join(os.path.dirname(__file__), 'data')

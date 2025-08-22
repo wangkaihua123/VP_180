@@ -6,7 +6,7 @@ import shutil
 import logging
 from flask import send_from_directory, jsonify, request
 from werkzeug.utils import secure_filename
-from backend.config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
+from config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
 
 # 设置日志
 logger = logging.getLogger(__name__)

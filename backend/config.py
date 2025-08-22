@@ -13,7 +13,7 @@ DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')
 
 # IP配置
 USE_FIXED_IP = os.getenv('USE_FIXED_IP', 'true').lower() in ('true', '1', 't')
-FIXED_HOST = os.getenv('FIXED_HOST', '192.168.0.55')
+FIXED_HOST = os.getenv('FIXED_HOST', '0.0.0.0')
 FIXED_PORT = int(os.getenv('FIXED_PORT', 5000))
 
 # 动态获取主机IP

@@ -74,7 +74,7 @@ const testCase = {
   ],
 }
 
-export default function TestLogsPage({ params }: { params: { id: string } }) {
+export default function TestLogsPage({ params }: any) {
   const [expandedSteps, setExpandedSteps] = useState<number[]>([])
 
   const toggleStep = (stepId: number) => {

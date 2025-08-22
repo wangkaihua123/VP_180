@@ -2,7 +2,7 @@
 测试用例相关路由 - 处理测试用例的CRUD和执行
 """
 from flask import Blueprint, request, jsonify
-from backend.services.test_case_service import TestCaseService
+from services.test_case_service import TestCaseService
 import os
 import json
 import logging
@@ -12,7 +12,7 @@ from datetime import datetime
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 
 # 使用已经在__init__.py中创建的蓝图实例
-from backend.routes import test_cases_bp
+from routes import test_cases_bp
 test_case_service = TestCaseService()
 
 @test_cases_bp.route('', methods=['GET'])

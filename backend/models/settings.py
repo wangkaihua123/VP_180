@@ -4,7 +4,7 @@
 import json
 import os
 import logging
-from backend.config import SETTINGS_FILE, DEFAULT_SSH_CONFIG, DEFAULT_SERIAL_CONFIG
+from config import SETTINGS_FILE, DEFAULT_SSH_CONFIG, DEFAULT_SERIAL_CONFIG
 
 logger = logging.getLogger(__name__)
 

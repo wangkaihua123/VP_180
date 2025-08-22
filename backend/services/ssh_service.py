@@ -4,7 +4,7 @@ SSH服务 - 处理SSH连接测试和相关操作
 import logging
 import paramiko
 import socket
-from backend.utils.ssh_manager import SSHManager
+from utils.ssh_manager import SSHManager
 
 logger = logging.getLogger(__name__)
 

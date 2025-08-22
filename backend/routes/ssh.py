@@ -5,8 +5,8 @@ import os
 import logging
 from flask import request, jsonify
 from . import ssh_bp
-from backend.utils.ssh_manager import SSHManager
-from backend.models.settings import Settings
+from utils.ssh_manager import SSHManager
+from models.settings import Settings
 
 # 设置日志
 logger = logging.getLogger(__name__)
@@ -72,8 +72,8 @@ def test_connection():
         }
 
         # 首先检查是否已经有活跃的SSH连接
-        from backend.services.ssh_service import SSHService
-        from backend.utils.ssh_manager import SSHManager
+        from services.ssh_service import SSHService
+        from utils.ssh_manager import SSHManager
 
         # 检查当前连接状态
         if SSHManager.is_connected():

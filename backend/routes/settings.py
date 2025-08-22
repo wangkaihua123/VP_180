@@ -3,7 +3,7 @@
 """
 from flask import request, jsonify
 from . import settings_bp
-from backend.models.settings import Settings
+from models.settings import Settings
 
 
 @settings_bp.route('/projects', methods=['GET'])

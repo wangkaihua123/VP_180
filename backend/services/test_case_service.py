@@ -5,12 +5,12 @@ import logging
 import os
 import json
 from datetime import datetime
-from backend.utils.test_case_executor import TestCaseExecutor
-from backend.utils.serial_manager import SerialManager
-from backend.models.test_case import TestCase
-from backend.services.ssh_service import SSHService
-from backend.config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
-from backend.models.settings import Settings
+from utils.test_case_executor import TestCaseExecutor
+from utils.serial_manager import SerialManager
+from models.test_case import TestCase
+from services.ssh_service import SSHService
+from config import IMAGES_DIR, SCREENSHOTS_DIR, OPERATION_IMAGES_DIR, DISPLAY_IMAGES_DIR
+from models.settings import Settings
 
 logger = logging.getLogger(__name__)
 

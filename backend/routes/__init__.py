@@ -17,15 +17,15 @@ reports_bp = Blueprint('reports', __name__, url_prefix='/api/reports')
 
 # 实现蓝图，但在这里导入而不是在顶部导入
 # 这样可以避免循环导入的问题
-from backend.routes import auth
-from backend.routes import ssh
-from backend.routes import serial
-from backend.routes import test_cases
-from backend.routes import files
-from backend.routes import logs  # 添加logs模块的导入
-from backend.routes import screen  # 添加screen模块的导入
-from backend.routes import settings  # 添加settings模块的导入
-from backend.routes import reports  # 添加reports模块的导入
+from routes import auth
+from routes import ssh
+from routes import serial
+from routes import test_cases
+from routes import files
+from routes import logs  # 添加logs模块的导入
+from routes import screen  # 添加screen模块的导入
+from routes import settings  # 添加settings模块的导入
+from routes import reports  # 添加reports模块的导入
 
 # 所有蓝图
 from .logs import logs_bp  # 显式导入logs_bp

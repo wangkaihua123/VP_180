@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request
 import cv2
 import os
 import logging
-from backend.utils.get_latest_image import GetLatestImage
-from backend.utils.ssh_manager import SSHManager
+from utils.get_latest_image import GetLatestImage
+from utils.ssh_manager import SSHManager
 
 # 创建蓝图
 screen_bp = Blueprint('screen', __name__)

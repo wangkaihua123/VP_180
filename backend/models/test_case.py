@@ -5,7 +5,7 @@ import json
 import os
 import logging
 from datetime import datetime
-from backend.config import TEST_CASES_FILE, DEFAULT_TEST_CASE
+from config import TEST_CASES_FILE, DEFAULT_TEST_CASE
 
 logger = logging.getLogger(__name__)
 

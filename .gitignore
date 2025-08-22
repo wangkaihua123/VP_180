@@ -6,6 +6,7 @@ __pycache__/
 #补充
 img/
 screenshot/
+screenshots/
 *.png
 *.jpg
 *.tif

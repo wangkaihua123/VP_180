@@ -2,7 +2,7 @@
 认证相关路由 - 处理用户登录和登出
 """
 from flask import Blueprint, request, jsonify, session
-from backend.services.auth_service import AuthService
+from services.auth_service import AuthService
 
 # 创建蓝图
 auth_bp = Blueprint('auth', __name__)

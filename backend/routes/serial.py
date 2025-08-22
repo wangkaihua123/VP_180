@@ -3,11 +3,11 @@
 """
 from flask import Blueprint, request, jsonify
 import serial
-from backend.utils.serial_manager import SerialManager
-from backend.models.settings import Settings
+from utils.serial_manager import SerialManager
+from models.settings import Settings
 
 # 使用已经在__init__.py中创建的蓝图实例
-from backend.routes import serial_bp
+from routes import serial_bp
 
 # 校验位映射函数
 def map_parity(parity_str):

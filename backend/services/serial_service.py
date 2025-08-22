@@ -4,7 +4,7 @@
 import logging
 import serial
 import serial.tools.list_ports
-from backend.models.settings import Settings
+from models.settings import Settings
 
 logger = logging.getLogger(__name__)
 
