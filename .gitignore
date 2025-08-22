@@ -4,9 +4,14 @@ __pycache__/
 *$py.class
 
 #补充
+img/
+screenshot/
 *.png
 *.jpg
-
+*.tif
+*.tiff
+*.mkv
+*.mp4
 
 # C扩展
 *.so
