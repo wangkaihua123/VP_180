@@ -185,10 +185,8 @@ export function ExecuteAllPage() {
   const [systemLogs, setSystemLogs] = useState<SystemLog[]>([])
   const [systemLogLoading, setSystemLogLoading] = useState(false)
   const systemLogScrollAreaRef = useRef<HTMLDivElement>(null)
-  const [pollInterval, setPollInterval] = useState(2000) // 初始轮询间隔为2秒
-  const [noNewLogCount, setNoNewLogCount] = useState(0) // 连续无新日志的次数
-  const lastLogCountRef = useRef(0) // 上次日志数量的引用
-  const timerRef = useRef<NodeJS.Timeout | null>(null) // 定时器引用
+  const [isWebSocketConnected, setIsWebSocketConnected] = useState(false) // WebSocket连接状态
+  const logsWebSocketRef = useRef<WebSocket | null>(null) // WebSocket连接引用
   const [testCases, setTestCases] = useState<TestCaseWithStatus[]>([])
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [executing, setExecuting] = useState(false)
@@ -263,13 +261,21 @@ export function ExecuteAllPage() {
         handleExecuteSelected();
       }, 100);
     }
-
-    // 在页面加载完成后，无论是否执行，都获取一次历史日志
-    if (!loading) {
-      console.log('页面加载完成，获取历史日志');
-      fetchSystemLogs();
-    }
   }, [loading, testCases, executing]);
+
+  // 页面加载时建立WebSocket连接
+  useEffect(() => {
+    // 在页面加载完成后，先清空日志，然后建立WebSocket连接获取日志
+    if (!loading) {
+      console.log('页面加载完成，先清空日志，然后建立WebSocket连接');
+      // 先清空日志
+      setSystemLogs([]);
+      setLogs([]);
+      // 使用WebSocket获取历史日志
+      setSystemLogLoading(true);
+      connectLogsWebSocket();
+    }
+  }, [loading]); // 只在loading状态变化时执行，不依赖于其他状态
   
   // 单独的useEffect钩子，用于确保第一个测试用例自动展开
   useEffect(() => {
@@ -311,10 +317,15 @@ export function ExecuteAllPage() {
         console.log("处理后的测试用例数据:", apiTestCases);
         
         if (apiTestCases && apiTestCases.length > 0) {
-          // 如果有选中的测试用例，只显示选中的
-          if (selectedIds.length > 0) {
+          // 检查是否有URL参数中的测试用例ID
+          const idsFromUrl = searchParams?.get('ids')?.split(',').map(id => parseInt(id)).filter(id => !isNaN(id)) || [];
+          
+          // 如果有选中的测试用例ID（来自URL或状态），只显示选中的
+          const effectiveIds = selectedIds.length > 0 ? selectedIds : idsFromUrl;
+          
+          if (effectiveIds.length > 0) {
             const filteredTestCases = apiTestCases
-              .filter((tc: TestCase) => selectedIds.includes(tc.id))
+              .filter((tc: TestCase) => effectiveIds.includes(tc.id))
               .map((tc: TestCase) => ({
                 ...tc,
                 name: tc.title || `测试用例 #${tc.id}`,
@@ -323,7 +334,13 @@ export function ExecuteAllPage() {
               }));
             console.log("过滤后的测试用例:", filteredTestCases);
             setTestCases(filteredTestCases);
+            
+            // 如果URL中有ID但selectedIds为空，更新selectedIds
+            if (selectedIds.length === 0 && idsFromUrl.length > 0) {
+              setSelectedIds(idsFromUrl);
+            }
           } else {
+            // 没有选中的测试用例，显示所有测试用例
             const formattedTestCases = apiTestCases.map((tc: TestCase) => ({
               ...tc,
               name: tc.title || `测试用例 #${tc.id}`,
@@ -596,8 +613,36 @@ export function ExecuteAllPage() {
     setExecuting(true)
     setIsPaused(false)
     setLogs([]) // 确保清空之前的日志
+    setSystemLogs([]) // 清空系统日志
     setProgress(0)
     setCompletedTestCases(0)
+    
+    // 清空所有测试用例的图片和截图
+    setTestCaseImages({})
+    setTestCaseScreenshots({})
+    
+    // 清空完整执行日志
+    if (systemLogScrollAreaRef.current) {
+      systemLogScrollAreaRef.current.scrollTop = 0;
+    }
+    
+    // 如果WebSocket已连接，发送reset命令重新开始读取日志
+    if (isWebSocketConnected && logsWebSocketRef.current) {
+      console.log('WebSocket已连接，发送reset命令重新开始读取日志');
+      try {
+        // 立即清空日志
+        setSystemLogs([]);
+        // 发送reset命令重新开始读取日志
+        logsWebSocketRef.current.send(JSON.stringify({ action: 'reset' }));
+      } catch (error) {
+        console.error('发送reset命令失败:', error);
+      }
+    } else {
+      // 如果WebSocket未连接，建立连接
+      console.log('WebSocket未连接，建立新连接');
+      setSystemLogLoading(true);
+      connectLogsWebSocket();
+    }
 
     // 上传touch_click.py脚本到远程设备
     try {
@@ -849,7 +894,18 @@ export function ExecuteAllPage() {
     }
 
     setProgress(100) // 确保进度达到100%
-    setExecuting(false) // 设置执行状态为完成
+    
+    // 确保所有测试用例状态都已更新后再设置执行状态为完成
+    // 给状态更新一点时间
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // 设置执行状态为完成，这会触发useEffect停止日志轮询
+    setExecuting(false);
+    
+    // 关闭WebSocket连接
+    closeLogsWebSocket();
+    
+    console.log('所有测试用例执行完成，设置executing和shouldPoll为false，停止日志轮询');
 
     // 测试用例执行完成后，保存测试数据到report.json
     await saveTestDataToReport(casesToExecute)
@@ -981,76 +1037,147 @@ export function ExecuteAllPage() {
         console.error(`解析测试用例 ${testCaseId} 的script_content失败:`, parseError);
       }
 
-      // 遍历frontend/public/img/upload目录，匹配图片
+      // 处理匹配的图片
+      const testImages: TestImage[] = [];
+      const testScreenshots: TestImage[] = [];
+
+      // 1. 从operation_img和display_img目录获取图片
+      try {
+        const imagesResponse = await fetch(`${API_BASE_URL}/api/files/images/list?testCaseId=${testCaseId}`);
+        if (imagesResponse.ok) {
+          const imagesData = await imagesResponse.json();
+          console.log(`图片目录文件列表:`, imagesData);
+          
+          if (imagesData.success && imagesData.imageDetails) {
+            imagesData.imageDetails.forEach((fileDetail: any) => {
+              const filename = fileDetail.name;
+              const subDir = fileDetail.subDir;
+              
+              // 只处理operation_img和display_img子目录的文件
+              if (subDir === 'operation_img' || subDir === 'display_img') {
+                // 更灵活的匹配逻辑
+                // 1. 检查测试用例ID是否匹配
+                const idMatch = filename.includes(`id_${testCaseId}_`) || filename.includes(`${testCaseId}_`);
+                
+                // 2. 检查图片名称是否被reference_screenshot或reference_content包含
+                const isReferenceScreenshot = referenceScreenshots.some(ref => {
+                  // 提取文件名的基本部分（不包含扩展名）
+                  const refBase = ref.split('.')[0];
+                  const filenameBase = filename.split('.')[0];
+                  return filename.includes(ref) || ref.includes(filename) || filenameBase.includes(refBase) || refBase.includes(filenameBase);
+                });
+                const isReferenceContent = referenceContents.some(ref => {
+                  // 提取文件名的基本部分（不包含扩展名）
+                  const refBase = ref.split('.')[0];
+                  const filenameBase = filename.split('.')[0];
+                  return filename.includes(ref) || ref.includes(filename) || filenameBase.includes(refBase) || refBase.includes(filenameBase);
+                });
+
+                if (idMatch || isReferenceScreenshot || isReferenceContent) {
+                  const timestamp = new Date().toISOString();
+                  const isOperationImg = subDir === 'operation_img';
+                  
+                  const imageData = {
+                    id: filename,
+                    testCaseId: testCaseId,
+                    timestamp: timestamp,
+                    title: isReferenceScreenshot ? (isOperationImg ? '操作截图' : '显示截图') : (isOperationImg ? '操作图片' : '显示图片'),
+                    description: `测试用例 ${testCaseId} 的${isReferenceScreenshot ? (isOperationImg ? '操作截图' : '显示截图') : (isOperationImg ? '操作图片' : '显示图片')}`,
+                    url: fileDetail.path,
+                    type: isReferenceScreenshot ? 'screenshot' : 'image'
+                  } as TestImage;
+
+                  if (isReferenceScreenshot) {
+                    testScreenshots.push(imageData);
+                    console.log(`从${subDir}匹配截图: ${filename}, 路径: ${fileDetail.path}`);
+                  } else {
+                    testImages.push(imageData);
+                    console.log(`从${subDir}匹配图片: ${filename}, 路径: ${fileDetail.path}`);
+                  }
+                }
+              }
+            });
+          }
+        }
+      } catch (imagesError) {
+        console.error(`获取图片目录失败:`, imagesError);
+      }
+
+      // 3. 保留原有的upload目录逻辑作为备用
       try {
         // 直接读取前端upload目录的文件列表
         const uploadResponse = await fetch(`${API_BASE_URL}/api/files/upload/list`);
-        if (!uploadResponse.ok) {
-          throw new Error(`获取upload目录文件列表失败: ${uploadResponse.statusText}`);
-        }
+        if (uploadResponse.ok) {
+          const uploadData = await uploadResponse.json();
+          console.log(`frontend/public/img/upload目录文件列表:`, uploadData);
 
-        const uploadData = await uploadResponse.json();
-        console.log(`frontend/public/img/upload目录文件列表:`, uploadData);
+          const uploadFiles = uploadData.files || [];
 
-        const uploadFiles = uploadData.files || [];
+          uploadFiles.forEach((filename: string) => {
+            // 更灵活的匹配逻辑
+            // 1. 检查测试用例ID是否匹配
+            const idMatch = filename.includes(`id_${testCaseId}_`) || filename.includes(`${testCaseId}_`);
+            
+            // 2. 检查图片名称是否被reference_screenshot包含
+            const isReferenceScreenshot = referenceScreenshots.some(ref => {
+              // 提取文件名的基本部分（不包含扩展名）
+              const refBase = ref.split('.')[0];
+              const filenameBase = filename.split('.')[0];
+              return filename.includes(ref) || ref.includes(filename) || filenameBase.includes(refBase) || refBase.includes(filenameBase);
+            });
 
-        // 处理匹配的图片
-        const testImages: TestImage[] = [];
-        const testScreenshots: TestImage[] = [];
+            // 3. 检查图片名称是否被reference_content包含
+            const isReferenceContent = referenceContents.some(ref => {
+              // 提取文件名的基本部分（不包含扩展名）
+              const refBase = ref.split('.')[0];
+              const filenameBase = filename.split('.')[0];
+              return filename.includes(ref) || ref.includes(filename) || filenameBase.includes(refBase) || refBase.includes(filenameBase);
+            });
 
-        uploadFiles.forEach((filename: string) => {
-          // 检查图片名称是否被reference_screenshot包含
-          const isReferenceScreenshot = referenceScreenshots.some(ref =>
-            filename.includes(ref) || ref.includes(filename)
-          );
+            if (idMatch || isReferenceScreenshot || isReferenceContent) {
+              const timestamp = new Date().toISOString();
 
-          // 检查图片名称是否被reference_content包含
-          const isReferenceContent = referenceContents.some(ref =>
-            filename.includes(ref) || ref.includes(filename)
-          );
+              // 构建图片URL - 使用后端API路径
+              // 确保URL以正确的格式构建
+              let imageUrl = `${API_BASE_URL}/api/files/upload/${filename}`;
+              console.log(`构建的图片URL: ${imageUrl}`);
 
-          if (isReferenceScreenshot || isReferenceContent) {
-            const timestamp = new Date().toISOString();
+              const imageData = {
+                id: filename,
+                testCaseId: testCaseId,
+                timestamp: timestamp,
+                title: isReferenceScreenshot ? '参考截图' : '参考内容',
+                description: `测试用例 ${testCaseId} 的${isReferenceScreenshot ? '参考截图' : '参考内容'}`,
+                url: imageUrl,
+                type: isReferenceScreenshot ? 'screenshot' : 'image'
+              } as TestImage;
 
-            // 构建图片URL - 直接使用前端路径
-            const imageUrl = `/img/upload/${filename}`;
-
-            const imageData = {
-              id: filename,
-              testCaseId: testCaseId,
-              timestamp: timestamp,
-              title: isReferenceScreenshot ? '参考截图' : '参考内容',
-              description: `测试用例 ${testCaseId} 的${isReferenceScreenshot ? '参考截图' : '参考内容'}`,
-              url: imageUrl,
-              type: isReferenceScreenshot ? 'screenshot' : 'image'
-            } as TestImage;
-
-            if (isReferenceScreenshot) {
-              testScreenshots.push(imageData);
-              console.log(`匹配参考截图: ${filename}, 路径: ${imageUrl}`);
-            } else {
-              testImages.push(imageData);
-              console.log(`匹配参考内容: ${filename}, 路径: ${imageUrl}`);
+              if (isReferenceScreenshot) {
+                testScreenshots.push(imageData);
+                console.log(`匹配参考截图: ${filename}, 路径: ${imageUrl}`);
+              } else {
+                testImages.push(imageData);
+                console.log(`匹配参考内容: ${filename}, 路径: ${imageUrl}`);
+              }
             }
-          }
-        });
-
-        console.log(`测试用例 ${testCaseId} 从upload目录匹配到 ${testImages.length} 张图片, ${testScreenshots.length} 张截图`);
-
-        // 更新状态
-        setTestCaseImages(prev => ({
-          ...prev,
-          [testCaseId]: testImages
-        }));
-
-        setTestCaseScreenshots(prev => ({
-          ...prev,
-          [testCaseId]: testScreenshots
-        }));
-
+          });
+        }
       } catch (uploadError) {
         console.error(`遍历upload目录失败:`, uploadError);
       }
+
+      console.log(`测试用例 ${testCaseId} 总共匹配到 ${testImages.length} 张图片, ${testScreenshots.length} 张截图`);
+
+      // 更新状态
+      setTestCaseImages(prev => ({
+        ...prev,
+        [testCaseId]: testImages
+      }));
+
+      setTestCaseScreenshots(prev => ({
+        ...prev,
+        [testCaseId]: testScreenshots
+      }));
 
     } catch (error) {
       console.error(`加载测试用例 ${testCaseId} 的媒体文件失败:`, error);
@@ -1119,20 +1246,38 @@ export function ExecuteAllPage() {
    * 重新执行测试用例
    */
   const handleReExecute = () => {
-    // 构建新的URL，添加autoExecute=true参数
-    const timestamp = new Date().getTime();
-    let newUrl = '/execute-all';
+    // 先清空日志
+    console.log('重新执行测试用例，先清空日志');
+    setSystemLogs([]);
+    setLogs([]);
     
-    // 如果有选中的测试用例ID，添加到URL中
-    if (selectedIds.length > 0) {
-      newUrl += `?ids=${selectedIds.join(',')}`;
+    // 如果WebSocket已连接，发送reset命令清空日志文件
+    if (isWebSocketConnected && logsWebSocketRef.current) {
+      console.log('发送reset命令清空日志文件');
+      try {
+        logsWebSocketRef.current.send(JSON.stringify({ action: 'reset' }));
+      } catch (error) {
+        console.error('发送reset命令失败:', error);
+      }
     }
     
-    // 添加autoExecute=true参数
-    newUrl += `${selectedIds.length > 0 ? '&' : '?'}autoExecute=true&t=${timestamp}`;
-    
-    // 使用window.location.href强制浏览器完全刷新页面
-    window.location.href = newUrl;
+    // 等待一小段时间确保日志清空完成，然后再跳转
+    setTimeout(() => {
+      // 构建新的URL，添加autoExecute=true参数
+      const timestamp = new Date().getTime();
+      let newUrl = '/execute-all';
+      
+      // 如果有选中的测试用例ID，添加到URL中
+      if (selectedIds.length > 0) {
+        newUrl += `?ids=${selectedIds.join(',')}`;
+      }
+      
+      // 添加autoExecute=true参数
+      newUrl += `${selectedIds.length > 0 ? '&' : '?'}autoExecute=true&t=${timestamp}`;
+      
+      // 使用window.location.href强制浏览器完全刷新页面
+      window.location.href = newUrl;
+    }, 500); // 等待500毫秒确保日志清空完成
   };
 
   /**
@@ -1142,6 +1287,9 @@ export function ExecuteAllPage() {
     // 添加日志记录测试执行被手动停止
     addLog(0, "测试执行被手动停止", "warning");
     console.log("测试执行被手动停止");
+    
+    // 关闭WebSocket连接
+    closeLogsWebSocket();
     
     // 将所有处于pending状态的测试用例更新为已终止状态
     const updatedTestCases = testCases.map(tc => {
@@ -1180,89 +1328,153 @@ export function ExecuteAllPage() {
     });
   };
 
-  // 添加获取系统日志的函数
-  const fetchSystemLogs = async () => {
-    try {
-      setSystemLogLoading(true)
-      const response = await testCasesAPI.getSystemLog()
+
+  // 建立WebSocket连接获取实时日志
+  const connectLogsWebSocket = () => {
+    // 如果已经有连接且状态为已连接，则不重复建立连接
+    if (logsWebSocketRef.current && isWebSocketConnected) {
+      console.log('WebSocket已经连接，不重复建立连接');
+      return;
+    }
+
+    // 如果有连接但状态为未连接，先关闭旧连接
+    if (logsWebSocketRef.current) {
+      console.log('关闭旧的WebSocket连接');
+      logsWebSocketRef.current.close();
+      logsWebSocketRef.current = null;
+    }
+
+    // 创建WebSocket连接
+    const wsUrl = `ws://${window.location.hostname}:5000/ws/logs`;
+    console.log('正在连接到日志WebSocket服务器:', wsUrl);
+    setIsWebSocketConnected(false);
+    setSystemLogLoading(true);
+
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      console.log('日志WebSocket连接已建立');
+      setSystemLogLoading(false);
+      setIsWebSocketConnected(true);
       
-      if (response.success && response.data) {
-        // 打印原始日志数据以进行调试
-        console.log('原始日志数据示例:', response.data.slice(-1));
-        
-        // 处理日志数据，确保包含所有必要字段
-        const processedLogs: SystemLog[] = response.data.map((rawLog: any) => {
-          // 打印单条日志的所有字段
-          console.log('原始日志字段:', Object.keys(rawLog));
-          
-          // 获取日志消息，尝试所有可能的字段名
-          const logMessage = 
-            rawLog.message || 
-            rawLog.content || 
-            rawLog.msg || 
-            rawLog.text || 
-            rawLog.log_message || 
-            rawLog.description || 
-            '';
-          
-          return {
+      // 发送重置命令，确保清空日志文件并从头开始读取日志
+      console.log('发送reset命令清空日志文件');
+      ws.send(JSON.stringify({ action: 'reset' }));
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('收到日志WebSocket消息:', data);
+
+        if (data.type === 'logs' && data.data) {
+          // 处理新收到的日志
+          const newLogs: SystemLog[] = data.data.map((rawLog: any) => ({
             timestamp: rawLog.timestamp || new Date().toISOString(),
-            level: rawLog.level || rawLog.severity || 'INFO',
-            source: rawLog.source || rawLog.logger || rawLog.module || '',
-            message: logMessage
-          };
-        });
-        
-        // 打印处理后的日志示例
-        console.log('处理后的日志示例:', processedLogs.slice(-1));
-        
-        // 如果有新日志，打印示例以便调试
-        if (processedLogs.length > 0 && processedLogs.length !== lastLogCountRef.current) {
-          console.log('系统日志格式示例 (新增日志):', 
-            processedLogs.slice(-3).map((log: SystemLog) => ({
-              level: log.level,
-              source: log.source,
-              message: log.message
-            }))
-          );
-        }
-        
-        // 获取当前日志数量
-        const currentLogCount = processedLogs.length;
-        
-        // 比较与上次日志数量
-        if (currentLogCount > lastLogCountRef.current) {
-          // 有新日志
-          setNoNewLogCount(0); // 重置无新日志计数
+            level: rawLog.level || 'INFO',
+            source: rawLog.source || '',
+            message: rawLog.message || ''
+          }));
+
+          // 更新日志列表
+          setSystemLogs(prev => {
+            // 检查是否已有相同的日志，避免重复添加
+            const existingTimestamps = new Set(prev.map(log => log.timestamp + log.message));
+            const uniqueNewLogs = newLogs.filter(log => !existingTimestamps.has(log.timestamp + log.message));
+            
+            const updatedLogs = [...prev, ...uniqueNewLogs];
+            // 根据日志更新测试用例状态
+            updateTestCaseStatusFromLogs(updatedLogs);
+            return updatedLogs;
+          });
           
-          // 如果当前轮询间隔是10秒，改回2秒
-          if (pollInterval === 10000) {
-            console.log('检测到新日志，轮询间隔调整为2秒');
-            setPollInterval(2000);
-          }
-        } else {
-          // 无新日志，增加计数
-          setNoNewLogCount(prev => {
-            const newCount = prev + 1;
-            
-            // 如果连续五次无新日志且当前轮询间隔是2秒，改为10秒
-            if (newCount >= 8 && pollInterval === 2000) {
-              console.log('连续八次无新日志，轮询间隔调整为10秒');
-              setPollInterval(10000);
+          // 滚动到底部
+          setTimeout(() => {
+            if (systemLogScrollAreaRef.current) {
+              systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight;
             }
+          }, 100);
+        } else if (data.type === 'current_logs') {
+          // 接收当前日志文件内容
+          setSystemLogs(data.logs);
+        } else if (data.type === 'status') {
+          // 处理状态消息，例如测试完成
+          console.log('收到WebSocket状态消息:', data.message);
+          if (data.message === '测试执行已完成') {
+            console.log('检测到测试完成状态，关闭WebSocket连接');
+            closeLogsWebSocket();
             
-            return newCount;
+            // 如果仍在执行状态，更新为完成状态
+            if (executing) {
+              setExecuting(false);
+              toast({
+                title: "测试执行完成",
+                description: "所有测试用例已执行完成",
+              });
+            }
+          }
+        } else if (data.type === 'error') {
+          console.error('日志WebSocket错误:', data.message);
+          toast({
+            title: "日志WebSocket错误",
+            description: data.message || "获取实时日志时发生错误",
+            variant: "destructive",
           });
         }
+      } catch (error) {
+        console.error('处理日志WebSocket消息时出错:', error);
+      }
+    };
+
+    ws.onclose = (event) => {
+      console.log('日志WebSocket连接已关闭:', event.code, event.reason);
+      logsWebSocketRef.current = null;
+      setIsWebSocketConnected(false);
+      
+      // 不自动重连，只在页面加载时建立一次连接
+      console.log('WebSocket连接已关闭，不自动重连');
+    };
+
+    ws.onerror = (error) => {
+      console.error('日志WebSocket错误:', error);
+      setIsWebSocketConnected(false);
+      // 不显示错误提示，因为WebSocket连接失败是正常的
+      
+      // 连接失败时，尝试获取一次历史日志
+      setSystemLogLoading(false);
+      fetchSystemLogs();
+    };
+
+    // 保存WebSocket引用
+    logsWebSocketRef.current = ws;
+  };
+
+  /**
+   * 获取系统日志（用于WebSocket连接失败时的备用方案）
+   */
+  const fetchSystemLogs = async () => {
+    try {
+      setSystemLogLoading(true);
+      const response = await fetch(`${API_BASE_URL}/api/logs/vp180`);
+      if (!response.ok) {
+        throw new Error(`获取系统日志失败: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      if (data.success && data.data) {
+        const newLogs: SystemLog[] = data.data.map((rawLog: any) => ({
+          timestamp: rawLog.timestamp || new Date().toISOString(),
+          level: rawLog.level || 'INFO',
+          source: rawLog.source || '',
+          message: rawLog.message || ''
+        }));
         
-        // 更新上次日志数量
-        lastLogCountRef.current = currentLogCount;
-        
-        // 设置处理后的日志数据
-        setSystemLogs(processedLogs);
-        
-        // 根据日志更新测试用例状态
-        updateTestCaseStatusFromLogs(processedLogs);
+        setSystemLogs(prev => {
+          const updatedLogs = [...prev, ...newLogs];
+          // 根据日志更新测试用例状态
+          updateTestCaseStatusFromLogs(updatedLogs);
+          return updatedLogs;
+        });
         
         // 滚动到底部
         setTimeout(() => {
@@ -1270,18 +1482,33 @@ export function ExecuteAllPage() {
             systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight;
           }
         }, 100);
-      } else {
-        console.error("获取系统日志失败:", response.message);
-        toast({
-          title: "获取系统日志失败",
-          description: response.message || "无法获取系统日志",
-          variant: "destructive",
-        });
       }
     } catch (error) {
-      console.error("获取系统日志出错:", error);
+      console.error('获取系统日志失败:', error);
+      // 不显示错误提示，因为WebSocket连接失败是正常的
     } finally {
       setSystemLogLoading(false);
+    }
+  };
+
+  // 关闭WebSocket连接
+  const closeLogsWebSocket = () => {
+    if (logsWebSocketRef.current) {
+      console.log('关闭日志WebSocket连接');
+      
+      // 发送停止命令
+      try {
+        if (logsWebSocketRef.current.readyState === WebSocket.OPEN) {
+          logsWebSocketRef.current.send(JSON.stringify({ action: 'stop' }));
+        }
+      } catch (error) {
+        console.error('发送停止命令时出错:', error);
+      }
+      
+      // 关闭连接
+      logsWebSocketRef.current.close();
+      logsWebSocketRef.current = null;
+      setIsWebSocketConnected(false);
     }
   };
   
@@ -1450,11 +1677,20 @@ export function ExecuteAllPage() {
     
     // 找到目标测试用例的开始索引
     const targetIndex = testCaseStartIndices.findIndex(item => item.id === testCaseId);
-    if (targetIndex === -1) return []; // 未找到该测试用例
+    if (targetIndex === -1) {
+      // 如果没有找到明确的开始标记，尝试通过ID查找相关日志
+      return systemLogs.filter(log => {
+        const logText = `${log.source || ''} ${log.message || ''}`.toLowerCase();
+        return logText.includes(`#${testCaseId}`) ||
+               logText.includes(`测试用例id: ${testCaseId}`) ||
+               logText.includes(`，测试用例id: ${testCaseId}`) ||
+               (logText.includes("测试用例id") && logText.includes(testCaseId.toString()));
+      });
+    }
     
     const startIndex = testCaseStartIndices[targetIndex].index;
     // 如果有下一个测试用例，结束索引为下一个测试用例的开始索引，否则为日志末尾
-    const endIndex = targetIndex < testCaseStartIndices.length - 1 
+    const endIndex = targetIndex < testCaseStartIndices.length - 1
       ? testCaseStartIndices[targetIndex + 1].index
       : systemLogs.length;
     
@@ -1485,62 +1721,14 @@ export function ExecuteAllPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [executing, isPaused, JSON.stringify(testCases)]);
 
-  // 定期刷新系统日志
+
+  // 组件卸载时清理WebSocket连接
   useEffect(() => {
-    // 在执行测试用例时进行轮询，或者在页面加载时获取一次日志
-    if (!executing) {
-      console.log('测试用例未在执行中，获取一次日志后不启动轮询');
-      // 即使不在执行中，也获取一次日志以显示历史日志
-      fetchSystemLogs();
-      return;
-    }
-    
-    console.log('启动系统日志轮询...');
-    
-    // 首次加载时获取日志
-    fetchSystemLogs();
-    
-    // 创建轮询函数
-    const poll = () => {
-      // 清除现有定时器
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-      
-      // 检查是否所有测试用例都已完成
-      const allTestCasesCompleted = testCases.every(tc => 
-        tc.status === 'completed' || tc.status === 'failed' || tc.status === 'error'
-      );
-      
-      // 如果所有测试用例都已完成，且测试用例数量不为0，则停止轮询
-      if (allTestCasesCompleted && testCases.length > 0) {
-        console.log('所有测试用例已完成，停止日志轮询');
-        // 最后再获取一次日志确保获取到所有内容
-        fetchSystemLogs();
-        return;
-      }
-      
-      // 设置新的定时器
-      timerRef.current = setTimeout(() => {
-        fetchSystemLogs().then(() => {
-          // 递归调用poll，形成循环
-          poll();
-        });
-      }, pollInterval);
-    };
-    
-    // 开始轮询
-    poll();
-    
-    // 组件卸载时清除定时器
     return () => {
-      console.log('清除日志轮询定时器');
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+      console.log('组件卸载，关闭WebSocket连接');
+      closeLogsWebSocket();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [executing, testCases, pollInterval]); // 当executing状态变化或测试用例状态变化时重新设置轮询
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -1772,8 +1960,7 @@ export function ExecuteAllPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">
-                    轮询间隔: {pollInterval === 2000 ? '2秒' : '10秒'}
-                    {pollInterval === 10000 && noNewLogCount >= 8 && ' (空闲)'}
+                    {isWebSocketConnected ? 'WebSocket连接已建立' : '正在连接WebSocket...'}
                   </span>
                   {systemLogLoading && <RefreshCw className="h-3 w-3 animate-spin" />}
                 </div>

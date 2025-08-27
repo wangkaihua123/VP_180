@@ -34,6 +34,13 @@ def serve_screenshot(filename):
     """提供截图文件服务"""
     return send_from_directory(SCREENSHOTS_DIR, filename)
 
+@files_bp.route('/upload/<path:filename>')
+def serve_upload_file(filename):
+    """提供前端上传目录的文件服务"""
+    # 前端upload目录路径
+    upload_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'public', 'img', 'upload')
+    return send_from_directory(upload_dir, filename)
+
 @files_bp.route('/images/list')
 def list_images():
     """获取图片文件列表"""

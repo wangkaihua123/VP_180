@@ -71,6 +71,10 @@ const nextConfig = {
         source: '/api/files/screenshots/:path*',
         destination: 'http://localhost:5000/api/files/screenshots/:path*',
       },
+      {
+        source: '/img/upload/:path*',
+        destination: 'http://localhost:5000/api/files/upload/:path*',
+      },
     ];
   },
   env: {
