@@ -126,20 +126,41 @@ export default function TestCasesPage() {
     console.log("点击了全部执行按钮，准备跳转到执行页面");
     
     if (testCases && testCases.length > 0) {
+      // 确定要执行的测试用例
+      let casesToExecute = testCases;
+      
       // 如果有选中的测试用例，则只执行选中的测试用例
       if (selectedIds && selectedIds.length > 0) {
+        casesToExecute = testCases.filter(testCase => selectedIds.includes(testCase.id));
         console.log("执行选中的测试用例:", selectedIds);
-        router.push(`/execute-all?autoExecute=true&ids=${selectedIds.join(',')}`);
       } else {
         // 没有选中的测试用例，执行所有测试用例
         console.log("执行所有测试用例");
-        
-        // 构建所有测试用例的ID列表
-        const allIds = testCases.map(testCase => testCase.id);
-        console.log("所有测试用例ID:", allIds);
-        
-        router.push(`/execute-all?autoExecute=true&ids=${allIds.join(',')}`);
       }
+      
+      // 验证所有测试用例是否属于同一个项目
+      const uniqueProjectIds = [...new Set(casesToExecute.map(testCase => testCase.project_id))];
+      
+      if (uniqueProjectIds.length > 1) {
+        // 如果有多个不同的项目ID，提示用户
+        toast({
+          title: "无法执行",
+          description: "同一次执行只能执行同一项目的测试用例，请选择属于同一项目的测试用例",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // 获取项目ID
+      const projectId = uniqueProjectIds[0] || '';
+      
+      // 构建所有测试用例的ID列表
+      const allIds = casesToExecute.map(testCase => testCase.id);
+      console.log("所有测试用例ID:", allIds);
+      console.log("项目ID:", projectId);
+      
+      // 将项目ID添加到URL参数中
+      router.push(`/execute-all?autoExecute=true&ids=${allIds.join(',')}&projectId=${projectId}`);
     } else {
       // 没有测试用例时显示提示
       toast({
@@ -273,7 +294,27 @@ export default function TestCasesPage() {
   // 处理执行选中的测试用例
   const handleExecuteSelected = () => {
     if (selectedIds.length > 0) {
-      router.push(`/execute-all?autoExecute=true&ids=${selectedIds.join(',')}`)
+      // 获取选中的测试用例
+      const selectedTestCases = testCases.filter(testCase => selectedIds.includes(testCase.id));
+      
+      // 验证所有选中的测试用例是否属于同一个项目
+      const uniqueProjectIds = [...new Set(selectedTestCases.map(testCase => testCase.project_id))];
+      
+      if (uniqueProjectIds.length > 1) {
+        // 如果有多个不同的项目ID，提示用户
+        toast({
+          title: "无法执行",
+          description: "同一次执行只能执行同一项目的测试用例，请选择属于同一项目的测试用例",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // 获取项目ID
+      const projectId = uniqueProjectIds[0] || '';
+      
+      // 将项目ID添加到URL参数中
+      router.push(`/execute-all?autoExecute=true&ids=${selectedIds.join(',')}&projectId=${projectId}`);
     }
   }
 

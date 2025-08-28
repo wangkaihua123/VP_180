@@ -11,6 +11,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { useTestCaseStore } from "@/stores/testCaseStore"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
@@ -181,6 +182,7 @@ const convertImageUrlToApiPath = (url: string): string => {
 export function ExecuteAllPage() {
   const router = useRouter()
   const { toast } = useToast()
+  const { startExecution, stopExecution, currentProjectId, isExecuting: storeIsExecuting } = useTestCaseStore()
   const [logs, setLogs] = useState<TestCaseLog[]>([])
   const [systemLogs, setSystemLogs] = useState<SystemLog[]>([])
   const [systemLogLoading, setSystemLogLoading] = useState(false)
@@ -224,9 +226,16 @@ export function ExecuteAllPage() {
       const ids = searchParams.get('ids')
       const autoExecute = searchParams.get('autoExecute')
       const timestamp = searchParams.get('t')
+      const projectId = searchParams.get('projectId')
       
       if (ids) {
         setSelectedIds(ids.split(',').map(id => parseInt(id)))
+      }
+      
+      // 如果有项目ID，设置到zustand store中
+      if (projectId) {
+        startExecution(projectId)
+        console.log(`从URL参数中获取到项目ID ${projectId}，已设置到zustand store中`)
       }
       
       // 如果有时间戳参数但没有autoExecute参数，说明是从其他页面跳转来的
@@ -246,7 +255,7 @@ export function ExecuteAllPage() {
       setSelectedIds([])
       autoExecuteAttemptedRef.current = true;
     }
-  }, [searchParams])
+  }, [searchParams, startExecution])
 
   // 测试用例加载完成后的处理
   useEffect(() => {
@@ -613,6 +622,10 @@ export function ExecuteAllPage() {
     setExecuting(true)
     setIsPaused(false)
     setLogs([]) // 确保清空之前的日志
+    
+    // 项目ID已经在URL参数处理时设置到zustand store中
+    // 这里不需要再设置，直接使用store中的项目ID
+    console.log(`使用zustand store中的项目ID: ${currentProjectId}`)
     setSystemLogs([]) // 清空系统日志
     setProgress(0)
     setCompletedTestCases(0)
@@ -726,6 +739,14 @@ export function ExecuteAllPage() {
     setLogs(prev => [...prev, startLog])
 
     let completedCount = 0
+
+    // 确保URL中包含项目ID参数
+    if (currentProjectId && !window.location.search.includes('projectId')) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('projectId', currentProjectId);
+      window.history.replaceState({}, '', currentUrl.toString());
+      console.log(`已将项目ID ${currentProjectId} 添加到URL参数中`);
+    }
 
     for (let i = 0; i < casesToExecute.length; i++) {
       const testCase = casesToExecute[i]
@@ -904,6 +925,10 @@ export function ExecuteAllPage() {
     
     // 关闭WebSocket连接
     closeLogsWebSocket();
+    
+    // 更新zustand store中的执行状态
+    stopExecution();
+    console.log('已将zustand store中的执行状态设置为停止');
     
     console.log('所有测试用例执行完成，设置executing和shouldPoll为false，停止日志轮询');
 
@@ -1290,6 +1315,10 @@ export function ExecuteAllPage() {
     
     // 关闭WebSocket连接
     closeLogsWebSocket();
+    
+    // 更新zustand store中的执行状态
+    stopExecution();
+    console.log("已将zustand store中的执行状态设置为停止");
     
     // 将所有处于pending状态的测试用例更新为已终止状态
     const updatedTestCases = testCases.map(tc => {
@@ -1764,6 +1793,11 @@ export function ExecuteAllPage() {
                   <Play className="mr-2 h-5 w-5" />
                   测试执行进度
                 </CardTitle>
+                {currentProjectId && (
+                  <div className="text-sm text-gray-500">
+                    当前项目ID: {currentProjectId}
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   {/* 停止执行按钮 */}
                   <Button

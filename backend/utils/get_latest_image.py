@@ -114,7 +114,7 @@ class GetLatestImage:
             
             # 检查远程目录结构
             logger.debug("检查远程目录结构")
-            stdin, stdout, stderr = self.ssh.exec_command("find /ue -name '*.tiff' -o -name '*.tif' | sort -r | head -5")
+            stdin, stdout, stderr = self.ssh.exec_command("find /ue_data -name '*.tiff' -o -name '*.jpg' -o -name '*.png' | sort -r | head -5")
             all_images = stdout.read().decode().strip().split('\n')
             error = stderr.read().decode().strip()
             
@@ -137,7 +137,7 @@ class GetLatestImage:
                 
                 latest_file = None
                 for dir_path in possible_dirs:
-                    stdin, stdout, stderr = self.ssh.exec_command(f"ls -t {dir_path}/*.tiff 2>/dev/null | head -1 || ls -t {dir_path}/*.tif 2>/dev/null | head -1")
+                    stdin, stdout, stderr = self.ssh.exec_command(f"ls -t {dir_path}/*.tiff 2>/dev/null | head -1 || ls -t {dir_path}/*.jpg 2>/dev/null | head -1 || ls -t {dir_path}/*.png 2>/dev/null | head -1")
                     result = stdout.read().decode().strip()
                     if result:
                         latest_file = result
@@ -146,7 +146,7 @@ class GetLatestImage:
                 
                 if not latest_file:
                     # 尝试查找所有图像文件
-                    stdin, stdout, stderr = self.ssh.exec_command("find / -name '*.tiff' -o -name '*.tif' 2>/dev/null | sort -r | head -1")
+                    stdin, stdout, stderr = self.ssh.exec_command("find / -name '*.tiff' -o -name '*.jpg' -o -name '*.png' 2>/dev/null | sort -r | head -1")
                     latest_file = stdout.read().decode().strip()
                     if latest_file:
                         # logger.debug(f"通过全局搜索找到图像文件: {latest_file}")
@@ -160,8 +160,8 @@ class GetLatestImage:
             
             # 提取原始文件名并将扩展名替换为.png
             original_filename = os.path.basename(latest_file)
-            # 将.tiff或.tif替换为.png
-            png_filename = re.sub(r'\.(tiff|tif)$', '.png', original_filename, flags=re.IGNORECASE)
+            # 将.tiff、.jpg替换为.png
+            png_filename = re.sub(r'\.(tiff|jpg)$', '.png', original_filename, flags=re.IGNORECASE)
             
             # 构建新文件名，只包含id和原始文件名
             if id:
@@ -200,43 +200,49 @@ class GetLatestImage:
             
             # 检查临时文件是否成功保存
             if not os.path.exists(temp_tiff_path):
-                logger.error("临时TIFF文件保存失败")
-                raise Exception("临时TIFF文件保存失败")
+                logger.error("临时图像文件保存失败")
+                raise Exception("临时图像文件保存失败")
             
-            logger.debug("临时TIFF文件保存成功，开始转换为PNG格式")
+            logger.debug("临时图像文件保存成功，开始处理")
             
-            # 使用OpenCV读取临时TIFF文件并转换为PNG格式
+            # 使用OpenCV读取图像文件
             try:
-                # 读取TIFF图像
+                # 读取图像
                 image = cv2.imread(temp_tiff_path, cv2.IMREAD_UNCHANGED)
                 if image is None:
-                    logger.error(f"无法读取临时TIFF文件: {temp_tiff_path}")
-                    raise Exception(f"无法读取临时TIFF文件: {temp_tiff_path}")
+                    logger.error(f"无法读取图像文件: {temp_tiff_path}")
+                    raise Exception(f"无法读取图像文件: {temp_tiff_path}")
                 
-                # 保存为PNG格式
-                cv2.imwrite(local_png_path, image)
-                logger.debug(f"已保存PNG图像到: {local_png_path}")
+                # 如果不是PNG格式，则保存为PNG格式
+                if not original_filename.lower().endswith('.png'):
+                    cv2.imwrite(local_png_path, image)
+                    logger.debug(f"已转换并保存PNG图像到: {local_png_path}")
+                else:
+                    # 如果已经是PNG格式，直接复制到目标位置
+                    import shutil
+                    shutil.copy2(temp_tiff_path, local_png_path)
+                    logger.debug(f"已复制PNG图像到: {local_png_path}")
                 
-                # 删除本地临时TIFF文件
-                logger.debug(f"删除临时TIFF文件: {temp_tiff_path}")
+                # 删除本地临时文件
+                logger.debug(f"删除临时图像文件: {temp_tiff_path}")
                 try:
                     os.remove(temp_tiff_path)
-                    logger.debug(f"已删除临时TIFF文件")
+                    logger.debug(f"已删除临时图像文件")
                 except Exception as e:
-                    logger.warning(f"删除临时TIFF文件失败: {str(e)}")
+                    logger.warning(f"删除临时图像文件失败: {str(e)}")
                 
                 logger.debug("图像获取成功")
                 return image
             except Exception as e:
-                logger.error(f"图像转换失败: {str(e)}")
+                logger.error(f"图像处理失败: {str(e)}")
                 # 尝试删除临时文件（如果存在）
                 if os.path.exists(temp_tiff_path):
                     try:
                         os.remove(temp_tiff_path)
-                        logger.debug(f"已清理临时TIFF文件")
+                        logger.debug(f"已清理临时图像文件")
                     except:
                         pass
-                raise Exception(f"图像转换失败: {str(e)}")
+                raise Exception(f"图像处理失败: {str(e)}")
         except Exception as e:
             logger.error(f"获取图像失败: {str(e)}")
             raise

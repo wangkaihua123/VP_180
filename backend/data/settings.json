@@ -5,22 +5,26 @@
       "name": "VP-180",
       "description": "镜中镜图像处理器",
       "createTime": "2025-05-06T13:19:20.444Z",
-      "updateTime": "2025-06-23T10:01:40.565Z",
+      "updateTime": "2025-08-28T15:25:35.463715Z",
       "imagePath": "ue/ue_data/",
       "systemType": "linux",
       "screenshotPath": "qwe21322",
-      "imageTypes": "tiff"
+      "imageTypes": "tiff",
+      "resolutionWidth": 1920,
+      "resolutionHeight": 1080
     },
     {
       "id": "9493089662",
       "name": "680项目",
       "description": "680项目自动化测试",
       "createTime": "2025-08-22T10:15:49.308678Z",
-      "updateTime": "2025-08-22T10:21:05.914033Z",
+      "updateTime": "2025-08-28T15:17:28.891928Z",
       "imagePath": "/media/sata/ue_data/*/*/*/",
       "systemType": "linux",
       "screenshotPath": "/media/sata/ue_data/*/*/*/",
-      "imageTypes": "tiff,jpg"
+      "imageTypes": "tiff,jpg",
+      "resolutionWidth": 1920,
+      "resolutionHeight": 1080
     }
   ],
   "serialPort": "COM4",

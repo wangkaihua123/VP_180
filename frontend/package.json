@@ -12,8 +12,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "react-hook-form": "^7.52.1",
-    "zod": "^3.23.8",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
     "@radix-ui/react-aspect-ratio": "^1.1.1",
@@ -53,12 +51,15 @@
     "react": "^19",
     "react-day-picker": "8.10.1",
     "react-dom": "^19",
+    "react-hook-form": "^7.52.1",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.0",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^0.9.6"
+    "vaul": "^0.9.6",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.202",

@@ -20,6 +20,8 @@ export interface Project {
   systemType?: 'android' | 'linux'; // 系统类型（安卓或Linux）
   screenshotPath?: string; // 截图获取路径
   imageTypes?: string; // 图片类型（多个用英文逗号分隔）
+  resolutionWidth: number; // 分辨率宽度
+  resolutionHeight: number; // 分辨率高度
 }
 
 // 创建项目接口
@@ -30,6 +32,8 @@ export interface CreateProjectPayload {
   systemType?: 'android' | 'linux'; // 系统类型（安卓或Linux）
   screenshotPath?: string; // 截图获取路径
   imageTypes?: string; // 图片类型（多个用英文逗号分隔）
+  resolutionWidth: number; // 分辨率宽度
+  resolutionHeight: number; // 分辨率高度
 }
 
 // 更新项目接口
@@ -41,6 +45,8 @@ export interface UpdateProjectPayload {
   systemType?: 'android' | 'linux'; // 系统类型（安卓或Linux）
   screenshotPath?: string; // 截图获取路径
   imageTypes?: string; // 图片类型（多个用英文逗号分隔）
+  resolutionWidth: number; // 分辨率宽度
+  resolutionHeight: number; // 分辨率高度
 }
 
 // 项目设置API

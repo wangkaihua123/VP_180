@@ -52,7 +52,9 @@ export default function SettingsPage() {
     imagePath: '',
     systemType: 'android' as 'android' | 'linux',
     screenshotPath: '',
-    imageTypes: ''
+    imageTypes: '',
+    resolutionWidth: 1920,
+    resolutionHeight: 1080
   })
   
   const [settings, setSettings] = useState<SSHSettings>({
@@ -452,11 +454,13 @@ export default function SettingsPage() {
         imagePath: newProject.imagePath,
         systemType: newProject.systemType,
         screenshotPath: newProject.screenshotPath,
-        imageTypes: newProject.imageTypes
+        imageTypes: newProject.imageTypes,
+        resolutionWidth: newProject.resolutionWidth,
+        resolutionHeight: newProject.resolutionHeight
       })
       
       setProjects(prev => [...prev, createdProject])
-      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '' })
+      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080 })
       
       toast({
         title: "创建成功",
@@ -485,7 +489,9 @@ export default function SettingsPage() {
       imagePath: project.imagePath || '',
       systemType: project.systemType || 'android',
       screenshotPath: project.screenshotPath || '',
-      imageTypes: project.imageTypes || ''
+      imageTypes: project.imageTypes || '',
+      resolutionWidth: project.resolutionWidth || 1920,
+      resolutionHeight: project.resolutionHeight || 1080
     })
     setEditingProject(true)
   }
@@ -494,7 +500,7 @@ export default function SettingsPage() {
   const cancelEdit = () => {
     setEditingProject(false)
     setCurrentProject(null)
-    setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '' })
+    setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080 })
     setShowCreateForm(false) // 也隐藏表单
   }
 
@@ -531,7 +537,9 @@ export default function SettingsPage() {
         imagePath: newProject.imagePath,
         systemType: newProject.systemType,
         screenshotPath: newProject.screenshotPath,
-        imageTypes: newProject.imageTypes
+        imageTypes: newProject.imageTypes,
+        resolutionWidth: newProject.resolutionWidth,
+        resolutionHeight: newProject.resolutionHeight
       })
       
       setProjects(prev => 
@@ -545,7 +553,7 @@ export default function SettingsPage() {
       
       setEditingProject(false)
       setCurrentProject(null)
-      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '' })
+      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080 })
       setShowCreateForm(false) // 更新成功后隐藏表单
     } catch (error) {
       toast({
@@ -957,6 +965,10 @@ export default function SettingsPage() {
                                     <span className="font-medium">图片类型：</span>
                                     <span className="text-gray-700">{project.imageTypes || '未设置'}</span>
                                   </div>
+                                  <div>
+                                    <span className="font-medium">分辨率：</span>
+                                    <span className="text-gray-700">{project.resolutionWidth || '未设置'} × {project.resolutionHeight || '未设置'}</span>
+                                  </div>
                                 </div>
                                 
                                 <div className="text-xs text-gray-400 mt-3 flex space-x-4">
@@ -1042,12 +1054,36 @@ export default function SettingsPage() {
                               </div>
                               <div className="space-y-2">
                                 <Label htmlFor="image-types">图片类型</Label>
-                                <Input 
-                                  id="image-types" 
-                                  placeholder="输入图片类型（可选）" 
+                                <Input
+                                  id="image-types"
+                                  placeholder="输入图片类型（可选）"
                                   value={newProject.imageTypes}
                                   onChange={(e) => setNewProject(prev => ({ ...prev, imageTypes: e.target.value }))}
                                 />
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="resolution-width">分辨率宽度 *</Label>
+                                  <Input
+                                    id="resolution-width"
+                                    type="number"
+                                    placeholder="输入分辨率宽度"
+                                    value={newProject.resolutionWidth}
+                                    onChange={(e) => setNewProject(prev => ({ ...prev, resolutionWidth: parseInt(e.target.value) || 0 }))}
+                                    min="1"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="resolution-height">分辨率高度 *</Label>
+                                  <Input
+                                    id="resolution-height"
+                                    type="number"
+                                    placeholder="输入分辨率高度"
+                                    value={newProject.resolutionHeight}
+                                    onChange={(e) => setNewProject(prev => ({ ...prev, resolutionHeight: parseInt(e.target.value) || 0 }))}
+                                    min="1"
+                                  />
+                                </div>
                               </div>
                               <div className="flex justify-end space-x-2 pt-2">
                                 <Button 

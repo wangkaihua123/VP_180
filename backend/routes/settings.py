@@ -36,6 +36,34 @@ def create_project():
                 'success': False,
                 'message': '项目名称不能为空'
             }), 400
+            
+        # 验证分辨率字段
+        if not data.get('resolutionWidth') or not str(data.get('resolutionWidth')).strip():
+            return jsonify({
+                'success': False,
+                'message': '分辨率宽度不能为空'
+            }), 400
+            
+        if not data.get('resolutionHeight') or not str(data.get('resolutionHeight')).strip():
+            return jsonify({
+                'success': False,
+                'message': '分辨率高度不能为空'
+            }), 400
+            
+        # 验证分辨率是否为有效数字
+        try:
+            resolution_width = int(data.get('resolutionWidth'))
+            resolution_height = int(data.get('resolutionHeight'))
+            if resolution_width <= 0 or resolution_height <= 0:
+                return jsonify({
+                    'success': False,
+                    'message': '分辨率必须为正整数'
+                }), 400
+        except (ValueError, TypeError):
+            return jsonify({
+                'success': False,
+                'message': '分辨率必须为有效的整数'
+            }), 400
         
         # 加载现有设置
         settings = Settings.load()
@@ -68,7 +96,9 @@ def create_project():
             'imagePath': data.get('imagePath', ''),
             'systemType': data.get('systemType', 'android'),
             'screenshotPath': data.get('screenshotPath', ''),
-            'imageTypes': data.get('imageTypes', '')
+            'imageTypes': data.get('imageTypes', ''),
+            'resolutionWidth': int(data.get('resolutionWidth')),
+            'resolutionHeight': int(data.get('resolutionHeight'))
         }
         
         # 添加到项目列表
@@ -105,6 +135,34 @@ def update_project(project_id):
             return jsonify({
                 'success': False,
                 'message': '项目名称不能为空'
+            }), 400
+            
+        # 验证分辨率字段
+        if not data.get('resolutionWidth') or not str(data.get('resolutionWidth')).strip():
+            return jsonify({
+                'success': False,
+                'message': '分辨率宽度不能为空'
+            }), 400
+            
+        if not data.get('resolutionHeight') or not str(data.get('resolutionHeight')).strip():
+            return jsonify({
+                'success': False,
+                'message': '分辨率高度不能为空'
+            }), 400
+            
+        # 验证分辨率是否为有效数字
+        try:
+            resolution_width = int(data.get('resolutionWidth'))
+            resolution_height = int(data.get('resolutionHeight'))
+            if resolution_width <= 0 or resolution_height <= 0:
+                return jsonify({
+                    'success': False,
+                    'message': '分辨率必须为正整数'
+                }), 400
+        except (ValueError, TypeError):
+            return jsonify({
+                'success': False,
+                'message': '分辨率必须为有效的整数'
             }), 400
         
         # 加载现有设置
@@ -144,7 +202,9 @@ def update_project(project_id):
             'imagePath': data.get('imagePath', ''),
             'systemType': data.get('systemType', 'android'),
             'screenshotPath': data.get('screenshotPath', ''),
-            'imageTypes': data.get('imageTypes', '')
+            'imageTypes': data.get('imageTypes', ''),
+            'resolutionWidth': int(data.get('resolutionWidth')),
+            'resolutionHeight': int(data.get('resolutionHeight'))
         }
         
         projects[project_index] = updated_project
