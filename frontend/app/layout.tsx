@@ -9,7 +9,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { MainNav } from "@/components/MainNav"
+import { LayoutWrapper } from "@/components/LayoutWrapper"
 import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -38,10 +38,9 @@ export default function RootLayout({
         `}} />
       </head>
       <body className={inter.className}>
-        <MainNav />
-        <div className="pt-16">
+        <LayoutWrapper>
           {children}
-        </div>
+        </LayoutWrapper>
         <Toaster />
       </body>
     </html>
