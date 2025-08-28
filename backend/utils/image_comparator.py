@@ -41,9 +41,9 @@ logger = setup_logger(__name__)
 
 class ImageComparator:
     @staticmethod
-    def is_orb(img1, img2, min_matches=25):
+    def is_orb(img1, img2, min_matches=25, img1_name=None, img2_name=None):
         """使用 ORB 关键点检测判断图像是否放大"""
-        logger.info("开始 ORB 关键点检测")
+        logger.info(f"开始 ORB 关键点检测 - 图像1: {img1_name or '未命名'}, 图像2: {img2_name or '未命名'}")
         
         try:
             # 创建 ORB 检测器
@@ -78,6 +78,7 @@ class ImageComparator:
                 # 判断是否放大
                 is_zoomed = num_matches < min_matches
                 logger.info(f"图像{'已' if is_zoomed else '未'}放大 (匹配点数量{'<' if is_zoomed else '>='}{min_matches})")
+                logger.info(f"ORB 关键点检测完成 - 图像1: {img1_name or '未命名'}, 图像2: {img2_name or '未命名'}")
                 
                 return is_zoomed
             except cv2.error as e:
@@ -92,9 +93,10 @@ class ImageComparator:
             return False
 
     @staticmethod
-    def is_ssim(img1, img2, threshold=0.98, min_threshold=0.80):
+    def is_ssim(img1, img2, threshold=0.98, min_threshold=0.80, img1_name=None, img2_name=None):
         """使用 SSIM 结构相似性指数判断图像是否相似"""
         try:
+            logger.info(f"开始 SSIM 结构相似性分析 - 图像1: {img1_name or '未命名'}, 图像2: {img2_name or '未命名'}")
             # 转换为灰度图并转换为float32类型
             gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY).astype(np.float32)
             gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY).astype(np.float32)
@@ -136,6 +138,7 @@ class ImageComparator:
             logger.info(f"图像相似度{'达到' if is_similar else '未达到'}阈值,测试 {'通过' if is_similar else '不通过'}"
                        f"(SSIM 值: {ssim_index:.4f}, "
                        f"阈值: {threshold:.2f})")
+            logger.info(f"SSIM 结构相似性分析完成 - 图像1: {img1_name or '未命名'}, 图像2: {img2_name or '未命名'}")
             
             return is_similar
 
@@ -228,7 +231,7 @@ class ImageComparator:
             return False
     
     @staticmethod
-    def template_matching(img1, img2, threshold=0.8):
+    def template_matching(img1, img2, threshold=0.8, img1_name=None, img2_name=None):
         """
         使用模板匹配算法判断一幅图像是否包含在另一幅图像中
         
@@ -236,11 +239,13 @@ class ImageComparator:
             img1: 原始图像
             img2: 要匹配的模板
             threshold: 匹配阈值，默认0.8
+            img1_name: 原始图像名称，用于日志记录
+            img2_name: 模板图像名称，用于日志记录
             
         返回:
             是否成功匹配
         """
-        logger.info("开始模板匹配分析")
+        logger.info(f"开始模板匹配分析 - 原始图像: {img1_name or '未命名'}, 模板图像: {img2_name or '未命名'}")
         
         try:
             # 转换为灰度图
@@ -264,6 +269,7 @@ class ImageComparator:
             is_matched = max_val >= threshold
             logger.info(f"模板匹配结果: {'成功' if is_matched else '失败'} "
                         f"(匹配值: {max_val:.4f}, 阈值: {threshold:.2f})")
+            logger.info(f"模板匹配完成 - 原始图像: {img1_name or '未命名'}, 模板图像: {img2_name or '未命名'}")
             
             return is_matched
             

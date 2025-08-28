@@ -58,7 +58,8 @@ class TestCaseExecutor:
         # 初始化测试组件
         self.image_getter = GetLatestImage(self.ssh)
         self.screenshot_getter = GetLatestScreenshot(self.ssh)
-        self.button_clicker = ButtonClicker(self.ssh)
+        # 初始化时先不创建ButtonClicker，等有项目ID时再创建
+        self.button_clicker = None
     
     def _verify_ssh_connection(self, ssh_connection):
         """
@@ -153,8 +154,14 @@ class TestCaseExecutor:
                 self.screenshot_getter.ssh = self.ssh
                 self.button_clicker.ssh = self.ssh
             
-            # 获取测试用例的顶级id
+            # 获取测试用例的顶级id和项目id
             test_case_id = test_case.get('id')
+            project_id = test_case.get('project_id')
+            
+            # 如果有项目ID，创建ButtonClicker实例
+            if project_id and self.button_clicker is None:
+                self.button_clicker = ButtonClicker(self.ssh, project_id)
+                logger.info(f"为项目 {project_id} 创建了 ButtonClicker 实例")
             
             # 解析测试用例内容
             if isinstance(test_case['script_content'], str):
@@ -335,7 +342,8 @@ class TestCaseExecutor:
                 # 更新组件的SSH连接
                 self.image_getter.ssh = self.ssh
                 self.screenshot_getter.ssh = self.ssh
-                self.button_clicker.ssh = self.ssh
+                if self.button_clicker:
+                    self.button_clicker.ssh = self.ssh
             
             operation_key = step.get('operation_key', '')
             button_name = step.get('button_name', '')
@@ -375,6 +383,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '点击按钮':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行点击操作'
+                    }
                 # 使用 ButtonClicker 的 click_button 方法
                 success = self.button_clicker.click_button(
                     x=x1, y=y1,
@@ -387,6 +401,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '长按按钮':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行长按操作'
+                    }
                 # 使用 ButtonClicker 的 long_click 方法
                 success = self.button_clicker.long_click(
                     x=x1, y=y1,
@@ -399,6 +419,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '滑动操作':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行滑动操作'
+                    }
                 # 使用 ButtonClicker 的 slide 方法
                 success = self.button_clicker.slide(
                     x1=x1, y1=y1,
@@ -411,6 +437,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '随机点击':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行随机点击操作'
+                    }
                 # 使用 ButtonClicker 的 random_click 方法
                 success = self.button_clicker.random_click()
                 return {
@@ -419,6 +451,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '单点随机点击':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行单点随机点击操作'
+                    }
                 # 使用 ButtonClicker 的 single_random_click 方法
                 success = self.button_clicker.single_random_click()
                 return {
@@ -427,6 +465,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '双点随机点击':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行双点随机点击操作'
+                    }
                 # 使用 ButtonClicker 的 double_random_click 方法
                 success = self.button_clicker.double_random_click()
                 return {
@@ -435,6 +479,12 @@ class TestCaseExecutor:
                 }
                 
             elif operation_key == '三点随机点击':
+                # 检查 ButtonClicker 是否已创建
+                if not self.button_clicker:
+                    return {
+                        'success': False,
+                        'message': 'ButtonClicker未初始化，无法执行三点随机点击操作'
+                    }
                 # 使用 ButtonClicker 的 triple_random_click 方法
                 success = self.button_clicker.triple_random_click()
                 return {
@@ -722,11 +772,15 @@ class TestCaseExecutor:
                 
                 # 根据验证类型调用不同的对比方法
                 try:
+                    # 提取图片名称信息
+                    img1_name = f"参考图像_{img1_ref}"
+                    img2_name = f"对比图像_{img2_ref}"
+                    
                     if verification_key == '对比图像相似度':
-                        result = ImageComparator.is_ssim(img1, img2)
+                        result = ImageComparator.is_ssim(img1, img2, img1_name=img1_name, img2_name=img2_name)
                         method = 'SSIM相似度'
                     else:  # 对比图像关键点
-                        result = ImageComparator.is_orb(img1, img2)
+                        result = ImageComparator.is_orb(img1, img2, img1_name=img1_name, img2_name=img2_name)
                         method = 'ORB关键点'
                     
                     logger.info(f"图像对比完成 ({method}): 结果: {result}")
@@ -1025,8 +1079,19 @@ class TestCaseExecutor:
                         reference_image = cv2.resize(reference_image, (operation_image.shape[1], operation_image.shape[0]))
                         logger.info("调整参考截图尺寸以匹配操作界面截图")
                     
+                    # 提取图片名称信息
+                    operation_img_name = f"操作界面截图_{screenshot_id}"
+                    reference_img_name = f"参考截图_{reference_screenshot}"
+                    
                     # 使用用户设置的阈值作为上限，0.5作为下限
-                    match_result = ImageComparator.is_ssim(operation_image, reference_image, threshold=threshold, min_threshold=0.5)
+                    match_result = ImageComparator.is_ssim(
+                        operation_image,
+                        reference_image,
+                        threshold=threshold,
+                        min_threshold=0.5,
+                        img1_name=operation_img_name,
+                        img2_name=reference_img_name
+                    )
                     
                     logger.info(f"截图精准匹配结果: {'通过' if match_result else '不通过'}, 阈值: {threshold}")
                     
@@ -1199,7 +1264,7 @@ class TestCaseExecutor:
                     # 确保参考内容尺寸小于操作界面截图尺寸
                     if reference_image.shape[0] > operation_image.shape[0] or reference_image.shape[1] > operation_image.shape[1]:
                         # 调整参考内容尺寸，确保其不大于操作界面截图
-                        scale = min(operation_image.shape[0] / reference_image.shape[0], 
+                        scale = min(operation_image.shape[0] / reference_image.shape[0],
                                   operation_image.shape[1] / reference_image.shape[1])
                         if scale < 1:  # 只有需要缩小时才调整
                             new_height = int(reference_image.shape[0] * scale)
@@ -1207,8 +1272,18 @@ class TestCaseExecutor:
                             reference_image = cv2.resize(reference_image, (new_width, new_height))
                             logger.info(f"调整参考内容尺寸为 {new_width}x{new_height}")
                     
-                    # 使用用户设置的阈值进行模板匹配
-                    match_result = ImageComparator.template_matching(operation_image, reference_image, threshold=threshold)
+                    # 提取图片名称信息
+                    operation_img_name = f"操作界面截图_{screenshot_id}"
+                    reference_img_name = f"参考内容_{reference_content}"
+                    
+                    # 使用用户设置的阈值进行模板匹配，并传递图片名称
+                    match_result = ImageComparator.template_matching(
+                        operation_image,
+                        reference_image,
+                        threshold=threshold,
+                        img1_name=operation_img_name,
+                        img2_name=reference_img_name
+                    )
                     
                     logger.info(f"截图包含匹配结果: {'通过' if match_result else '不通过'}, 阈值: {threshold}")
                     

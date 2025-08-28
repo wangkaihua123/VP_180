@@ -18,29 +18,78 @@ import signal
 import re
 import json
 import logging
+import os
 
 # 设置日志级别为DEBUG
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-# 屏幕配置
-SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 600
+# 默认屏幕配置
+DEFAULT_SCREEN_WIDTH = 1024
+DEFAULT_SCREEN_HEIGHT = 600
 MAX_X = 9599
 MAX_Y = 9599
 
+class TouchMonitorConfig:
+    """触摸监控配置类，用于管理项目特定的屏幕分辨率设置"""
+    
+    def __init__(self):
+        self.screen_width = DEFAULT_SCREEN_WIDTH
+        self.screen_height = DEFAULT_SCREEN_HEIGHT
+    
+    def load_project_config(self, project_id):
+        """从settings.json加载项目特定的配置"""
+        try:
+            settings_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'settings.json')
+            if os.path.exists(settings_path):
+                with open(settings_path, 'r', encoding='utf-8') as f:
+                    settings = json.load(f)
+                
+                # 查找匹配的项目配置
+                for project in settings.get('projects', []):
+                    if str(project.get('id')) == str(project_id):
+                        self.screen_width = int(project.get('resolutionWidth', DEFAULT_SCREEN_WIDTH))
+                        self.screen_height = int(project.get('resolutionHeight', DEFAULT_SCREEN_HEIGHT))
+                        logger.info(f"已加载项目 {project_id} 的屏幕分辨率配置: {self.screen_width}x{self.screen_height}")
+                        return
+                
+                logger.warning(f"未找到项目 {project_id} 的配置，使用默认配置")
+            else:
+                logger.warning(f"配置文件 {settings_path} 不存在，使用默认配置")
+        except Exception as e:
+            logger.error(f"加载项目配置时出错: {str(e)}，使用默认配置")
+    
+    def convert_touch_to_screen(self, touch_x, touch_y):
+        """将触摸屏坐标转换为屏幕坐标"""
+        screen_x = round(touch_x / MAX_X * self.screen_width, 1)
+        screen_y = round(touch_y / MAX_Y * self.screen_height, 1)
+        return screen_x, screen_y
+
+# 创建全局配置实例
+touch_config = TouchMonitorConfig()
+
 def convert_touch_to_screen(touch_x, touch_y):
     """将触摸屏坐标转换为屏幕坐标"""
-    screen_x = round(touch_x / MAX_X * SCREEN_WIDTH, 1)
-    screen_y = round(touch_y / MAX_Y * SCREEN_HEIGHT, 1)
-    return screen_x, screen_y
+    return touch_config.convert_touch_to_screen(touch_x, touch_y)
 
 class TouchMonitor:
-    def __init__(self):
+    def __init__(self, project_id=None):
         self.ssh_manager = SSHManager.get_instance()
         self.is_monitoring = False
         self.websocket = None
         self.channel = None
+        self.project_id = project_id
+        
+        # 如果提供了项目ID，加载项目特定的配置
+        if project_id:
+            touch_config.load_project_config(project_id)
+    
+    def set_project_id(self, project_id):
+        """设置项目ID并加载对应的配置"""
+        self.project_id = project_id
+        if project_id:
+            touch_config.load_project_config(project_id)
+            logger.info(f"已设置项目ID为 {project_id} 并加载对应的屏幕分辨率配置")
         
     def start_monitoring(self, ws):
         """开始监控触摸事件"""

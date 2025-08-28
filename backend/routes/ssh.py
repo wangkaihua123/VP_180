@@ -87,21 +87,46 @@ def test_connection():
             if (current_host == ssh_settings['host'] and
                 current_port == ssh_settings['port'] and
                 current_username == ssh_settings['username']):
-
-                # 连接配置匹配，直接返回成功
-                return jsonify({
-                    'success': True,
-                    'message': '连接已存在且配置匹配',
-                    'diagnostics': {
-                        'authentication': True,
-                        'commandExecution': True,
-                        'networkConnectivity': True,
-                        'sshService': True,
-                        'errorType': None,
-                        'errorDetails': None,
-                        'connectionStatus': 'existing_connection'
-                    }
-                })
+                
+                # 连接配置匹配，但需要验证连接是否真正有效
+                try:
+                    # 获取SSH客户端并执行测试命令验证连接
+                    ssh_client = SSHManager.get_client()
+                    if ssh_client:
+                        # 执行简单命令测试连接
+                        stdin, stdout, stderr = ssh_client.exec_command('echo "Connection test"', timeout=5)
+                        output = stdout.read().decode().strip()
+                        error = stderr.read().decode().strip()
+                        
+                        if error:
+                            logger.warning(f"现有连接测试命令执行出错: {error}")
+                            # 连接有问题，继续进行新的连接测试
+                            pass
+                        elif "Connection test" in output:
+                            # 连接确实有效
+                            return jsonify({
+                                'success': True,
+                                'message': '连接已存在且配置匹配，连接测试成功',
+                                'diagnostics': {
+                                    'authentication': True,
+                                    'commandExecution': True,
+                                    'networkConnectivity': True,
+                                    'sshService': True,
+                                    'errorType': None,
+                                    'errorDetails': None,
+                                    'connectionStatus': 'existing_connection',
+                                    'testOutput': output
+                                }
+                            })
+                        else:
+                            logger.warning("现有连接测试命令输出不符合预期")
+                            # 连接可能有问题，继续进行新的连接测试
+                    else:
+                        logger.warning("无法获取SSH客户端，连接可能已失效")
+                        # 连接已失效，继续进行新的连接测试
+                except Exception as e:
+                    logger.warning(f"验证现有连接时出错: {str(e)}")
+                    # 连接验证失败，继续进行新的连接测试
 
         # 如果没有连接或配置不匹配，进行新的连接测试
         result = SSHService.test_connection(ssh_settings)

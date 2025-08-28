@@ -1,31 +1,22 @@
 {
   "testResults": [
     {
-      "testId": 29,
-      "testName": "2222",
-      "testResult": "通过",
-      "lastExecutionTime": "2025-08-28T08:25:27.321Z",
-      "testType": "功能测试",
-      "description": "",
-      "executionDuration": 0
-    },
-    {
-      "testId": 30,
-      "testName": "22",
-      "testResult": "通过",
-      "lastExecutionTime": "2025-08-28T08:25:27.321Z",
+      "testId": 32,
+      "testName": "点击电子放大",
+      "testResult": "失败",
+      "lastExecutionTime": "2025-08-28T09:28:09.312Z",
       "testType": "功能测试",
       "description": "",
       "executionDuration": 0
     }
   ],
   "summary": {
-    "totalCases": 2,
-    "passedCases": 2,
-    "failedCases": 0,
-    "passRate": 100,
-    "executionTime": "2025-08-28T08:25:27.321Z",
+    "totalCases": 1,
+    "passedCases": 0,
+    "failedCases": 1,
+    "passRate": 0,
+    "executionTime": "2025-08-28T09:28:09.312Z",
     "project": "VP-180项目"
   },
-  "generatedAt": "2025-08-28T16:25:27.660314"
+  "generatedAt": "2025-08-28T17:28:09.634571"
 }

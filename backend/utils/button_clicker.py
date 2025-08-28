@@ -16,6 +16,7 @@ import os
 import time
 import logging
 import random
+import json
 from .log_config import setup_logger
 from .ssh_manager import SSHManager
 try:
@@ -32,18 +33,23 @@ except Exception as e:
     FUNCTIONS = {}
 
 class ButtonClicker:
-    def __init__(self, ssh_connection=None):
-        """初始化时传入已建立的 SSH 连接（可选）"""
+    def __init__(self, ssh_connection=None, project_id=None):
+        """初始化时传入已建立的 SSH 连接（可选）和项目ID（可选）"""
         # 获取SSHManager实例
         self.ssh_manager = SSHManager.get_instance()
         self.ssh = ssh_connection
+        self.project_id = project_id
         
         if not FUNCTIONS:
             logger.warning("FUNCTIONS配置为空，按钮名称查找功能可能无法使用")
         
         # 屏幕分辨率 - 根据实际情况调整
-        self.screen_width = 1920  # 默认宽度，实际应从设备获取
-        self.screen_height = 1080  # 默认高度，实际应从设备获取
+        self.screen_width = 1024  # 默认宽度，实际应从设备获取
+        self.screen_height = 600  # 默认高度，实际应从设备获取
+        
+        # 如果提供了项目ID，则从settings.json中加载项目配置
+        if project_id:
+            self.load_project_config(project_id)
         
         # 随机点击的区域划分
         self.grid_cols = 8  # 水平划分为8列
@@ -59,6 +65,45 @@ class ButtonClicker:
         # 重试配置
         self.max_retries = 3
         self.retry_interval = 1  # 秒
+    
+    def load_project_config(self, project_id):
+        """
+        从settings.json中加载项目配置，包括屏幕分辨率
+        :param project_id: 项目ID
+        :return: 是否加载成功
+        """
+        try:
+            # 获取settings.json文件路径
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            settings_path = os.path.join(current_dir, '..', 'data', 'settings.json')
+            
+            # 读取settings.json文件
+            with open(settings_path, 'r', encoding='utf-8') as f:
+                settings = json.load(f)
+            
+            # 查找匹配的项目
+            projects = settings.get('projects', [])
+            for project in projects:
+                if project.get('id') == project_id:
+                    # 获取屏幕分辨率
+                    resolution_width = project.get('resolutionWidth')
+                    resolution_height = project.get('resolutionHeight')
+                    
+                    if resolution_width and resolution_height:
+                        self.screen_width = resolution_width
+                        self.screen_height = resolution_height
+                        logger.info(f"已加载项目 {project_id} 的屏幕分辨率: {self.screen_width}x{self.screen_height}")
+                        return True
+                    else:
+                        logger.warning(f"项目 {project_id} 缺少分辨率配置，使用默认值")
+                        return False
+            
+            logger.warning(f"未找到项目ID为 {project_id} 的配置")
+            return False
+            
+        except Exception as e:
+            logger.error(f"加载项目配置失败: {str(e)}")
+            return False
     
     def _ensure_ssh_connection(self):
         """确保SSH连接有效，如果无效则尝试重新连接

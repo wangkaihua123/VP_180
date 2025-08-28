@@ -4,6 +4,7 @@ SSH服务 - 处理SSH连接测试和相关操作
 import logging
 import paramiko
 import socket
+import time
 from utils.ssh_manager import SSHManager
 
 # 禁止 paramiko 库的错误日志输出
@@ -116,9 +117,22 @@ class SSHService:
                 ssh_manager.port = port
                 ssh_manager.username = username
                 ssh_manager.password = password
+                
+                # 关闭旧的连接（如果存在）
+                if SSHManager._ssh_client:
+                    try:
+                        SSHManager._ssh_client.close()
+                    except:
+                        pass
+                
                 # 更新连接客户端
                 SSHManager._ssh_client = ssh
-                logger.info("已更新SSHManager的连接实例")
+                SSHManager._is_connected = True
+                SSHManager._last_connection_time = time.time()
+                SSHManager._last_error = None
+                SSHManager._connection_attempts = 0
+                
+                logger.info("已更新SSHManager的连接实例和状态")
 
                 return {
                     'success': True,

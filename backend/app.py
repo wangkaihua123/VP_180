@@ -66,7 +66,7 @@ def create_app(config=None):
     app.register_blueprint(settings_bp)
     app.register_blueprint(reports_bp)
     
-    # 创建TouchMonitor实例
+    # 创建TouchMonitor实例（初始时不指定项目ID）
     touch_monitor = TouchMonitor()
     
     @sock.route('/ws/touch-monitor')
@@ -80,10 +80,28 @@ def create_app(config=None):
                 command = json.loads(data)
                 if command['action'] == 'start':
                     logger.info("开始监控触摸事件")
+                    # 如果命令中包含项目ID，设置项目ID
+                    if 'project_id' in command:
+                        touch_monitor.set_project_id(command['project_id'])
                     touch_monitor.start_monitoring(ws)
                 elif command['action'] == 'stop':
                     logger.info("停止监控触摸事件")
                     touch_monitor.stop_monitoring()
+                elif command['action'] == 'set_project':
+                    # 单独设置项目ID的命令
+                    project_id = command.get('project_id')
+                    if project_id:
+                        touch_monitor.set_project_id(project_id)
+                        logger.info(f"已设置触摸监控的项目ID为: {project_id}")
+                        ws.send(json.dumps({
+                            "type": "success",
+                            "message": f"已设置项目ID为 {project_id}"
+                        }))
+                    else:
+                        ws.send(json.dumps({
+                            "type": "error",
+                            "message": "缺少项目ID参数"
+                        }))
         except Exception as e:
             logger.error(f"WebSocket处理错误: {str(e)}")
             try:
