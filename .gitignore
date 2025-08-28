@@ -13,7 +13,7 @@ screenshots/
 *.tiff
 *.mkv
 *.mp4
-
+tmp/
 # C扩展
 *.so
 

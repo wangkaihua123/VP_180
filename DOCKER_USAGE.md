@@ -92,3 +92,102 @@ docker-compose build frontend
 ## 数据持久化
 
 为了防止容器重启导致数据丢失，后端的 `data` 目录（包含日志、截图、报告等）已通过 Docker 卷挂载到您本地的 `./backend/data` 目录。这意味着容器内对 `/app/data` 的任何写入都会直接反映在您本地的文件系统中，反之亦然。
+
+## 导出构建和镜像
+
+### 1. 构建镜像
+
+如果您需要单独构建前端或后端镜像，可以使用以下命令：
+
+```bash
+# 构建后端镜像
+docker build -f backend.Dockerfile -t ue-test-backend .
+
+# 构建前端镜像
+docker build -f frontend.Dockerfile -t ue-test-frontend .
+```
+
+### 2. 导出镜像
+
+将构建好的镜像导出为 .tar 文件，方便在其他环境中使用：
+
+```bash
+# 导出后端镜像
+docker save -o backend-image.tar ue-test-backend
+
+# 导出前端镜像
+docker save -o frontend-image.tar ue-test-frontend
+
+# 同时导出两个镜像
+docker save -o app-images.tar ue-test-backend ue-test-frontend
+```
+
+**注意**：导出的 .tar 文件默认保存在您执行命令的当前工作目录中。如果您在项目根目录执行这些命令，则导出的文件将位于项目根目录下。
+
+### 3. 使用导出的镜像
+
+在其他环境中使用导出的镜像：
+
+```bash
+# 加载后端镜像
+docker load -i backend-image.tar
+
+# 加载前端镜像
+docker load -i frontend-image.tar
+
+# 加载包含两个镜像的文件
+docker load -i app-images.tar
+```
+
+### 4. 运行导出的镜像
+
+加载镜像后，您可以单独运行每个容器：
+
+```bash
+# 运行后端容器
+docker run -d --name backend -p 5000:5000 -v $(pwd)/backend/data:/app/data ue-test-backend
+
+# 运行前端容器
+docker run -d --name frontend -p 3000:3000 --env-file ./frontend/.env ue-test-frontend
+```
+
+### 5. 创建 Docker Compose 文件
+
+如果您想在其他环境中使用 Docker Compose 运行这些镜像，可以创建一个新的 docker-compose.yml 文件：
+
+```yaml
+version: '3'
+
+services:
+  backend:
+    image: ue-test-backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/data:/app/data
+
+  frontend:
+    image: ue-test-frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env
+```
+
+然后使用以下命令启动服务：
+
+```bash
+docker-compose up -d
+```
+
+## 注意事项
+
+1. 确保目标环境已安装 Docker 和 Docker Compose
+2. 导出的镜像文件可能较大，传输时请考虑网络带宽
+3. 在不同的操作系统上运行时，可能需要调整路径格式（Windows 使用 `\`，Linux/Mac 使用 `/`）
+4. 确保目标环境有足够的资源运行这些容器
+5. 数据持久化目录需要在目标环境中提前创建
