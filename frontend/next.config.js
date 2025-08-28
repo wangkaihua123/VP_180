@@ -89,4 +89,6 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig 
+module.exports = {
+  output: 'standalone',
+}

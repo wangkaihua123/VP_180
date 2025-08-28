@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev:custom": "cross-env FRONTEND_HOST=%npm_config_host% FRONTEND_PORT=%npm_config_port% next dev -H %npm_config_host% -p %npm_config_port%"
+    "dev:custom": "cross-env FRONTEND_HOST=%npm_config_host% FRONTEND_PORT=%npm_config_port% next dev -H %npm_config_host% -p %npm_config_port%",
+    "export": "next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

@@ -1,0 +1,19 @@
+{
+    "build": {
+      "beforeBuildCommand": "",
+      "beforeDevCommand": "",
+      "devPath": "http://localhost:3000",
+      "distDir": ""
+    },
+    "tauri": {
+      "windows": [
+        {
+          "title": "ue自动化测试平台",
+          "width": 1200,
+          "height": 800,
+          "resizable": true
+        }
+      ]
+    }
+  }
+  
