@@ -10,3 +10,5 @@ python-dotenv==1.0.1
 SQLAlchemy==2.0.32
 requests==2.32.3
 pyserial==3.5
+websockets==13.0.0
+

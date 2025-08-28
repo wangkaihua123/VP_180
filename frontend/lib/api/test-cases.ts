@@ -17,7 +17,7 @@
  */
 import { TestCase } from "@/types/api"
 import { fetchAPI } from "../api"
-import { API_BASE_URL } from "../constants"
+import { API_BASE_URL, API_ROUTES } from "../constants"
 
 // 定义通用API响应接口
 export interface APIResponse<T> {
@@ -182,15 +182,10 @@ export const testCasesAPI = {
    */
   async saveReport(reportData: any) {
     try {
-      const response = await fetch('/api/reports/save', {
+      return fetchAPI(API_ROUTES.REPORTS.SAVE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify(reportData)
       });
-      const data = await response.json();
-      return data;
     } catch (error) {
       console.error("保存测试报告失败:", error);
       return {

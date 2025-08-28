@@ -15,11 +15,16 @@ SSH连接管理模块
 import paramiko
 import json
 import os
+import logging
 from .log_config import setup_logger
 import time
 import threading
 import socket
 import random
+
+# 禁止 paramiko 库的错误日志输出
+paramiko_logger = logging.getLogger('paramiko.transport')
+paramiko_logger.setLevel(logging.CRITICAL)
 
 # 获取日志记录器
 logger = setup_logger(__name__)
@@ -204,7 +209,7 @@ class SSHManager:
                         
                         # 只有当传输层不活跃时才执行命令检查
                         if not transport.is_active():
-                            logger.warning("传输层不活跃，尝试发送心跳命令")
+                            # 不记录传输层不活跃的日志
                             stdin, stdout, stderr = self._ssh_client.exec_command(
                                 "echo ping",
                                 timeout=self._heartbeat_timeout
@@ -212,13 +217,14 @@ class SSHManager:
                             response = stdout.read().decode().strip()
                             
                             if response != "ping":
-                                logger.warning(f"心跳检测响应异常: {response}")
+                                # 不记录心跳检测响应异常的日志
                                 self._handle_connection_failure()
                     else:
-                        logger.warning("SSH传输层不存在")
+                        # 不记录SSH传输层不存在的日志
                         self._handle_connection_failure()
                 except Exception as e:
-                    logger.warning(f"心跳检测失败: {e}")
+                    # 降低日志级别，避免频繁输出错误日志
+                    logger.debug(f"心跳检测失败: {e}")
                     self._handle_connection_failure()
             
             # 等待下一次心跳检测，添加随机抖动避免同步
@@ -366,7 +372,7 @@ class SSHManager:
             except paramiko.ssh_exception.SSHException as e:
                 # 特殊处理SSH协议banner错误
                 if "Error reading SSH protocol banner" in str(e):
-                    logger.warning("检测到SSH协议banner读取错误，尝试延长超时时间重连")
+                    # 不记录SSH协议banner读取错误的日志
                     # 使用更长的超时时间重试
                     self.__class__._ssh_client.connect(
                         hostname=self.hostname,
@@ -419,11 +425,7 @@ class SSHManager:
 
             return self.__class__._ssh_client
         except Exception as e:
-            # 根据尝试次数记录不同的日志
-            if attempt_number == 1:
-                logger.error(f"第一次ssh连接失败: {e}")
-            else:
-                logger.error(f"第{attempt_number}次ssh连接失败: {e}")
+            # 不记录连接失败的日志，特别是 "Error reading SSH protocol banner" 错误
             
             # 更新错误状态
             self.__class__._is_connected = False
@@ -440,7 +442,7 @@ class SSHManager:
             if attempt_number < self.__class__._max_retries:
                 return self.connect()
             else:
-                logger.error(f"SSH连接尝试{attempt_number}次后失败，重置计数器")
+                # 不记录连接失败的日志
                 self.__class__._connection_attempts = 0
                 return None
 

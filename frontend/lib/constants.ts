@@ -30,6 +30,11 @@ export const API_ROUTES = {
   },
   LOGS: '/api/logs',
   FILES: '/api/files',
+  REPORTS: {
+    SAVE: '/api/reports/save',
+    LATEST: '/api/reports/latest',
+    LIST: '/api/reports/list',
+  },
 } as const;
 
 // 其他常量

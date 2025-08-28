@@ -1378,9 +1378,16 @@ export function ExecuteAllPage() {
 
           // 更新日志列表
           setSystemLogs(prev => {
-            // 检查是否已有相同的日志，避免重复添加
-            const existingTimestamps = new Set(prev.map(log => log.timestamp + log.message));
-            const uniqueNewLogs = newLogs.filter(log => !existingTimestamps.has(log.timestamp + log.message));
+            // 使用更全面的日志属性组合来确保去重
+            // 包括时间戳、级别、来源和消息
+            const existingLogKeys = new Set(prev.map(log =>
+              `${log.timestamp}|${log.level}|${log.source}|${log.message}`
+            ));
+            
+            const uniqueNewLogs = newLogs.filter(log => {
+              const logKey = `${log.timestamp}|${log.level}|${log.source}|${log.message}`;
+              return !existingLogKeys.has(logKey);
+            });
             
             const updatedLogs = [...prev, ...uniqueNewLogs];
             // 根据日志更新测试用例状态
@@ -1470,7 +1477,18 @@ export function ExecuteAllPage() {
         }));
         
         setSystemLogs(prev => {
-          const updatedLogs = [...prev, ...newLogs];
+          // 使用更全面的日志属性组合来确保去重
+          // 包括时间戳、级别、来源和消息
+          const existingLogKeys = new Set(prev.map(log =>
+            `${log.timestamp}|${log.level}|${log.source}|${log.message}`
+          ));
+          
+          const uniqueNewLogs = newLogs.filter(log => {
+            const logKey = `${log.timestamp}|${log.level}|${log.source}|${log.message}`;
+            return !existingLogKeys.has(logKey);
+          });
+          
+          const updatedLogs = [...prev, ...uniqueNewLogs];
           // 根据日志更新测试用例状态
           updateTestCaseStatusFromLogs(updatedLogs);
           return updatedLogs;

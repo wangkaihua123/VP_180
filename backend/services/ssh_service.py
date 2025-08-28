@@ -6,6 +6,10 @@ import paramiko
 import socket
 from utils.ssh_manager import SSHManager
 
+# 禁止 paramiko 库的错误日志输出
+paramiko_logger = logging.getLogger('paramiko.transport')
+paramiko_logger.setLevel(logging.CRITICAL)
+
 logger = logging.getLogger(__name__)
 
 class SSHService:
