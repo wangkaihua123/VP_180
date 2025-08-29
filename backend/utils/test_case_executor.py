@@ -16,12 +16,9 @@ class TestCaseExecutor:
     # 默认操作步骤间隔时间（秒）
     DEFAULT_OPERATION_INTERVAL = 0.6
     
-    def __init__(self, ssh_connection=None):
+    def __init__(self):
         """
         初始化测试用例执行器
-        
-        Args:
-            ssh_connection: 可选的SSH连接实例，如果为None则自动获取或创建
         """
         # 操作步骤间隔时间（秒）
         self.operation_interval = self.DEFAULT_OPERATION_INTERVAL
@@ -29,71 +26,38 @@ class TestCaseExecutor:
         # 获取SSH管理器实例
         self.ssh_manager = SSHManager.get_instance()
         
-        if ssh_connection:
-            # 检查提供的SSH连接是否有效
-            if not self._verify_ssh_connection(ssh_connection):
-                logger.warning("提供的SSH连接无效，尝试获取新连接")
-                ssh_connection = None
-        
-        if not ssh_connection:
-            # 检查现有连接状态
-            connection_status = SSHManager.get_connection_status()
-            if not connection_status["connected"]:
-                logger.warning(f"SSH未连接或连接已断开: {connection_status['last_error']}")
-                logger.info("尝试重新建立SSH连接")
-                ssh_connection = self.ssh_manager.force_reconnect()
-            else:
-                # 使用现有的有效连接
-                ssh_connection = SSHManager.get_client()
+        # 获取SSH连接
+        self.ssh = SSHManager.get_client()
         
         # 如果连接尝试失败，记录日志
-        if not ssh_connection:
-            logger.error("无法建立SSH连接，测试可能会失败")
-        # else:
-        #     logger.info("SSH连接就绪，初始化测试组件")
-        
-        # 保存SSH连接实例
-        self.ssh = ssh_connection
+        if not self.ssh:
+            logger.error("无法获取SSH连接，测试可能会失败")
         
         # 初始化测试组件
-        self.image_getter = GetLatestImage(self.ssh)
-        self.screenshot_getter = GetLatestScreenshot(self.ssh)
+        self.image_getter = GetLatestImage()
+        self.screenshot_getter = GetLatestScreenshot()
         # 初始化时先不创建ButtonClicker，等有项目ID时再创建
         self.button_clicker = None
     
-    def _verify_ssh_connection(self, ssh_connection):
+    def _get_ssh_connection(self):
         """
-        验证SSH连接是否有效
-
-        Args:
-            ssh_connection: 要验证的SSH连接
+        获取SSH连接
 
         Returns:
-            bool: 连接是否有效
+            SSH连接对象或None
         """
-        if not ssh_connection:
-            return False
-
         try:
-            # 检查SSH连接的基本属性
-            if not hasattr(ssh_connection, 'exec_command'):
-                logger.warning("SSH连接对象缺少exec_command方法")
-                return False
-
-            # 检查传输层
-            transport = ssh_connection.get_transport()
-            if not transport or not transport.is_active():
-                logger.warning("SSH连接的传输层不存在或不活动")
-                return False
-
-            # 如果传输层活动，我们认为连接是有效的
-            # 不再执行测试命令，避免因为通道问题导致误判
-            logger.debug("SSH连接验证成功（基于传输层状态）")
-            return True
+            # 获取SSH连接
+            ssh_connection = SSHManager.get_client()
+            if not ssh_connection:
+                logger.error("无法获取SSH连接")
+                return None
+            
+            return ssh_connection
 
         except Exception as e:
-            logger.error(f"验证SSH连接时出错: {e}")
-            return False
+            logger.error(f"获取SSH连接时出错: {e}")
+            return None
     
     def find_matching_file(self, directory, keyword):
         """
@@ -137,22 +101,17 @@ class TestCaseExecutor:
     def execute_test_case(self, test_case):
         """执行测试用例"""
         try:
-            # 首先验证SSH连接
-            if not self.ssh or not SSHManager.is_connected():
-                logger.warning("SSH连接不活动，尝试重新连接")
-                self.ssh = self.ssh_manager.force_reconnect()
-                if not self.ssh:
-                    logger.error("重新连接SSH失败，无法执行测试用例")
-                    return {
-                        'success': False,
-                        'status': '失败',
-                        'message': "SSH连接失败，无法执行测试用例"
-                    }
+            # 获取SSH连接
+            if not self.ssh:
+                self.ssh = self._get_ssh_connection()
                 
-                # 更新组件的SSH连接
-                self.image_getter.ssh = self.ssh
-                self.screenshot_getter.ssh = self.ssh
-                self.button_clicker.ssh = self.ssh
+            if not self.ssh:
+                logger.error("无法获取SSH连接，无法执行测试用例")
+                return {
+                    'success': False,
+                    'status': '失败',
+                    'message': "无法获取SSH连接，无法执行测试用例"
+                }
             
             # 获取测试用例的顶级id和项目id
             test_case_id = test_case.get('id')
@@ -328,22 +287,16 @@ class TestCaseExecutor:
     def _execute_operation_step(self, step, test_name, test_case_id=None):
         """执行单个操作步骤"""
         try:
-            # 再次检查SSH连接状态
-            if not self.ssh or not SSHManager.is_connected():
-                logger.warning("操作步骤执行前发现SSH连接不活动，尝试重新连接")
-                self.ssh = self.ssh_manager.force_reconnect()
-                if not self.ssh:
-                    logger.error("重新连接SSH失败，无法执行操作步骤")
-                    return {
-                        'success': False,
-                        'message': "SSH连接失败，无法执行操作步骤"
-                    }
+            # 获取SSH连接
+            if not self.ssh:
+                self.ssh = self._get_ssh_connection()
                 
-                # 更新组件的SSH连接
-                self.image_getter.ssh = self.ssh
-                self.screenshot_getter.ssh = self.ssh
-                if self.button_clicker:
-                    self.button_clicker.ssh = self.ssh
+            if not self.ssh:
+                logger.error("无法获取SSH连接，无法执行操作步骤")
+                return {
+                    'success': False,
+                    'message': "无法获取SSH连接，无法执行操作步骤"
+                }
             
             operation_key = step.get('operation_key', '')
             button_name = step.get('button_name', '')
@@ -1079,7 +1032,7 @@ class TestCaseExecutor:
                     img_dir = os.path.join('data', 'img', 'operation_img')
                     # 使用id_作为前缀和截图ID作为关键字查找匹配的文件
                     img_path = self.find_matching_file(img_dir, f"id_{screenshot_id}_")
-                    
+                    logger.info(f"从img/operation_img目录读取操作界面截图: {img_path},id：{screenshot_id}")
                     if img_path:
                         try:
                             operation_image = cv2.imread(img_path)

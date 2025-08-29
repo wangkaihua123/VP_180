@@ -13,7 +13,7 @@ def init_ssh_connection_service():
         from .ssh_manager import SSHManager
         # 在后台线程中初始化SSH连接，避免阻塞主线程
         import threading
-        threading.Thread(target=SSHManager.initialize_connection, daemon=True).start()
+        threading.Thread(target=SSHManager.get_instance, daemon=True).start()
     except ImportError as e:
         print(f"无法导入SSH管理器模块: {e}")
     except Exception as e:

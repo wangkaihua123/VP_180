@@ -105,38 +105,24 @@ class ButtonClicker:
             logger.error(f"加载项目配置失败: {str(e)}")
             return False
     
-    def _ensure_ssh_connection(self):
-        """确保SSH连接有效，如果无效则尝试重新连接
+    def _get_ssh_connection(self):
+        """获取SSH连接
         
         Returns:
-            paramiko.SSHClient: 有效的SSH连接
-            None: 如果无法获取有效连接
+            paramiko.SSHClient: SSH连接
+            None: 如果无法获取连接
         """
-        # 首先检查现有连接是否有效
-        if self.ssh and hasattr(self.ssh, 'exec_command'):
-            try:
-                transport = self.ssh.get_transport()
-                if transport and transport.is_active():
-                    return self.ssh
-            except:
-                pass
-        
-        # 如果现有连接无效，尝试通过SSHManager获取连接
+        # 通过SSHManager获取连接
         try:
-            if not SSHManager.is_connected():
-                logger.info("SSH连接已断开，尝试重新连接")
-                self.ssh = self.ssh_manager.reconnect()
-            else:
-                self.ssh = SSHManager.get_client()
-            
+            self.ssh = SSHManager.get_client()
             if not self.ssh:
-                logger.error("无法获取有效的SSH连接")
+                logger.error("无法获取SSH连接")
                 return None
             
             return self.ssh
             
         except Exception as e:
-            logger.error(f"确保SSH连接时出错: {str(e)}")
+            logger.error(f"获取SSH连接时出错: {str(e)}")
             return None
     
     def click_button(self, x=None, y=None, button_name=None, description="按钮", touch_duration=None):
@@ -176,8 +162,8 @@ class ButtonClicker:
         
         # 重试机制
         for attempt in range(self.max_retries):
-            # 确保SSH连接有效
-            ssh = self._ensure_ssh_connection()
+            # 获取SSH连接
+            ssh = self._get_ssh_connection()
             if not ssh:
                 logger.error(f"第{attempt + 1}次尝试：无法获取有效的SSH连接")
                 if attempt < self.max_retries - 1:
@@ -266,8 +252,8 @@ class ButtonClicker:
         
         # 重试机制
         for attempt in range(self.max_retries):
-            # 确保SSH连接有效
-            ssh = self._ensure_ssh_connection()
+            # 获取SSH连接
+            ssh = self._get_ssh_connection()
             if not ssh:
                 logger.error(f"第{attempt + 1}次尝试：无法获取有效的SSH连接")
                 if attempt < self.max_retries - 1:
@@ -316,8 +302,8 @@ class ButtonClicker:
         
         # 重试机制
         for attempt in range(self.max_retries):
-            # 确保SSH连接有效
-            ssh = self._ensure_ssh_connection()
+            # 获取SSH连接
+            ssh = self._get_ssh_connection()
             if not ssh:
                 logger.error(f"第{attempt + 1}次尝试：无法获取有效的SSH连接")
                 if attempt < self.max_retries - 1:
@@ -387,8 +373,8 @@ class ButtonClicker:
         
         # 重试机制
         for attempt in range(self.max_retries):
-            # 确保SSH连接有效
-            ssh = self._ensure_ssh_connection()
+            # 获取SSH连接
+            ssh = self._get_ssh_connection()
             if not ssh:
                 logger.error(f"第{attempt + 1}次尝试：无法获取有效的SSH连接")
                 if attempt < self.max_retries - 1:

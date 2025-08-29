@@ -1,5 +1,5 @@
 """
-触摸事件监控模块
+SSH连接触摸事件监控模块
 
 该模块通过SSH连接监控设备的触摸事件。主要功能包括：
 1. 实时捕获设备的触摸操作
@@ -92,43 +92,43 @@ class TouchMonitor:
             logger.info(f"已设置项目ID为 {project_id} 并加载对应的屏幕分辨率配置")
         
     def start_monitoring(self, ws):
-        """开始监控触摸事件"""
+        """开始通过SSH连接监控触摸事件"""
         if self.is_monitoring:
-            logger.debug("已经在监控中，忽略重复启动请求")
+            logger.debug("已经在通过SSH连接监控中，忽略重复启动请求")
             return
             
-        logger.info("开始监控触摸事件...")
+        logger.info("开始通过SSH连接监控触摸事件...")
         self.is_monitoring = True
         self.websocket = ws
         
         try:
-            logger.info("正在建立SSH连接...")
-            # 获取现有连接或创建新连接
+            logger.info("正在获取SSH连接...")
+            # 获取现有连接
             ssh_client = self.ssh_manager.get_client()
             if not ssh_client:
-                logger.error("无法创建SSH连接")
-                self._send_event({"type": "error", "message": "无法创建SSH连接"})
+                logger.error("无法获取SSH连接")
+                self._send_event({"type": "error", "message": "无法获取SSH连接"})
                 return
             
             # 检查evtest命令是否存在
-            logger.debug("检查evtest命令...")
+            logger.debug("通过SSH连接检查evtest命令...")
             stdin, stdout, stderr = ssh_client.exec_command('which evtest')
             evtest_path = stdout.read().decode().strip()
             if not evtest_path:
-                logger.error("未找到evtest命令")
-                self._send_event({"type": "error", "message": "未找到evtest命令，请确保已安装"})
+                logger.error("通过SSH连接未找到evtest命令")
+                self._send_event({"type": "error", "message": "通过SSH连接未找到evtest命令，请确保已安装"})
                 return
                 
             # 检查触摸设备是否存在
-            logger.debug("检查触摸设备...")
+            logger.debug("通过SSH连接检查触摸设备...")
             stdin, stdout, stderr = ssh_client.exec_command('ls -l /dev/input/event1')
             device_info = stdout.read().decode().strip()
             if not device_info:
-                logger.error("未找到触摸设备/dev/input/event1")
-                self._send_event({"type": "error", "message": "未找到触摸设备，请检查设备连接"})
+                logger.error("通过SSH连接未找到触摸设备/dev/input/event1")
+                self._send_event({"type": "error", "message": "通过SSH连接未找到触摸设备，请检查设备连接"})
                 return
                 
-            logger.info("SSH连接成功，开始执行evtest命令...")
+            logger.info("通过SSH连接成功，开始执行evtest命令...")
             # 使用SSH Channel执行evtest命令
             transport = ssh_client.get_transport()
             self.channel = transport.open_session()
@@ -136,11 +136,11 @@ class TouchMonitor:
             self.channel.settimeout(None)  # 设置为阻塞模式
             
             command = f'{evtest_path} /dev/input/event1'
-            logger.debug(f"执行命令: {command}")
+            logger.debug(f"通过SSH连接执行命令: {command}")
             self.channel.exec_command(command)
             
-            # 等待命令启动
-            time.sleep(1)
+            # 等待命令启动，SSH连接可能需要更长时间
+            time.sleep(2)
             
             current_x = None
             current_y = None
@@ -234,8 +234,8 @@ class TouchMonitor:
             self.stop_monitoring()
             
     def stop_monitoring(self):
-        """停止监控触摸事件"""
-        logger.info("正在停止触摸监控...")
+        """停止通过SSH连接监控触摸事件"""
+        logger.info("正在停止通过SSH连接的触摸监控...")
         self.is_monitoring = False
         if self.channel:
             try:

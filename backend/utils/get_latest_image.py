@@ -35,12 +35,11 @@ BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
 LOCAL_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
 
 class GetLatestImage:
-    def __init__(self, ssh_connection, test_name="Test"):
-        """初始化时传入已建立的 SSH 连接"""
-        self.ssh = ssh_connection
+    def __init__(self, test_name="Test"):
+        """初始化"""
         self.test_name = test_name
         self.base_dir = "/ue/ue_harddisk/ue_data"
-        # 更新本地目录路径为data/img/operation_img  
+        # 更新本地目录路径为data/img/operation_img
         self.local_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "img")
         os.makedirs(self.local_dir, exist_ok=True)
         os.makedirs(os.path.join(self.local_dir, "operation_img"), exist_ok=True)
@@ -51,8 +50,11 @@ class GetLatestImage:
         self.temp_dir = os.path.join(self.local_dir, "temp")
         os.makedirs(self.temp_dir, exist_ok=True)
         
+        # 获取SSH连接
+        self.ssh = SSHManager.get_client()
+        
         # 创建ButtonClicker实例
-        self.button_clicker = ButtonClicker(ssh_connection)
+        self.button_clicker = ButtonClicker()
         
         # 检查远程目录是否存在
         if self.ssh and hasattr(self.ssh, 'exec_command'):
@@ -98,10 +100,13 @@ class GetLatestImage:
             解析后的图像对象
         """
         try:
-            # 检查SSH连接是否有效
+            # 获取SSH连接
+            if not self.ssh:
+                self.ssh = SSHManager.get_client()
+            
             if not self.ssh or not hasattr(self.ssh, 'exec_command'):
-                logger.error("SSH连接无效，无法获取图像")
-                raise Exception("SSH连接无效，无法获取图像")
+                logger.error("无法获取SSH连接，无法获取图像")
+                raise Exception("无法获取SSH连接，无法获取图像")
             
             # 点击保存图像按钮
             # logger.debug("点击保存图像按钮")
@@ -266,10 +271,13 @@ class GetLatestImage:
             numpy.ndarray: 捕获的图像数据
         """
         try:
-            # 检查SSH连接是否有效
+            # 获取SSH连接
+            if not self.ssh:
+                self.ssh = SSHManager.get_client()
+            
             if not self.ssh or not hasattr(self.ssh, 'exec_command'):
-                logger.error("SSH连接无效，无法获取图像")
-                raise Exception("SSH连接无效，无法获取图像")
+                logger.error("无法获取SSH连接，无法获取图像")
+                raise Exception("无法获取SSH连接，无法获取图像")
             
             # 生成文件名：优先使用提供的自定义文件名，否则使用带时间戳的文件名
             if filename:

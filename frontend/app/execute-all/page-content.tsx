@@ -697,6 +697,29 @@ export function ExecuteAllPage() {
       const clearResult = await testCasesAPI.clearSystemLog()
       if (clearResult.success) {
         console.log('系统日志文件已清空')
+        
+        // 等待一段时间确保日志文件清空操作完成
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        // 如果WebSocket已连接，发送reset命令重新开始读取日志
+        if (isWebSocketConnected && logsWebSocketRef.current) {
+          console.log('发送reset命令重新开始读取日志');
+          try {
+            logsWebSocketRef.current.send(JSON.stringify({ action: 'reset' }));
+          } catch (error) {
+            console.error('发送reset命令失败:', error);
+            // 如果发送reset命令失败，尝试重新建立WebSocket连接
+            console.log('尝试重新建立WebSocket连接');
+            closeLogsWebSocket();
+            setTimeout(() => {
+              connectLogsWebSocket();
+            }, 200);
+          }
+        } else {
+          // 如果WebSocket未连接，尝试建立连接
+          console.log('WebSocket未连接，尝试建立连接');
+          connectLogsWebSocket();
+        }
       } else {
         console.warn('清空系统日志文件失败:', clearResult.message)
         toast({
@@ -1285,39 +1308,69 @@ export function ExecuteAllPage() {
   /**
    * 重新执行测试用例
    */
-  const handleReExecute = () => {
-    // 先清空日志
-    console.log('重新执行测试用例，先清空日志');
-    setSystemLogs([]);
-    setLogs([]);
-    
-    // 如果WebSocket已连接，发送reset命令清空日志文件
-    if (isWebSocketConnected && logsWebSocketRef.current) {
-      console.log('发送reset命令清空日志文件');
-      try {
-        logsWebSocketRef.current.send(JSON.stringify({ action: 'reset' }));
-      } catch (error) {
-        console.error('发送reset命令失败:', error);
+  const handleReExecute = async () => {
+    try {
+      // 先调用API清空日志文件
+      console.log('重新执行测试用例，先清空日志文件');
+      const clearResult = await testCasesAPI.clearSystemLog();
+      if (clearResult.success) {
+        console.log('日志文件已清空');
+      } else {
+        console.warn('清空日志文件失败:', clearResult.message);
       }
+      
+      // 清空前端日志状态
+      setSystemLogs([]);
+      setLogs([]);
+      
+      // 等待一段时间确保日志文件清空操作完成
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // 如果WebSocket已连接，发送reset命令重新开始读取日志
+      if (isWebSocketConnected && logsWebSocketRef.current) {
+        console.log('发送reset命令重新开始读取日志');
+        try {
+          logsWebSocketRef.current.send(JSON.stringify({ action: 'reset' }));
+        } catch (error) {
+          console.error('发送reset命令失败:', error);
+          // 如果发送reset命令失败，尝试重新建立WebSocket连接
+          console.log('尝试重新建立WebSocket连接');
+          closeLogsWebSocket();
+          setTimeout(() => {
+            connectLogsWebSocket();
+          }, 200);
+        }
+      } else {
+        // 如果WebSocket未连接，尝试建立连接
+        console.log('WebSocket未连接，尝试建立连接');
+        connectLogsWebSocket();
+      }
+      
+      // 等待更长时间确保日志清空和WebSocket重置都完成，然后再跳转
+      setTimeout(() => {
+        // 构建新的URL，添加autoExecute=true参数
+        const timestamp = new Date().getTime();
+        let newUrl = '/execute-all';
+        
+        // 如果有选中的测试用例ID，添加到URL中
+        if (selectedIds.length > 0) {
+          newUrl += `?ids=${selectedIds.join(',')}`;
+        }
+        
+        // 添加autoExecute=true参数
+        newUrl += `${selectedIds.length > 0 ? '&' : '?'}autoExecute=true&t=${timestamp}`;
+        
+        // 使用window.location.href强制浏览器完全刷新页面
+        window.location.href = newUrl;
+      }, 1000); // 增加等待时间到1000毫秒确保所有操作完成
+    } catch (error) {
+      console.error('重新执行测试用例时出错:', error);
+      toast({
+        title: "重新执行失败",
+        description: error instanceof Error ? error.message : "重新执行测试用例时发生未知错误",
+        variant: "destructive",
+      });
     }
-    
-    // 等待一小段时间确保日志清空完成，然后再跳转
-    setTimeout(() => {
-      // 构建新的URL，添加autoExecute=true参数
-      const timestamp = new Date().getTime();
-      let newUrl = '/execute-all';
-      
-      // 如果有选中的测试用例ID，添加到URL中
-      if (selectedIds.length > 0) {
-        newUrl += `?ids=${selectedIds.join(',')}`;
-      }
-      
-      // 添加autoExecute=true参数
-      newUrl += `${selectedIds.length > 0 ? '&' : '?'}autoExecute=true&t=${timestamp}`;
-      
-      // 使用window.location.href强制浏览器完全刷新页面
-      window.location.href = newUrl;
-    }, 500); // 等待500毫秒确保日志清空完成
   };
 
   /**

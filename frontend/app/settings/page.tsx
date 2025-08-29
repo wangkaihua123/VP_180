@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe, Plus, Edit, Trash2, FolderPlus } from "lucide-react"
+import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe, Plus, Edit, Trash2, FolderPlus, Upload } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -368,7 +368,12 @@ export default function SettingsPage() {
 
   const checkSshConnection = async () => {
     try {
-      const { success } = await sshSettingsAPI.testConnection(settings)
+      // 如果settings为空，则使用默认设置
+      const testSettings = settings.host && settings.username && settings.password
+        ? settings
+        : await sshSettingsAPI.get()
+      
+      const { success } = await sshSettingsAPI.testConnection(testSettings)
       setSshConnected(success)
     } catch {
       setSshConnected(false)
@@ -388,6 +393,26 @@ export default function SettingsPage() {
     } catch (error) {
       toast({
         title: "断开失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleUploadTouchScript = async () => {
+    setIsLoading(true)
+    try {
+      const { success, message } = await sshSettingsAPI.uploadTouchScript()
+      toast({
+        title: success ? "导入成功" : "导入失败",
+        description: message,
+        variant: success ? "default" : "destructive"
+      })
+    } catch (error) {
+      toast({
+        title: "导入失败",
         description: error instanceof Error ? error.message : "未知错误",
         variant: "destructive"
       })
@@ -694,8 +719,8 @@ export default function SettingsPage() {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={handleTestConnection}
                       disabled={isLoading}
                     >
@@ -716,23 +741,42 @@ export default function SettingsPage() {
                       断开连接
                     </Button>
                   </div>
-                  <Button 
-                    className="bg-black text-white hover:bg-gray-800"
-                    onClick={handleSaveClick}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        保存中...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
-                        保存设置
-                      </>
-                    )}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={handleUploadTouchScript}
+                      disabled={isLoading || !sshConnected}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          导入中...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="mr-2 h-4 w-4" />
+                          导入touch_click
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      className="bg-black text-white hover:bg-gray-800"
+                      onClick={handleSaveClick}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          保存中...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4 [&:hover]:text-inherit" />
+                          保存设置
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </CardFooter>
               </Card>
             </TabsContent>

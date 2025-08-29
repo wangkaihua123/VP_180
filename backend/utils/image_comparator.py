@@ -20,24 +20,6 @@ from .log_config import setup_logger
 
 # 获取日志记录器
 logger = setup_logger(__name__)
-# # 获取 logger 实例
-# logger = logging.getLogger(__name__)
-# logger.setLevel(logging.INFO)
-
-# # 设置日志目录
-# LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'logs', '@logs')
-# os.makedirs(LOG_DIR, exist_ok=True)
-
-# # 创建一个文件处理器，并设置编码为 UTF-8
-# file_handler = logging.FileHandler(os.path.join(LOG_DIR, "VP_180.log"), encoding="utf-8")
-
-# # 设置日志格式
-# formatter = logging.Formatter(
-#     "%(asctime)s - %(levelname)s - %(message)s",
-#     datefmt="%Y-%m-%d %H:%M:%S"
-# )
-# file_handler.setFormatter(formatter)
-# logger.addHandler(file_handler)
 
 class ImageComparator:
     @staticmethod

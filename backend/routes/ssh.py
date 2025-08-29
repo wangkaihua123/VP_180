@@ -1,5 +1,5 @@
 """
-SSH设置路由处理模块 - 处理SSH连接设置的API
+SSH连接SSH设置路由处理模块 - 处理通过SSH连接的SSH连接设置的API
 """
 import os
 import logging
@@ -14,28 +14,30 @@ logger = logging.getLogger(__name__)
 
 @ssh_bp.route('/settings', methods=['GET'])
 def get_ssh_settings():
-    """获取SSH设置"""
+    """获取SSH连接SSH设置"""
     try:
         settings = Settings.get_ssh_settings()
         if settings:
             return jsonify({
                 'success': True,
-                'settings': settings
+                'settings': settings,
+                'connection_type': 'mobaxterm_tunnel'  # 标识连接类型
             })
         return jsonify({
             'success': True,
-            'settings': None
+            'settings': None,
+            'connection_type': 'mobaxterm_tunnel'
         })
     except Exception as e:
         return jsonify({
             'success': False,
-            'message': f"获取SSH设置失败: {str(e)}"
+            'message': f"获取SSH连接SSH设置失败: {str(e)}"
         }), 500
 
 
 @ssh_bp.route('/settings', methods=['POST'])
 def update_ssh_settings():
-    """更新SSH设置"""
+    """更新SSH连接SSH设置"""
     try:
         data = request.json
         success = Settings.update_ssh_settings(data)
@@ -43,17 +45,18 @@ def update_ssh_settings():
             return jsonify({
                 'success': True,
                 'settings': Settings.get_ssh_settings(),
-                'message': 'SSH设置已更新'
+                'message': 'SSH连接SSH设置已更新',
+                'connection_type': 'mobaxterm_tunnel'
             })
         else:
             return jsonify({
                 'success': False,
-                'message': "保存SSH设置失败"
+                'message': "保存SSH连接SSH设置失败"
             }), 500
     except Exception as e:
         return jsonify({
             'success': False,
-            'message': f"更新SSH设置失败: {str(e)}"
+            'message': f"更新SSH连接SSH设置失败: {str(e)}"
         }), 500
 
 
@@ -66,7 +69,7 @@ def test_connection():
         # 从请求数据中获取SSH设置
         ssh_settings = {
             'host': data.get('host'),
-            'port': int(data.get('port', 22)),
+            'port': int(data.get('port', 2222)),  # 默认SSH连接端口
             'username': data.get('username'),
             'password': data.get('password')
         }
@@ -75,58 +78,57 @@ def test_connection():
         from services.ssh_service import SSHService
         from utils.ssh_manager import SSHManager
 
-        # 检查当前连接状态
-        if SSHManager.is_connected():
-            # 获取当前连接的配置
-            ssh_manager = SSHManager.get_instance()
-            current_host = getattr(ssh_manager, 'hostname', None)
-            current_port = getattr(ssh_manager, 'port', None)
-            current_username = getattr(ssh_manager, 'username', None)
+        # 获取当前连接的配置
+        ssh_manager = SSHManager.get_instance()
+        current_host = getattr(ssh_manager, 'hostname', None)
+        current_port = getattr(ssh_manager, 'port', None)
+        current_username = getattr(ssh_manager, 'username', None)
 
-            # 检查当前连接是否与请求的配置匹配
-            if (current_host == ssh_settings['host'] and
-                current_port == ssh_settings['port'] and
-                current_username == ssh_settings['username']):
-                
-                # 连接配置匹配，但需要验证连接是否真正有效
-                try:
-                    # 获取SSH客户端并执行测试命令验证连接
-                    ssh_client = SSHManager.get_client()
-                    if ssh_client:
-                        # 执行简单命令测试连接
-                        stdin, stdout, stderr = ssh_client.exec_command('echo "Connection test"', timeout=5)
-                        output = stdout.read().decode().strip()
-                        error = stderr.read().decode().strip()
-                        
-                        if error:
-                            logger.warning(f"现有连接测试命令执行出错: {error}")
-                            # 连接有问题，继续进行新的连接测试
-                            pass
-                        elif "Connection test" in output:
-                            # 连接确实有效
-                            return jsonify({
-                                'success': True,
-                                'message': '连接已存在且配置匹配，连接测试成功',
-                                'diagnostics': {
-                                    'authentication': True,
-                                    'commandExecution': True,
-                                    'networkConnectivity': True,
-                                    'sshService': True,
-                                    'errorType': None,
-                                    'errorDetails': None,
-                                    'connectionStatus': 'existing_connection',
-                                    'testOutput': output
-                                }
-                            })
-                        else:
-                            logger.warning("现有连接测试命令输出不符合预期")
-                            # 连接可能有问题，继续进行新的连接测试
+        # 检查当前连接是否与请求的配置匹配
+        if (current_host == ssh_settings['host'] and
+            current_port == ssh_settings['port'] and
+            current_username == ssh_settings['username']):
+            
+            # 连接配置匹配，验证连接是否有效
+            try:
+                # 获取SSH客户端并执行测试命令验证连接
+                ssh_client = SSHManager.get_client()
+                if ssh_client:
+                    # 执行简单命令测试连接
+                    stdin, stdout, stderr = ssh_client.exec_command('echo "MobaXterm tunnel connection test"', timeout=10)
+                    output = stdout.read().decode().strip()
+                    error = stderr.read().decode().strip()
+                    
+                    if error:
+                        logger.warning(f"现有SSH连接测试命令执行出错: {error}")
+                        # 连接有问题，继续进行新的连接测试
+                        pass
+                    elif "MobaXterm tunnel connection test" in output:
+                        # 连接确实有效
+                        return jsonify({
+                            'success': True,
+                            'message': 'SSH连接已存在且配置匹配，连接测试成功',
+                            'diagnostics': {
+                                'authentication': True,
+                                'commandExecution': True,
+                                'networkConnectivity': True,
+                                'sshService': True,
+                                'errorType': None,
+                                'errorDetails': None,
+                                'connectionStatus': 'existing_mobaxterm_tunnel_connection',
+                                'testOutput': output,
+                                'connectionType': 'mobaxterm_tunnel'
+                            }
+                        })
                     else:
-                        logger.warning("无法获取SSH客户端，连接可能已失效")
-                        # 连接已失效，继续进行新的连接测试
-                except Exception as e:
-                    logger.warning(f"验证现有连接时出错: {str(e)}")
-                    # 连接验证失败，继续进行新的连接测试
+                        logger.warning("现有SSH连接测试命令输出不符合预期")
+                        # 连接可能有问题，继续进行新的连接测试
+                else:
+                    logger.warning("无法获取SSH连接SSH客户端，连接可能已失效")
+                    # 连接已失效，继续进行新的连接测试
+            except Exception as e:
+                logger.warning(f"验证现有SSH连接时出错: {str(e)}")
+                # 连接验证失败，继续进行新的连接测试
 
         # 如果没有连接或配置不匹配，进行新的连接测试
         result = SSHService.test_connection(ssh_settings)
@@ -157,21 +159,14 @@ def disconnect_ssh():
 
 @ssh_bp.route('/upload-touch-script', methods=['POST'])
 def upload_touch_script():
-    """上传touch_click.py脚本到远程设备"""
+    """通过SSH连接上传touch_click.py脚本到远程设备"""
     try:
-        # 检查SSH连接
-        if not SSHManager.is_connected():
-            return jsonify({
-                'success': False,
-                'message': 'SSH连接未建立，请先连接设备'
-            }), 400
-
         # 获取SSH客户端
         ssh_client = SSHManager.get_client()
         if not ssh_client:
             return jsonify({
                 'success': False,
-                'message': '无法获取SSH客户端'
+                'message': '无法获取SSH连接SSH客户端'
             }), 500
 
         # 本地touch_click.py文件路径
@@ -191,7 +186,7 @@ def upload_touch_script():
         remote_dir = '/app/jzj'
         remote_script_path = f'{remote_dir}/touch_click.py'
 
-        logger.info(f"开始上传touch_click.py脚本: {local_script_path} -> {remote_script_path}")
+        logger.info(f"开始通过SSH连接上传touch_click.py脚本: {local_script_path} -> {remote_script_path}")
 
         # 创建SFTP客户端
         sftp = ssh_client.open_sftp()
@@ -207,11 +202,11 @@ def upload_touch_script():
                 ssh_client.exec_command(f'mkdir -p {remote_dir}')
                 # 等待目录创建完成
                 import time
-                time.sleep(0.5)
+                time.sleep(1)  # SSH连接可能需要更长时间
 
             # 上传文件
             sftp.put(local_script_path, remote_script_path)
-            logger.info(f"文件上传成功: {remote_script_path}")
+            logger.info(f"通过SSH连接文件上传成功: {remote_script_path}")
 
             # 设置文件权限为可执行
             sftp.chmod(remote_script_path, 0o755)
@@ -221,25 +216,26 @@ def upload_touch_script():
             try:
                 file_stat = sftp.stat(remote_script_path)
                 file_size = file_stat.st_size
-                logger.info(f"文件验证成功，大小: {file_size} 字节")
+                logger.info(f"通过SSH连接文件验证成功，大小: {file_size} 字节")
             except Exception as e:
-                logger.warning(f"文件验证失败: {str(e)}")
-                raise Exception(f"文件上传后验证失败: {str(e)}")
+                logger.warning(f"通过SSH连接文件验证失败: {str(e)}")
+                raise Exception(f"通过SSH连接文件上传后验证失败: {str(e)}")
 
         finally:
             sftp.close()
 
         return jsonify({
             'success': True,
-            'message': 'touch_click.py脚本上传成功',
+            'message': '通过SSH连接touch_click.py脚本上传成功',
             'local_path': local_script_path,
             'remote_path': remote_script_path,
-            'file_size': file_size
+            'file_size': file_size,
+            'connection_type': 'mobaxterm_tunnel'
         })
 
     except Exception as e:
-        logger.error(f"上传touch_click.py脚本失败: {str(e)}")
+        logger.error(f"通过SSH连接上传touch_click.py脚本失败: {str(e)}")
         return jsonify({
             'success': False,
-            'message': f'上传脚本失败: {str(e)}'
+            'message': f'通过SSH连接上传脚本失败: {str(e)}'
         }), 500

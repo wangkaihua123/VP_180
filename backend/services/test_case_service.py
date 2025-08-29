@@ -42,6 +42,7 @@ class TestCaseService:
         """删除测试用例"""
         return TestCase.delete(case_id)
     
+    
     @classmethod
     def run(cls, case_id):
         """执行单个测试用例"""
@@ -53,6 +54,9 @@ class TestCaseService:
                 'success': False,
                 'message': '测试用例不存在'
             }
+        
+        # 清空日志文件
+        # 注意：这里不再直接清空日志文件，而是由前端通过API调用清空日志
         
         # 检查测试用例是否需要串口连接
         serial_connect = case.get('serial_connect', False)
@@ -85,7 +89,7 @@ class TestCaseService:
         
         try:
             # 执行测试用例
-            executor = TestCaseExecutor(ssh)
+            executor = TestCaseExecutor()
             result = executor.execute_test_case(case)
             
             # 更新测试用例状态
@@ -123,8 +127,11 @@ class TestCaseService:
             }
         
         try:
+            # 清空日志文件
+            # 注意：这里不再直接清空日志文件，而是由前端通过API调用清空日志
+            
             # 执行指定的测试用例
-            executor = TestCaseExecutor(ssh)
+            executor = TestCaseExecutor()
             results = []
             
             for case_id in case_ids:
@@ -183,6 +190,9 @@ class TestCaseService:
     @classmethod
     def run_all(cls):
         """执行所有测试用例"""
+        # 清空日志文件
+        # 注意：这里不再直接清空日志文件，而是由前端通过API调用清空日志
+        
         # 获取所有测试用例ID
         test_cases = TestCase.get_all()
         case_ids = [case['id'] for case in test_cases]

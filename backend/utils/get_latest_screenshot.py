@@ -33,9 +33,8 @@ BASE_IMG_DIR = "/ue/ue_harddisk/ue_data"
 LOCAL_SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "screenshots")
 
 class GetLatestScreenshot:
-    def __init__(self, ssh, test_name=None):
-        """初始化时传入已建立的 SSH 连接和测试用例名称"""
-        self.ssh = ssh
+    def __init__(self, test_name=None):
+        """初始化"""
         self.test_name = test_name
         self.base_dir = BASE_IMG_DIR
         # 确保本地截图目录存在
@@ -46,8 +45,11 @@ class GetLatestScreenshot:
         self.temp_dir = os.path.join(LOCAL_SCREENSHOT_DIR, "temp")
         os.makedirs(self.temp_dir, exist_ok=True)
         
+        # 获取SSH连接
+        self.ssh = SSHManager.get_client()
+        
         # 创建ButtonClicker实例
-        self.button_clicker = ButtonClicker(ssh)
+        self.button_clicker = ButtonClicker()
         
         # 检查远程目录是否存在
         if self.ssh and hasattr(self.ssh, 'exec_command'):
@@ -92,10 +94,13 @@ class GetLatestScreenshot:
             解析后的图像对象
         """
         try:
-            # 检查SSH连接是否有效
+            # 获取SSH连接
+            if not self.ssh:
+                self.ssh = SSHManager.get_client()
+            
             if not self.ssh or not hasattr(self.ssh, 'exec_command'):
-                logger.error("SSH连接无效，无法获取截图")
-                raise Exception("SSH连接无效，无法获取截图")
+                logger.error("无法获取SSH连接，无法获取截图")
+                raise Exception("无法获取SSH连接，无法获取截图")
             
             # 点击保存截图按钮
             logger.debug("点击保存截图按钮")
