@@ -126,7 +126,7 @@ class TestCaseExecutor:
             
             # 返回排序后的第一个（最新的）文件的完整路径
             latest_file = matching_files[0]
-            logger.info(f"找到匹配的文件: {latest_file}")
+            logger.info(f"在{directory}找到匹配的文件: {latest_file}")
             
             return os.path.join(directory, latest_file)
             
@@ -829,17 +829,19 @@ class TestCaseExecutor:
                 
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
                 if image is None:
-                    # 首先尝试从img目录获取（优先使用）
+                    # 首先尝试从img/operation_img目录获取（优先使用）
                     img_dir = os.path.join('data', 'img','operation_img')
+                    logger.info(f"从img/operation_img目录读取图像的路径是: {img_dir}")
                     if os.path.exists(img_dir):
                         # 获取最新的匹配文件
                         matching_files = [f for f in os.listdir(img_dir) if f.startswith(f'id_{screenshot_id}_')]
+                        logger.info(f"从img/operation_img目录读取图像的id是: {screenshot_id}")
                         if matching_files:
                             latest_file = max(matching_files)  # 获取最新的文件
                             img_path = os.path.join(img_dir, latest_file)
                             try:
                                 image = cv2.imread(img_path)
-                                logger.info(f"从img目录读取图像: {img_path}")
+                                logger.info(f"从img/operation_img目录读取图像: {img_path}")
                             except Exception as e:
                                 logger.warning(f"无法从文件 {img_path} 读取图像: {str(e)}")
                 
@@ -948,17 +950,6 @@ class TestCaseExecutor:
                     operation_image = operation_data[screenshot_id]['image']
                     logger.info(f"从操作步骤 {screenshot_id} 获取到操作界面截图")
                 
-                # 如果在img目录中找不到，尝试在img/upload目录中查找
-                if operation_image is None:
-                    screenshot_dir = os.path.join('..', 'frontend', 'public', 'screenshot', 'upload')
-                    img_path = self.find_matching_file(screenshot_dir, f"id_{screenshot_id}_")
-                    logger.info(f"从 {screenshot_dir} 获取到操作界面截图")
-                    if img_path:
-                        try:
-                            operation_image = cv2.imread(img_path)
-                            logger.info(f"从screenshot/upload目录读取操作界面截图: {img_path}")
-                        except Exception as e:
-                            logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
                 
                 # 如果无法从操作步骤数据中获取，尝试从文件路径获取
                 if operation_image is None:
@@ -966,7 +957,7 @@ class TestCaseExecutor:
                     img_dir = os.path.join('data', 'img', 'operation_img')
                     # 使用id_作为前缀和截图ID作为关键字查找匹配的文件
                     img_path = self.find_matching_file(img_dir, f"id_{screenshot_id}_")
-                    
+                    logger.info(f"从img/operation_img目录读取操作界面截图: {img_path},id：{screenshot_id}")
                     if img_path:
                         try:
                             operation_image = cv2.imread(img_path)
@@ -974,17 +965,7 @@ class TestCaseExecutor:
                         except Exception as e:
                             logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
                 
-                # # 如果在img/operation_img目录中找不到，尝试在img目录中查找
-                # if operation_image is None:
-                #     img_dir = os.path.join('data', 'img')
-                #     img_path = self.find_matching_file(img_dir, f"id_{screenshot_id}_")
-                    
-                #     if img_path:
-                #         try:
-                #             operation_image = cv2.imread(img_path)
-                #             logger.info(f"从img目录读取操作界面截图: {img_path}")
-                #         except Exception as e:
-                #             logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
+                # 不再在img根目录中查找，只查找img/operation_img和img/display_img目录
                 
 
                 # 如果仍然无法获取操作界面截图，返回失败
@@ -999,67 +980,24 @@ class TestCaseExecutor:
                 reference_image = None
                 
                 # 尝试解析参考截图路径
-                try:
-                    # 检查是否是JSON字符串
-                    if reference_screenshot.startswith('{') and reference_screenshot.endswith('}'):
-                        # 解析JSON获取文件名
-                        ref_data = json.loads(reference_screenshot)
-                        ref_filename = ref_data.get('fileName')
-                        
-                        # 如果有文件名，从多个目录查找包含该文件名的文件
-                        if ref_filename:
-                            # 1. 先尝试public/screenshot/upload目录
-                            img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'screenshot', 'upload'), ref_filename)
-                            logger.info(f"✅ 日志输出路径：{img_path}")
-                            if img_path and os.path.exists(img_path):
-                                reference_image = cv2.imread(img_path)
-                                logger.info(f"从public/screenshot/upload目录读取参考截图: {img_path}")
-                            
-                            # 2. 如果找不到，尝试data/img目录
-                            if reference_image is None:
-                                img_path = self.find_matching_file(os.path.join('..', 'data', 'img','operation_img'), ref_filename)
-                                
-                                if img_path and os.path.exists(img_path):
-                                    reference_image = cv2.imread(img_path)
-                                    logger.info(f"从data/img/operation_img目录读取参考截图: {img_path}")
-                            
-                            # 3. 如果仍找不到，尝试public/img/upload目录    
-                            if reference_image is None:
-                                img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
-                                
-                                if img_path and os.path.exists(img_path):
-                                    reference_image = cv2.imread(img_path)
-                                    logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
-                    else:
-                        # 直接使用路径
-                        ref_filename = reference_screenshot
-                        
-                        if '/' in ref_filename:
-                            # 如果包含路径分隔符，提取文件名
-                            ref_filename = ref_filename.split('/')[-1]
-                        
+                try:                    
+                    ref_filename = reference_screenshot
+                    
+                    # 如果有文件名，从多个目录查找包含该文件名的文件
+                    if ref_filename:
                         # 1. 先尝试public/screenshot/upload目录
                         img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'screenshot', 'upload'), ref_filename)
-                        
                         if img_path and os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
                             logger.info(f"从public/screenshot/upload目录读取参考截图: {img_path}")
                         
-                        # 2. 如果找不到，尝试public/img/upload目录
+                        # 3. 如果仍找不到，尝试public/img/upload目录
                         if reference_image is None:
                             img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
                             
                             if img_path and os.path.exists(img_path):
                                 reference_image = cv2.imread(img_path)
                                 logger.info(f"从public/img/upload目录读取参考截图: {img_path}")
-                        
-                        # 3. 如果仍找不到，尝试data/img/operation_img目录
-                        if reference_image is None:
-                            img_path = self.find_matching_file(os.path.join('data', 'img', 'operation_img'), ref_filename)
-                            
-                            if img_path and os.path.exists(img_path):
-                                reference_image = cv2.imread(img_path)
-                                logger.info(f"从data/img/operation_img目录读取参考截图: {img_path}")
                 except Exception as e:
                     logger.warning(f"解析参考截图路径出错: {str(e)}")
                 
@@ -1080,7 +1018,7 @@ class TestCaseExecutor:
                         logger.info("调整参考截图尺寸以匹配操作界面截图")
                     
                     # 提取图片名称信息
-                    operation_img_name = f"操作界面截图_{screenshot_id}"
+                    operation_img_name = f"操作界面截图_{img_path}"
                     reference_img_name = f"参考截图_{reference_screenshot}"
                     
                     # 使用用户设置的阈值作为上限，0.5作为下限
@@ -1149,29 +1087,6 @@ class TestCaseExecutor:
                         except Exception as e:
                             logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
                 
-                # 如果在img/operation_img目录中找不到，尝试在img目录中查找
-                if operation_image is None:
-                    img_dir = os.path.join('data', 'img')
-                    img_path = self.find_matching_file(img_dir, f"id_{screenshot_id}_")
-                    
-                    if img_path:
-                        try:
-                            operation_image = cv2.imread(img_path)
-                            logger.info(f"从img目录读取操作界面截图: {img_path}")
-                        except Exception as e:
-                            logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
-                
-                # 如果在img目录中找不到，尝试在public/screenshot/upload目录中查找
-                if operation_image is None:
-                    screenshot_dir = os.path.join('..', 'frontend', 'public', 'screenshot', 'upload')
-                    img_path = self.find_matching_file(screenshot_dir, f"id_{screenshot_id}_")
-                    
-                    if img_path:
-                        try:
-                            operation_image = cv2.imread(img_path)
-                            logger.info(f"从screenshot/upload目录读取操作界面截图: {img_path}")
-                        except Exception as e:
-                            logger.warning(f"无法从文件 {img_path} 读取操作界面截图: {str(e)}")
                 
                 # 如果仍然无法获取操作界面截图，返回失败
                 if operation_image is None:
@@ -1186,66 +1101,16 @@ class TestCaseExecutor:
                 
                 # 尝试解析参考内容路径
                 try:
-                    # 检查是否是JSON字符串
-                    if reference_content.startswith('{') and reference_content.endswith('}'):
-                        # 解析JSON获取文件名
-                        ref_data = json.loads(reference_content)
-                        ref_filename = ref_data.get('fileName')
-                        
-                        # 如果有文件名，从多个目录查找包含该文件名的文件
-                        if ref_filename:
-                            # 1. 先尝试public/screenshot/upload目录
-                            img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
-                            
-                            if img_path and os.path.exists(img_path):
-                                reference_image = cv2.imread(img_path)
-                                logger.info(f"从public/img/upload目录读取参考内容: {img_path}")
-                            
-                            # 2. 如果找不到，尝试data/img目录
-                            if reference_image is None:
-                                img_path = self.find_matching_file(os.path.join('data', 'img'), ref_filename)
-                                
-                                if img_path and os.path.exists(img_path):
-                                    reference_image = cv2.imread(img_path)
-                                    logger.info(f"从data/img目录读取参考内容: {img_path}")
-                            
-                            # 3. 如果仍找不到，尝试data/img/operation_img目录
-                            if reference_image is None:
-                                img_path = self.find_matching_file(os.path.join('data', 'img', 'operation_img'), ref_filename)
-                                
-                                if img_path and os.path.exists(img_path):
-                                    reference_image = cv2.imread(img_path)
-                                    logger.info(f"从data/img/operation_img目录读取参考内容: {img_path}")
-                    else:
-                        # 直接使用路径
-                        ref_filename = reference_content
-                        
-                        if '/' in ref_filename:
-                            # 如果包含路径分隔符，提取文件名
-                            ref_filename = ref_filename.split('/')[-1]
-                        
-                        # 1. 先尝试public/screenshot/upload目录
+                    ref_filename = reference_content
+                    
+                    # 如果有文件名，从多个目录查找包含该文件名的文件
+                    if ref_filename:
+                        # 1. 先尝试public/img/upload目录
                         img_path = self.find_matching_file(os.path.join('..', 'frontend', 'public', 'img', 'upload'), ref_filename)
                         
                         if img_path and os.path.exists(img_path):
                             reference_image = cv2.imread(img_path)
                             logger.info(f"从public/img/upload目录读取参考内容: {img_path}")
-                        
-                        # 2. 如果找不到，尝试data/img目录
-                        if reference_image is None:
-                            img_path = self.find_matching_file(os.path.join('data', 'img'), ref_filename)
-                            
-                            if img_path and os.path.exists(img_path):
-                                reference_image = cv2.imread(img_path)
-                                logger.info(f"从data/img目录读取参考内容: {img_path}")
-                        
-                        # 3. 如果仍找不到，尝试data/img/operation_img目录
-                        if reference_image is None:
-                            img_path = self.find_matching_file(os.path.join('data', 'img', 'operation_img'), ref_filename)
-                            
-                            if img_path and os.path.exists(img_path):
-                                reference_image = cv2.imread(img_path)
-                                logger.info(f"从data/img/operation_img目录读取参考内容: {img_path}")
                 except Exception as e:
                     logger.warning(f"解析参考内容路径出错: {str(e)}")
                 
@@ -1273,7 +1138,7 @@ class TestCaseExecutor:
                             logger.info(f"调整参考内容尺寸为 {new_width}x{new_height}")
                     
                     # 提取图片名称信息
-                    operation_img_name = f"操作界面截图_{screenshot_id}"
+                    operation_img_name = f"操作界面截图_{img_path}"
                     reference_img_name = f"参考内容_{reference_content}"
                     
                     # 使用用户设置的阈值进行模板匹配，并传递图片名称

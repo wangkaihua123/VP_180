@@ -3,8 +3,8 @@
     {
       "testId": 32,
       "testName": "点击电子放大",
-      "testResult": "失败",
-      "lastExecutionTime": "2025-08-28T09:28:09.312Z",
+      "testResult": "异常",
+      "lastExecutionTime": "2025-08-29T03:10:04.321Z",
       "testType": "功能测试",
       "description": "",
       "executionDuration": 0
@@ -15,8 +15,8 @@
     "passedCases": 0,
     "failedCases": 1,
     "passRate": 0,
-    "executionTime": "2025-08-28T09:28:09.312Z",
+    "executionTime": "2025-08-29T03:10:04.321Z",
     "project": "VP-180项目"
   },
-  "generatedAt": "2025-08-28T17:28:09.634571"
+  "generatedAt": "2025-08-29T11:10:04.659733"
 }

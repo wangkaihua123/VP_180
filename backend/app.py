@@ -236,7 +236,7 @@ def create_app(config=None):
                     
                     # 只有当文件大小或修改时间变化时才读取
                     if current_size != last_size or current_mtime != last_mtime:
-                        logger.info(f"检测到文件变化: 大小 {last_size} -> {current_size}, 修改时间 {last_mtime} -> {current_mtime}")
+                        # logger.info(f"检测到文件变化: 大小 {last_size} -> {current_size}, 修改时间 {last_mtime} -> {current_mtime}")
                         
                         # 检查是否在短时间内重复发送
                         current_time = time.time()

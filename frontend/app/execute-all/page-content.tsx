@@ -146,7 +146,12 @@ const convertImageUrlToApiPath = (url: string): string => {
   // 根据原始URL模式转换为API路径
   if (url.includes('/data/img/')) {
     const filename = url.split('/').pop() || '';
-    apiUrl = `/api/files/images/${filename}`;
+    // 检查文件名是否包含screen_capture，如果是则使用operation_img路径
+    if (filename.includes('screen_capture')) {
+      apiUrl = `/api/files/operation_img/${filename}`;
+    } else {
+      apiUrl = `/api/files/images/${filename}`;
+    }
     console.log('从/data/img/路径转换:', url, ' -> ', apiUrl);
   } else if (url.includes('/data/screenshots/')) {
     const filename = url.split('/').pop() || '';
@@ -154,7 +159,12 @@ const convertImageUrlToApiPath = (url: string): string => {
     console.log('从/data/screenshots/路径转换:', url, ' -> ', apiUrl);
   } else if (url.includes('/img/')) {
     const filename = url.split('/').pop() || '';
-    apiUrl = `/api/files/images/${filename}`;
+    // 检查文件名是否包含screen_capture，如果是则使用operation_img路径
+    if (filename.includes('screen_capture')) {
+      apiUrl = `/api/files/operation_img/${filename}`;
+    } else {
+      apiUrl = `/api/files/images/${filename}`;
+    }
     console.log('从/img/路径转换:', url, ' -> ', apiUrl);
   } else if (url.includes('/screenshot/')) {
     const filename = url.split('/').pop() || '';
@@ -163,7 +173,12 @@ const convertImageUrlToApiPath = (url: string): string => {
   } else if (url.startsWith('/api/images/')) {
     // 处理旧API路径格式
     const filename = url.split('/').pop() || '';
-    apiUrl = `/api/files/images/${filename}`;
+    // 检查文件名是否包含screen_capture，如果是则使用operation_img路径
+    if (filename.includes('screen_capture')) {
+      apiUrl = `/api/files/operation_img/${filename}`;
+    } else {
+      apiUrl = `/api/files/images/${filename}`;
+    }
     console.log('从旧API路径格式转换:', url, ' -> ', apiUrl);
   } else if (url.startsWith('/api/screenshots/')) {
     // 处理旧API路径格式
@@ -1857,11 +1872,24 @@ export function ExecuteAllPage() {
                           测试用例 #{testCase.id}: {testCase.name}
                         </span>
                       </div>
-                      {expandedTestCases.includes(testCase.id) ? (
-                        <ChevronDown className="h-5 w-5 text-gray-400" />
-                      ) : (
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
-                      )}
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-blue-600 hover:text-blue-900 h-8 w-8 p-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/test-cases/${testCase.id}/edit`);
+                          }}
+                        >
+                          编辑
+                        </Button>
+                        {expandedTestCases.includes(testCase.id) ? (
+                          <ChevronDown className="h-5 w-5 text-gray-400" />
+                        ) : (
+                          <ChevronRight className="h-5 w-5 text-gray-400" />
+                        )}
+                      </div>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <div className="border-t p-3 bg-black/5">
@@ -1918,12 +1946,22 @@ export function ExecuteAllPage() {
                                     <div className="relative h-40 flex items-center justify-center overflow-hidden bg-gray-50">
                                       <div className="w-full h-full flex items-center justify-center">
                                         <img
-                                          src={image.url || "/placeholder.svg"}
+                                          src={convertImageUrlToApiPath(image.url) || "/placeholder.svg"}
                                           alt={image.title}
                                           className="max-h-full max-w-full object-contain"
                                           style={{
                                             transform: 'scale(1)',
                                             transformOrigin: 'center center'
+                                          }}
+                                          onError={(e) => {
+                                            console.error('图片加载失败:', image.url);
+                                            // 如果图片加载失败，尝试使用原始URL
+                                            const originalUrl = image.url;
+                                            if (originalUrl && !originalUrl.includes('http')) {
+                                              (e.target as HTMLImageElement).src = `${API_BASE_URL}${originalUrl.startsWith('/') ? '' : '/'}${originalUrl}`;
+                                            } else {
+                                              (e.target as HTMLImageElement).src = "/placeholder.svg";
+                                            }
                                           }}
                                         />
                                       </div>
@@ -1962,12 +2000,22 @@ export function ExecuteAllPage() {
                                     <div className="relative h-40 flex items-center justify-center overflow-hidden bg-gray-50">
                                       <div className="w-full h-full flex items-center justify-center">
                                         <img
-                                          src={screenshot.url || "/placeholder.svg"}
+                                          src={convertImageUrlToApiPath(screenshot.url) || "/placeholder.svg"}
                                           alt={screenshot.title}
                                           className="max-h-full max-w-full object-contain"
                                           style={{
-                                            transform: 'scale(0.6)',
+                                            transform: 'scale(1)',
                                             transformOrigin: 'center center'
+                                          }}
+                                          onError={(e) => {
+                                            console.error('截图加载失败:', screenshot.url);
+                                            // 如果截图加载失败，尝试使用原始URL
+                                            const originalUrl = screenshot.url;
+                                            if (originalUrl && !originalUrl.includes('http')) {
+                                              (e.target as HTMLImageElement).src = `${API_BASE_URL}${originalUrl.startsWith('/') ? '' : '/'}${originalUrl}`;
+                                            } else {
+                                              (e.target as HTMLImageElement).src = "/placeholder.svg";
+                                            }
                                           }}
                                         />
                                       </div>
@@ -2195,14 +2243,24 @@ export function ExecuteAllPage() {
                             {getStatusBadge(testCase.status)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-indigo-600 hover:text-indigo-900"
-                              onClick={() => toggleTestCase(testCase.id)}
-                            >
-                              查看详情
-                            </Button>
+                            <div className="flex space-x-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-indigo-600 hover:text-indigo-900"
+                                onClick={() => toggleTestCase(testCase.id)}
+                              >
+                                查看详情
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-blue-600 hover:text-blue-900"
+                                onClick={() => router.push(`/test-cases/${testCase.id}/edit`)}
+                              >
+                                编辑
+                              </Button>
+                            </div>
                           </td>
                         </tr>
                       ))}

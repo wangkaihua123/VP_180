@@ -49,7 +49,6 @@ def list_images():
 
         # 定义要扫描的目录
         dirs_to_scan = [
-            ('root', IMAGES_DIR),
             ('operation_img', OPERATION_IMAGES_DIR),
             ('display_img', DISPLAY_IMAGES_DIR)
         ]

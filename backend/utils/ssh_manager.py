@@ -93,7 +93,6 @@ class SSHConnectionService:
             try:
                 # 检查SSH连接状态
                 if not SSHManager.is_connected():
-                    logger.info("SSH连接维护服务检测到连接断开，尝试重新连接")
                     SSHManager.get_instance().reconnect()
                 else:
                     # 如果连接正常，记录健康状态
