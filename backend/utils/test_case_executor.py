@@ -1091,7 +1091,7 @@ class TestCaseExecutor:
                             logger.info(f"调整参考内容尺寸为 {new_width}x{new_height}")
                     
                     # 提取图片名称信息
-                    operation_img_name = f"操作界面截图_{img_path}"
+                    operation_img_name = f"操作界面截图_{screenshot_id}"
                     reference_img_name = f"参考内容_{reference_content}"
                     
                     # 使用用户设置的阈值进行模板匹配，并传递图片名称

@@ -1554,50 +1554,21 @@ export function ExecuteAllPage() {
   };
 
   /**
-   * 获取系统日志（用于WebSocket连接失败时的备用方案）
+   * 获取系统日志（仅作为WebSocket连接失败时的备用方案）
    */
   const fetchSystemLogs = async () => {
     try {
       setSystemLogLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/logs/vp180`);
-      if (!response.ok) {
-        throw new Error(`获取系统日志失败: ${response.statusText}`);
-      }
+      // 注意：这个方法现在只是备用方案，实际日志获取通过WebSocket完成
+      console.log('WebSocket连接失败，使用备用方案获取系统日志');
       
-      const data = await response.json();
-      if (data.success && data.data) {
-        const newLogs: SystemLog[] = data.data.map((rawLog: any) => ({
-          timestamp: rawLog.timestamp || new Date().toISOString(),
-          level: rawLog.level || 'INFO',
-          source: rawLog.source || '',
-          message: rawLog.message || ''
-        }));
-        
-        setSystemLogs(prev => {
-          // 使用更全面的日志属性组合来确保去重
-          // 包括时间戳、级别、来源和消息
-          const existingLogKeys = new Set(prev.map(log =>
-            `${log.timestamp}|${log.level}|${log.source}|${log.message}`
-          ));
-          
-          const uniqueNewLogs = newLogs.filter(log => {
-            const logKey = `${log.timestamp}|${log.level}|${log.source}|${log.message}`;
-            return !existingLogKeys.has(logKey);
-          });
-          
-          const updatedLogs = [...prev, ...uniqueNewLogs];
-          // 根据日志更新测试用例状态
-          updateTestCaseStatusFromLogs(updatedLogs);
-          return updatedLogs;
-        });
-        
-        // 滚动到底部
-        setTimeout(() => {
-          if (systemLogScrollAreaRef.current) {
-            systemLogScrollAreaRef.current.scrollTop = systemLogScrollAreaRef.current.scrollHeight;
-          }
-        }, 100);
-      }
+      // 由于已删除HTTP API端点，这里只显示提示信息
+      // setSystemLogs(prev => [...prev, {
+      //   timestamp: new Date().toISOString(),
+      //   level: 'WARNING',
+      //   source: 'frontend',
+      //   message: 'WebSocket连接失败，无法获取系统日志'
+      // }]);
     } catch (error) {
       console.error('获取系统日志失败:', error);
       // 不显示错误提示，因为WebSocket连接失败是正常的

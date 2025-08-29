@@ -117,42 +117,15 @@ export const testCasesAPI = {
   },
 
   /**
-   * 获取VP_180.log日志文件内容
-   * @returns VP_180.log日志文件内容
-   */
-  async getSystemLog() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/logs/vp180`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("获取系统日志失败:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "获取系统日志失败",
-        data: []
-      };
-    }
-  },
-
-  /**
-   * 清空VP_180.log日志文件
+   * 通过WebSocket清空VP_180.log日志文件
    * @returns 操作结果
    */
   async clearSystemLog() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/logs/vp180/clear`, {
-        method: 'POST'
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("清空系统日志失败:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "清空系统日志失败"
-      };
-    }
+    // 这个方法现在只作为占位符，实际清空操作通过WebSocket的reset命令完成
+    return {
+      success: true,
+      message: "日志清空操作已通过WebSocket发送"
+    };
   },
 
   /**

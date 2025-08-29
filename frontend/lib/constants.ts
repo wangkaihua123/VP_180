@@ -28,7 +28,7 @@ export const API_ROUTES = {
     GET_STATUS: '/api/test-cases/batch/status',
     GET_BATCH_STATUS: (batchId: string) => `/api/test-cases/batch/${batchId}/status`,
   },
-  LOGS: '/api/logs',
+  // 注意：日志功能已迁移到WebSocket，HTTP API端点已删除
   FILES: '/api/files',
   REPORTS: {
     SAVE: '/api/reports/save',
