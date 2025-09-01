@@ -10,7 +10,7 @@ const nextConfig = {
       },
       {
         protocol: 'http',
-        hostname: '192.168.241.1',
+        hostname: 'localhost',
         port: '5000',
         pathname: '/api/files/**',
       },
@@ -29,12 +29,12 @@ const nextConfig = {
       },
       {
         protocol: 'http',
-        hostname: '192.168.241.1',
+        hostname: 'localhost',
         port: '3000',
         pathname: '/api/**',
       },
     ],
-    domains: ['localhost', '192.168.241.1'],
+    domains: ['localhost', 'localhost'],
     unoptimized: true,
   },
   async rewrites() {
@@ -79,13 +79,13 @@ const nextConfig = {
   },
   env: {
     // 从环境变量动态构建URL，统一管理IP配置
-    NEXT_PUBLIC_BACKEND_HOST: process.env.NEXT_PUBLIC_BACKEND_HOST || '10.0.18.134',
-    NEXT_PUBLIC_BACKEND_PORT: process.env.NEXT_PUBLIC_BACKEND_PORT || '5000',
-    NEXT_PUBLIC_FRONTEND_HOST: process.env.NEXT_PUBLIC_FRONTEND_HOST || '10.0.18.134',
-    NEXT_PUBLIC_FRONTEND_PORT: process.env.NEXT_PUBLIC_FRONTEND_PORT || '3000',
+    NEXT_PUBLIC_BACKEND_HOST: process.env.NEXT_PUBLIC_BACKEND_HOST,
+    NEXT_PUBLIC_BACKEND_PORT: process.env.NEXT_PUBLIC_BACKEND_PORT,
+    NEXT_PUBLIC_FRONTEND_HOST: process.env.NEXT_PUBLIC_FRONTEND_HOST,
+    NEXT_PUBLIC_FRONTEND_PORT: process.env.NEXT_PUBLIC_FRONTEND_PORT,
     // 自动构建的API URLs
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || `http://${process.env.NEXT_PUBLIC_BACKEND_HOST || '10.0.18.134'}:${process.env.NEXT_PUBLIC_BACKEND_PORT || '5000'}`,
-    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL || `http://${process.env.NEXT_PUBLIC_BACKEND_HOST || '10.0.18.134'}:${process.env.NEXT_PUBLIC_BACKEND_PORT || '5000'}`,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || `http://${process.env.NEXT_PUBLIC_BACKEND_HOST}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`,
+    NEXT_PUBLIC_FIXED_API_URL: process.env.NEXT_PUBLIC_FIXED_API_URL || `http://${process.env.NEXT_PUBLIC_BACKEND_HOST}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`,
   },
 }
 
