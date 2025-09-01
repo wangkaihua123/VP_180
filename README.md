@@ -141,29 +141,23 @@
 - FPGA设备接口：`/dev/fpga0`
 
 ## 如何运行
+### git 获取项目
 
-### 环境配置
-
-1. **前端配置**：
-   - 修改 `frontend/.env.local` 文件中的 `NEXT_PUBLIC_API_URL` 和 `NEXT_PUBLIC_FIXED_API_URL` 为后端运行的服务器IP
-   - 如需指定前端运行IP，可使用 `npm run dev:custom -- --host=172.16.10.141 --port=3000`
-
-2. **后端配置**：
-   - 修改 `backend/config.py` 文件中的 `FIXED_HOST` 为本机IP
-   - 或设置环境变量 `FIXED_HOST` 和 `FIXED_PORT`
 
 ### 后端 API 服务
 
 1. 安装必要的依赖：
 
 ```bash
+先安装python3.10
 pip install -r backend/requirements.txt
 ```
 
 2. 启动后端服务：
 
 ```bash
-python backend/app.py
+cd backend
+python app.py
 ```
 
 后端API将运行在 http://localhost:5000 或本机ip（端口5000）
@@ -174,7 +168,8 @@ python backend/app.py
 
 ```bash
 cd frontend
-npm install
+npm install --legacy-peer-deps
+ 
 ```
 
 2. 运行开发服务器：
@@ -185,6 +180,7 @@ npm run dev
 
 前端应用将运行在 http://localhost:3000 或本机ip（端口3000）
 
+打开浏览器访问http://localhost:3000就可以使用
 ### Docker 部署
 
 1. 确保已安装 Docker 和 Docker Compose
