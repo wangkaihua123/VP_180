@@ -2,6 +2,7 @@
 const nextConfig = {
   devIndicators: {
     buildActivity: false,
+    buildActivityPosition: 'none'
   },
   images: {
     remotePatterns: [

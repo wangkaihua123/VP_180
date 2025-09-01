@@ -15,6 +15,7 @@
 import os
 import time
 import logging
+import struct
 import random
 import json
 from .log_config import setup_logger
@@ -449,9 +450,30 @@ class ButtonClicker:
     def triple_random_click(self):
         """执行三点随机点击"""
         return self.random_click('triple')
-# if __name__ == "__main__":
-#     print("开始调试 clicker.long_click")
-#     clicker = ButtonClicker()
-#     print("开始调试 clicker.long_click，第二步")
-#     clicker.long_click(button_name="电子放大")
-#     print("结束调试 clicker.long_click")
+    def power_button_click(self):
+        self.retry_interval = 1  # 秒
+        self.max_retries = 3
+        for attempt in range(self.max_retries):
+            # 获取SSH连接
+            ssh = self._get_ssh_connection()
+            if not ssh:
+                logger.error(f"第{attempt + 1}次尝试：无法获取有效的SSH连接")
+                if attempt < self.max_retries - 1:
+                    time.sleep(self.retry_interval)
+                continue
+            try:
+                command = f"sudo /app/jzj/power  4"
+                stdin, stdout, stderr = ssh.exec_command(command)
+                logger.debug(f"电源按钮点击成功: {stdout.read().decode().strip()}")
+            except Exception as e:
+                logger.error(f"电源按钮点击异常: {str(e)}")
+                if attempt < self.max_retries - 1:
+                    time.sleep(self.retry_interval)
+                continue
+        return True
+    
+    
+
+if __name__ == "__main__":
+    clicker = ButtonClicker()
+    clicker.power_button_click()

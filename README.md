@@ -175,12 +175,16 @@ npm install --legacy-peer-deps
 2. 运行开发服务器：
 
 ```bash
-npm run dev
+先构建
+npm run build
+再开始运行
+npm run start
 ```
 
 前端应用将运行在 http://localhost:3000 或本机ip（端口3000）
 
 打开浏览器访问http://localhost:3000就可以使用
+
 ### Docker 部署
 
 1. 确保已安装 Docker 和 Docker Compose

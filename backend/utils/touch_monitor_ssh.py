@@ -1,14 +1,16 @@
 """
-SSH连接触摸事件监控模块
+SSH连接触摸和键盘事件监控模块
 
-该模块通过SSH连接监控设备的触摸事件。主要功能包括：
+该模块通过SSH连接监控设备的触摸和键盘事件。主要功能包括：
 1. 实时捕获设备的触摸操作
-2. 解析触摸事件的坐标和时间信息
-3. 通过WebSocket实时推送触摸事件数据
-4. 支持触摸事件的录制和回放
+2. 实时捕获设备的键盘操作
+3. 解析触摸事件的坐标和时间信息
+4. 解析键盘事件的按键和时间信息
+5. 通过WebSocket实时推送触摸和键盘事件数据
+6. 支持触摸和键盘事件的录制和回放
 
 主要类：
-- TouchMonitor: 负责建立SSH连接，监控触摸事件，并通过WebSocket发送事件数据
+- TouchMonitor: 负责建立SSH连接，监控触摸和键盘事件，并通过WebSocket发送事件数据
 """
 
 import sys
@@ -31,11 +33,12 @@ MAX_X = 9599
 MAX_Y = 9599
 
 class TouchMonitorConfig:
-    """触摸监控配置类，用于管理项目特定的屏幕分辨率设置"""
+    """触摸和键盘监控配置类，用于管理项目特定的屏幕分辨率设置"""
     
     def __init__(self):
         self.screen_width = DEFAULT_SCREEN_WIDTH
         self.screen_height = DEFAULT_SCREEN_HEIGHT
+        self.monitor_keyboard = True  # 是否监控键盘事件
     
     def load_project_config(self, project_id):
         """从settings.json加载项目特定的配置"""
@@ -72,12 +75,63 @@ def convert_touch_to_screen(touch_x, touch_y):
     """将触摸屏坐标转换为屏幕坐标"""
     return touch_config.convert_touch_to_screen(touch_x, touch_y)
 
+def find_input_devices(ssh_client):
+    """自动检测输入设备类型"""
+    devices = {
+        'touch': None,
+        'keyboard': None
+    }
+    
+    try:
+        # 获取所有输入设备列表
+        stdin, stdout, stderr = ssh_client.exec_command('ls /dev/input/event*')
+        device_list = stdout.read().decode().strip().split('\n')
+        
+        for device_path in device_list:
+            if not device_path.strip():
+                continue
+                
+            # 获取设备信息 - 使用不同的方法获取设备信息
+            stdin, stdout, stderr = ssh_client.exec_command(f'cat /proc/bus/input/devices | grep -A 5 "$(basename {device_path})"')
+            device_info = stdout.read().decode()
+            
+            # 判断设备类型
+            if device_info:
+                # 检查是否为触摸设备
+                touch_indicators = ['touch', 'abs_mt_position', 'touchscreen', 'EV_ABS']
+                if any(indicator.lower() in device_info.lower() for indicator in touch_indicators):
+                    devices['touch'] = device_path
+                    logger.debug(f"检测到触摸设备: {device_path}")
+                
+                # 检查是否为键盘设备
+                keyboard_indicators = ['keyboard', 'key', 'btn', 'EV_KEY']
+                if any(indicator.lower() in device_info.lower() for indicator in keyboard_indicators):
+                    # 确保不是触摸设备的键盘部分
+                    if 'touch' not in device_info.lower() or 'key' in device_info.lower():
+                        devices['keyboard'] = device_path
+                        logger.debug(f"检测到键盘设备: {device_path}")
+    
+    except Exception as e:
+        logger.error(f"检测输入设备时出错: {str(e)}")
+    
+    # 如果没有检测到设备，使用默认值
+    if not devices['touch']:
+        devices['touch'] = '/dev/input/event1'
+        logger.warning("未检测到触摸设备，使用默认值 /dev/input/event1")
+    
+    if not devices['keyboard']:
+        devices['keyboard'] = '/dev/input/event0'
+        logger.warning("未检测到键盘设备，使用默认值 /dev/input/event0")
+    
+    return devices
+
 class TouchMonitor:
     def __init__(self, project_id=None):
         self.ssh_manager = SSHManager.get_instance()
         self.is_monitoring = False
         self.websocket = None
-        self.channel = None
+        self.touch_channel = None
+        self.keyboard_channel = None
         self.project_id = project_id
         
         # 如果提供了项目ID，加载项目特定的配置
@@ -92,12 +146,12 @@ class TouchMonitor:
             logger.info(f"已设置项目ID为 {project_id} 并加载对应的屏幕分辨率配置")
         
     def start_monitoring(self, ws):
-        """开始通过SSH连接监控触摸事件"""
+        """开始通过SSH连接监控触摸和键盘事件"""
         if self.is_monitoring:
             logger.debug("已经在通过SSH连接监控中，忽略重复启动请求")
             return
             
-        logger.info("开始通过SSH连接监控触摸事件...")
+        logger.info("开始通过SSH连接监控触摸和键盘事件...")
         self.is_monitoring = True
         self.websocket = ws
         
@@ -118,67 +172,87 @@ class TouchMonitor:
                 logger.error("通过SSH连接未找到evtest命令")
                 self._send_event({"type": "error", "message": "通过SSH连接未找到evtest命令，请确保已安装"})
                 return
-                
-            # 检查触摸设备是否存在
-            logger.debug("通过SSH连接检查触摸设备...")
-            stdin, stdout, stderr = ssh_client.exec_command('ls -l /dev/input/event1')
-            device_info = stdout.read().decode().strip()
-            if not device_info:
-                logger.error("通过SSH连接未找到触摸设备/dev/input/event1")
-                self._send_event({"type": "error", "message": "通过SSH连接未找到触摸设备，请检查设备连接"})
-                return
-                
+            
+            # 自动检测输入设备
+            logger.debug("正在自动检测输入设备...")
+            devices = find_input_devices(ssh_client)
+            
+            touch_device = devices['touch']
+            keyboard_device = devices['keyboard']
+            
+            logger.info(f"检测到触摸设备: {touch_device}")
+            logger.info(f"检测到键盘设备: {keyboard_device}")
+            
             logger.info("通过SSH连接成功，开始执行evtest命令...")
             # 使用SSH Channel执行evtest命令
             transport = ssh_client.get_transport()
-            self.channel = transport.open_session()
-            self.channel.get_pty()
-            self.channel.settimeout(None)  # 设置为阻塞模式
             
-            command = f'{evtest_path} /dev/input/event1'
-            logger.debug(f"通过SSH连接执行命令: {command}")
-            self.channel.exec_command(command)
+            # 创建触摸监控通道
+            self.touch_channel = transport.open_session()
+            self.touch_channel.get_pty()
+            self.touch_channel.settimeout(None)  # 设置为阻塞模式
+            
+            touch_command = f'{evtest_path} {touch_device}'
+            logger.debug(f"通过SSH连接执行触摸监控命令: {touch_command}")
+            self.touch_channel.exec_command(touch_command)
+            
+            # 如果启用了键盘监控，创建键盘监控通道
+            if touch_config.monitor_keyboard:
+                self.keyboard_channel = transport.open_session()
+                self.keyboard_channel.get_pty()
+                self.keyboard_channel.settimeout(None)  # 设置为阻塞模式
+                
+                keyboard_command = f'{evtest_path} {keyboard_device}'
+                logger.debug(f"通过SSH连接执行键盘监控命令: {keyboard_command}")
+                self.keyboard_channel.exec_command(keyboard_command)
             
             # 等待命令启动，SSH连接可能需要更长时间
             time.sleep(2)
             
+            # 触摸事件变量
             current_x = None
             current_y = None
             touch_start_time = None
             
+            # 键盘事件变量
+            key_start_time = None
+            current_key = None
+            
             event_pattern = re.compile(r'Event: time (\d+)\.(\d+), type (\d+) \([^)]+\), code (\d+) \([^)]+\), value (-?\d+)')
             
             # 发送开始监控消息
-            self._send_event({"type": "请点击设备触摸屏进行录制！"})
+            self._send_event({"type": "请点击设备触摸屏或按下键盘进行录制！"})
             
             # 创建接收缓冲区
-            recv_buffer = ""
+            touch_recv_buffer = ""
+            keyboard_recv_buffer = ""
             
             # 标记是否已经跳过了设备信息
-            device_info_skipped = False
+            touch_device_info_skipped = False
+            keyboard_device_info_skipped = False
             
             while self.is_monitoring:
                 try:
-                    # 读取数据
-                    if self.channel.recv_ready():
-                        data = self.channel.recv(1024)
+                    # 处理触摸事件
+                    if self.touch_channel and self.touch_channel.recv_ready():
+                        data = self.touch_channel.recv(1024)
                         if not data:
-                            logger.warning("Channel连接已关闭")
+                            logger.warning("触摸监控Channel连接已关闭")
                             break
                             
                         # 将数据添加到缓冲区
-                        recv_buffer += data.decode('utf-8', errors='ignore')
+                        touch_recv_buffer += data.decode('utf-8', errors='ignore')
                         
                         # 处理缓冲区中的完整行
-                        lines = recv_buffer.split('\n')
-                        recv_buffer = lines[-1]  # 保留最后一个不完整的行
+                        lines = touch_recv_buffer.split('\n')
+                        touch_recv_buffer = lines[-1]  # 保留最后一个不完整的行
                         
                         for line in lines[:-1]:  # 处理所有完整的行
                             # 跳过设备信息，直到看到"Testing ... (interrupt to exit)"
-                            if not device_info_skipped:
+                            if not touch_device_info_skipped:
                                 if "Testing ... (interrupt to exit)" in line:
-                                    device_info_skipped = True
-                                    logger.debug("设备信息已跳过，开始监控触摸事件")
+                                    touch_device_info_skipped = True
+                                    logger.debug("触摸设备信息已跳过，开始监控触摸事件")
                                 continue
                                 
                             # 只处理事件行
@@ -194,7 +268,7 @@ class TouchMonitor:
                                         current_x = event_value
                                     elif event_code == 54:  # ABS_MT_POSITION_Y
                                         current_y = event_value
-                                    
+                                
                                 elif event_type == 1 and event_code == 330:  # EV_KEY and BTN_TOUCH
                                     if event_value == 1:  # Press
                                         touch_start_time = event_time
@@ -215,34 +289,96 @@ class TouchMonitor:
                                         current_x = None
                                         current_y = None
                                         touch_start_time = None
-                            elif device_info_skipped:
+                            elif touch_device_info_skipped:
                                 # 只在跳过设备信息后记录无法匹配的行
-                                logger.debug(f"无法匹配事件模式: {line}")
-                    else:
-                        # 如果没有数据可读，短暂休眠避免CPU占用过高
-                        time.sleep(0.1)
+                                logger.debug(f"无法匹配触摸事件模式: {line}")
+                    
+                    # 处理键盘事件
+                    if self.keyboard_channel and self.keyboard_channel.recv_ready():
+                        data = self.keyboard_channel.recv(1024)
+                        if not data:
+                            logger.warning("键盘监控Channel连接已关闭")
+                            break
+                            
+                        # 将数据添加到缓冲区
+                        keyboard_recv_buffer += data.decode('utf-8', errors='ignore')
+                        
+                        # 处理缓冲区中的完整行
+                        lines = keyboard_recv_buffer.split('\n')
+                        keyboard_recv_buffer = lines[-1]  # 保留最后一个不完整的行
+                        
+                        for line in lines[:-1]:  # 处理所有完整的行
+                            # 跳过设备信息，直到看到"Testing ... (interrupt to exit)"
+                            if not keyboard_device_info_skipped:
+                                if "Testing ... (interrupt to exit)" in line:
+                                    keyboard_device_info_skipped = True
+                                    logger.debug("键盘设备信息已跳过，开始监控键盘事件")
+                                continue
+                                
+                            # 只处理事件行
+                            match = event_pattern.search(line)
+                            if match:
+                                event_time = float(f"{match.group(1)}.{match.group(2)}")
+                                event_type = int(match.group(3))
+                                event_code = int(match.group(4))
+                                event_value = int(match.group(5))
+                                
+                                if event_type == 1:  # EV_KEY
+                                    if event_value == 1:  # Press
+                                        key_start_time = event_time
+                                        current_key = event_code
+                                        logger.debug(f"按键按下: {event_code}")
+                                    elif event_value == 0:  # Release
+                                        if key_start_time is not None and current_key is not None:
+                                            duration = event_time - key_start_time
+                                            logger.debug(f"按键释放: {current_key} 持续: {duration:.3f}秒")
+                                            self._send_event({
+                                                "type": "按键事件",
+                                                "key": current_key,
+                                                "duration": round(duration, 3),
+                                                "timestamp": event_time
+                                            })
+                                        current_key = None
+                                        key_start_time = None
+                            elif keyboard_device_info_skipped:
+                                # 只在跳过设备信息后记录无法匹配的行
+                                logger.debug(f"无法匹配键盘事件模式: {line}")
+                    
+                    # 如果没有数据可读，短暂休眠避免CPU占用过高
+                    time.sleep(0.01)
                 except Exception as e:
                     if str(e):
                         logger.error(f"读取Channel数据时出错: {str(e)}")
                     break
                     
         except Exception as e:
-            logger.error(f"监控触摸事件时出错: {str(e)}")
+            logger.error(f"监控触摸和键盘事件时出错: {str(e)}")
             self._send_event({"type": "error", "message": str(e)})
         finally:
-            logger.info("停止监控触摸事件")
+            logger.info("停止监控触摸和键盘事件")
             self.stop_monitoring()
             
     def stop_monitoring(self):
-        """停止通过SSH连接监控触摸事件"""
-        logger.info("正在停止通过SSH连接的触摸监控...")
+        """停止通过SSH连接监控触摸和键盘事件"""
+        logger.info("正在停止通过SSH连接的触摸和键盘监控...")
         self.is_monitoring = False
-        if self.channel:
+        
+        # 关闭触摸监控通道
+        if self.touch_channel:
             try:
-                self.channel.close()
+                self.touch_channel.close()
             except:
                 pass
-            self.channel = None
+            self.touch_channel = None
+            
+        # 关闭键盘监控通道
+        if self.keyboard_channel:
+            try:
+                self.keyboard_channel.close()
+            except:
+                pass
+            self.keyboard_channel = None
+            
         # 不再主动断开SSH连接，让SSHManager管理连接生命周期
         if self.websocket:
             try:
