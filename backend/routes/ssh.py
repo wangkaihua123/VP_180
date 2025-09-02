@@ -157,9 +157,9 @@ def disconnect_ssh():
         }), 500
 
 
-@ssh_bp.route('/upload-interactive-files', methods=['POST'])
-def upload_interactive_files():
-    """通过OpenSSH上传交互文件（touch_click.py和680kbd）到远程设备"""
+@ssh_bp.route('/upload-touch-script', methods=['POST'])
+def upload_touch_script():
+    """通过OpenSSH上传touch_click.py脚本到远程设备"""
     try:
         # 获取SSH客户端
         ssh_client = SSHManager.get_client()
@@ -169,14 +169,28 @@ def upload_interactive_files():
                 'message': '无法获取OpenSSH客户端'
             }), 500
 
+        # 本地touch_click.py文件路径
+        local_script_path = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            'utils',
+            'touch_click.py'
+        )
+
+        if not os.path.exists(local_script_path):
+            return jsonify({
+                'success': False,
+                'message': f'本地脚本文件不存在: {local_script_path}'
+            }), 404
+
         # 远程目标路径
         remote_dir = '/app/jzj'
-        
+        remote_script_path = f'{remote_dir}/touch_click.py'
+
+        logger.info(f"开始通过OpenSSH上传touch_click.py脚本: {local_script_path} -> {remote_script_path}")
+
         # 创建SFTP客户端
         sftp = ssh_client.open_sftp()
-        
-        uploaded_files = []
-        
+
         try:
             # 确保远程目录存在
             try:
@@ -189,98 +203,39 @@ def upload_interactive_files():
                 # 等待目录创建完成
                 import time
                 time.sleep(1)  # OpenSSH连接可能需要更长时间
-            
-            # 上传touch_click.py文件
-            touch_click_local_path = os.path.join(
-                os.path.dirname(os.path.dirname(__file__)),
-                'utils',
-                'touch_click.py'
-            )
-            
-            if os.path.exists(touch_click_local_path):
-                touch_click_remote_path = f'{remote_dir}/touch_click.py'
-                logger.info(f"开始通过OpenSSH上传touch_click.py脚本: {touch_click_local_path} -> {touch_click_remote_path}")
-                
-                # 上传文件
-                sftp.put(touch_click_local_path, touch_click_remote_path)
-                logger.info(f"通过OpenSSH文件上传成功: {touch_click_remote_path}")
-                
-                # 设置文件权限为可执行
-                sftp.chmod(touch_click_remote_path, 0o755)
-                logger.info(f"设置文件权限为可执行: {touch_click_remote_path}")
-                
-                # 验证文件是否上传成功
-                try:
-                    file_stat = sftp.stat(touch_click_remote_path)
-                    file_size = file_stat.st_size
-                    logger.info(f"通过OpenSSH文件验证成功，大小: {file_size} 字节")
-                    uploaded_files.append({
-                        'name': 'touch_click.py',
-                        'local_path': touch_click_local_path,
-                        'remote_path': touch_click_remote_path,
-                        'file_size': file_size
-                    })
-                except Exception as e:
-                    logger.warning(f"通过OpenSSH文件验证失败: {str(e)}")
-                    raise Exception(f"通过OpenSSH文件上传后验证失败: {str(e)}")
-            else:
-                logger.warning(f"本地脚本文件不存在: {touch_click_local_path}")
-            
-            # 上传680kbd文件
-            kbd_local_path = os.path.join(
-                os.path.dirname(os.path.dirname(__file__)),
-                'control',
-                '680kbd'
-            )
-            
-            if os.path.exists(kbd_local_path):
-                kbd_remote_path = f'{remote_dir}/680kbd'
-                logger.info(f"开始通过OpenSSH上传680kbd文件: {kbd_local_path} -> {kbd_remote_path}")
-                
-                # 上传文件
-                sftp.put(kbd_local_path, kbd_remote_path)
-                logger.info(f"通过OpenSSH文件上传成功: {kbd_remote_path}")
-                
-                # 设置文件权限为可执行
-                sftp.chmod(kbd_remote_path, 0o755)
-                logger.info(f"设置文件权限为可执行: {kbd_remote_path}")
-                
-                # 验证文件是否上传成功
-                try:
-                    file_stat = sftp.stat(kbd_remote_path)
-                    file_size = file_stat.st_size
-                    logger.info(f"通过OpenSSH文件验证成功，大小: {file_size} 字节")
-                    uploaded_files.append({
-                        'name': '680kbd',
-                        'local_path': kbd_local_path,
-                        'remote_path': kbd_remote_path,
-                        'file_size': file_size
-                    })
-                except Exception as e:
-                    logger.warning(f"通过OpenSSH文件验证失败: {str(e)}")
-                    raise Exception(f"通过OpenSSH文件上传后验证失败: {str(e)}")
-            else:
-                logger.warning(f"本地键盘文件不存在: {kbd_local_path}")
+
+            # 上传文件
+            sftp.put(local_script_path, remote_script_path)
+            logger.info(f"通过OpenSSH文件上传成功: {remote_script_path}")
+
+            # 设置文件权限为可执行
+            sftp.chmod(remote_script_path, 0o755)
+            logger.info(f"设置文件权限为可执行: {remote_script_path}")
+
+            # 验证文件是否上传成功
+            try:
+                file_stat = sftp.stat(remote_script_path)
+                file_size = file_stat.st_size
+                logger.info(f"通过OpenSSH文件验证成功，大小: {file_size} 字节")
+            except Exception as e:
+                logger.warning(f"通过OpenSSH文件验证失败: {str(e)}")
+                raise Exception(f"通过OpenSSH文件上传后验证失败: {str(e)}")
 
         finally:
             sftp.close()
 
-        if not uploaded_files:
-            return jsonify({
-                'success': False,
-                'message': '没有找到任何可上传的交互文件'
-            }), 404
-
         return jsonify({
             'success': True,
-            'message': f'通过OpenSSH成功上传 {len(uploaded_files)} 个交互文件',
-            'uploaded_files': uploaded_files,
+            'message': '通过OpenSSH touch_click.py脚本上传成功',
+            'local_path': local_script_path,
+            'remote_path': remote_script_path,
+            'file_size': file_size,
             'connection_type': 'openssh_direct'
         })
 
     except Exception as e:
-        logger.error(f"通过OpenSSH上传交互文件失败: {str(e)}")
+        logger.error(f"通过OpenSSH上传touch_click.py脚本失败: {str(e)}")
         return jsonify({
             'success': False,
-            'message': f'通过OpenSSH上传交互文件失败: {str(e)}'
+            'message': f'通过OpenSSH上传脚本失败: {str(e)}'
         }), 500
