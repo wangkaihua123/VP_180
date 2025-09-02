@@ -2447,6 +2447,7 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                         <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
                         <span className="font-medium">
                           {event.type === '按键事件' ? '键盘事件' :
+                           event.type === '鼠标事件' ? '鼠标事件' :
                            event.type === '鼠标按键' ? '鼠标事件' :
                            event.type === '鼠标移动' ? '鼠标移动' :
                            event.type === '触摸坐标' ? '触摸事件' : event.type}
@@ -2468,22 +2469,27 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                           <span className="text-green-600"> 按键: {event.key_name}</span>
                         )}
                         {event.action !== undefined && (event.type === '按键事件') && (
-                          <span className="text-orange-600"> 动作: {event.action}</span>
-                        )}
+                           <span className="text-orange-600"> 动作: {event.action}</span>
+                         )}
+                         {event.duration !== undefined && (event.type === '按键事件' && event.action === '点击') && (
+                           <span className="text-purple-600"> 持续时间: {event.duration.toFixed(3)}秒</span>
+                         )}
                         
-                        {/* 显示鼠标事件信息 */}
-                        {event.button_name !== undefined && (event.type === '鼠标按键') && (
+                        {event.button_name !== undefined && (event.type === '鼠标按键' || event.type === '鼠标事件') && (
                           <span className="text-red-600"> 按钮: {event.button_name}</span>
                         )}
-                        {event.action !== undefined && (event.type === '鼠标按键') && (
+                        {event.action !== undefined && (event.type === '鼠标按键' || event.type === '鼠标事件') && (
                           <span className="text-orange-600"> 动作: {event.action}</span>
                         )}
-                        {event.x !== undefined && (event.type === '鼠标按键' || event.type === '鼠标移动') && (
-                          <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
-                        )}
-                        {event.y !== undefined && (event.type === '鼠标按键' || event.type === '鼠标移动') && (
-                          <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
-                        )}
+                        {event.duration !== undefined && (event.type === '鼠标事件') && (
+                           <span className="text-purple-600"> 持续时间: {event.duration.toFixed(3)}秒</span>
+                         )}
+                         {event.x !== undefined && (event.type === '鼠标按键' || event.type === '鼠标移动' || event.type === '鼠标事件') && (
+                           <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                         )}
+                         {event.y !== undefined && (event.type === '鼠标按键' || event.type === '鼠标移动' || event.type === '鼠标事件') && (
+                           <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
+                         )}
                       </div>
                     ))}
                   </div>

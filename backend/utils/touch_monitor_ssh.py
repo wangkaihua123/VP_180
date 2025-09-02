@@ -150,7 +150,15 @@ class TouchMonitor:
         self.websocket = None
         self.touch_channel = None
         self.keyboard_channel = None
+        self.kbd_channel = None
         self.project_id = project_id
+        
+        # 鼠标事件存储变量
+        self.mouse_press_events = {}  # 存储鼠标按下事件，键为按钮类型，值为事件信息
+        self.mouse_move_events = {}  # 存储鼠标移动事件，键为按钮类型，值为最新的坐标
+        
+        # 键盘事件存储变量
+        self.keyboard_press_events = {}  # 存储键盘按下事件，键为按键代码，值为事件信息
         
         # 如果提供了项目ID，加载项目特定的配置
         if project_id:
@@ -163,6 +171,12 @@ class TouchMonitor:
             touch_config.load_project_config(project_id)
             logger.info(f"已设置项目ID为 {project_id} 并加载对应的屏幕分辨率配置")
         
+    def _format_timestamp(self, timestamp):
+        """将时间戳格式化为 HH:MM:SS 格式"""
+        import datetime
+        dt = datetime.datetime.fromtimestamp(timestamp)
+        return dt.strftime('%H:%M:%S')
+    
     def start_monitoring(self, ws):
         """开始通过SSH连接监控触摸和键盘事件"""
         if self.is_monitoring:
@@ -503,10 +517,12 @@ class TouchMonitor:
                                 event_data = json.loads(line)
                                 
                                 # 根据事件类型进行转换和转发
+                                # 根据事件类型进行转换和转发
                                 if event_data.get("type") == "keyboard":
                                     # 键盘事件
                                     key_code = event_data.get("code")
-                                    action = "按下" if event_data.get("value") == 1 else "释放"
+                                    value = event_data.get("value")
+                                    action = "按下" if value == 1 else "释放"
                                     timestamp = event_data.get("timestamp") / 1000.0  # 转换为秒
                                     
                                     # 获取按键名称
@@ -530,14 +546,44 @@ class TouchMonitor:
                                     
                                     logger.debug(f"键盘事件: {key_name} {action}")
                                     
-                                    self._send_event({
-                                        "type": "按键事件",
-                                        "key": key_code,
-                                        "key_name": key_name,
-                                        "action": action,
-                                        "timestamp": timestamp
-                                    })
+                                    # 处理按下事件
+                                    if value == 1:  # 按下
+                                        # 存储按下事件
+                                        self.keyboard_press_events[key_code] = {
+                                            "key": key_code,
+                                            "key_name": key_name,
+                                            "timestamp": timestamp
+                                        }
+                                        # 不再发送按下事件，只存储用于后续合成点击事件
                                     
+                                    # 处理释放事件
+                                    elif value == 0:  # 释放
+                                        # 检查是否有对应的按下事件
+                                        if key_code in self.keyboard_press_events:
+                                            press_event = self.keyboard_press_events[key_code]
+                                            duration = timestamp - press_event["timestamp"]
+                                            
+                                            # 发送点击事件
+                                            self._send_event({
+                                                "type": "按键事件",
+                                                "key": key_code,
+                                                "key_name": key_name,
+                                                "action": "点击",
+                                                "duration": round(duration, 3),
+                                                "timestamp": timestamp
+                                            })
+                                            
+                                            # 清除按下事件
+                                            del self.keyboard_press_events[key_code]
+                                        else:
+                                            # 没有对应的按下事件，直接发送释放事件
+                                            self._send_event({
+                                                "type": "按键事件",
+                                                "key": key_code,
+                                                "key_name": key_name,
+                                                "action": "释放",
+                                                "timestamp": timestamp
+                                            })
                                 elif event_data.get("type") == "mouse_move":
                                     # 鼠标移动事件
                                     x = event_data.get("x")
@@ -556,7 +602,7 @@ class TouchMonitor:
                                 elif event_data.get("type") == "mouse_button":
                                     # 鼠标按键事件
                                     button = event_data.get("button")
-                                    action = "按下" if event_data.get("action") == "press" else "释放"
+                                    action = event_data.get("action")
                                     x = event_data.get("x")
                                     y = event_data.get("y")
                                     timestamp = event_data.get("timestamp") / 1000.0
@@ -572,15 +618,50 @@ class TouchMonitor:
                                     
                                     logger.debug(f"鼠标按键: {button_name} {action} X: {x} Y: {y}")
                                     
-                                    self._send_event({
-                                        "type": "鼠标按键",
-                                        "button": button,
-                                        "button_name": button_name,
-                                        "action": action,
-                                        "x": x,
-                                        "y": y,
-                                        "timestamp": timestamp
-                                    })
+                                    # 处理按下事件
+                                    if action == "press":
+                                        # 存储按下事件
+                                        self.mouse_press_events[button] = {
+                                            "button": button,
+                                            "button_name": button_name,
+                                            "x": x,
+                                            "y": y,
+                                            "timestamp": timestamp
+                                        }
+                                        # 不再发送按下事件，只存储用于后续合成点击事件
+                                    
+                                    # 处理释放事件
+                                    elif action == "release":
+                                        # 检查是否有对应的按下事件
+                                        if button in self.mouse_press_events:
+                                            press_event = self.mouse_press_events[button]
+                                            duration = timestamp - press_event["timestamp"]
+                                            
+                                            # 发送点击事件
+                                            self._send_event({
+                                                "type": "鼠标事件",
+                                                "button": button,
+                                                "button_name": button_name,
+                                                "action": "点击",
+                                                "x": x,
+                                                "y": y,
+                                                "duration": round(duration, 3),
+                                                "timestamp": timestamp
+                                            })
+                                            
+                                            # 清除按下事件
+                                            del self.mouse_press_events[button]
+                                        else:
+                                            # 没有对应的按下事件，直接发送释放事件
+                                            self._send_event({
+                                                "type": "鼠标按键",
+                                                "button": button,
+                                                "button_name": button_name,
+                                                "action": "释放",
+                                                "x": x,
+                                                "y": y,
+                                                "timestamp": timestamp
+                                            })
                                 elif event_data.get("type") == "error":
                                     # 错误消息
                                     self._send_event({

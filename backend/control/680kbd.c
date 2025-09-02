@@ -6,11 +6,23 @@
 #include <sys/time.h>
 #include <stdlib.h>
 
+// 屏幕分辨率设置
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
+
 // 获取当前时间戳（毫秒）
 long long get_timestamp_ms() {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return (long long)tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
+// 限制鼠标坐标在屏幕范围内
+void clamp_mouse_position(int *x, int *y) {
+    if (*x < 0) *x = 0;
+    if (*x >= SCREEN_WIDTH) *x = SCREEN_WIDTH - 1;
+    if (*y < 0) *y = 0;
+    if (*y >= SCREEN_HEIGHT) *y = SCREEN_HEIGHT - 1;
 }
 
 // 键盘监听线程
@@ -67,6 +79,14 @@ void* mouse_thread(void* arg) {
             } else if (ev.code == REL_Y) {
                 y += ev.value;
             }
+            // 限制鼠标坐标在屏幕范围内
+            clamp_mouse_position(&x, &y);
+            
+            // // 输出鼠标移动事件
+            // long long timestamp = get_timestamp_ms();
+            // fprintf(stdout, "{\"type\":\"mouse_move\",\"x\":%d,\"y\":%d,\"timestamp\":%lld}\n",
+            //         x, y, timestamp);
+            fflush(stdout);
         } else if (ev.type == EV_KEY) { // 按键事件
             long long timestamp = get_timestamp_ms();
             const char* button_name = "";
@@ -99,7 +119,7 @@ int main(int argc, char *argv[]) {
     }
 
     // 输出启动消息
-    fprintf(stdout, "{\"type\":\"status\",\"message\":\"键盘和鼠标按键监听程序已启动\"}\n");
+    fprintf(stdout, "{\"type\":\"status\",\"message\":\"键盘和鼠标按键监听程序已启动，分辨率设置为 %dx%d\"}\n", SCREEN_WIDTH, SCREEN_HEIGHT);
     fflush(stdout);
 
     // 创建线程
