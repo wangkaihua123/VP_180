@@ -42,11 +42,16 @@ def update_ssh_settings():
         data = request.json
         success = Settings.update_ssh_settings(data)
         if success:
+            # 更新SSHManager的设置并尝试重新连接
+            from utils.ssh_manager import SSHManager
+            ssh_client = SSHManager.update_settings(data)
+            
             return jsonify({
                 'success': True,
                 'settings': Settings.get_ssh_settings(),
                 'message': 'OpenSSH设置已更新',
-                'connection_type': 'openssh_direct'
+                'connection_type': 'openssh_direct',
+                'reconnected': ssh_client is not None
             })
         else:
             return jsonify({

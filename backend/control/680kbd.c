@@ -3,6 +3,15 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <sys/time.h>
+#include <stdlib.h>
+
+// 获取当前时间戳（毫秒）
+long long get_timestamp_ms() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (long long)tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
 
 // 键盘监听线程
 void* keyboard_thread(void* arg) {
@@ -10,15 +19,22 @@ void* keyboard_thread(void* arg) {
     struct input_event ev;
     int fd = open(dev_path, O_RDONLY);
     if (fd < 0) {
-        perror("无法打开键盘设备");
+        fprintf(stderr, "{\"type\":\"error\",\"message\":\"无法打开键盘设备: %s\"}\n", dev_path);
         return NULL;
     }
 
-    printf("开始监听键盘: %s\n", dev_path);
+    // 输出初始化消息
+    fprintf(stdout, "{\"type\":\"status\",\"message\":\"开始监听键盘: %s\"}\n", dev_path);
+    fflush(stdout);
+    
     while (1) {
         if (read(fd, &ev, sizeof(struct input_event)) != sizeof(struct input_event)) continue;
+        
         if (ev.type == EV_KEY) {
-            printf("[键盘] 键码: %d, 状态: %d\n", ev.code, ev.value);
+            long long timestamp = get_timestamp_ms();
+            fprintf(stdout, "{\"type\":\"keyboard\",\"code\":%d,\"value\":%d,\"timestamp\":%lld}\n",
+                    ev.code, ev.value, timestamp);
+            fflush(stdout);
         }
     }
     close(fd);
@@ -31,38 +47,63 @@ void* mouse_thread(void* arg) {
     struct input_event ev;
     int fd = open(dev_path, O_RDONLY);
     if (fd < 0) {
-        perror("无法打开鼠标设备");
+        fprintf(stderr, "{\"type\":\"error\",\"message\":\"无法打开鼠标设备: %s\"}\n", dev_path);
         return NULL;
     }
 
     int x = 0, y = 0;
-    printf("开始监听鼠标: %s\n", dev_path);
+    
+    // 输出初始化消息
+    fprintf(stdout, "{\"type\":\"status\",\"message\":\"开始监听鼠标: %s\"}\n", dev_path);
+    fflush(stdout);
+    
     while (1) {
         if (read(fd, &ev, sizeof(struct input_event)) != sizeof(struct input_event)) continue;
 
         if (ev.type == EV_REL) { // 相对移动
             if (ev.code == REL_X) x += ev.value;
             if (ev.code == REL_Y) y += ev.value;
-            printf("[鼠标] 移动: X=%d, Y=%d\n", x, y);
+            
+            long long timestamp = get_timestamp_ms();
+            fprintf(stdout, "{\"type\":\"mouse_move\",\"x\":%d,\"y\":%d,\"timestamp\":%lld}\n",
+                    x, y, timestamp);
+            fflush(stdout);
         }
 
         if (ev.type == EV_KEY) { // 按键事件
-            if (ev.code == BTN_LEFT) printf("[鼠标] 左键 %s at X=%d Y=%d\n", ev.value ? "按下" : "释放", x, y);
-            if (ev.code == BTN_RIGHT) printf("[鼠标] 右键 %s at X=%d Y=%d\n", ev.value ? "按下" : "释放", x, y);
-            if (ev.code == BTN_MIDDLE) printf("[鼠标] 中键 %s at X=%d Y=%d\n", ev.value ? "按下" : "释放", x, y);
+            long long timestamp = get_timestamp_ms();
+            const char* button_name = "";
+            const char* action = ev.value ? "press" : "release";
+            
+            if (ev.code == BTN_LEFT) button_name = "left";
+            else if (ev.code == BTN_RIGHT) button_name = "right";
+            else if (ev.code == BTN_MIDDLE) button_name = "middle";
+            else continue; // 忽略其他按键
+            
+            fprintf(stdout, "{\"type\":\"mouse_button\",\"button\":\"%s\",\"action\":\"%s\",\"x\":%d,\"y\":%d,\"timestamp\":%lld}\n",
+                    button_name, action, x, y, timestamp);
+            fflush(stdout);
         }
     }
     close(fd);
     return NULL;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     pthread_t kb_thread, mouse_thread_id;
 
-    // 键盘设备路径（根据你的 RK3588 确认）
-    const char* kb_dev = "/dev/input/event0"; 
-    // 鼠标设备路径（根据你的 RK3588 确认）
-    const char* mouse_dev = "/dev/input/event1"; 
+    // 允许通过命令行参数指定设备路径
+    const char* kb_dev = "/dev/input/event0";
+    const char* mouse_dev = "/dev/input/event1";
+    
+    if (argc >= 3) {
+        kb_dev = argv[1];
+        mouse_dev = argv[2];
+    }
+
+    // 输出启动消息
+    fprintf(stdout, "{\"type\":\"status\",\"message\":\"键盘鼠标监听程序已启动\"}\n");
+    fflush(stdout);
 
     // 创建线程
     pthread_create(&kb_thread, NULL, keyboard_thread, (void*)kb_dev);

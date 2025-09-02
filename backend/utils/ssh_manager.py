@@ -65,7 +65,9 @@ class SSHManager:
             logger.debug(f"OpenSSH管理器初始化完成，使用设置: host={self.hostname}, port={self.port}, username={self.username}")
             
             # 不在初始化时立即建立连接，等待用户配置后再连接
-            self.connect()
+            # 只有在配置了必要参数时才尝试连接
+            if self.hostname and self.username:
+                self.connect()
     
     def connect(self):
         """建立SSH连接"""
@@ -188,6 +190,32 @@ class SSHManager:
             # 如果连接无效，尝试重新连接
             instance.connect()
         return instance._ssh_client
+    
+    @classmethod
+    def update_settings(cls, settings):
+        """更新SSH设置并重新连接
+        
+        Args:
+            settings: 包含SSH连接设置的字典
+        """
+        instance = cls.get_instance()
+        
+        # 更新连接参数
+        instance.hostname = settings.get("host", "")
+        instance.username = settings.get("username", "root")
+        instance.password = settings.get("password", "")
+        instance.port = settings.get("port", 22)
+        
+        # 断开现有连接
+        instance.disconnect()
+        
+        # 如果配置了必要参数，则尝试重新连接
+        if instance.hostname and instance.username:
+            logger.info(f"SSH设置已更新，尝试重新连接到 {instance.hostname}:{instance.port}")
+            return instance.connect()
+        else:
+            logger.info("SSH设置已更新，但缺少必要参数，不进行连接")
+            return None
     
     @classmethod
     def disconnect_all(cls):

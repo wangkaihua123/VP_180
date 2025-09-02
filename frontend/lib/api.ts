@@ -82,10 +82,10 @@ export const sshSettingsAPI = {
       localStorage.setItem('sshSettings', JSON.stringify(settings));
     }
     
-    // 返回成功响应的Promise
-    return Promise.resolve({
-      success: true,
-      message: 'SSH设置已更新'
+    // 同时调用后端API保存设置
+    return fetchAPI(API_ROUTES.SSH_SETTINGS.UPDATE, {
+      method: 'POST',
+      body: JSON.stringify(settings),
     });
   },
     
@@ -160,8 +160,8 @@ export const batchExecutionAPI = {
 export const unifiedSettingsAPI = {
   // 保存所有设置（SSH、串口、IP）
   saveAllSettings: async (
-    sshSettings: SSHSettings, 
-    serialSettings: SerialSettings, 
+    sshSettings: SSHSettings,
+    serialSettings: SerialSettings,
     ipSettings: any,
     projects?: any[]
   ) => {
@@ -170,6 +170,9 @@ export const unifiedSettingsAPI = {
       if (isClient()) {
         localStorage.setItem('sshSettings', JSON.stringify(sshSettings));
       }
+      
+      // 保存SSH设置到后端
+      await sshSettingsAPI.update(sshSettings);
       
       // 保存IP设置到localStorage
       if (isClient()) {
@@ -215,4 +218,4 @@ export const unifiedSettingsAPI = {
       throw error;
     }
   }
-} 
+}

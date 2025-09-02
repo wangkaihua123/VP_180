@@ -412,3 +412,153 @@ class TouchMonitor:
             except Exception as e:
                 logger.error(f"发送事件数据时出错: {str(e)}")
                 self.stop_monitoring()
+    
+    def start_keyboard_mouse_monitoring(self, ws):
+        """开始通过SSH连接监控键盘和鼠标事件（使用680kbd程序）"""
+        if self.is_monitoring:
+            logger.debug("已经在监控中，忽略重复启动请求")
+            return
+            
+        logger.info("开始通过SSH连接监控键盘和鼠标事件（使用680kbd程序）...")
+        self.is_monitoring = True
+        self.websocket = ws
+        
+        try:
+            logger.info("正在获取SSH连接...")
+            # 获取现有连接
+            ssh_client = self.ssh_manager.get_client()
+            if not ssh_client:
+                logger.error("无法获取SSH连接")
+                self._send_event({"type": "error", "message": "无法获取SSH连接"})
+                return
+            
+            # 检查680kbd程序是否存在
+            logger.debug("通过SSH连接检查680kbd程序...")
+            stdin, stdout, stderr = ssh_client.exec_command('which 680kbd')
+            program_path = stdout.read().decode().strip()
+            if not program_path:
+                logger.error("通过SSH连接未找到680kbd程序")
+                self._send_event({"type": "error", "message": "通过SSH连接未找到680kbd程序，请确保已编译并放置在PATH中"})
+                return
+            
+            logger.info("通过SSH连接成功，开始执行680kbd程序...")
+            # 使用SSH Channel执行680kbd程序
+            transport = ssh_client.get_transport()
+            
+            # 创建监控通道
+            self.kbd_channel = transport.open_session()
+            self.kbd_channel.get_pty()
+            self.kbd_channel.settimeout(None)  # 设置为阻塞模式
+            
+            # 执行680kbd程序，可以指定设备路径参数
+            kbd_command = f'{program_path}'
+            logger.debug(f"通过SSH连接执行键盘鼠标监控命令: {kbd_command}")
+            self.kbd_channel.exec_command(kbd_command)
+            
+            # 等待程序启动
+            time.sleep(2)
+            
+            # 发送开始监控消息
+            self._send_event({"type": "请操作键盘或鼠标进行录制！"})
+            
+            # 创建接收缓冲区
+            recv_buffer = ""
+            
+            while self.is_monitoring:
+                try:
+                    # 处理数据
+                    if self.kbd_channel and self.kbd_channel.recv_ready():
+                        data = self.kbd_channel.recv(1024)
+                        if not data:
+                            logger.warning("键盘鼠标监控Channel连接已关闭")
+                            break
+                            
+                        # 将数据添加到缓冲区
+                        recv_buffer += data.decode('utf-8', errors='ignore')
+                        
+                        # 处理缓冲区中的完整行
+                        lines = recv_buffer.split('\n')
+                        recv_buffer = lines[-1]  # 保留最后一个不完整的行
+                        
+                        for line in lines[:-1]:  # 处理所有完整的行
+                            if not line.strip():
+                                continue
+                                
+                            try:
+                                # 尝试解析JSON
+                                event_data = json.loads(line)
+                                
+                                # 根据事件类型进行转换和转发
+                                if event_data.get("type") == "keyboard":
+                                    # 键盘事件
+                                    self._send_event({
+                                        "type": "按键事件",
+                                        "key": event_data.get("code"),
+                                        "action": "按下" if event_data.get("value") == 1 else "释放",
+                                        "timestamp": event_data.get("timestamp") / 1000.0  # 转换为秒
+                                    })
+                                elif event_data.get("type") == "mouse_move":
+                                    # 鼠标移动事件
+                                    self._send_event({
+                                        "type": "鼠标移动",
+                                        "x": event_data.get("x"),
+                                        "y": event_data.get("y"),
+                                        "timestamp": event_data.get("timestamp") / 1000.0
+                                    })
+                                elif event_data.get("type") == "mouse_button":
+                                    # 鼠标按键事件
+                                    self._send_event({
+                                        "type": "鼠标按键",
+                                        "button": event_data.get("button"),
+                                        "action": "按下" if event_data.get("action") == "press" else "释放",
+                                        "x": event_data.get("x"),
+                                        "y": event_data.get("y"),
+                                        "timestamp": event_data.get("timestamp") / 1000.0
+                                    })
+                                elif event_data.get("type") == "error":
+                                    # 错误消息
+                                    self._send_event({
+                                        "type": "error",
+                                        "message": event_data.get("message")
+                                    })
+                                elif event_data.get("type") == "status":
+                                    # 状态消息
+                                    logger.info(f"680kbd状态: {event_data.get('message')}")
+                                    
+                            except json.JSONDecodeError:
+                                logger.debug(f"无法解析JSON行: {line}")
+                    
+                    # 如果没有数据可读，短暂休眠避免CPU占用过高
+                    time.sleep(0.01)
+                except Exception as e:
+                    if str(e):
+                        logger.error(f"读取Channel数据时出错: {str(e)}")
+                    break
+                    
+        except Exception as e:
+            logger.error(f"监控键盘和鼠标事件时出错: {str(e)}")
+            self._send_event({"type": "error", "message": str(e)})
+        finally:
+            logger.info("停止监控键盘和鼠标事件")
+            self.stop_keyboard_mouse_monitoring()
+    
+    def stop_keyboard_mouse_monitoring(self):
+        """停止通过SSH连接监控键盘和鼠标事件"""
+        logger.info("正在停止通过SSH连接的键盘和鼠标监控...")
+        self.is_monitoring = False
+        
+        # 关闭监控通道
+        if hasattr(self, 'kbd_channel') and self.kbd_channel:
+            try:
+                self.kbd_channel.close()
+            except:
+                pass
+            self.kbd_channel = None
+            
+        # 不再主动断开SSH连接，让SSHManager管理连接生命周期
+        if self.websocket:
+            try:
+                self._send_event({"type": "stopped"})
+            except:
+                pass
+        self.websocket = None
