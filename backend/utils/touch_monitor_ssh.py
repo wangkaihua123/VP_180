@@ -83,33 +83,51 @@ def find_input_devices(ssh_client):
     }
     
     try:
-        # 获取所有输入设备列表
-        stdin, stdout, stderr = ssh_client.exec_command('ls /dev/input/event*')
-        device_list = stdout.read().decode().strip().split('\n')
+        # 获取所有输入设备信息
+        stdin, stdout, stderr = ssh_client.exec_command('cat /proc/bus/input/devices')
+        all_devices_info = stdout.read().decode()
         
-        for device_path in device_list:
-            if not device_path.strip():
+        # 分割设备信息块
+        device_blocks = all_devices_info.split('\n\n')
+        
+        for block in device_blocks:
+            if not block.strip():
                 continue
                 
-            # 获取设备信息 - 使用不同的方法获取设备信息
-            stdin, stdout, stderr = ssh_client.exec_command(f'cat /proc/bus/input/devices | grep -A 5 "$(basename {device_path})"')
-            device_info = stdout.read().decode()
+            # 提取设备名称和事件处理器
+            name_match = re.search(r'N: Name="([^"]+)"', block)
+            handlers_match = re.search(r'H: Handlers=([^=]+)(?:\s|$)', block)
+            
+            if not name_match or not handlers_match:
+                continue
+                
+            device_name = name_match.group(1)
+            handlers = handlers_match.group(1)
+            
+            # 查找event路径
+            event_match = re.search(r'(event\d+)', handlers)
+            if not event_match:
+                continue
+                
+            event_name = event_match.group(1)
+            device_path = f'/dev/input/{event_name}'
             
             # 判断设备类型
-            if device_info:
-                # 检查是否为触摸设备
-                touch_indicators = ['touch', 'abs_mt_position', 'touchscreen', 'EV_ABS']
-                if any(indicator.lower() in device_info.lower() for indicator in touch_indicators):
-                    devices['touch'] = device_path
-                    logger.debug(f"检测到触摸设备: {device_path}")
-                
-                # 检查是否为键盘设备
-                keyboard_indicators = ['keyboard', 'key', 'btn', 'EV_KEY']
-                if any(indicator.lower() in device_info.lower() for indicator in keyboard_indicators):
-                    # 确保不是触摸设备的键盘部分
-                    if 'touch' not in device_info.lower() or 'key' in device_info.lower():
-                        devices['keyboard'] = device_path
-                        logger.debug(f"检测到键盘设备: {device_path}")
+            # 检查是否为触摸设备
+            touch_indicators = ['touch', 'abs_mt_position', 'touchscreen', 'ilitek_ts']
+            if (any(indicator.lower() in block.lower() for indicator in touch_indicators) or
+                'ABS=265800000000000' in block):
+                devices['touch'] = device_path
+                logger.debug(f"检测到触摸设备: {device_path} (名称: {device_name})")
+            
+            # 检查是否为键盘设备
+            keyboard_indicators = ['keyboard', 'btn', 'EV_KEY']
+            if (any(indicator.lower() in block.lower() for indicator in keyboard_indicators) and
+                'EV=3' in block and 'KEY=' in block):
+                # 确保不是触摸设备的键盘部分
+                if 'touch' not in device_name.lower() or 'key' in block.lower():
+                    devices['keyboard'] = device_path
+                    logger.debug(f"检测到键盘设备: {device_path} (名称: {device_name})")
     
     except Exception as e:
         logger.error(f"检测输入设备时出错: {str(e)}")
@@ -180,9 +198,6 @@ class TouchMonitor:
             touch_device = devices['touch']
             keyboard_device = devices['keyboard']
             
-            logger.info(f"检测到触摸设备: {touch_device}")
-            logger.info(f"检测到键盘设备: {keyboard_device}")
-            
             logger.info("通过SSH连接成功，开始执行evtest命令...")
             # 使用SSH Channel执行evtest命令
             transport = ssh_client.get_transport()
@@ -252,7 +267,7 @@ class TouchMonitor:
                             if not touch_device_info_skipped:
                                 if "Testing ... (interrupt to exit)" in line:
                                     touch_device_info_skipped = True
-                                    logger.debug("触摸设备信息已跳过，开始监控触摸事件")
+                                    logger.debug("触摸设备初始化完成，开始监控触摸事件")
                                 continue
                                 
                             # 只处理事件行
@@ -312,7 +327,7 @@ class TouchMonitor:
                             if not keyboard_device_info_skipped:
                                 if "Testing ... (interrupt to exit)" in line:
                                     keyboard_device_info_skipped = True
-                                    logger.debug("键盘设备信息已跳过，开始监控键盘事件")
+                                    logger.debug("键盘设备初始化完成，开始监控键盘事件")
                                 continue
                                 
                             # 只处理事件行

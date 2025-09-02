@@ -450,9 +450,17 @@ class ButtonClicker:
     def triple_random_click(self):
         """执行三点随机点击"""
         return self.random_click('triple')
-    def power_button_click(self):
-        self.retry_interval = 1  # 秒
-        self.max_retries = 3
+    def power_button_click(self, duration=4):
+        """
+        模拟点击电源按钮（开关机按键）
+        使用编译好的C程序 /app/jzj/power 来发送按键事件
+        
+        :param duration: 按键持续时间（秒），默认为4秒
+        :return: 是否操作成功
+        """
+        logger.info(f"执行电源按钮点击操作，持续时间: {duration}秒")
+        
+        # 重试机制
         for attempt in range(self.max_retries):
             # 获取SSH连接
             ssh = self._get_ssh_connection()
@@ -461,16 +469,34 @@ class ButtonClicker:
                 if attempt < self.max_retries - 1:
                     time.sleep(self.retry_interval)
                 continue
+            
             try:
-                command = f"sudo /app/jzj/power  4"
+                # 使用编译好的C程序发送按键事件
+                command = f"sudo /app/jzj/power {duration}"
+                logger.debug(f"执行命令: {command}")
+                
                 stdin, stdout, stderr = ssh.exec_command(command)
-                logger.debug(f"电源按钮点击成功: {stdout.read().decode().strip()}")
+                
+                # 获取命令输出
+                output = stdout.read().decode().strip()
+                error = stderr.read().decode().strip()
+                
+                if error:
+                    logger.error(f"电源按键操作出错: {error}")
+                    if attempt < self.max_retries - 1:
+                        time.sleep(self.retry_interval)
+                    continue
+                
+                logger.debug(f"电源按键操作成功: {output}")
+                return True
+                
             except Exception as e:
-                logger.error(f"电源按钮点击异常: {str(e)}")
+                logger.error(f"电源按键操作异常: {str(e)}")
                 if attempt < self.max_retries - 1:
                     time.sleep(self.retry_interval)
                 continue
-        return True
+        
+        return False
     
     
 
