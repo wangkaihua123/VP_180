@@ -79,14 +79,48 @@ def create_app(config=None):
                 logger.debug(f"收到WebSocket消息: {data}")
                 command = json.loads(data)
                 if command['action'] == 'start':
-                    logger.info("开始监控触摸事件")
                     # 如果命令中包含项目ID，设置项目ID
-                    if 'project_id' in command:
-                        touch_monitor.set_project_id(command['project_id'])
-                    touch_monitor.start_monitoring(ws)
+                    project_id = command.get('project_id')
+                    if project_id:
+                        touch_monitor.set_project_id(project_id)
+                        
+                        # 获取项目的监听模式
+                        try:
+                            settings_path = os.path.join(os.path.dirname(__file__), 'data', 'settings.json')
+                            if os.path.exists(settings_path):
+                                with open(settings_path, 'r', encoding='utf-8') as f:
+                                    settings = json.load(f)
+                                
+                                # 查找匹配的项目配置
+                                monitor_mode = 'evtest'  # 默认值
+                                for project in settings.get('projects', []):
+                                    if str(project.get('id')) == str(project_id):
+                                        monitor_mode = project.get('monitorMode', 'evtest')
+                                        logger.info(f"项目 {project_id} 的监听模式为: {monitor_mode}")
+                                        break
+                                
+                                # 根据监听模式调用不同的方法
+                                if monitor_mode == 'evtest':
+                                    logger.info("使用evtest模式进行监控")
+                                    touch_monitor.start_monitoring(ws)
+                                elif monitor_mode == 'no_evtest':
+                                    logger.info("使用680kbd模式进行监控")
+                                    touch_monitor.start_keyboard_mouse_monitoring(ws)
+                                else:
+                                    logger.warning(f"未知的监听模式: {monitor_mode}，使用默认的evtest模式")
+                                    touch_monitor.start_monitoring(ws)
+                            else:
+                                logger.warning(f"配置文件 {settings_path} 不存在，使用默认的evtest模式")
+                                touch_monitor.start_monitoring(ws)
+                        except Exception as e:
+                            logger.error(f"获取项目监听模式时出错: {str(e)}，使用默认的evtest模式")
+                            touch_monitor.start_monitoring(ws)
+                    else:
+                        logger.warning("未提供项目ID，使用默认的evtest模式")
+                        touch_monitor.start_monitoring(ws)
                 elif command['action'] == 'stop':
                     logger.info("停止监控触摸事件")
-                    touch_monitor.stop_monitoring()
+                    touch_monitor.stop_all_monitoring()
                 elif command['action'] == 'set_project':
                     # 单独设置项目ID的命令
                     project_id = command.get('project_id')

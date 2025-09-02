@@ -50,27 +50,24 @@ void* mouse_thread(void* arg) {
         fprintf(stderr, "{\"type\":\"error\",\"message\":\"无法打开鼠标设备: %s\"}\n", dev_path);
         return NULL;
     }
-
-    int x = 0, y = 0;
     
     // 输出初始化消息
-    fprintf(stdout, "{\"type\":\"status\",\"message\":\"开始监听鼠标: %s\"}\n", dev_path);
+    fprintf(stdout, "{\"type\":\"status\",\"message\":\"开始监听鼠标按键和坐标: %s\"}\n", dev_path);
     fflush(stdout);
+    
+    // 记录当前鼠标坐标
+    int x = 0, y = 0;
     
     while (1) {
         if (read(fd, &ev, sizeof(struct input_event)) != sizeof(struct input_event)) continue;
 
-        if (ev.type == EV_REL) { // 相对移动
-            if (ev.code == REL_X) x += ev.value;
-            if (ev.code == REL_Y) y += ev.value;
-            
-            long long timestamp = get_timestamp_ms();
-            fprintf(stdout, "{\"type\":\"mouse_move\",\"x\":%d,\"y\":%d,\"timestamp\":%lld}\n",
-                    x, y, timestamp);
-            fflush(stdout);
-        }
-
-        if (ev.type == EV_KEY) { // 按键事件
+        if (ev.type == EV_REL) { // 鼠标移动事件
+            if (ev.code == REL_X) {
+                x += ev.value;
+            } else if (ev.code == REL_Y) {
+                y += ev.value;
+            }
+        } else if (ev.type == EV_KEY) { // 按键事件
             long long timestamp = get_timestamp_ms();
             const char* button_name = "";
             const char* action = ev.value ? "press" : "release";
@@ -102,7 +99,7 @@ int main(int argc, char *argv[]) {
     }
 
     // 输出启动消息
-    fprintf(stdout, "{\"type\":\"status\",\"message\":\"键盘鼠标监听程序已启动\"}\n");
+    fprintf(stdout, "{\"type\":\"status\",\"message\":\"键盘和鼠标按键监听程序已启动\"}\n");
     fflush(stdout);
 
     // 创建线程

@@ -43,7 +43,7 @@ class TouchMonitorConfig:
     def load_project_config(self, project_id):
         """从settings.json加载项目特定的配置"""
         try:
-            settings_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'settings.json')
+            settings_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'backend', 'data', 'settings.json')
             if os.path.exists(settings_path):
                 with open(settings_path, 'r', encoding='utf-8') as f:
                     settings = json.load(f)
@@ -411,13 +411,20 @@ class TouchMonitor:
                 self.websocket.send(message)
             except Exception as e:
                 logger.error(f"发送事件数据时出错: {str(e)}")
-                self.stop_monitoring()
+                # 不要立即停止监控，而是设置websocket为None
+                self.websocket = None
+                # 发送一个错误消息，但只在websocket还可用的情况下
+                try:
+                    if self.websocket:
+                        self.websocket.send(json.dumps({"type": "error", "message": "WebSocket连接已断开"}))
+                except:
+                    pass
     
     def start_keyboard_mouse_monitoring(self, ws):
-        """开始通过SSH连接监控键盘和鼠标事件（使用680kbd程序）"""
-        if self.is_monitoring:
-            logger.debug("已经在监控中，忽略重复启动请求")
-            return
+        # """开始通过SSH连接监控键盘和鼠标事件（使用680kbd程序）"""
+        # if self.is_monitoring:
+        #     logger.debug("已经在监控中，忽略重复启动请求")
+        #     return
             
         logger.info("开始通过SSH连接监控键盘和鼠标事件（使用680kbd程序）...")
         self.is_monitoring = True
@@ -434,12 +441,13 @@ class TouchMonitor:
             
             # 检查680kbd程序是否存在
             logger.debug("通过SSH连接检查680kbd程序...")
-            stdin, stdout, stderr = ssh_client.exec_command('which 680kbd')
-            program_path = stdout.read().decode().strip()
-            if not program_path:
+            stdin, stdout, stderr = ssh_client.exec_command('test -f /app/jzj/680kbd')
+            exit_status = stdout.channel.recv_exit_status()
+            if exit_status != 0:
                 logger.error("通过SSH连接未找到680kbd程序")
-                self._send_event({"type": "error", "message": "通过SSH连接未找到680kbd程序，请确保已编译并放置在PATH中"})
+                self._send_event({"type": "error", "message": "通过SSH连接未找到680kbd程序，请确保已编译并放置在/app/jzj/中"})
                 return
+            program_path = '/app/jzj/680kbd'
             
             logger.info("通过SSH连接成功，开始执行680kbd程序...")
             # 使用SSH Channel执行680kbd程序
@@ -466,6 +474,12 @@ class TouchMonitor:
             
             while self.is_monitoring:
                 try:
+                    # 检查WebSocket连接是否仍然可用
+                    if not self.websocket:
+                        # 如果WebSocket不可用，继续监控但不发送事件
+                        time.sleep(0.1)
+                        continue
+                        
                     # 处理数据
                     if self.kbd_channel and self.kbd_channel.recv_ready():
                         data = self.kbd_channel.recv(1024)
@@ -491,29 +505,81 @@ class TouchMonitor:
                                 # 根据事件类型进行转换和转发
                                 if event_data.get("type") == "keyboard":
                                     # 键盘事件
+                                    key_code = event_data.get("code")
+                                    action = "按下" if event_data.get("value") == 1 else "释放"
+                                    timestamp = event_data.get("timestamp") / 1000.0  # 转换为秒
+                                    
+                                    # 获取按键名称
+                                    key_names = {
+                                        2: "1", 3: "2", 4: "3", 5: "4", 6: "5", 7: "6", 8: "7", 9: "8", 10: "9", 11: "0",
+                                        12: "-", 13: "=", 14: "Backspace", 15: "Tab", 16: "Q", 17: "W", 18: "E", 19: "R", 20: "T",
+                                        21: "Y", 22: "U", 23: "I", 24: "O", 25: "P", 26: "[", 27: "]", 28: "Enter", 29: "Left Ctrl",
+                                        30: "A", 31: "S", 32: "D", 33: "F", 34: "G", 35: "H", 36: "J", 37: "K", 38: "L", 39: ";",
+                                        40: "'", 41: "`", 42: "Left Shift", 43: "\\", 44: "Z", 45: "X", 46: "C", 47: "V", 48: "B",
+                                        49: "N", 50: "M", 51: ",", 52: ".", 53: "/", 54: "Right Shift", 55: "*", 56: "Left Alt",
+                                        57: "Space", 58: "Caps Lock", 59: "F1", 60: "F2", 61: "F3", 62: "F4", 63: "F5", 64: "F6",
+                                        65: "F7", 66: "F8", 67: "F9", 68: "F10", 69: "Num Lock", 70: "Scroll Lock", 71: "Home", 72: "Up",
+                                        73: "Page Up", 74: "-", 75: "Left", 76: "", 77: "Right", 78: "+", 79: "End", 80: "Down",
+                                        81: "Page Down", 82: "Insert", 83: "Delete", 87: "F11", 88: "F12", 96: "Enter", 97: "Ctrl",
+                                        98: "/", 99: "Print Screen", 100: "Right Alt", 101: "Home", 102: "Up", 103: "Page Up",
+                                        104: "Left", 105: "Right", 106: "End", 107: "Down", 108: "Page Down", 109: "Insert",
+                                        110: "Delete", 111: "Right Ctrl", 119: "Pause"
+                                    }
+                                    
+                                    key_name = key_names.get(key_code, f"按键{key_code}")
+                                    
+                                    logger.debug(f"键盘事件: {key_name} {action}")
+                                    
                                     self._send_event({
                                         "type": "按键事件",
-                                        "key": event_data.get("code"),
-                                        "action": "按下" if event_data.get("value") == 1 else "释放",
-                                        "timestamp": event_data.get("timestamp") / 1000.0  # 转换为秒
+                                        "key": key_code,
+                                        "key_name": key_name,
+                                        "action": action,
+                                        "timestamp": timestamp
                                     })
+                                    
                                 elif event_data.get("type") == "mouse_move":
                                     # 鼠标移动事件
+                                    x = event_data.get("x")
+                                    y = event_data.get("y")
+                                    timestamp = event_data.get("timestamp") / 1000.0
+                                    
+                                    logger.debug(f"鼠标移动: X: {x} Y: {y}")
+                                    
                                     self._send_event({
                                         "type": "鼠标移动",
-                                        "x": event_data.get("x"),
-                                        "y": event_data.get("y"),
-                                        "timestamp": event_data.get("timestamp") / 1000.0
+                                        "x": x,
+                                        "y": y,
+                                        "timestamp": timestamp
                                     })
+                                    
                                 elif event_data.get("type") == "mouse_button":
                                     # 鼠标按键事件
+                                    button = event_data.get("button")
+                                    action = "按下" if event_data.get("action") == "press" else "释放"
+                                    x = event_data.get("x")
+                                    y = event_data.get("y")
+                                    timestamp = event_data.get("timestamp") / 1000.0
+                                    
+                                    # 获取按钮名称
+                                    button_names = {
+                                        "left": "左键",
+                                        "right": "右键",
+                                        "middle": "中键"
+                                    }
+                                    
+                                    button_name = button_names.get(button, button)
+                                    
+                                    logger.debug(f"鼠标按键: {button_name} {action} X: {x} Y: {y}")
+                                    
                                     self._send_event({
                                         "type": "鼠标按键",
-                                        "button": event_data.get("button"),
-                                        "action": "按下" if event_data.get("action") == "press" else "释放",
-                                        "x": event_data.get("x"),
-                                        "y": event_data.get("y"),
-                                        "timestamp": event_data.get("timestamp") / 1000.0
+                                        "button": button,
+                                        "button_name": button_name,
+                                        "action": action,
+                                        "x": x,
+                                        "y": y,
+                                        "timestamp": timestamp
                                     })
                                 elif event_data.get("type") == "error":
                                     # 错误消息
@@ -548,6 +614,43 @@ class TouchMonitor:
         self.is_monitoring = False
         
         # 关闭监控通道
+        if hasattr(self, 'kbd_channel') and self.kbd_channel:
+            try:
+                self.kbd_channel.close()
+            except:
+                pass
+            self.kbd_channel = None
+            
+        # 不再主动断开SSH连接，让SSHManager管理连接生命周期
+        if self.websocket:
+            try:
+                self._send_event({"type": "stopped"})
+            except:
+                pass
+        self.websocket = None
+    
+    def stop_all_monitoring(self):
+        """停止所有类型的监控"""
+        logger.info("正在停止所有类型的监控...")
+        self.is_monitoring = False
+        
+        # 关闭触摸监控通道
+        if self.touch_channel:
+            try:
+                self.touch_channel.close()
+            except:
+                pass
+            self.touch_channel = None
+            
+        # 关闭键盘监控通道
+        if self.keyboard_channel:
+            try:
+                self.keyboard_channel.close()
+            except:
+                pass
+            self.keyboard_channel = None
+            
+        # 关闭键盘鼠标监控通道
         if hasattr(self, 'kbd_channel') and self.kbd_channel:
             try:
                 self.kbd_channel.close()

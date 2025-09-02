@@ -54,7 +54,8 @@ export default function SettingsPage() {
     screenshotPath: '',
     imageTypes: '',
     resolutionWidth: 1920,
-    resolutionHeight: 1080
+    resolutionHeight: 1080,
+    monitorMode: 'evtest' as 'evtest' | 'no_evtest'
   })
   
   const [settings, setSettings] = useState<SSHSettings>({
@@ -481,11 +482,12 @@ export default function SettingsPage() {
         screenshotPath: newProject.screenshotPath,
         imageTypes: newProject.imageTypes,
         resolutionWidth: newProject.resolutionWidth,
-        resolutionHeight: newProject.resolutionHeight
+        resolutionHeight: newProject.resolutionHeight,
+        monitorMode: newProject.monitorMode
       })
       
       setProjects(prev => [...prev, createdProject])
-      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080 })
+      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080, monitorMode: 'evtest' })
       
       toast({
         title: "创建成功",
@@ -516,7 +518,8 @@ export default function SettingsPage() {
       screenshotPath: project.screenshotPath || '',
       imageTypes: project.imageTypes || '',
       resolutionWidth: project.resolutionWidth || 1920,
-      resolutionHeight: project.resolutionHeight || 1080
+      resolutionHeight: project.resolutionHeight || 1080,
+      monitorMode: project.monitorMode || 'evtest'
     })
     setEditingProject(true)
   }
@@ -525,7 +528,7 @@ export default function SettingsPage() {
   const cancelEdit = () => {
     setEditingProject(false)
     setCurrentProject(null)
-    setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080 })
+    setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080, monitorMode: 'evtest' })
     setShowCreateForm(false) // 也隐藏表单
   }
 
@@ -564,7 +567,8 @@ export default function SettingsPage() {
         screenshotPath: newProject.screenshotPath,
         imageTypes: newProject.imageTypes,
         resolutionWidth: newProject.resolutionWidth,
-        resolutionHeight: newProject.resolutionHeight
+        resolutionHeight: newProject.resolutionHeight,
+        monitorMode: newProject.monitorMode
       })
       
       setProjects(prev => 
@@ -578,7 +582,7 @@ export default function SettingsPage() {
       
       setEditingProject(false)
       setCurrentProject(null)
-      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080 })
+      setNewProject({ name: '', description: '', imagePath: '', systemType: 'android', screenshotPath: '', imageTypes: '', resolutionWidth: 1920, resolutionHeight: 1080, monitorMode: 'evtest' })
       setShowCreateForm(false) // 更新成功后隐藏表单
     } catch (error) {
       toast({
@@ -998,6 +1002,10 @@ export default function SettingsPage() {
                                     <span className="text-gray-700">{project.systemType === 'android' ? 'Android' : 'Linux'}</span>
                                   </div>
                                   <div>
+                                    <span className="font-medium">监听模式：</span>
+                                    <span className="text-gray-700">{project.monitorMode === 'evtest' ? '设备有evtest' : '设备无evtest'}</span>
+                                  </div>
+                                  <div>
                                     <span className="font-medium">图像获取路径：</span>
                                     <span className="text-gray-700">{project.imagePath || '未设置'}</span>
                                   </div>
@@ -1088,10 +1096,25 @@ export default function SettingsPage() {
                                 </Select>
                               </div>
                               <div className="space-y-2">
+                                <Label htmlFor="monitor-mode">监听模式</Label>
+                                <Select
+                                  value={newProject.monitorMode}
+                                  onValueChange={(value) => setNewProject(prev => ({ ...prev, monitorMode: value as 'evtest' | 'no_evtest' }))}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="选择监听模式" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="evtest">设备有evtest</SelectItem>
+                                    <SelectItem value="no_evtest">设备无evtest</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="space-y-2">
                                 <Label htmlFor="screenshot-path">截图获取路径</Label>
-                                <Input 
-                                  id="screenshot-path" 
-                                  placeholder="输入截图获取路径" 
+                                <Input
+                                  id="screenshot-path"
+                                  placeholder="输入截图获取路径"
                                   value={newProject.screenshotPath}
                                   onChange={(e) => setNewProject(prev => ({ ...prev, screenshotPath: e.target.value }))}
                                 />

@@ -5,31 +5,33 @@
       "name": "VP-180",
       "description": "镜中镜图像处理器",
       "createTime": "2025-05-06T13:19:20.444Z",
-      "updateTime": "2025-08-28T15:25:35.463715Z",
+      "updateTime": "2025-09-02T13:14:14.167534Z",
       "imagePath": "ue/ue_data/",
       "systemType": "linux",
       "screenshotPath": "qwe21322",
       "imageTypes": "tiff",
       "resolutionWidth": 1024,
-      "resolutionHeight": 600
+      "resolutionHeight": 600,
+      "monitorMode": "evtest"
     },
     {
       "id": "9493089662",
       "name": "680项目",
       "description": "680项目自动化测试",
       "createTime": "2025-08-22T10:15:49.308678Z",
-      "updateTime": "2025-08-28T15:17:28.891928Z",
+      "updateTime": "2025-09-02T13:42:45.609319Z",
       "imagePath": "/media/sata/ue_data/*/*/*/",
       "systemType": "linux",
       "screenshotPath": "/media/sata/ue_data/*/*/*/",
       "imageTypes": "tiff,jpg",
       "resolutionWidth": 1920,
-      "resolutionHeight": 1080
+      "resolutionHeight": 1080,
+      "monitorMode": "no_evtest"
     }
   ],
   "serialPort": "COM4",
   "serialBaudRate": "9600",
-  "sshHost": "169.254.10.173",
+  "sshHost": "192.168.0.106",
   "sshPort": 22,
   "sshUsername": "root",
   "sshPassword": "firefly"

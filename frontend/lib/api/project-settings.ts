@@ -10,6 +10,7 @@
 import { getBackendUrl } from '../config';
 
 // 定义项目接口
+// 定义项目接口
 export interface Project {
   id: string;
   name: string;
@@ -22,8 +23,9 @@ export interface Project {
   imageTypes?: string; // 图片类型（多个用英文逗号分隔）
   resolutionWidth: number; // 分辨率宽度
   resolutionHeight: number; // 分辨率高度
+  monitorMode?: 'evtest' | 'no_evtest'; // 监听模式（设备有evtest/设备无evtest）
 }
-
+// 创建项目接口
 // 创建项目接口
 export interface CreateProjectPayload {
   name: string;
@@ -34,8 +36,9 @@ export interface CreateProjectPayload {
   imageTypes?: string; // 图片类型（多个用英文逗号分隔）
   resolutionWidth: number; // 分辨率宽度
   resolutionHeight: number; // 分辨率高度
+  monitorMode?: 'evtest' | 'no_evtest'; // 监听模式（设备有evtest/设备无evtest）
 }
-
+// 更新项目接口
 // 更新项目接口
 export interface UpdateProjectPayload {
   id: string;
@@ -47,8 +50,8 @@ export interface UpdateProjectPayload {
   imageTypes?: string; // 图片类型（多个用英文逗号分隔）
   resolutionWidth: number; // 分辨率宽度
   resolutionHeight: number; // 分辨率高度
+  monitorMode?: 'evtest' | 'no_evtest'; // 监听模式（设备有evtest/设备无evtest）
 }
-
 // 项目设置API
 export const projectSettingsAPI = {
   /**

@@ -142,14 +142,17 @@
 
 ## 如何运行
 ### git 获取项目
-
+安装git软件
+新创建一个项目文件夹，进入文件夹敲命令
+git init
+git clone https://github.com/wangkaihua123/VP_180.git
 
 ### 后端 API 服务
 
 1. 安装必要的依赖：
 
 ```bash
-先安装python3.10
+需要先安装python3.10
 pip install -r backend/requirements.txt
 ```
 
@@ -185,7 +188,10 @@ npm run start
 
 打开浏览器访问http://localhost:3000就可以使用
 
+
 ### Docker 部署
+
+#### docker暂时不支持，目前项目修改频繁
 
 1. 确保已安装 Docker 和 Docker Compose
 
@@ -206,7 +212,18 @@ docker-compose down
    - 前端：http://localhost:3000
    - 后端：http://localhost:5000
 
-详细Docker使用说明请参考 [DOCKER_USAGE.md](DOCKER_USAGE.md)
+
+### 使用说明
+需要将编译好的文件通过ssh放进设备中（先安装编译软件，进入https://developer.arm.com/downloads/-/gnu-a/10-3-2021-07，下载gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-linux-gnu.tar.xz并安装，将目录放进系统环境变量path）：
+1：先编译，进入对应的c文件夹下面（就是backend/control/680kbd）
+aarch64-none-linux-gnu-gcc 680kbd.c -o 680kbd -lpthread
+2：将编译好的文件传输到设备中（如果设备中/app/jzj路径已有该文件，需要先删除），按照实际情况修改ip，默认22端口
+scp "E:\python\vp_180\backend\control\680kbd" root@192.168.0.106:/app/jzj 
+3: 进入ssh服务器app/jzj/文件夹给编译文件权限
+chmod +x 680kbd
+
+部分触控屏的监控和点击的实现需要进入ssh设置中，点击导入touch_click
+
 
 ### 日志监控工具
 

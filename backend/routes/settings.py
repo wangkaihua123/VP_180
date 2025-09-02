@@ -87,6 +87,7 @@ def create_project():
         from datetime import datetime
         now = datetime.now().isoformat() + 'Z'
         
+        # 创建新项目
         new_project = {
             'id': project_id,
             'name': data['name'],
@@ -98,9 +99,9 @@ def create_project():
             'screenshotPath': data.get('screenshotPath', ''),
             'imageTypes': data.get('imageTypes', ''),
             'resolutionWidth': int(data.get('resolutionWidth')),
-            'resolutionHeight': int(data.get('resolutionHeight'))
+            'resolutionHeight': int(data.get('resolutionHeight')),
+            'monitorMode': data.get('monitorMode', 'evtest')  # 监听模式，默认为'evtest'
         }
-        
         # 添加到项目列表
         projects.append(new_project)
         settings['projects'] = projects
@@ -194,6 +195,7 @@ def update_project(project_id):
         from datetime import datetime
         now = datetime.now().isoformat() + 'Z'
         
+        # 更新项目
         updated_project = {
             **projects[project_index],
             'name': data['name'],
@@ -204,9 +206,9 @@ def update_project(project_id):
             'screenshotPath': data.get('screenshotPath', ''),
             'imageTypes': data.get('imageTypes', ''),
             'resolutionWidth': int(data.get('resolutionWidth')),
-            'resolutionHeight': int(data.get('resolutionHeight'))
+            'resolutionHeight': int(data.get('resolutionHeight')),
+            'monitorMode': data.get('monitorMode', projects[project_index].get('monitorMode', 'evtest'))  # 监听模式，保持原有值或默认为'evtest'
         }
-        
         projects[project_index] = updated_project
         settings['projects'] = projects
         

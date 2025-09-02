@@ -931,7 +931,18 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
   const [recordingName, setRecordingName] = useState("")
 
   // 开始可视化操作录制
+  // 开始可视化操作录制
   const startVisualRecording = () => {
+    // 检查是否已选择项目
+    if (!projectName || !projectId) {
+      toast({
+        title: "错误",
+        description: "请先选择项目，再开始可视化录制",
+        variant: "destructive"
+      })
+      return
+    }
+    
     setRecordingType("operation")
     setDeviceEvents([])
     setIsRecording(true)
@@ -942,7 +953,6 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
     console.log('正在连接到WebSocket服务器:', wsUrl)
     
     const ws = new WebSocket(wsUrl)
-    
     ws.onopen = () => {
       console.log('WebSocket连接已建立')
       toast({
@@ -952,7 +962,11 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
       // 延迟发送start命令，确保服务器准备就绪
       setTimeout(() => {
         if (ws.readyState === WebSocket.OPEN) {
-          const startCommand = JSON.stringify({ action: 'start' })
+          // 发送start命令，包含当前选择的项目ID
+          const startCommand = JSON.stringify({
+            action: 'start',
+            project_id: projectId  // 添加项目ID
+          })
           console.log('发送start命令:', startCommand)
           ws.send(startCommand)
         } else {
@@ -1004,6 +1018,23 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
           }
           console.log('添加新的操作步骤:', newStep)
           setOperationSteps(prev => [...prev, newStep])
+        }
+        
+        // 处理键盘事件 - 现在会显示更详细的信息
+        if (data.type === '按键事件') {
+          console.log('处理键盘事件:', data)
+          // 可以在这里添加自动生成键盘操作步骤的逻辑
+        }
+        
+        // 处理鼠标按钮事件 - 现在会显示更详细的信息
+        if (data.type === '鼠标按键') {
+          console.log('处理鼠标按钮事件:', data)
+          // 可以在这里添加自动生成鼠标操作步骤的逻辑
+        }
+        
+        // 处理触摸坐标事件
+        if (data.type === '触摸坐标') {
+          console.log('处理触摸坐标事件:', data)
         }
       } catch (error: any) {
         console.error('处理WebSocket消息时出错:', error)
@@ -2414,15 +2445,44 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                     {deviceEvents.map((event, index) => (
                       <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
                         <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
-                        <span className="font-medium">{event.type}</span>
-                        {event.x !== undefined && (
+                        <span className="font-medium">
+                          {event.type === '按键事件' ? '键盘事件' :
+                           event.type === '鼠标按键' ? '鼠标事件' :
+                           event.type === '鼠标移动' ? '鼠标移动' :
+                           event.type === '触摸坐标' ? '触摸事件' : event.type}
+                        </span>
+                        
+                        {/* 显示触摸事件信息 */}
+                        {event.x !== undefined && (event.type === '触摸坐标' || event.type.includes('touch')) && (
                           <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
                         )}
-                        {event.y !== undefined && (
+                        {event.y !== undefined && (event.type === '触摸坐标' || event.type.includes('touch')) && (
                           <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
                         )}
                         {event.duration !== undefined && (
                           <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
+                        )}
+                        
+                        {/* 显示键盘事件信息 */}
+                        {event.key_name !== undefined && (event.type === '按键事件') && (
+                          <span className="text-green-600"> 按键: {event.key_name}</span>
+                        )}
+                        {event.action !== undefined && (event.type === '按键事件') && (
+                          <span className="text-orange-600"> 动作: {event.action}</span>
+                        )}
+                        
+                        {/* 显示鼠标事件信息 */}
+                        {event.button_name !== undefined && (event.type === '鼠标按键') && (
+                          <span className="text-red-600"> 按钮: {event.button_name}</span>
+                        )}
+                        {event.action !== undefined && (event.type === '鼠标按键') && (
+                          <span className="text-orange-600"> 动作: {event.action}</span>
+                        )}
+                        {event.x !== undefined && (event.type === '鼠标按键' || event.type === '鼠标移动') && (
+                          <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                        )}
+                        {event.y !== undefined && (event.type === '鼠标按键' || event.type === '鼠标移动') && (
+                          <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
                         )}
                       </div>
                     ))}
@@ -2478,14 +2538,38 @@ export default function NewTestCasePage({ initialData, mode = 'new' }: NewTestCa
                 <div key={index} className="text-xs border-l-2 border-black pl-2 py-1">
                   <span className="text-muted-foreground">[{new Date(event.timestamp).toLocaleTimeString()}]</span>{" "}
                   <span className="font-medium">{event.type}</span>
-                  {event.x !== undefined && (
+                  
+                  {/* 显示触摸事件信息 */}
+                  {event.x !== undefined && event.type.includes('touch') && (
                     <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
                   )}
-                  {event.y !== undefined && (
+                  {event.y !== undefined && event.type.includes('touch') && (
                     <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
                   )}
                   {event.duration !== undefined && (
                     <span className="text-purple-600"> 持续: {event.duration.toFixed(3)}秒</span>
+                  )}
+                  
+                  {/* 显示键盘事件信息 */}
+                  {event.key_name !== undefined && (
+                    <span className="text-green-600"> 按键: {event.key_name}</span>
+                  )}
+                  {event.action !== undefined && (event.type === '按键事件' || event.type === 'key_event') && (
+                    <span className="text-orange-600"> 动作: {event.action}</span>
+                  )}
+                  
+                  {/* 显示鼠标事件信息 */}
+                  {event.button_name !== undefined && (event.type === '鼠标按键' || event.type === 'mouse_button') && (
+                    <span className="text-red-600"> 按钮: {event.button_name}</span>
+                  )}
+                  {event.action !== undefined && (event.type === '鼠标按键' || event.type === 'mouse_button') && (
+                    <span className="text-orange-600"> 动作: {event.action}</span>
+                  )}
+                  {event.x !== undefined && (event.type === '鼠标按键' || event.type === 'mouse_button') && (
+                    <span className="text-blue-600"> X: {event.x.toFixed(1)}</span>
+                  )}
+                  {event.y !== undefined && (event.type === '鼠标按键' || event.type === 'mouse_button') && (
+                    <span className="text-blue-600"> Y: {event.y.toFixed(1)}</span>
                   )}
                 </div>
               ))}
