@@ -174,7 +174,7 @@
     "type": "功能测试",
     "status": "失败",
     "create_time": "2025-08-28 17:13",
-    "last_execution_time": "2025-09-01 15:02:07",
+    "last_execution_time": "2025-09-02 09:39:42",
     "description": "",
     "script_content": "{\"repeatCount\": 1, \"operationSteps\": [{\"id\": 2, \"operation_key\": \"可视化录制\", \"button_name\": \"录制步骤 4 个操作\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"visual\", \"recorded_steps\": [{\"type\": \"请点击设备触摸屏进行录制！\", \"timestamp\": \"2025-08-28T09:09:08.673Z\"}, {\"type\": \"触摸坐标\", \"x\": 922.4, \"y\": 232.1, \"duration\": 0.088, \"timestamp\": \"2025-08-28T09:09:18.019Z\"}, {\"type\": \"触摸坐标\", \"x\": 406.3, \"y\": 271.5, \"duration\": 0.154, \"timestamp\": \"2025-08-28T09:09:22.906Z\"}, {\"type\": \"触摸坐标\", \"x\": 418.4, \"y\": 273.7, \"duration\": 0.097, \"timestamp\": \"2025-08-28T09:09:25.138Z\"}], \"operation_name\": \"电子放大\", \"stepType\": \"test-case\"}, {\"id\": 3, \"operation_key\": \"获取操作界面\", \"button_name\": \"\", \"x1\": 0, \"y1\": 0, \"x2\": 0, \"y2\": 0, \"step_type\": \"normal\", \"stepType\": \"test-case\"}], \"verificationSteps\": [{\"id\": 1, \"verification_key\": \"截图精准匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_screenshot\": \"screen_capture_20250828170853_315_001.png\", \"operation_screenshot\": \"3\", \"threshold\": 0.99}, {\"id\": 2, \"verification_key\": \"截图包含匹配\", \"stepType\": \"operation\", \"isImageLoading\": false, \"reference_content\": \"20250828172054_037_002.png\", \"operation_screenshot\": \"3\", \"threshold\": 1}, {\"id\": 3, \"verification_key\": \"对比图像相似度\", \"stepType\": \"display\", \"img1\": \"3\", \"img2\": \"3\"}]}",
     "serial_connect": false,

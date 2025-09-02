@@ -74,12 +74,13 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 # TEST_CASE_LOGS_DIR = os.path.join(LOGS_DIR, 'logs')
 # os.makedirs(TEST_CASE_LOGS_DIR, exist_ok=True)
 
-# SSH默认配置
+# SSH默认配置 - 使用系统自带的OpenSSH
 DEFAULT_SSH_CONFIG = {
-    "sshHost": "", 
-    "sshPort": 22, 
-    "sshUsername": "", 
-    "sshPassword": ""
+    "sshHost": "",
+    "sshPort": 22,
+    "sshUsername": "",
+    "sshPassword": "",
+    "connectionType": "openssh_direct"  # 标识使用系统自带的OpenSSH
 }
 
 # 串口默认配置

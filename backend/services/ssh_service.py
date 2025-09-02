@@ -1,5 +1,5 @@
 """
-SSH连接SSH服务 - 专门处理通过SSH连接的SSH连接
+OpenSSH连接服务 - 专门处理通过系统OpenSSH的SSH连接
 """
 import logging
 import paramiko
@@ -14,17 +14,17 @@ paramiko_logger.setLevel(logging.CRITICAL)
 logger = logging.getLogger(__name__)
 
 class SSHService:
-    """SSH连接SSH服务类，专门处理通过SSH连接的SSH连接"""
+    """OpenSSH连接服务类，专门处理通过系统OpenSSH的SSH连接"""
     
     @staticmethod
     def test_connection(ssh_settings):
         """
-        测试通过SSH连接的SSH连接
+        测试通过系统OpenSSH的SSH连接
         
         Args:
-            ssh_settings (dict): SSH连接配置，包含以下字段：
-                - host: SSH连接主机地址（通常是localhost或127.0.0.1）
-                - port: SSH连接端口号
+            ssh_settings (dict): OpenSSH配置，包含以下字段：
+                - host: 远程设备IP地址
+                - port: SSH端口号
                 - username: 用户名
                 - password: 密码
         """
@@ -51,37 +51,37 @@ class SSHService:
         username = ssh_settings['username']
         password = ssh_settings['password']
 
-        logger.info(f"尝试通过SSH连接SSH: {host}:{port} with user {username}")
+        logger.info(f"尝试通过OpenSSH连接: {host}:{port} with user {username}")
 
         try:
             # 首先测试网络连接
-            logger.debug(f"测试SSH连接网络连接到 {host}:{port}...")
+            logger.debug(f"测试OpenSSH网络连接到 {host}:{port}...")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(10)  # 10秒超时
             result = sock.connect_ex((host, port))
             sock.close()
 
             if result != 0:
-                logger.error(f"无法连接到SSH连接 {host}:{port}，错误代码: {result}")
+                logger.error(f"无法连接到远程设备 {host}:{port}，错误代码: {result}")
                 return {
                     'success': False,
-                    'message': f'无法连接到SSH连接 {host}:{port}，请确保SSH连接已启动并正确配置',
+                    'message': f'无法连接到远程设备 {host}:{port}，请确保设备已启动并正确配置',
                     'diagnostics': {
                         'authentication': False,
                         'commandExecution': False,
                         'networkConnectivity': False,
                         'sshService': False,
-                        'errorType': 'tunnel_unreachable',
-                        'errorDetails': f'SSH连接被拒绝或不可达，错误代码: {result}'
+                        'errorType': 'device_unreachable',
+                        'errorDetails': f'远程设备被拒绝或不可达，错误代码: {result}'
                     }
                 }
 
-            logger.debug("SSH连接网络连接正常，创建 SSH 客户端...")
+            logger.debug("OpenSSH网络连接正常，创建 SSH 客户端...")
             # 创建SSH客户端
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-            logger.debug("尝试通过SSH连接和认证...")
+            logger.debug("尝试通过OpenSSH连接和认证...")
             ssh.connect(
                 hostname=host,
                 port=port,
@@ -92,7 +92,7 @@ class SSHService:
             )
 
             if ssh.get_transport() and ssh.get_transport().is_authenticated():
-                logger.debug("通过SSH连接认证成功，获取传输层...")
+                logger.debug("通过OpenSSH认证成功，获取传输层...")
                 transport = ssh.get_transport()
 
                 # 设置 TCP keepalive
@@ -100,7 +100,7 @@ class SSHService:
 
                 logger.debug("执行测试命令...")
                 # 测试执行简单命令
-                _, stdout, stderr = ssh.exec_command('echo "MobaXterm tunnel connection successful"', timeout=5)
+                _, stdout, stderr = ssh.exec_command('echo "OpenSSH connection successful"', timeout=5)
                 output = stdout.read().decode()
                 error = stderr.read().decode()
 
@@ -108,7 +108,7 @@ class SSHService:
                     logger.error(f"命令执行出现错误: {error}")
                     raise Exception(f"命令执行错误: {error}")
 
-                logger.info(f"通过SSH连接命令执行成功，输出: {output}")
+                logger.info(f"通过OpenSSH命令执行成功，输出: {output}")
 
                 # 更新全局SSHManager实例
                 ssh_manager = SSHManager.get_instance()
@@ -127,11 +127,11 @@ class SSHService:
                 
                 # 更新连接客户端
                 ssh_manager._ssh_client = ssh
-                logger.info("已更新SSHManager的连接实例和状态（通过SSH连接）")
+                logger.info("已更新SSHManager的连接实例和状态（通过OpenSSH）")
 
                 return {
                     'success': True,
-                    'message': '通过SSH连接成功',
+                    'message': '通过OpenSSH连接成功',
                     'diagnostics': {
                         'authentication': True,
                         'commandExecution': True,
@@ -139,74 +139,74 @@ class SSHService:
                         'sshService': True,
                         'errorType': None,
                         'errorDetails': None,
-                        'connectionType': 'mobaxterm_tunnel'
+                        'connectionType': 'openssh_direct'
                     },
                     'output': output
                 }
             else:
-                logger.warning("通过SSH连接认证失败")
-                raise paramiko.AuthenticationException("通过SSH连接认证失败")
+                logger.warning("通过OpenSSH认证失败")
+                raise paramiko.AuthenticationException("通过OpenSSH认证失败")
 
         except socket.timeout:
-            logger.error(f"通过SSH连接超时: {host}:{port}")
+            logger.error(f"通过OpenSSH连接超时: {host}:{port}")
             return {
                 'success': False,
-                'message': '通过SSH连接超时，请检查SSH连接是否已启动并正确配置',
+                'message': '通过OpenSSH连接超时，请检查远程设备是否已启动并正确配置',
                 'diagnostics': {
                     'authentication': False,
                     'commandExecution': False,
                     'networkConnectivity': False,
                     'sshService': False,
-                    'errorType': 'tunnel_connection_timeout',
-                    'errorDetails': 'SSH连接超时'
+                    'errorType': 'device_connection_timeout',
+                    'errorDetails': 'OpenSSH连接超时'
                 }
             }
         except paramiko.AuthenticationException as e:
-            logger.error(f"通过SSH连接认证失败: {str(e)}")
+            logger.error(f"通过OpenSSH认证失败: {str(e)}")
             return {
                 'success': False,
-                'message': '通过SSH连接认证失败，请检查用户名和密码是否正确',
+                'message': '通过OpenSSH认证失败，请检查用户名和密码是否正确',
                 'diagnostics': {
                     'authentication': False,
                     'commandExecution': False,
                     'networkConnectivity': True,
                     'sshService': True,
-                    'errorType': 'tunnel_authentication_failed',
-                    'errorDetails': '通过SSH连接认证失败'
+                    'errorType': 'openssh_authentication_failed',
+                    'errorDetails': '通过OpenSSH认证失败'
                 }
             }
         except paramiko.SSHException as e:
-            logger.error(f"通过SSH连接SSH异常: {str(e)}")
+            logger.error(f"通过OpenSSH连接SSH异常: {str(e)}")
             return {
                 'success': False,
-                'message': f'通过SSH连接错误: {str(e)}',
+                'message': f'通过OpenSSH连接错误: {str(e)}',
                 'diagnostics': {
                     'authentication': False,
                     'commandExecution': False,
                     'networkConnectivity': True,
                     'sshService': False,
-                    'errorType': 'tunnel_ssh_error',
+                    'errorType': 'openssh_ssh_error',
                     'errorDetails': str(e)
                 }
             }
         except Exception as e:
-            logger.error(f"通过SSH连接未知错误: {str(e)}")
+            logger.error(f"通过OpenSSH连接未知错误: {str(e)}")
             return {
                 'success': False,
-                'message': f'通过SSH连接失败: {str(e)}',
+                'message': f'通过OpenSSH连接失败: {str(e)}',
                 'diagnostics': {
                     'authentication': False,
                     'commandExecution': False,
                     'networkConnectivity': False,
                     'sshService': False,
-                    'errorType': 'tunnel_unknown_error',
+                    'errorType': 'openssh_unknown_error',
                     'errorDetails': str(e)
                 }
             }
     
     @staticmethod
     def get_client():
-        """获取通过SSH连接的SSH客户端
+        """获取通过OpenSSH的SSH客户端
         
         Returns:
             paramiko.SSHClient: 有效的SSH客户端连接
@@ -220,11 +220,11 @@ class SSHService:
             client = SSHManager.get_client()
                 
             if not client:
-                logger.error("无法获取通过SSH连接的有效SSH连接")
+                logger.error("无法获取通过OpenSSH的有效SSH连接")
                 return None
                 
             return client
             
         except Exception as e:
-            logger.error(f"获取通过SSH连接的SSH客户端时出错: {str(e)}")
+            logger.error(f"获取通过OpenSSH的SSH客户端时出错: {str(e)}")
             return None

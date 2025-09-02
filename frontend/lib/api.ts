@@ -102,7 +102,7 @@ export const sshSettingsAPI = {
     })
   },
 
-  uploadTouchScript: async () => {
+  uploadInteractiveFiles: async () => {
     return fetchAPI(API_ROUTES.SSH_SETTINGS.UPLOAD_TOUCH_SCRIPT, {
       method: 'POST',
     })

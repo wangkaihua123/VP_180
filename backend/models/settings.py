@@ -57,7 +57,8 @@ class Settings:
             "host": settings.get("sshHost", DEFAULT_SSH_CONFIG["sshHost"]),
             "port": settings.get("sshPort", DEFAULT_SSH_CONFIG["sshPort"]),
             "username": settings.get("sshUsername", DEFAULT_SSH_CONFIG["sshUsername"]),
-            "password": settings.get("sshPassword", DEFAULT_SSH_CONFIG["sshPassword"])
+            "password": settings.get("sshPassword", DEFAULT_SSH_CONFIG["sshPassword"]),
+            "connectionType": settings.get("connectionType", DEFAULT_SSH_CONFIG.get("connectionType", "openssh_direct"))
         }
         return ssh_settings
     
@@ -68,10 +69,11 @@ class Settings:
         
         # 更新设置
         for key, db_key in {
-            "host": "sshHost", 
-            "port": "sshPort", 
-            "username": "sshUsername", 
-            "password": "sshPassword"
+            "host": "sshHost",
+            "port": "sshPort",
+            "username": "sshUsername",
+            "password": "sshPassword",
+            "connectionType": "connectionType"
         }.items():
             if key in ssh_data and ssh_data[key]:
                 settings[db_key] = ssh_data[key]

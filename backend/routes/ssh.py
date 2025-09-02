@@ -1,5 +1,5 @@
 """
-SSH连接SSH设置路由处理模块 - 处理通过SSH连接的SSH连接设置的API
+OpenSSH设置路由处理模块 - 处理通过系统OpenSSH的SSH连接设置的API
 """
 import os
 import logging
@@ -14,30 +14,30 @@ logger = logging.getLogger(__name__)
 
 @ssh_bp.route('/settings', methods=['GET'])
 def get_ssh_settings():
-    """获取SSH连接SSH设置"""
+    """获取OpenSSH设置"""
     try:
         settings = Settings.get_ssh_settings()
         if settings:
             return jsonify({
                 'success': True,
                 'settings': settings,
-                'connection_type': 'mobaxterm_tunnel'  # 标识连接类型
+                'connection_type': 'openssh_direct'  # 标识连接类型
             })
         return jsonify({
             'success': True,
             'settings': None,
-            'connection_type': 'mobaxterm_tunnel'
+            'connection_type': 'openssh_direct'
         })
     except Exception as e:
         return jsonify({
             'success': False,
-            'message': f"获取SSH连接SSH设置失败: {str(e)}"
+            'message': f"获取OpenSSH设置失败: {str(e)}"
         }), 500
 
 
 @ssh_bp.route('/settings', methods=['POST'])
 def update_ssh_settings():
-    """更新SSH连接SSH设置"""
+    """更新OpenSSH设置"""
     try:
         data = request.json
         success = Settings.update_ssh_settings(data)
@@ -45,18 +45,18 @@ def update_ssh_settings():
             return jsonify({
                 'success': True,
                 'settings': Settings.get_ssh_settings(),
-                'message': 'SSH连接SSH设置已更新',
-                'connection_type': 'mobaxterm_tunnel'
+                'message': 'OpenSSH设置已更新',
+                'connection_type': 'openssh_direct'
             })
         else:
             return jsonify({
                 'success': False,
-                'message': "保存SSH连接SSH设置失败"
+                'message': "保存OpenSSH设置失败"
             }), 500
     except Exception as e:
         return jsonify({
             'success': False,
-            'message': f"更新SSH连接SSH设置失败: {str(e)}"
+            'message': f"更新OpenSSH设置失败: {str(e)}"
         }), 500
 
 
@@ -69,7 +69,7 @@ def test_connection():
         # 从请求数据中获取SSH设置
         ssh_settings = {
             'host': data.get('host'),
-            'port': int(data.get('port', 2222)),  # 默认SSH连接端口
+            'port': int(data.get('port', 22)),  # 默认标准SSH端口
             'username': data.get('username'),
             'password': data.get('password')
         }
@@ -95,7 +95,7 @@ def test_connection():
                 ssh_client = SSHManager.get_client()
                 if ssh_client:
                     # 执行简单命令测试连接
-                    stdin, stdout, stderr = ssh_client.exec_command('echo "MobaXterm tunnel connection test"', timeout=10)
+                    stdin, stdout, stderr = ssh_client.exec_command('echo "OpenSSH connection test"', timeout=10)
                     output = stdout.read().decode().strip()
                     error = stderr.read().decode().strip()
                     
@@ -103,7 +103,7 @@ def test_connection():
                         logger.warning(f"现有SSH连接测试命令执行出错: {error}")
                         # 连接有问题，继续进行新的连接测试
                         pass
-                    elif "MobaXterm tunnel connection test" in output:
+                    elif "OpenSSH connection test" in output:
                         # 连接确实有效
                         return jsonify({
                             'success': True,
@@ -115,16 +115,16 @@ def test_connection():
                                 'sshService': True,
                                 'errorType': None,
                                 'errorDetails': None,
-                                'connectionStatus': 'existing_mobaxterm_tunnel_connection',
+                                'connectionStatus': 'existing_openssh_connection',
                                 'testOutput': output,
-                                'connectionType': 'mobaxterm_tunnel'
+                                'connectionType': 'openssh_direct'
                             }
                         })
                     else:
                         logger.warning("现有SSH连接测试命令输出不符合预期")
                         # 连接可能有问题，继续进行新的连接测试
                 else:
-                    logger.warning("无法获取SSH连接SSH客户端，连接可能已失效")
+                    logger.warning("无法获取OpenSSH客户端，连接可能已失效")
                     # 连接已失效，继续进行新的连接测试
             except Exception as e:
                 logger.warning(f"验证现有SSH连接时出错: {str(e)}")
@@ -157,40 +157,26 @@ def disconnect_ssh():
         }), 500
 
 
-@ssh_bp.route('/upload-touch-script', methods=['POST'])
-def upload_touch_script():
-    """通过SSH连接上传touch_click.py脚本到远程设备"""
+@ssh_bp.route('/upload-interactive-files', methods=['POST'])
+def upload_interactive_files():
+    """通过OpenSSH上传交互文件（touch_click.py和680kbd）到远程设备"""
     try:
         # 获取SSH客户端
         ssh_client = SSHManager.get_client()
         if not ssh_client:
             return jsonify({
                 'success': False,
-                'message': '无法获取SSH连接SSH客户端'
+                'message': '无法获取OpenSSH客户端'
             }), 500
-
-        # 本地touch_click.py文件路径
-        local_script_path = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            'utils',
-            'touch_click.py'
-        )
-
-        if not os.path.exists(local_script_path):
-            return jsonify({
-                'success': False,
-                'message': f'本地脚本文件不存在: {local_script_path}'
-            }), 404
 
         # 远程目标路径
         remote_dir = '/app/jzj'
-        remote_script_path = f'{remote_dir}/touch_click.py'
-
-        logger.info(f"开始通过SSH连接上传touch_click.py脚本: {local_script_path} -> {remote_script_path}")
-
+        
         # 创建SFTP客户端
         sftp = ssh_client.open_sftp()
-
+        
+        uploaded_files = []
+        
         try:
             # 确保远程目录存在
             try:
@@ -202,40 +188,99 @@ def upload_touch_script():
                 ssh_client.exec_command(f'mkdir -p {remote_dir}')
                 # 等待目录创建完成
                 import time
-                time.sleep(1)  # SSH连接可能需要更长时间
-
-            # 上传文件
-            sftp.put(local_script_path, remote_script_path)
-            logger.info(f"通过SSH连接文件上传成功: {remote_script_path}")
-
-            # 设置文件权限为可执行
-            sftp.chmod(remote_script_path, 0o755)
-            logger.info(f"设置文件权限为可执行: {remote_script_path}")
-
-            # 验证文件是否上传成功
-            try:
-                file_stat = sftp.stat(remote_script_path)
-                file_size = file_stat.st_size
-                logger.info(f"通过SSH连接文件验证成功，大小: {file_size} 字节")
-            except Exception as e:
-                logger.warning(f"通过SSH连接文件验证失败: {str(e)}")
-                raise Exception(f"通过SSH连接文件上传后验证失败: {str(e)}")
+                time.sleep(1)  # OpenSSH连接可能需要更长时间
+            
+            # 上传touch_click.py文件
+            touch_click_local_path = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                'utils',
+                'touch_click.py'
+            )
+            
+            if os.path.exists(touch_click_local_path):
+                touch_click_remote_path = f'{remote_dir}/touch_click.py'
+                logger.info(f"开始通过OpenSSH上传touch_click.py脚本: {touch_click_local_path} -> {touch_click_remote_path}")
+                
+                # 上传文件
+                sftp.put(touch_click_local_path, touch_click_remote_path)
+                logger.info(f"通过OpenSSH文件上传成功: {touch_click_remote_path}")
+                
+                # 设置文件权限为可执行
+                sftp.chmod(touch_click_remote_path, 0o755)
+                logger.info(f"设置文件权限为可执行: {touch_click_remote_path}")
+                
+                # 验证文件是否上传成功
+                try:
+                    file_stat = sftp.stat(touch_click_remote_path)
+                    file_size = file_stat.st_size
+                    logger.info(f"通过OpenSSH文件验证成功，大小: {file_size} 字节")
+                    uploaded_files.append({
+                        'name': 'touch_click.py',
+                        'local_path': touch_click_local_path,
+                        'remote_path': touch_click_remote_path,
+                        'file_size': file_size
+                    })
+                except Exception as e:
+                    logger.warning(f"通过OpenSSH文件验证失败: {str(e)}")
+                    raise Exception(f"通过OpenSSH文件上传后验证失败: {str(e)}")
+            else:
+                logger.warning(f"本地脚本文件不存在: {touch_click_local_path}")
+            
+            # 上传680kbd文件
+            kbd_local_path = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                'control',
+                '680kbd'
+            )
+            
+            if os.path.exists(kbd_local_path):
+                kbd_remote_path = f'{remote_dir}/680kbd'
+                logger.info(f"开始通过OpenSSH上传680kbd文件: {kbd_local_path} -> {kbd_remote_path}")
+                
+                # 上传文件
+                sftp.put(kbd_local_path, kbd_remote_path)
+                logger.info(f"通过OpenSSH文件上传成功: {kbd_remote_path}")
+                
+                # 设置文件权限为可执行
+                sftp.chmod(kbd_remote_path, 0o755)
+                logger.info(f"设置文件权限为可执行: {kbd_remote_path}")
+                
+                # 验证文件是否上传成功
+                try:
+                    file_stat = sftp.stat(kbd_remote_path)
+                    file_size = file_stat.st_size
+                    logger.info(f"通过OpenSSH文件验证成功，大小: {file_size} 字节")
+                    uploaded_files.append({
+                        'name': '680kbd',
+                        'local_path': kbd_local_path,
+                        'remote_path': kbd_remote_path,
+                        'file_size': file_size
+                    })
+                except Exception as e:
+                    logger.warning(f"通过OpenSSH文件验证失败: {str(e)}")
+                    raise Exception(f"通过OpenSSH文件上传后验证失败: {str(e)}")
+            else:
+                logger.warning(f"本地键盘文件不存在: {kbd_local_path}")
 
         finally:
             sftp.close()
 
+        if not uploaded_files:
+            return jsonify({
+                'success': False,
+                'message': '没有找到任何可上传的交互文件'
+            }), 404
+
         return jsonify({
             'success': True,
-            'message': '通过SSH连接touch_click.py脚本上传成功',
-            'local_path': local_script_path,
-            'remote_path': remote_script_path,
-            'file_size': file_size,
-            'connection_type': 'mobaxterm_tunnel'
+            'message': f'通过OpenSSH成功上传 {len(uploaded_files)} 个交互文件',
+            'uploaded_files': uploaded_files,
+            'connection_type': 'openssh_direct'
         })
 
     except Exception as e:
-        logger.error(f"通过SSH连接上传touch_click.py脚本失败: {str(e)}")
+        logger.error(f"通过OpenSSH上传交互文件失败: {str(e)}")
         return jsonify({
             'success': False,
-            'message': f'通过SSH连接上传脚本失败: {str(e)}'
+            'message': f'通过OpenSSH上传交互文件失败: {str(e)}'
         }), 500

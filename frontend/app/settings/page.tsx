@@ -401,10 +401,10 @@ export default function SettingsPage() {
     }
   }
 
-  const handleUploadTouchScript = async () => {
+  const handleUploadInteractiveFiles = async () => {
     setIsLoading(true)
     try {
-      const { success, message } = await sshSettingsAPI.uploadTouchScript()
+      const { success, message } = await sshSettingsAPI.uploadInteractiveFiles()
       toast({
         title: success ? "导入成功" : "导入失败",
         description: message,
@@ -744,7 +744,7 @@ export default function SettingsPage() {
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
-                      onClick={handleUploadTouchScript}
+                      onClick={handleUploadInteractiveFiles}
                       disabled={isLoading || !sshConnected}
                     >
                       {isLoading ? (
@@ -755,7 +755,7 @@ export default function SettingsPage() {
                       ) : (
                         <>
                           <Upload className="mr-2 h-4 w-4" />
-                          导入touch_click
+                          导入交互文件
                         </>
                       )}
                     </Button>

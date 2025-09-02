@@ -495,7 +495,6 @@ class ButtonClicker:
                 if attempt < self.max_retries - 1:
                     time.sleep(self.retry_interval)
                 continue
-        
         return False
     
     

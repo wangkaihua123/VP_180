@@ -241,7 +241,6 @@ def create_app(config=None):
                         # 检查是否在短时间内重复发送
                         current_time = time.time()
                         if current_time - last_send_time < duplicate_detection_threshold:
-                            logger.info(f"距离上次发送时间过短 ({current_time - last_send_time:.2f}s)，跳过此次处理")
                             # 更新文件大小和修改时间，避免重复检测
                             last_size = current_size
                             last_mtime = current_mtime
