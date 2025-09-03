@@ -205,6 +205,7 @@ if __name__ == "__main__":
             y = int(sys.argv[2])
             if not (0 <= x <= 9599 and 0 <= y <= 9599):
                 raise ValueError("坐标超出范围 (0-9599)")
+            
             click(x, y)
         except ValueError as ve:
             print(f"❌ 参数错误: {str(ve)}")

@@ -4,7 +4,7 @@
       "testId": 33,
       "testName": "180测试",
       "testResult": "失败",
-      "lastExecutionTime": "2025-09-03T02:16:52.122Z",
+      "lastExecutionTime": "2025-09-03T05:32:47.820Z",
       "testType": "功能测试",
       "description": "",
       "executionDuration": 0
@@ -15,8 +15,8 @@
     "passedCases": 0,
     "failedCases": 1,
     "passRate": 0,
-    "executionTime": "2025-09-03T02:16:52.122Z",
+    "executionTime": "2025-09-03T05:32:47.820Z",
     "project": "VP-180项目"
   },
-  "generatedAt": "2025-09-03T10:16:52.453525"
+  "generatedAt": "2025-09-03T13:32:48.155263"
 }
