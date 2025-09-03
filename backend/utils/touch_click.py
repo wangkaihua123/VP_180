@@ -195,38 +195,8 @@ def click(x, y, long_press=False, touch_duration=None):
     except Exception as e:
         print(f"❌ 触摸事件失败: {str(e)}")
         return False
-class ButtonClicker:
-    def power_button_click(self, duration=None):
-        try:
-            fd = os.open("/dev/input/event0", os.O_WRONLY)
-            fmt = 'llHHI'
-            EV_KEY = 0x01
-            EV_SYN = 0x00
-            KEY_POWER = 116
-            # 按下
-            os.write(fd, struct.pack(fmt, int(time.time()), 0, EV_KEY, KEY_POWER, 1))
-            os.write(fd, struct.pack(fmt, int(time.time()), 0, EV_SYN, 0, 0))
-
-            # 长按
-            if duration:
-                time.sleep(duration)
-
-            # 松开
-            os.write(fd, struct.pack(fmt, int(time.time()), 0, EV_KEY, KEY_POWER, 0))
-            os.write(fd, struct.pack(fmt, int(time.time()), 0, EV_SYN, 0, 0))
-
-            os.close(fd)
-            return True
-        except Exception as e:
-            return False
-    
 
 if __name__ == "__main__":
-    clicker = ButtonClicker()
-    # 短按
-    clicker.power_button_click()
-    # 长按 4 秒
-    clicker.power_button_click(duration=4)
     # 检查参数
     if len(sys.argv) == 3:
         # 点击模式

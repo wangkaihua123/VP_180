@@ -128,7 +128,7 @@ export default function LoginPage() {
               transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 15 }}
               className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-4 shadow-lg"
             >
-              <Lock className="w-10 h-10 text-white" />
+              <img src="/优亿测试.ico" alt="优亿测试" className="w-full h-full object-contain" />
             </motion.div>
 
             <motion.h1

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe, Plus, Edit, Trash2, FolderPlus, Upload } from "lucide-react"
+import { ArrowLeft, Save, Server, Key, User, Loader2, Laptop, Activity, X, Globe, Plus, Edit, FolderPlus, Upload } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -45,7 +45,6 @@ export default function SettingsPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [currentProject, setCurrentProject] = useState<Project | null>(null)
   const [editingProject, setEditingProject] = useState(false)
-  const [showDeleteProjectDialog, setShowDeleteProjectDialog] = useState(false)
   const [newProject, setNewProject] = useState({
     name: '',
     description: '',
@@ -595,45 +594,6 @@ export default function SettingsPage() {
     }
   }
 
-  // 处理删除项目
-  const handleDeleteProject = (project: Project) => {
-    setCurrentProject(project)
-    setShowDeleteProjectDialog(true)
-  }
-
-  // 确认删除项目
-  const confirmDeleteProject = async () => {
-    if (!currentProject) return
-    
-    setIsLoading(true)
-    
-    try {
-      const result = await projectSettingsAPI.deleteProject(currentProject.id)
-      
-      if (result.success) {
-        setProjects(prev => prev.filter(p => p.id !== currentProject.id))
-        
-        toast({
-          title: "删除成功",
-          description: `项目 "${currentProject.name}" 已成功删除`
-        })
-      } else {
-        throw new Error(result.message)
-      }
-      
-      setShowDeleteProjectDialog(false)
-      setCurrentProject(null)
-    } catch (error) {
-      toast({
-        title: "删除失败",
-        description: error instanceof Error ? error.message : "删除项目时发生未知错误",
-        variant: "destructive"
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   if (isInitialLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -931,7 +891,7 @@ export default function SettingsPage() {
                         <FolderPlus className="h-5 w-5 text-black" />
                         项目设置
                       </CardTitle>
-                      <CardDescription>管理测试项目，创建、编辑或删除项目</CardDescription>
+                      <CardDescription>管理测试项目，创建或编辑项目</CardDescription>
                     </div>
                     <Button 
                       onClick={() => {
@@ -984,14 +944,6 @@ export default function SettingsPage() {
                                       }}
                                     >
                                       <Edit className="h-4 w-4" />
-                                    </Button>
-                                    <Button 
-                                      variant="outline" 
-                                      size="icon"
-                                      className="text-red-500 hover:bg-red-50 hover:text-red-600"
-                                      onClick={() => handleDeleteProject(project)}
-                                    >
-                                      <Trash2 className="h-4 w-4" />
                                     </Button>
                                   </div>
                                 </div>
@@ -1287,27 +1239,7 @@ export default function SettingsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      
-      <AlertDialog open={showDeleteProjectDialog} onOpenChange={setShowDeleteProjectDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>确认删除项目</AlertDialogTitle>
-            <AlertDialogDescription>
-              确定要删除项目 "{currentProject?.name}" 吗？此操作无法撤销。
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowDeleteProjectDialog(false)}>取消</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={confirmDeleteProject}
-              className="bg-red-500 hover:bg-red-600"
-            >
-              确认删除
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-      
+       
       <Toaster />
     </div>
   )

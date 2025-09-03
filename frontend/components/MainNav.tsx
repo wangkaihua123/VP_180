@@ -124,9 +124,7 @@ export function MainNav() {
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-black rounded-md flex items-center justify-center">
-                <span className="text-white font-bold">优</span>
-              </div>
+              <img src="/优亿测试.ico" alt="优亿测试" className="w-8 h-8" />
               <span className="font-bold text-lg">优亿医疗</span>
               <span className="text-sm text-muted-foreground">自动化测试平台</span>
             </Link>
@@ -174,9 +172,7 @@ export function MainNav() {
       <div className="md:hidden flex h-16 items-center px-4 border-b bg-white dark:bg-gray-950 fixed top-0 left-0 right-0 z-30">
         <div className="flex items-center justify-between w-full">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-black rounded-md flex items-center justify-center">
-              <span className="text-white font-bold">优</span>
-            </div>
+            <img src="/优亿测试.ico" alt="优亿测试" className="w-8 h-8" />
             <span className="font-bold text-lg">优亿医疗</span>
           </Link>
 
@@ -193,9 +189,7 @@ export function MainNav() {
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-black rounded-md flex items-center justify-center">
-                <span className="text-white font-bold">优</span>
-              </div>
+              <img src="/优亿测试.ico" alt="优亿测试" className="w-8 h-8" />
               <span className="font-bold text-lg">优亿医疗</span>
               <span className="text-sm text-muted-foreground">自动化测试平台</span>
             </div>

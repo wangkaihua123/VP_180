@@ -119,7 +119,7 @@ class GetLatestImage:
             
             # 检查远程目录结构
             logger.debug("检查远程目录结构")
-            stdin, stdout, stderr = self.ssh.exec_command("find /ue_data -name '*.tiff' -o -name '*.jpg' -o -name '*.png' | sort -r | head -5")
+            stdin, stdout, stderr = self.ssh.exec_command("find /ue/ue_harddisk/ue_data/ -name '*.tiff' -o -name '*.jpg' -o -name '*.png' | sort -r | head -5")
             all_images = stdout.read().decode().strip().split('\n')
             error = stderr.read().decode().strip()
             

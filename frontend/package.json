@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -H 0.0.0.0 -p 3000",
+    "start": "next start -H 0.0.0.0 -H localhost -p 3000",
     "lint": "next lint",
     "dev:custom": "cross-env FRONTEND_HOST=%npm_config_host% FRONTEND_PORT=%npm_config_port% next dev -H %npm_config_host% -p %npm_config_port%",
     "export": "next build"

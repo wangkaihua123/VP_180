@@ -17,7 +17,10 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "自动化测试平台",
   description: "现代化自动化测试管理平台",
-  generator: 'vp-180.dev'
+  generator: 'vp-180.dev',
+  icons: {
+    icon: '/优亿测试.ico',
+  }
 }
 
 export default function RootLayout({
