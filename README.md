@@ -168,6 +168,7 @@ python app.py
 ### Next.js 前端
 
 1. 安装前端依赖：
+安装nodejs
 
 ```bash
 cd frontend
