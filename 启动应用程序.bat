@@ -16,13 +16,16 @@ timeout /t 5 /nobreak > nul
 
 echo 正在构建前端应用...
 cd /d "%~dp0frontend"
-start /B "Frontend Build" cmd /c "npm run build && pause"
+echo 正在执行前端构建，请稍候...
+call npm run build
+if %ERRORLEVEL% NEQ 0 (
+    echo 前端构建失败！请检查错误信息。
+    pause
+    exit /b 1
+)
 
-echo 等待前端构建完成...
-timeout /t 30 /nobreak > nul
-
+echo 前端构建完成！
 echo 正在启动前端服务...
-cd /d "%~dp0frontend"
 start /B "Frontend Server" cmd /c "npm run start && pause"
 
 echo 等待前端服务启动...

@@ -44,7 +44,7 @@ class RunMonitor:
             for i, step in enumerate(recorded_steps):
                 # 获取步骤类型
                 step_type = step.get('type')
-                logger.info(f"执行第 {i+1}/{len(recorded_steps)} 个步骤: {step_type}")
+                logger.info(f"执行第 {i+1}/{len(recorded_steps)} 个步骤")
                 
                 # 处理时间间隔
                 current_timestamp = step.get('timestamp')
@@ -68,7 +68,6 @@ class RunMonitor:
                     y = float(step.get('y', 0))
                     duration = float(step.get('duration', 0))
                     
-                    logger.info(f"执行触摸操作: 坐标({x}, {y}), 持续时间: {duration}秒")
                     
                     # 使用button_clicker的click_button方法，传入touch_duration参数
                     success = self.button_clicker.click_button(
@@ -80,7 +79,7 @@ class RunMonitor:
                     )
                     
                     if success:
-                        logger.info(f"触摸操作执行成功: ({x}, {y})")
+                        logger.info(f"触摸操作执行成功: ({x}, {y}),持续时间: {duration}秒")
                     else:
                         logger.error(f"触摸操作执行失败: ({x}, {y})")
                     
