@@ -465,7 +465,25 @@ class TouchMonitor:
             
             logger.info("通过SSH连接成功，开始执行680kbd程序...")
             # 使用SSH Channel执行680kbd程序
+            logger.debug(f"SSH客户端对象类型: {type(ssh_client)}")
+            logger.debug(f"SSH客户端对象是否为None: {ssh_client is None}")
+            
             transport = ssh_client.get_transport()
+            logger.debug(f"获取到的Transport对象: {transport}")
+            logger.debug(f"Transport对象是否为None: {transport is None}")
+
+            if transport is None:
+                logger.error("从SSH客户端获取到的Transport对象为None，连接可能已断开。")
+                self._send_event({"type": "error", "message": "SSH连接传输层异常，请检查连接状态"})
+                return
+            
+            # 检查Transport对象是否活跃
+            if not transport.is_active():
+                logger.error("SSH连接Transport对象不活跃，连接可能已被服务器端关闭。")
+                self._send_event({"type": "error", "message": "SSH连接传输层不活跃，请尝试重新连接"})
+                return
+            
+            logger.debug("SSH连接Transport对象状态检查通过，尝试创建监控通道...")
             
             # 创建监控通道
             self.kbd_channel = transport.open_session()
@@ -488,6 +506,21 @@ class TouchMonitor:
             
             while self.is_monitoring:
                 try:
+                    # 定期检查SSH连接状态
+                    if hasattr(self, 'connection_check_counter'):
+                        self.connection_check_counter += 1
+                    else:
+                        self.connection_check_counter = 0
+                    
+                    # 每100次循环检查一次连接状态（大约每秒钟）
+                    if self.connection_check_counter % 100 == 0:
+                        if transport and transport.is_active():
+                            logger.debug("SSH连接状态检查：连接活跃")
+                        else:
+                            logger.error("SSH连接状态检查：连接已断开或不再活跃")
+                            self._send_event({"type": "error", "message": "SSH连接在监听过程中已断开或不再活跃"})
+                            break
+                    
                     # 检查WebSocket连接是否仍然可用
                     if not self.websocket:
                         # 如果WebSocket不可用，继续监控但不发送事件
