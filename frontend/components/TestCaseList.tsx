@@ -35,8 +35,6 @@ interface TestCaseListProps {
   onSelectAll?: (checked: boolean) => void
 }
 
-
-
 export function TestCaseList({ 
   testCases, 
   loading, 
@@ -128,20 +126,6 @@ export function TestCaseList({
     router.push(`/execute-all?autoExecute=true&ids=${id}&t=${Date.now()}`);
   }
 
-  // const handleViewLog = async (id: number) => {
-  //   try {
-  //     const response = await testCasesAPI.getLatestLog(parseInt(id.toString()))
-  //     setSelectedLog(response.data || null)
-  //     setIsLogDialogOpen(true)
-  //   } catch (error) {
-  //     toast({
-  //       title: "获取日志失败",
-  //       description: error instanceof Error ? error.message : "获取测试用例日志失败",
-  //       variant: "destructive",
-  //     })
-  //   }
-  // }
-
   const handleSelectOne = (id: number, checked: boolean) => {
     console.log(`测试用例 ${id} 选中状态变为: ${checked}`);
     const newSelectedIds = checked
@@ -179,8 +163,8 @@ export function TestCaseList({
                 </TableHead>
               )}
               <TableHead className="w-20">ID</TableHead>
-              <TableHead>用例名称</TableHead>
               <TableHead className="w-32">项目名称</TableHead>
+              <TableHead>用例名称</TableHead>
               <TableHead>类型</TableHead>
               <TableHead>状态</TableHead>
               <TableHead>最后执行时间</TableHead>
@@ -201,13 +185,13 @@ export function TestCaseList({
                   </TableCell>
                 )}
                 <TableCell className="text-center">{testCase.id}</TableCell>
+                <TableCell className="text-sm text-gray-600">
+                  {testCase.project_name || '无'}
+                </TableCell>
                 <TableCell className="font-medium">
                   <Link href={`/test-cases/${testCase.id}/edit`} className="hover:underline">
                     {testCase.title}
                   </Link>
-                </TableCell>
-                <TableCell className="text-sm text-gray-600">
-                  {testCase.project_name || '无'}
                 </TableCell>
                 <TableCell>{testCase.type}</TableCell>
                 <TableCell>

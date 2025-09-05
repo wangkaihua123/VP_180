@@ -31,8 +31,8 @@
   ],
   "serialPort": "COM4",
   "serialBaudRate": "9600",
-  "sshHost": "192.168.0.106",
-  "sshPort": 22,
+  "sshHost": "107.175.50.25",
+  "sshPort": 2222,
   "sshUsername": "root",
-  "sshPassword": "firefly"
+  "sshPassword": "12"
 }
