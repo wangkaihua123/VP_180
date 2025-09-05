@@ -455,8 +455,15 @@ class TouchMonitor:
             
             # 检查680kbd程序是否存在
             logger.debug("通过SSH连接检查680kbd程序...")
-            stdin, stdout, stderr = ssh_client.exec_command('test -f /app/jzj/680kbd')
+            stdin, stdout, stderr = ssh_client.exec_command('test -f /app/jzj/680kbd', timeout=3)
+    
+            # 先读输出，避免阻塞
+            output = stdout.read().decode()
+            error = stderr.read().decode()
+            logger.debug(f"stdout: {output}, stderr: {error}")
+            
             exit_status = stdout.channel.recv_exit_status()
+            logger.debug(f"exit_status: {exit_status}")
             if exit_status != 0:
                 logger.error("通过SSH连接未找到680kbd程序")
                 self._send_event({"type": "error", "message": "通过SSH连接未找到680kbd程序，请确保已编译并放置在/app/jzj/中"})
